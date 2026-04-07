@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from "react";
+import { Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
-  { name: 'Home', href: '/' },
-  { name: 'Spettacoli', href: '/#spettacoli' },
-  { name: 'Contatti', href: '/#contatti' },
+  { name: "Home", href: "/" },
+  { name: "Biografia", href: "/biografia" },
+  { name: "Spettacoli", href: "/spettacoli" },
+  { name: "Contatti", href: "/#contatti" },
 ];
 
 export default function Header() {
@@ -16,20 +17,25 @@ export default function Header() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <header
       className={`fixed top-0 w-full z-50 transition-colors duration-300 border-b border-transparent ${
-        scrolled ? 'bg-background/80 backdrop-blur-md border-border' : 'bg-transparent'
+        scrolled
+          ? "bg-background/80 backdrop-blur-md border-border"
+          : "bg-transparent"
       }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex-shrink-0">
-            <a href="/" className="font-serif text-xl font-bold tracking-wider text-primary">
+            <a
+              href="/"
+              className="font-serif text-xl font-bold tracking-wider text-primary"
+            >
               Sergio Procopio
             </a>
           </div>
@@ -68,7 +74,7 @@ export default function Header() {
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
+            animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden bg-background border-b border-border overflow-hidden"
           >
