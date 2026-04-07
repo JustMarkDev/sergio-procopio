@@ -18,118 +18,154 @@ const { Content } = await render(show);
     title={`${show.data.title} | Sergio Procopio`}
     description={show.data.description}
 >
-    <article class="container mx-auto px-4 py-24 min-h-screen max-w-4xl">
-        <div class="mb-12">
-            <a
-                href="/spettacoli"
-                class="text-primary hover:underline mb-8 inline-block"
-                >← Torna a tutti gli spettacoli</a
-            >
-            <div class="flex flex-wrap items-center gap-4 mb-4">
-                <span
-                    class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium"
-                    >{show.data.category}</span
+    <div class="relative overflow-hidden bg-[#09090b]">
+        <div
+            class="absolute top-0 right-0 w-[60%] h-[60%] bg-primary/5 rounded-full blur-[140px] pointer-events-none"
+        >
+        </div>
+
+        <article
+            class="container relative z-10 mx-auto px-4 py-32 min-h-screen max-w-5xl"
+        >
+            <div class="mb-20">
+                <a
+                    href="/spettacoli"
+                    class="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-primary hover:text-foreground transition-all mb-12"
                 >
-                {
-                    show.data.duration && (
-                        <span class="text-sm text-muted-foreground">
-                            ⏱️ {show.data.duration}
-                        </span>
-                    )
-                }
-                {
-                    show.data.etaConsigliata && (
-                        <span class="text-sm text-muted-foreground">
-                            👥 {show.data.etaConsigliata}
-                        </span>
-                    )
-                }
-            </div>
-            <h1 class="text-5xl md:text-6xl font-serif font-bold mb-6">
-                {show.data.title}
-            </h1>
-            <p class="text-xl text-muted-foreground italic">
-                {show.data.description}
-            </p>
-        </div>
+                    <span class="w-8 h-[1px] bg-primary"></span> Torna al catalogo
+                </a>
 
-        {/* Technical Details Grid */}
-        {
-            (show.data.regia ||
-                show.data.produzione ||
-                show.data.tecnico ||
-                show.data.costo) && (
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 p-6 bg-secondary/20 rounded-xl border border-border">
-                    {show.data.regia && (
-                        <div>
-                            <div class="text-xs text-muted-foreground uppercase tracking-wider mb-1">
-                                Regia
-                            </div>
-                            <div class="text-sm font-medium">
-                                {show.data.regia}
-                            </div>
-                        </div>
-                    )}
-                    {show.data.produzione && (
-                        <div>
-                            <div class="text-xs text-muted-foreground uppercase tracking-wider mb-1">
-                                Produzione
-                            </div>
-                            <div class="text-sm font-medium">
-                                {show.data.produzione}
-                            </div>
-                        </div>
-                    )}
-                    {show.data.tecnico && (
-                        <div>
-                            <div class="text-xs text-muted-foreground uppercase tracking-wider mb-1">
-                                Tecnico
-                            </div>
-                            <div class="text-sm font-medium">
-                                {show.data.tecnico}
-                            </div>
-                        </div>
-                    )}
-                    {show.data.costo && (
-                        <div>
-                            <div class="text-xs text-muted-foreground uppercase tracking-wider mb-1">
-                                Costo
-                            </div>
-                            <div class="text-sm font-medium text-primary font-bold">
-                                {show.data.costo}
-                            </div>
-                        </div>
-                    )}
+                <div class="flex flex-wrap items-center gap-3 mb-8">
+                    <span
+                        class="px-4 py-1.5 bg-primary/10 backdrop-blur-md border border-primary/20 text-primary rounded-full text-[10px] font-bold uppercase tracking-wider"
+                        >{show.data.category}</span
+                    >
+                    {
+                        show.data.etaConsigliata && (
+                            <span class="px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                                👥 {show.data.etaConsigliata}
+                            </span>
+                        )
+                    }
+                    {
+                        show.data.duration && (
+                            <span class="px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                                ⏱️ {show.data.duration}
+                            </span>
+                        )
+                    }
                 </div>
-            )
-        }
 
-        <div
-            class="aspect-video w-full bg-muted rounded-2xl overflow-hidden relative mb-12 border border-border"
-        >
-            <div
-                class="absolute inset-0 flex items-center justify-center text-muted-foreground font-serif text-2xl"
-            >
-                Immagine {show.data.title}
+                <h1
+                    class="text-6xl md:text-8xl font-serif font-bold mb-8 tracking-tight leading-[0.9]"
+                >
+                    {show.data.title}
+                </h1>
+                <p
+                    class="text-2xl text-muted-foreground italic leading-relaxed max-w-3xl opacity-90"
+                >
+                    {show.data.description}
+                </p>
             </div>
-        </div>
 
-        <div
-            class="prose prose-invert prose-blue max-w-none prose-headings:font-serif prose-h2:text-3xl prose-h2:mt-12"
-        >
-            <Content />
-        </div>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+                <div class="lg:col-span-8 space-y-16">
+                    <div
+                        class="aspect-video w-full bg-zinc-900 rounded-[2.5rem] overflow-hidden relative border border-white/5 shadow-2xl"
+                    >
+                        <div
+                            class="absolute inset-0 flex items-center justify-center text-muted-foreground font-serif text-3xl opacity-10"
+                        >
+                            {show.data.title}
+                        </div>
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-[#09090b]/80 via-transparent to-transparent"
+                        >
+                        </div>
+                    </div>
 
-        <div class="mt-16 pt-8 border-t border-border text-center">
-            <h3 class="text-2xl font-serif font-bold mb-4">
-                Sei interessato a questo spettacolo?
-            </h3>
-            <a
-                href="/#contatti"
-                class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-11 px-8"
-            >
-                Richiedi Informazioni
-            </a>
-        </div>
-    </article>
+                    <div
+                        class="prose prose-invert prose-blue max-w-none prose-headings:font-serif prose-h2:text-4xl prose-h2:tracking-tight prose-p:text-lg prose-p:text-muted-foreground prose-p:leading-relaxed prose-li:text-muted-foreground"
+                    >
+                        <Content />
+                    </div>
+                </div>
+
+                <div class="lg:col-span-4 space-y-8">
+                    <div
+                        class="p-10 bg-white/[0.02] border border-white/10 rounded-[2.5rem] sticky top-32 backdrop-blur-sm"
+                    >
+                        <h3
+                            class="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-10 flex items-center gap-4"
+                        >
+                            <span class="w-8 h-[1px] bg-primary/30"></span> Dati Tecnici
+                        </h3>
+
+                        <div class="space-y-10">
+                            {
+                                show.data.regia && (
+                                    <div>
+                                        <div class="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
+                                            Regia
+                                        </div>
+                                        <div class="text-lg font-bold font-serif">
+                                            {show.data.regia}
+                                        </div>
+                                    </div>
+                                )
+                            }
+                            {
+                                show.data.produzione && (
+                                    <div>
+                                        <div class="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
+                                            Produzione
+                                        </div>
+                                        <div class="text-lg font-bold font-serif">
+                                            {show.data.produzione}
+                                        </div>
+                                    </div>
+                                )
+                            }
+                            {
+                                show.data.tecnico && (
+                                    <div>
+                                        <div class="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
+                                            Cast Tecnico
+                                        </div>
+                                        <div class="text-lg font-bold font-serif">
+                                            {show.data.tecnico}
+                                        </div>
+                                    </div>
+                                )
+                            }
+                            {
+                                show.data.costo && (
+                                    <div>
+                                        <div class="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
+                                            Investimento
+                                        </div>
+                                        <div class="text-3xl font-bold font-serif text-primary">
+                                            {show.data.costo}
+                                        </div>
+                                        <div class="text-[9px] uppercase tracking-tighter opacity-40 mt-1">
+                                            Include audio, luci e assistenza
+                                        </div>
+                                    </div>
+                                )
+                            }
+                        </div>
+
+                        <div class="mt-12 pt-10 border-t border-white/5">
+                            <a
+                                href="/#contatti"
+                                class="flex w-full h-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground font-bold uppercase tracking-widest hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 active:scale-[0.98]"
+                            >
+                                Prenota Ora
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
 </Layout>

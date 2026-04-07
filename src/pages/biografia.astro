@@ -1,65 +1,234 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import { motion } from 'framer-motion';
+import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout title="Biografia | Sergio Procopio" description="La storia di Sergio Procopio: oltre 40 anni dedicati all'arte del mimo, del clown e del teatro educativo.">
-  <div class="container mx-auto px-4 py-24 max-w-4xl">
-    <div class="text-center mb-16">
-      <h1 class="text-5xl md:text-7xl font-serif font-bold mb-6">Biografia</h1>
-      <p class="text-xl text-primary font-serif italic italic tracking-wide">
-        "L'arte ti sconvolge e ti scatena conflitti nell'anima, se non ti fa questo hai perso tempo."
-      </p>
+<Layout
+    title="Biografia | Sergio Procopio"
+    description="La storia di Sergio Procopio: oltre 40 anni dedicati all'arte del mimo, del clown e del teatro educativo."
+>
+    <div class="relative overflow-hidden bg-[#09090b]">
+        {/* Background Aurora */}
+        <div
+            class="absolute top-0 right-0 w-[50%] h-[50%] bg-primary/5 rounded-full blur-[120px] pointer-events-none"
+        >
+        </div>
+        <div
+            class="absolute bottom-0 left-0 w-[50%] h-[50%] bg-blue-900/5 rounded-full blur-[120px] pointer-events-none"
+        >
+        </div>
+
+        <div class="container relative z-10 mx-auto px-4 py-32 max-w-5xl">
+            <div class="mb-24">
+                <span
+                    class="text-primary font-bold tracking-[0.2em] text-[10px] uppercase mb-4 block"
+                    >Il Percorso</span
+                >
+                <h1
+                    class="text-6xl md:text-8xl font-serif font-bold mb-10 tracking-tight leading-[0.9]"
+                >
+                    Una vita <br />
+                    <span class="italic text-primary pr-4"
+                        >dedicata all'Arte</span
+                    >
+                </h1>
+                <p
+                    class="text-2xl font-serif text-muted-foreground italic opacity-90 max-w-3xl leading-relaxed"
+                >
+                    "L'arte ti sconvolge e ti scatena conflitti nell'anima, <br
+                        class="hidden md:block"
+                    /> se non ti fa questo hai perso tempo."
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+                {/* Main Content */}
+                <div class="lg:col-span-8 space-y-20">
+                    <section>
+                        <h2
+                            class="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-8 flex items-center gap-4"
+                        >
+                            <span class="w-12 h-[1px] bg-primary/30"></span> Le Origini
+                        </h2>
+                        <div
+                            class="prose prose-invert prose-blue max-w-none prose-p:text-lg prose-p:leading-relaxed prose-p:text-muted-foreground prose-strong:text-foreground prose-strong:font-bold"
+                        >
+                            <p>
+                                Sergio Procopio ha intrapreso il suo
+                                straordinario percorso nel mondo del clown nel
+                                lontano <strong>1975</strong>, quando, a undici
+                                anni, varcò le porte del collegio dei Salesiani
+                                di Arese. Qui ha avuto l’incredibile opportunità
+                                di incontrare due maestri di vita e teatro, <strong
+                                    >Don Vittorio Chiari</strong
+                                > e <strong>Bano Ferrari</strong>, figure che
+                                hanno plasmato il suo destino e ispirato la sua
+                                passione per il palcoscenico.
+                            </p>
+                            <p>
+                                Bano Ferrari, rinomato clown professionista, ha
+                                guidato Sergio e gli altri ragazzi del collegio,
+                                incoraggiandoli a sviluppare le proprie capacità
+                                in un autentico spirito di condivisione. Nel <strong
+                                    >1977</strong
+                                >, insieme a Bano, Don Vittorio e altri
+                                talentuosi insegnanti e ragazzi del collegio,
+                                Sergio ha contribuito a fondare la prestigiosa
+                                compagnia teatrale <strong
+                                    >"i Barabba’s Clown"</strong
+                                >.
+                            </p>
+                            <p>
+                                Durante i dodici anni di collaborazione con la
+                                compagnia, Sergio ha portato il suo talento in
+                                oltre 1800 rappresentazioni teatrali in tutta
+                                Italia e in numerosi Festival internazionali,
+                                culminando con una memorabile esibizione in
+                                Vaticano nel 1989 di fronte a Giovanni Paolo II.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h2
+                            class="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-8 flex items-center gap-4"
+                        >
+                            <span class="w-12 h-[1px] bg-primary/30"></span> L'Età
+                            Professionale
+                        </h2>
+                        <div
+                            class="prose prose-invert prose-blue max-w-none prose-p:text-lg prose-p:leading-relaxed prose-p:text-muted-foreground"
+                        >
+                            <p>
+                                Nel <strong>1990</strong>, intraprese una
+                                fruttuosa collaborazione con il regista teatrale
+                                Carlo Rossi, iniziando la sua carriera di clown
+                                professionista a tempo pieno. Fondando la <strong
+                                    >"Compagnia Teatrale Sergio Procopio"</strong
+                                >, ha creato e portato in scena ben 18
+                                spettacoli, accumulando oltre 2000 repliche di
+                                successo.
+                            </p>
+                            <p>
+                                La sua formazione artistica è stata arricchita
+                                dalla frequenza della scuola svizzera di Pierre
+                                Bayland e dalla scuola di <strong
+                                    >Marcel Marceau</strong
+                                >, riconosciuto come il più grande mimo di tutti
+                                i tempi.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h2
+                            class="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-8 flex items-center gap-4"
+                        >
+                            <span class="w-12 h-[1px] bg-primary/30"></span> Eventi
+                            Internazionali
+                        </h2>
+                        <div
+                            class="prose prose-invert prose-blue max-w-none prose-p:text-lg prose-p:leading-relaxed prose-p:text-muted-foreground"
+                        >
+                            <p>
+                                La sua carriera internazionale è stata
+                                caratterizzata da prestigiose esibizioni in
+                                Belgio, Francia, Germania, Spagna, Svizzera,
+                                Madagascar, Brasile e Perù. Nel 2006, ha
+                                lasciato un'impronta indelebile esibendosi
+                                presso il teatro Museo della Nazione in Perù, di
+                                fronte al Presidente della Repubblica.
+                            </p>
+                            <p>
+                                Nel 2020 ha raggiunto l'incredibile traguardo di <strong
+                                    >quarant'anni di attività</strong
+                                >, dimostrando che la sua passione per l'arte
+                                del clown è più viva che mai.
+                            </p>
+                        </div>
+                    </section>
+                </div>
+
+                {/* Sidebar / Stats */}
+                <div class="lg:col-span-4 space-y-8">
+                    <div
+                        class="p-8 bg-white/[0.02] border border-white/10 rounded-3xl sticky top-32"
+                    >
+                        <h3
+                            class="text-xl font-serif font-bold mb-6 text-primary"
+                        >
+                            In Breve
+                        </h3>
+                        <div class="space-y-6">
+                            <div>
+                                <div
+                                    class="text-[10px] uppercase tracking-widest text-muted-foreground mb-1"
+                                >
+                                    Debutto
+                                </div>
+                                <div class="text-lg font-bold font-serif">
+                                    1975
+                                </div>
+                            </div>
+                            <div>
+                                <div
+                                    class="text-[10px] uppercase tracking-widest text-muted-foreground mb-1"
+                                >
+                                    Rappresentazioni
+                                </div>
+                                <div class="text-lg font-bold font-serif">
+                                    +3800
+                                </div>
+                            </div>
+                            <div>
+                                <div
+                                    class="text-[10px] uppercase tracking-widest text-muted-foreground mb-1"
+                                >
+                                    Paesi
+                                </div>
+                                <div class="text-lg font-bold font-serif">
+                                    Oltre 10 nazioni
+                                </div>
+                            </div>
+                            <div class="pt-6 border-t border-white/5">
+                                <div
+                                    class="text-[10px] uppercase tracking-widest text-muted-foreground mb-4"
+                                >
+                                    TV & Media
+                                </div>
+                                <ul class="text-sm space-y-2 opacity-70">
+                                    <li>• Rai 1 (Caffè Italiano)</li>
+                                    <li>• Rai 2 (Oro e Argento)</li>
+                                    <li>• Rai 3 (Il circolo delle 12)</li>
+                                    <li>• Trenta ore per la vita</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section
+                class="mt-32 p-12 bg-primary/5 rounded-[3rem] border border-primary/10 text-center relative overflow-hidden"
+            >
+                <div
+                    class="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-primary/20 rounded-full blur-[100px] pointer-events-none"
+                >
+                </div>
+                <div class="relative z-10">
+                    <h2 class="text-3xl md:text-4xl font-serif font-bold mb-6">
+                        Un impegno educativo
+                    </h2>
+                    <p
+                        class="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed italic"
+                    >
+                        Parallelamente alla sua carriera artistica, Sergio ha
+                        dedicato oltre vent'anni a incontri per giovani e
+                        famiglie su temi educativi della crescita, collaborando
+                        con scuole, associazioni e oratori, portando i valori
+                        appresi nel suo percorso di ex allievo Salesiano.
+                    </p>
+                </div>
+            </section>
+        </div>
     </div>
-
-    <div class="prose prose-invert prose-blue max-w-none prose-headings:font-serif prose-p:text-muted-foreground prose-p:leading-relaxed prose-p:text-lg">
-      <section class="mb-16">
-        <h2 class="text-3xl font-bold mb-8 border-b border-primary/20 pb-2">Una vita dedicata all'arte del comico senza parole</h2>
-        <p>
-          Sergio Procopio ha intrapreso il suo straordinario percorso nel mondo del clown nel lontano <strong>1975</strong>, quando, a undici anni, varcò le porte del collegio dei Salesiani di Arese. Qui ha avuto l’incredibile opportunità di incontrare due maestri di vita e teatro, <strong>Don Vittorio Chiari</strong> e <strong>Bano Ferrari</strong>, figure che hanno plasmato il suo destino e ispirato la sua passione per il palcoscenico.
-        </p>
-        <p>
-          Bano Ferrari, rinomato clown professionista, ha guidato Sergio e gli altri ragazzi del collegio, incoraggiandoli a sviluppare le proprie capacità in un autentico spirito di condivisione. Nel <strong>1977</strong>, insieme a Bano, Don Vittorio e altri talentuosi insegnanti e ragazzi del collegio, Sergio ha contribuito a fondare la prestigiosa compagnia teatrale <strong>"i Barabba’s Clown"</strong>. Durante i dodici anni di collaborazione con la compagnia, Sergio ha portato il suo talento in oltre 1800 rappresentazioni teatrali in tutta Italia e in numerosi Festival internazionali, culminando con una memorabile esibizione in Vaticano nel 1989 di fronte a Giovanni Paolo II.
-        </p>
-        <p>
-          Nel <strong>1990</strong>, intraprese una fruttuosa collaborazione con il regista teatrale Carlo Rossi, iniziando la sua carriera di clown professionista a tempo pieno. Fondando la <strong>"Compagnia Teatrale Sergio Procopio"</strong>, ha creato e portato in scena ben 18 spettacoli, accumulando oltre 2000 repliche di successo. La sua formazione artistica è stata arricchita dalla frequenza della scuola svizzera di Pierre Bayland e dalla scuola di <strong>Marcel Marceau</strong>, riconosciuto come il più grande mimo di tutti i tempi.
-        </p>
-      </section>
-
-      <section class="mb-16 grid grid-cols-1 md:grid-cols-2 gap-12 items-center bg-secondary/20 p-8 rounded-2xl border border-border">
-        <div>
-          <h2 class="text-2xl font-bold mb-4">Trionfo sullo schermo</h2>
-          <p class="text-base">
-            Sergio Procopio ha brillato anche sul piccolo schermo, con numerose apparizioni televisive che testimoniano il suo carisma e il suo talento. Tra queste, si ricordano le partecipazioni a programmi come <strong>"Oro e argento"</strong> su Rai 2 (1990), <strong>"Il circolo delle 12"</strong> su Rai 3 (1992), <strong>"Caffè Italiano"</strong> su Rai 1 (1993) e culminando con la presenza nel programma <strong>"Trenta ore per la vita"</strong> su Rai 2 nel 2006, condotto da Tiberio Timperi.
-          </p>
-        </div>
-        <div class="aspect-video bg-muted rounded-xl flex items-center justify-center text-muted-foreground font-serif text-center border border-border">
-          Presenza Televisiva
-        </div>
-      </section>
-
-      <section class="mb-16">
-        <h2 class="text-3xl font-bold mb-8 border-b border-primary/20 pb-2">Presenza costante nei grandi eventi</h2>
-        <p>
-          La sua presenza è stata costante in importanti Festival e manifestazioni, tra cui il <strong>Festival Internazionale del Clown di Milano</strong> nel 1993, dove ha lasciato il pubblico senza fiato. Nel 1996, al Festival Internazionale del Riso di Bordighera, Sergio è stato acclamato come il più applaudito. Da oltre vent'anni, si esibisce regolarmente presso l'<strong>Università Bocconi di Milano</strong>, consolidando la sua reputazione di artista di grande caratura.
-        </p>
-        <p>
-          La sua carriera internazionale è stata caratterizzata da prestigiose esibizioni in Belgio, Francia, Germania, Spagna, Svizzera, Madagascar, Brasile e Perù. Nel 2006, ha lasciato un'impronta indelebile esibendosi presso il teatro Museo della Nazione in Perù, di fronte al Presidente della Repubblica. Nel 2020 ha raggiunto l'incredibile traguardo di <strong>quarant'anni di attività</strong>, dimostrando che la sua passione per l'arte del clown è più viva che mai.
-        </p>
-      </section>
-
-      <section class="mb-16">
-        <div class="bg-primary/10 border-l-4 border-primary p-8 rounded-r-2xl">
-          <h2 class="text-2xl font-bold mb-4 text-primary">Un impegno educativo per giovani e famiglie</h2>
-          <p class="mb-0">
-            Parallelamente alla sua carriera artistica, Sergio ha dedicato oltre vent'anni a incontri per giovani e famiglie su temi educativi della crescita, collaborando con scuole, associazioni, comuni, oratori e altre istituzioni. Da più di vent'anni conduce corsi sulla responsabilità dedicati agli educatori in oratorio, ispirandosi ai valori e all’etica appresa dai Salesiani, dove è cresciuto come ex allievo.
-          </p>
-        </div>
-      </section>
-
-      <p class="text-center text-2xl font-serif italic text-foreground mt-20">
-        "Sergio Procopio continua a emozionare e ispirare il pubblico in tutto il mondo, regalando sorrisi e profonde emozioni al suo affezionato pubblico."
-      </p>
-    </div>
-  </div>
 </Layout>
