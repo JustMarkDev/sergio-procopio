@@ -1,0 +1,36 @@
+---
+import '@fontsource/inter';
+import '@fontsource/playfair-display';
+import '../styles/globals.css';
+import SEO from '../components/SEO.astro';
+import Header from '../components/custom/Header';
+import Footer from '../components/custom/Footer.astro';
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="it" class="dark scroll-smooth">
+	<head>
+		<SEO title={title} description={description} />
+	</head>
+	<body>
+		<Header client:load />
+		<main>
+			<slot />
+		</main>
+		<Footer />
+        <script>
+            // Initialize Vercel Analytics and Speed Insights client-side
+            import { inject } from '@vercel/analytics';
+            import { injectSpeedInsights } from '@vercel/speed-insights';
+            inject();
+            injectSpeedInsights();
+        </script>
+	</body>
+</html>

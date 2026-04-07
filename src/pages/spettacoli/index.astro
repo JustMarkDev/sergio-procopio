@@ -1,0 +1,57 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { motion } from "framer-motion";
+
+const spettacoli = await getCollection("spettacoli");
+---
+
+<Layout title="Tutti gli Spettacoli | Sergio Procopio">
+    <div class="container mx-auto px-4 py-24 min-h-screen">
+        <div class="text-center mb-16">
+            <h1 class="text-4xl md:text-6xl font-serif font-bold mb-4">
+                Tutti gli Spettacoli
+            </h1>
+            <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Scopri il repertorio completo. Ogni spettacolo è un viaggio
+                unico fatto di emozioni, silenzi ed espressioni.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {
+                spettacoli.map((show) => (
+                    <a
+                        href={`/spettacoli/${show.id}`}
+                        class="group block bg-card border border-border rounded-xl overflow-hidden hover:border-primary/50 transition-all duration-300 hover:-translate-y-1"
+                    >
+                        {" "}
+                        <div class="aspect-video w-full bg-muted relative">
+                            <div class="absolute inset-0 bg-secondary/50 flex items-center justify-center text-muted-foreground font-serif">
+                                {show.data.title}
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm text-primary font-medium">
+                                    {show.data.category}
+                                </span>
+                                {show.data.duration && (
+                                    <span class="text-xs text-muted-foreground">
+                                        {show.data.duration}
+                                    </span>
+                                )}
+                            </div>
+                            <h2 class="text-2xl font-bold font-serif mb-3 group-hover:text-primary transition-colors">
+                                {show.data.title}
+                            </h2>
+                            <p class="text-muted-foreground line-clamp-2">
+                                {show.data.description}
+                            </p>
+                        </div>
+                    </a>
+                ))
+            }
+        </div>
+    </div>
+</Layout>

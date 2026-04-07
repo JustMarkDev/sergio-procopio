@@ -1,17 +1,26 @@
 ---
+import Layout from "../layouts/Layout.astro";
+import HeroSection from "../components/custom/HeroSection";
+import FeaturedShows from "../components/custom/FeaturedShows";
+import ContactForm from "../components/custom/ContactForm";
+import { getCollection } from "astro:content";
 
+const allShows = await getCollection("spettacoli");
+// Prefer highlighted shows or first 3
+const featuredShows = allShows
+    .sort((a, b) => (b.data.highlight ? 1 : 0) - (a.data.highlight ? 1 : 0))
+    .slice(0, 3)
+    .map((show) => ({
+        id: show.id,
+        title: show.data.title,
+        category: show.data.category,
+        description: show.data.description,
+        image: show.data.image,
+    }));
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout>
+    <HeroSection client:load />
+    <FeaturedShows client:visible shows={featuredShows} />
+    <ContactForm client:visible />
+</Layout>

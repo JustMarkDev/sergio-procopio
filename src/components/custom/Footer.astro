@@ -1,0 +1,82 @@
+---
+import { SOCIAL_LINKS } from "../../consts";
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-secondary/30 border-t border-border mt-20">
+    <div class="container mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <h3 class="font-serif text-lg font-semibold text-primary mb-4">
+                    Sergio Procopio
+                </h3>
+                <p class="text-sm text-muted-foreground max-w-xs">
+                    Attore, mimo e regista teatrale. Emozioni sul palcoscenico
+                    per scuole, parrocchie e piazze.
+                </p>
+            </div>
+            <div>
+                <h3 class="font-serif text-lg font-semibold mb-4">
+                    Link Utili
+                </h3>
+                <ul class="space-y-2 text-sm text-muted-foreground">
+                    <li>
+                        <a href="/" class="hover:text-primary transition-colors"
+                            >Home</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="/spettacoli"
+                            class="hover:text-primary transition-colors"
+                            >Tutti gli Spettacoli</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="/privacy-policy"
+                            class="hover:text-primary transition-colors"
+                            >Privacy Policy</a
+                        >
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="font-serif text-lg font-semibold mb-4">Social</h3>
+                <div
+                    class="flex flex-col space-y-2 text-sm text-muted-foreground"
+                >
+                    <a
+                        href={SOCIAL_LINKS.instagram}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hover:text-primary transition-colors"
+                    >
+                        Instagram
+                    </a>
+                    <a
+                        href={SOCIAL_LINKS.facebook}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hover:text-primary transition-colors"
+                    >
+                        Facebook
+                    </a>
+                    <a
+                        href={SOCIAL_LINKS.youtube}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hover:text-primary transition-colors"
+                    >
+                        YouTube
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div
+            class="mt-8 pt-8 border-t border-border text-center text-sm text-muted-foreground"
+        >
+            &copy; {year} Sergio Procopio. Tutti i diritti riservati.
+        </div>
+    </div>
+</footer>
