@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 export default function HeroSection() {
   return (
@@ -12,9 +12,8 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <h1 className="text-5xl md:text-7xl font-serif font-bold text-foreground mb-6">
-            L'Arte del Mimo <br />
-            <span className="text-primary italic">e del Teatro</span>
+          <h1 className="text-5xl md:text-8xl font-serif font-bold text-foreground mb-6">
+            Sergio <span className="text-primary italic">Procopio</span>
           </h1>
         </motion.div>
 
@@ -23,11 +22,11 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
         >
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-10">
-            Sergio Procopio porta in scena emozioni pure attraverso il linguaggio universale del corpo.
+          <p className="text-2xl md:text-3xl font-serif text-muted-foreground max-w-3xl mx-auto mb-10 leading-relaxed italic">
+            "L'arte del comico senza parole al servizio dell'educazione e delle
+            emozioni."
           </p>
         </motion.div>
-
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
