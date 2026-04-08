@@ -32,7 +32,7 @@ const { Content } = await render(show);
                     href="/spettacoli"
                     class="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-primary hover:text-foreground transition-all mb-12"
                 >
-                    <span class="w-8 h-[1px] bg-primary"></span> Torna al catalogo
+                    <span class="w-8 h-px bg-primary"></span> Torna al catalogo
                 </a>
 
                 <div class="flex flex-wrap items-center gap-3 mb-8">
@@ -79,7 +79,7 @@ const { Content } = await render(show);
                             {show.data.title}
                         </div>
                         <div
-                            class="absolute inset-0 bg-gradient-to-t from-[#09090b]/80 via-transparent to-transparent"
+                            class="absolute inset-0 bg-linear-to-t from-[#09090b]/80 via-transparent to-transparent"
                         >
                         </div>
                     </div>
@@ -93,12 +93,12 @@ const { Content } = await render(show);
 
                 <div class="lg:col-span-4 space-y-8">
                     <div
-                        class="p-10 bg-white/[0.02] border border-white/10 rounded-[2.5rem] sticky top-32 backdrop-blur-sm"
+                        class="p-10 bg-white/2 border border-white/10 rounded-[2.5rem] sticky top-32 backdrop-blur-sm"
                     >
                         <h3
                             class="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-10 flex items-center gap-4"
                         >
-                            <span class="w-8 h-[1px] bg-primary/30"></span> Dati Tecnici
+                            <span class="w-8 h-px bg-primary/30"></span> Dati Tecnici
                         </h3>
 
                         <div class="space-y-10">

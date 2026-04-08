@@ -10,9 +10,8 @@ export default function HeroSection() {
         <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-blue-900/20 rounded-full blur-[140px]"></div>
 
         {/* Fine Grid Pattern with Radial Mask */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-size-[32px_32px] mask-[radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
       </div>
-
       <div className="container relative z-10 mx-auto px-4 text-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -29,7 +28,7 @@ export default function HeroSection() {
 
           <h1 className="text-7xl md:text-[11rem] font-serif font-bold text-foreground mb-10 tracking-tighter leading-[0.85] select-none">
             Sergio <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-b from-primary via-primary to-blue-700 italic pb-4 pr-12">
+            <span className="text-transparent bg-clip-text bg-linear-to-b from-primary via-primary to-blue-700 italic pb-4 pr-12">
               Procopio
             </span>
           </h1>
@@ -59,7 +58,7 @@ export default function HeroSection() {
             className="group relative inline-flex items-center justify-center px-12 py-5 rounded-full bg-primary text-primary-foreground font-bold text-xl transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(37,99,235,0.4)] active:scale-95"
           >
             <span className="relative z-10">Mettiamoci in Contatto</span>
-            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-blue-700 to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="absolute inset-0 rounded-full bg-linear-to-tr from-blue-700 to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </a>
 
           {/* Secondary Action: Scopri gli Spettacoli */}
@@ -71,15 +70,14 @@ export default function HeroSection() {
           </a>
         </motion.div>
       </div>
-
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.8, duration: 1 }}
         className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-30"
       >
-        <div className="w-[1px] h-12 bg-gradient-to-b from-primary to-transparent"></div>
-      </motion.div>
+        <div className="w-px h-12 bg-linear-to-b from-primary to-transparent"></div>{" "}
+      </motion.div>{" "}
     </section>
   );
 }

@@ -64,11 +64,11 @@ export default function FeaturedShows({ shows }: Props) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group relative bg-white/[0.02] border border-white/[0.05] rounded-3xl overflow-hidden hover:bg-white/[0.04] hover:border-primary/30 transition-all duration-500"
+              className="group relative bg-white/2 border border-white/5 rounded-3xl overflow-hidden hover:bg-white/4 hover:border-primary/30 transition-all duration-500"
             >
-              <div className="aspect-[4/5] w-full bg-zinc-900 relative overflow-hidden">
+              <div className="aspect-4/5 w-full bg-zinc-900 relative overflow-hidden">
                 {/* Simulated Image Placeholder with dynamic pattern */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-transparent to-transparent z-10"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-[#09090b] via-transparent to-transparent z-10"></div>
                 <div className="absolute inset-0 flex items-center justify-center p-8">
                   <span className="text-3xl font-serif font-bold text-white/10 group-hover:text-primary/20 transition-colors duration-500 text-center leading-tight">
                     {show.title}
@@ -94,7 +94,7 @@ export default function FeaturedShows({ shows }: Props) {
                   className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary group/link"
                 >
                   Dettagli Spettacolo
-                  <span className="w-8 h-[1px] bg-primary group-hover/link:w-12 transition-all duration-300"></span>
+                  <span className="w-8 h-px bg-primary group-hover/link:w-12 transition-all duration-300"></span>
                 </a>
               </div>
             </motion.div>

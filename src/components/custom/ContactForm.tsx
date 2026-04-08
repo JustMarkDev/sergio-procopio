@@ -88,9 +88,12 @@ export default function ContactForm() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative p-10 bg-white/[0.02] border border-white/[0.05] rounded-[2.5rem] backdrop-blur-sm"
+            className="relative p-10 bg-white/2 border border-white/5 rounded-[2.5rem] backdrop-blur-sm"
           >
-            <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+            <form
+              className="space-y-6"
+              onSubmit={(e: React.FormEvent) => e.preventDefault()}
+            >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-xs font-bold uppercase tracking-widest opacity-60 ml-1">
@@ -128,7 +131,7 @@ export default function ContactForm() {
                   Messaggio
                 </label>
                 <textarea
-                  className="flex min-h-[140px] w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-4 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none resize-none"
+                  className="flex min-h-35 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-4 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none resize-none"
                   placeholder="Scrivi qui..."
                 ></textarea>
               </div>
