@@ -66,7 +66,7 @@ export default function FeaturedShows({ shows }: Props) {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               className="group relative bg-white/2 border border-white/5 rounded-3xl overflow-hidden hover:bg-white/4 hover:border-primary/30 transition-all duration-500"
             >
-              <div className="aspect-4/5 w-full bg-zinc-900 relative overflow-hidden">
+              <div className="aspect-square w-full bg-zinc-900 relative overflow-hidden">
                 {show.image ? (
                   <img
                     src={show.image}

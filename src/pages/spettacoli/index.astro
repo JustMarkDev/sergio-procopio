@@ -36,10 +36,10 @@ const spettacoli = await getCollection("spettacoli");
                     spettacoli.map((show) => (
                         <a
                             href={`/spettacoli/${show.id}`}
-                            class="group block relative bg-[#09090b] border border-white/10 rounded-[2rem] overflow-hidden hover:border-primary/50 hover:shadow-[0_0_30px_rgba(37,99,235,0.15)] hover:-translate-y-1 transition-all duration-500"
+                            class="group block relative bg-[#09090b] border border-white/10 rounded-4xl overflow-hidden hover:border-primary/50 hover:shadow-[0_0_30px_rgba(37,99,235,0.15)] hover:-translate-y-1 transition-all duration-500"
                         >
                             {/* Abstract Image Area */}
-                            <div class="aspect-[4/3] w-full bg-secondary/20 relative overflow-hidden flex items-center justify-center">
+                            <div class="aspect-square w-full bg-secondary/20 relative overflow-hidden flex items-center justify-center">
                                 {show.data.image ? (
                                     <Image
                                         src={show.data.image}
@@ -60,7 +60,7 @@ const spettacoli = await getCollection("spettacoli");
                                     </>
                                 )}
 
-                                <div class="absolute inset-0 bg-gradient-to-t from-[#09090b] to-transparent z-10" />
+                                <div class="absolute inset-0 bg-linear-to-t from-[#09090b] to-transparent z-10" />
 
                                 <div class="absolute top-6 left-6 z-20">
                                     <span class="py-1 px-3 bg-black/40 backdrop-blur-md border border-white/10 rounded-full text-[10px] font-bold text-primary uppercase tracking-[0.2em]">
@@ -114,7 +114,7 @@ const spettacoli = await getCollection("spettacoli");
                                             stroke-width="2"
                                             stroke-linecap="round"
                                             stroke-linejoin="round"
-                                            class="translate-x-[-1px] group-hover:translate-x-[1px] transition-transform duration-300"
+                                            class="-translate-x-px group-hover:translate-x-px transition-transform duration-300"
                                         >
                                             <>
                                                 <path d="M5 12h14" />
