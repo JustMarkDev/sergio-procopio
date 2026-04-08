@@ -18,14 +18,6 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
         >
-          <span className="inline-flex items-center gap-2 py-1.5 px-4 mb-8 text-[10px] font-bold tracking-[0.2em] text-primary uppercase bg-primary/5 rounded-full border border-primary/20 backdrop-blur-sm">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-            </span>
-            Quarant'anni di Teatro ed Educazione
-          </span>
-
           <h1 className="text-7xl md:text-[11rem] font-serif font-bold text-foreground mb-10 tracking-tighter leading-[0.85] select-none">
             Sergio <br />
             <span className="text-transparent bg-clip-text bg-linear-to-b from-primary via-primary to-blue-700 italic pb-4 pr-12">
@@ -55,10 +47,10 @@ export default function HeroSection() {
           {/* Primary Action: Contattami */}
           <a
             href="#contatti"
-            className="group relative inline-flex items-center justify-center px-12 py-5 rounded-full bg-primary text-primary-foreground font-bold text-xl transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(37,99,235,0.4)] active:scale-95"
+            className="group relative overflow-hidden inline-flex items-center justify-center px-12 py-5 rounded-full bg-primary text-primary-foreground font-bold text-xl transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(37,99,235,0.4)] active:scale-95 hover:no-underline focus:outline-none"
           >
             <span className="relative z-10">Mettiamoci in Contatto</span>
-            <div className="absolute inset-0 rounded-full bg-linear-to-tr from-blue-700 to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="absolute inset-0 rounded-full bg-linear-to-tr from-blue-700 to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
           </a>
 
           {/* Secondary Action: Scopri gli Spettacoli */}

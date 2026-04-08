@@ -1,0 +1,118 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+// Placeholder images for the gallery. You can replace these URLs with your actual images.
+const galleryImages = [
+    {
+        src: "https://images.unsplash.com/photo-1507676184212-d0330a15233c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+        alt: "Spettacolo teatrale con luci soffuse",
+        title: "L'attesa - Scena 1",
+        colSpan: "col-span-1 md:col-span-2 row-span-2",
+    },
+    {
+        src: "https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        alt: "Performance sul palco",
+        title: "Pino 4.0 - Emozioni",
+        colSpan: "col-span-1 md:col-span-1 row-span-1",
+    },
+    {
+        src: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        alt: "Mimo in azione",
+        title: "L'uomo e il mare di plastica",
+        colSpan: "col-span-1 md:col-span-1 row-span-1",
+    },
+    {
+        src: "https://images.unsplash.com/photo-1514306191717-452ec28c7814?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        alt: "Pubblico entusiasta",
+        title: "La grande guerra",
+        colSpan: "col-span-1 md:col-span-1 row-span-2",
+    },
+    {
+        src: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        alt: "Dettaglio scenografia",
+        title: "Le vacanze di Henry",
+        colSpan: "col-span-1 md:col-span-2 row-span-1",
+    },
+    {
+        src: "https://images.unsplash.com/photo-1516280440502-6294eb01e174?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        alt: "Momento comico",
+        title: "Dannato Giuseppe",
+        colSpan: "col-span-1 md:col-span-1 row-span-1",
+    },
+    {
+        src: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        alt: "Applausi finali",
+        title: "Uno Spettacolo Incredibile",
+        colSpan: "col-span-1 md:col-span-2 row-span-1",
+    },
+];
+---
+
+<Layout
+    title="Galleria | Sergio Procopio"
+    description="Scopri le immagini dei momenti più emozionanti degli spettacoli teatrali di Sergio Procopio."
+>
+    <div class="relative overflow-hidden bg-[#09090b] min-h-screen">
+        {/* Background Aurora */}
+        <div
+            class="absolute top-0 left-0 w-full h-[50vh] bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.05)_0%,transparent_70%)] pointer-events-none"
+        >
+        </div>
+
+        <div class="container mx-auto px-4 py-32 relative z-10">
+            <div class="max-w-4xl mx-auto text-center mb-20">
+                <span
+                    class="inline-flex items-center gap-2 py-1.5 px-4 mb-6 text-[10px] font-bold tracking-[0.2em] text-primary uppercase bg-primary/5 rounded-full border border-primary/20 backdrop-blur-sm"
+                >
+                    <span class="relative flex h-2 w-2">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"
+                        ></span>
+                        <span
+                            class="relative inline-flex rounded-full h-2 w-2 bg-primary"
+                        ></span>
+                    </span>
+                    Portfolio Fotografico
+                </span>
+                <h1 class="text-5xl md:text-7xl font-serif font-bold mb-6 tracking-tight">
+                    Galleria
+                </h1>
+                <p class="text-xl text-muted-foreground font-serif italic max-w-2xl mx-auto opacity-80">
+                    "Un'immagine vale più di mille parole, specialmente quando
+                    il silenzio è il protagonista sul palcoscenico."
+                </p>
+            </div>
+
+            {/* Masonry Gallery Grid */}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 auto-rows-[250px] max-w-6xl mx-auto">
+                {
+                    galleryImages.map((image) => (
+                        <div class={`relative group overflow-hidden rounded-2xl bg-white/5 border border-white/10 ${image.colSpan}`}>
+                            <img
+                                src={image.src}
+                                alt={image.alt}
+                                loading="lazy"
+                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 group-hover:opacity-60"
+                            />
+                            {/* Overlay Gradient */}
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col justify-end p-6">
+                                <h3 class="text-white font-serif font-bold text-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                                    {image.title}
+                                </h3>
+                                <p class="text-white/70 text-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
+                                    {image.alt}
+                                </p>
+                            </div>
+                        </div>
+                    ))
+                }
+            </div>
+
+            <div class="text-center mt-20">
+                <p class="text-muted-foreground text-sm">
+                    Presto aggiungeremo altre foto ufficiali dagli spettacoli.
+                </p>
+            </div>
+        </div>
+    </div>
+</Layout>

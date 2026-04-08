@@ -51,7 +51,15 @@ export default function ContactForm() {
                   <div className="text-[10px] uppercase tracking-wider font-bold text-primary mb-1">
                     Telefono
                   </div>
-                  <div className="text-lg font-medium">380.52.52.684</div>
+                  <div className="text-lg font-medium">
+                    <a
+                      href="tel:+393805252684"
+                      className="md:hidden hover:text-primary transition-colors"
+                    >
+                      +39 3805252684
+                    </a>
+                    <span className="hidden md:inline">+39 3805252684</span>
+                  </div>
                 </div>
               </div>
               <div className="flex items-center gap-4">
@@ -75,8 +83,19 @@ export default function ContactForm() {
                   <div className="text-[10px] uppercase tracking-wider font-bold text-primary mb-1">
                     Email
                   </div>
-                  <div className="text-lg font-medium">
-                    info@sergioprocopio.com
+                  <div className="flex flex-col">
+                    <a
+                      href="mailto:info@sergioprocopio.it"
+                      className="text-lg font-medium hover:text-primary transition-colors"
+                    >
+                      info@sergioprocopio.it
+                    </a>
+                    <a
+                      href="mailto:info@sergioprocopio.com"
+                      className="text-sm text-white/50 hover:text-primary transition-colors mt-1"
+                    >
+                      info@sergioprocopio.com
+                    </a>
                   </div>
                 </div>
               </div>
@@ -111,7 +130,7 @@ export default function ContactForm() {
                   <input
                     type="email"
                     className="flex h-14 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-2 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none"
-                    placeholder="mario@example.com"
+                    placeholder="mario@email.it"
                   />
                 </div>
               </div>
