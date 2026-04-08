@@ -42,7 +42,7 @@ export default function HeroSection() {
         >
           <p className="text-xl md:text-3xl font-serif text-muted-foreground max-w-4xl mx-auto mb-16 leading-relaxed italic opacity-80">
             "L'arte del comico senza parole al servizio{" "}
-            <br class="hidden md:block" />
+            <br className="hidden md:block" />
             dell'educazione e delle emozioni."
           </p>
         </motion.div>
