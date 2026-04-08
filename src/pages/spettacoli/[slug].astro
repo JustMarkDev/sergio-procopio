@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getCollection, render } from "astro:content";
+import { Image } from "astro:assets";
 
 export async function getStaticPaths() {
     const spettacoli = await getCollection("spettacoli");
@@ -73,11 +74,19 @@ const { Content } = await render(show);
                     <div
                         class="aspect-video w-full bg-zinc-900 rounded-[2.5rem] overflow-hidden relative border border-white/5 shadow-2xl"
                     >
-                        <div
-                            class="absolute inset-0 flex items-center justify-center text-muted-foreground font-serif text-3xl opacity-10"
-                        >
-                            {show.data.title}
-                        </div>
+                        {
+                            show.data.image ? (
+                                <Image
+                                    src={show.data.image}
+                                    alt={show.data.title}
+                                    class="w-full h-full object-cover"
+                                />
+                            ) : (
+                                <div class="absolute inset-0 flex items-center justify-center text-muted-foreground font-serif text-3xl opacity-10">
+                                    {show.data.title}
+                                </div>
+                            )
+                        }
                         <div
                             class="absolute inset-0 bg-linear-to-t from-[#09090b]/80 via-transparent to-transparent"
                         >

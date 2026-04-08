@@ -67,13 +67,23 @@ export default function FeaturedShows({ shows }: Props) {
               className="group relative bg-white/2 border border-white/5 rounded-3xl overflow-hidden hover:bg-white/4 hover:border-primary/30 transition-all duration-500"
             >
               <div className="aspect-4/5 w-full bg-zinc-900 relative overflow-hidden">
-                {/* Simulated Image Placeholder with dynamic pattern */}
-                <div className="absolute inset-0 bg-linear-to-t from-[#09090b] via-transparent to-transparent z-10"></div>
-                <div className="absolute inset-0 flex items-center justify-center p-8">
-                  <span className="text-3xl font-serif font-bold text-white/10 group-hover:text-primary/20 transition-colors duration-500 text-center leading-tight">
-                    {show.title}
-                  </span>
-                </div>
+                {show.image ? (
+                  <img
+                    src={show.image}
+                    alt={show.title}
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                ) : (
+                  <>
+                    <div className="absolute inset-0 bg-linear-to-t from-[#09090b] via-transparent to-transparent z-10"></div>
+                    <div className="absolute inset-0 flex items-center justify-center p-8">
+                      <span className="text-3xl font-serif font-bold text-white/10 group-hover:text-primary/20 transition-colors duration-500 text-center leading-tight">
+                        {show.title}
+                      </span>
+                    </div>
+                  </>
+                )}
+                <div className="absolute inset-0 bg-linear-to-t from-[#09090b]/80 via-transparent to-transparent z-10"></div>
                 {/* Category Badge Over Image */}
                 <div className="absolute top-6 left-6 z-20">
                   <span className="py-1 px-3 bg-primary/10 backdrop-blur-md border border-primary/20 rounded-full text-[10px] font-bold text-primary uppercase tracking-wider">

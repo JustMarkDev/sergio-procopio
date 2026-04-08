@@ -1,51 +1,38 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
 
-// Placeholder images for the gallery. You can replace these URLs with your actual images.
-const galleryImages = [
-    {
-        src: "https://images.unsplash.com/photo-1507676184212-d0330a15233c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-        alt: "Spettacolo teatrale con luci soffuse",
-        title: "L'attesa - Scena 1",
-        colSpan: "col-span-1 md:col-span-2 row-span-2",
-    },
-    {
-        src: "https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        alt: "Performance sul palco",
-        title: "Pino 4.0 - Emozioni",
-        colSpan: "col-span-1 md:col-span-1 row-span-1",
-    },
-    {
-        src: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        alt: "Mimo in azione",
-        title: "L'uomo e il mare di plastica",
-        colSpan: "col-span-1 md:col-span-1 row-span-1",
-    },
-    {
-        src: "https://images.unsplash.com/photo-1514306191717-452ec28c7814?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        alt: "Pubblico entusiasta",
-        title: "La grande guerra",
-        colSpan: "col-span-1 md:col-span-1 row-span-2",
-    },
-    {
-        src: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        alt: "Dettaglio scenografia",
-        title: "Le vacanze di Henry",
-        colSpan: "col-span-1 md:col-span-2 row-span-1",
-    },
-    {
-        src: "https://images.unsplash.com/photo-1516280440502-6294eb01e174?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        alt: "Momento comico",
-        title: "Dannato Giuseppe",
-        colSpan: "col-span-1 md:col-span-1 row-span-1",
-    },
-    {
-        src: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        alt: "Applausi finali",
-        title: "Uno Spettacolo Incredibile",
-        colSpan: "col-span-1 md:col-span-2 row-span-1",
-    },
-];
+// Mappiamo gli spettacoli per poter risalire al titolo dalla cartella
+const spettacoli = await getCollection("spettacoli");
+const showsMap = new Map(spettacoli.map((show) => [show.id, show.data.title]));
+
+// Carichiamo tutte le immagini dalla cartella spettacoli
+const allImages = import.meta.glob<{ default: ImageMetadata }>(
+    "/src/assets/spettacoli/**/*.{jpeg,jpg,png,gif,webp}",
+    { eager: true },
+);
+
+// Convertiamo l'oggetto in un array per poterlo ciclare e ordinarlo
+const galleryImages = Object.entries(allImages).map(([path, img], index) => {
+    // Il path è qualcosa del tipo /src/assets/spettacoli/il-bullo/foto1.jpg
+    const parts = path.split("/");
+    const showId = parts[parts.length - 2]; // Prende il nome della cartella (es: il-bullo)
+    const showTitle = showsMap.get(showId) || "Spettacolo Teatrale";
+
+    // Assegnamo delle classi masonry pseudo-casuali basate sull'indice per dare movimento alla griglia
+    let colSpan = "col-span-1 md:col-span-1 row-span-1";
+    if (index % 5 === 0) colSpan = "col-span-1 md:col-span-2 row-span-2";
+    else if (index % 3 === 0) colSpan = "col-span-1 md:col-span-1 row-span-2";
+    else if (index % 7 === 0) colSpan = "col-span-1 md:col-span-2 row-span-1";
+
+    return {
+        src: img.default,
+        alt: `Scena dallo spettacolo ${showTitle}`,
+        title: showTitle,
+        colSpan,
+    };
+});
 ---
 
 <Layout
@@ -75,33 +62,43 @@ const galleryImages = [
             </div>
 
             {/* Masonry Gallery Grid */}
-            <div
-                class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 auto-rows-[250px] max-w-6xl mx-auto"
-            >
-                {
-                    galleryImages.map((image) => (
-                        <div
-                            class={`relative group overflow-hidden rounded-2xl bg-white/5 border border-white/10 ${image.colSpan}`}
-                        >
-                            <img
-                                src={image.src}
-                                alt={image.alt}
-                                loading="lazy"
-                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 group-hover:opacity-60"
-                            />
-                            {/* Overlay Gradient */}
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col justify-end p-6">
-                                <h3 class="text-white font-serif font-bold text-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                                    {image.title}
-                                </h3>
-                                <p class="text-white/70 text-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
-                                    {image.alt}
-                                </p>
+            {
+                galleryImages.length > 0 ? (
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 auto-rows-[250px] max-w-6xl mx-auto">
+                        {galleryImages.map((image) => (
+                            <div
+                                class={`relative group overflow-hidden rounded-2xl bg-white/5 border border-white/10 ${image.colSpan}`}
+                            >
+                                <Image
+                                    src={image.src}
+                                    alt={image.alt}
+                                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 group-hover:opacity-60"
+                                />
+                                {/* Overlay Gradient */}
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col justify-end p-6">
+                                    <h3 class="text-white font-serif font-bold text-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                                        {image.title}
+                                    </h3>
+                                    <p class="text-white/70 text-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
+                                        {image.alt}
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                    ))
-                }
-            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div class="text-center py-20 bg-white/5 border border-white/10 rounded-3xl max-w-4xl mx-auto">
+                        <p class="text-xl font-serif text-muted-foreground">
+                            La galleria è momentaneamente vuota.
+                        </p>
+                        <p class="text-sm text-muted-foreground/60 mt-2">
+                            Aggiungi delle immagini nelle cartelle
+                            src/assets/spettacoli/[nome-spettacolo]/ per vederle
+                            apparire qui.
+                        </p>
+                    </div>
+                )
+            }
 
             <div class="text-center mt-20">
                 <p class="text-muted-foreground text-sm">

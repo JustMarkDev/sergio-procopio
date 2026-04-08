@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
 
 const spettacoli = await getCollection("spettacoli");
 ---
@@ -39,15 +40,25 @@ const spettacoli = await getCollection("spettacoli");
                         >
                             {/* Abstract Image Area */}
                             <div class="aspect-[4/3] w-full bg-secondary/20 relative overflow-hidden flex items-center justify-center">
-                                {/* Subtle grain/pattern overlay */}
-                                <div class="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.1)_0%,transparent_100%)]" />
-                                {/* Hover glow */}
-                                <div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 mix-blend-overlay" />
+                                {show.data.image ? (
+                                    <Image
+                                        src={show.data.image}
+                                        alt={show.data.title}
+                                        class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                                    />
+                                ) : (
+                                    <>
+                                        {/* Subtle grain/pattern overlay */}
+                                        <div class="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.1)_0%,transparent_100%)]" />
+                                        {/* Hover glow */}
+                                        <div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 mix-blend-overlay" />
 
-                                {/* Placeholder Title Art */}
-                                <h3 class="text-4xl font-serif font-bold text-white/5 group-hover:text-primary/20 transition-colors duration-500 px-6 text-center leading-tight tracking-tighter">
-                                    {show.data.title}
-                                </h3>
+                                        {/* Placeholder Title Art */}
+                                        <h3 class="text-4xl font-serif font-bold text-white/5 group-hover:text-primary/20 transition-colors duration-500 px-6 text-center leading-tight tracking-tighter">
+                                            {show.data.title}
+                                        </h3>
+                                    </>
+                                )}
 
                                 <div class="absolute inset-0 bg-gradient-to-t from-[#09090b] to-transparent z-10" />
 

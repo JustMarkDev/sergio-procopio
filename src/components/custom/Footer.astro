@@ -113,8 +113,8 @@ const year = new Date().getFullYear();
                 </div>
             </div>
 
-            {/* Contact Info (Col span 3) */}
-            <div class="md:col-span-6 lg:col-span-3 space-y-6">
+            {/* Contact Info (Col span 4) */}
+            <div class="md:col-span-6 lg:col-span-4 space-y-6">
                 <h4
                     class="text-xs font-bold uppercase tracking-widest text-foreground/80"
                 >
@@ -172,8 +172,8 @@ const year = new Date().getFullYear();
                 </ul>
             </div>
 
-            {/* Legal Info (Col span 4) */}
-            <div class="md:col-span-6 lg:col-span-4 space-y-6">
+            {/* Legal Info (Col span 3) */}
+            <div class="md:col-span-6 lg:col-span-3 space-y-6">
                 <h4
                     class="text-xs font-bold uppercase tracking-widest text-foreground/80"
                 >
@@ -182,31 +182,6 @@ const year = new Date().getFullYear();
                 <div
                     class="space-y-4 text-sm text-muted-foreground bg-white/[0.03] p-5 rounded-2xl border border-white/5 hover:border-white/10 transition-colors"
                 >
-                    <div class="flex items-start gap-3">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            class="text-primary/70 mt-1 shrink-0"
-                            ><path
-                                d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"
-                            ></path><circle cx="12" cy="10" r="3"></circle></svg
-                        >
-                        <div>
-                            <span
-                                class="block text-[10px] uppercase tracking-wider font-semibold text-foreground/60 mb-0.5"
-                                >Sede Legale</span
-                            >
-                            <span>[Indirizzo da inserire]</span>
-                        </div>
-                    </div>
-                    <div class="w-full h-px bg-white/5"></div>
                     <div class="flex items-start gap-3">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -240,8 +215,12 @@ const year = new Date().getFullYear();
         <div
             class="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4"
         >
-            <div class="text-sm text-muted-foreground/60">
-                &copy; {year} Sergio Procopio. Tutti i diritti riservati.
+            <div
+                class="text-sm text-muted-foreground/60 flex flex-wrap items-center gap-x-2 gap-y-1"
+            >
+                <span
+                    >&copy; {year} Sergio Procopio. Tutti i diritti riservati.</span
+                >
             </div>
 
             <div class="flex items-center gap-6">

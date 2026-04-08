@@ -1,5 +1,5 @@
 ---
-title: "Uno spettacolo incredibile"
+title: "Comico"
 description: "Uno spettacolo bello, proprio come quelli di una volta, pieno di poesia e vita, perfetto per tutte le feste."
 category: "Intrattenimento / Comico"
 duration: "55 minuti"
@@ -10,7 +10,7 @@ costo: "€ 600"
 highlight: false
 ---
 
-# Uno spettacolo incredibile
+# Comico
 
 **Ottimo per tutte le feste.**
 

@@ -1,5 +1,5 @@
 ---
-title: "Dannato Giuseppe"
+title: "Il Bullo"
 description: "Uno spettacolo-incontro contro il bullismo, l'abbandono scolastico, l'illegalità e il femminicidio."
 category: "Didattico / Sociale"
 duration: "2 ore (Spettacolo + Testimonianza + Dibattito)"
@@ -11,7 +11,7 @@ costo: "€ 10 ad alunno"
 highlight: true
 ---
 
-# Dannato Giuseppe
+# Il Bullo
 
 Un viaggio profondo tra le ombre della criminalità e la luce della redenzione. "Dannato Giuseppe" non è solo uno spettacolo teatrale, ma un incontro educativo fondamentale per sensibilizzare i giovani su temi critici come il bullismo, l'abbandono scolastico, l'illegalità e il femminicidio.
 
