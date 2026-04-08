@@ -61,33 +61,28 @@ const galleryImages = [
 
         <div class="container mx-auto px-4 py-32 relative z-10">
             <div class="max-w-4xl mx-auto text-center mb-20">
-                <span
-                    class="inline-flex items-center gap-2 py-1.5 px-4 mb-6 text-[10px] font-bold tracking-[0.2em] text-primary uppercase bg-primary/5 rounded-full border border-primary/20 backdrop-blur-sm"
+                <h1
+                    class="text-5xl md:text-7xl font-serif font-bold mb-6 tracking-tight"
                 >
-                    <span class="relative flex h-2 w-2">
-                        <span
-                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"
-                        ></span>
-                        <span
-                            class="relative inline-flex rounded-full h-2 w-2 bg-primary"
-                        ></span>
-                    </span>
-                    Portfolio Fotografico
-                </span>
-                <h1 class="text-5xl md:text-7xl font-serif font-bold mb-6 tracking-tight">
                     Galleria
                 </h1>
-                <p class="text-xl text-muted-foreground font-serif italic max-w-2xl mx-auto opacity-80">
+                <p
+                    class="text-xl text-muted-foreground font-serif italic max-w-2xl mx-auto opacity-80"
+                >
                     "Un'immagine vale più di mille parole, specialmente quando
                     il silenzio è il protagonista sul palcoscenico."
                 </p>
             </div>
 
             {/* Masonry Gallery Grid */}
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 auto-rows-[250px] max-w-6xl mx-auto">
+            <div
+                class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 auto-rows-[250px] max-w-6xl mx-auto"
+            >
                 {
                     galleryImages.map((image) => (
-                        <div class={`relative group overflow-hidden rounded-2xl bg-white/5 border border-white/10 ${image.colSpan}`}>
+                        <div
+                            class={`relative group overflow-hidden rounded-2xl bg-white/5 border border-white/10 ${image.colSpan}`}
+                        >
                             <img
                                 src={image.src}
                                 alt={image.alt}

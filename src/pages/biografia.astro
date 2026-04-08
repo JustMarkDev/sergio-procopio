@@ -6,48 +6,82 @@ import Layout from "../layouts/Layout.astro";
     title="Biografia | Sergio Procopio"
     description="La storia di Sergio Procopio: oltre 40 anni dedicati all'arte del mimo, del clown e del teatro educativo."
 >
-    <div class="relative overflow-hidden bg-[#09090b]">
-        {/* Background Aurora */}
+    <div class="relative overflow-hidden bg-[#09090b] min-h-screen">
+        {/* Background Gradients */}
         <div
-            class="absolute top-0 right-0 w-[50%] h-[50%] bg-primary/5 rounded-full blur-[120px] pointer-events-none"
+            class="absolute top-0 right-0 w-[60%] h-[60%] bg-primary/5 rounded-full blur-[150px] pointer-events-none"
         >
         </div>
         <div
-            class="absolute bottom-0 left-0 w-[50%] h-[50%] bg-blue-900/5 rounded-full blur-[120px] pointer-events-none"
+            class="absolute bottom-0 left-0 w-[50%] h-[50%] bg-blue-900/10 rounded-full blur-[150px] pointer-events-none"
         >
         </div>
 
-        <div class="container relative z-10 mx-auto px-4 py-32 max-w-5xl">
-            <div class="mb-24">
-                <span
-                    class="text-primary font-bold tracking-[0.2em] text-[10px] uppercase mb-4 block"
-                    >Il Percorso</span
-                >
-                <h1
-                    class="text-6xl md:text-8xl font-serif font-bold mb-10 tracking-tight leading-[0.9]"
-                >
-                    Una vita <br />
-                    <span class="italic text-primary pr-4"
-                        >dedicata all'Arte</span
+        <div class="container relative z-10 mx-auto px-4 py-32 max-w-6xl">
+            {/* Hero Section */}
+            <div class="flex flex-col lg:flex-row gap-16 items-center mb-32">
+                <div class="lg:w-1/2 space-y-8">
+                    <h1
+                        class="text-6xl md:text-8xl font-serif font-bold tracking-tight leading-[0.9]"
                     >
-                </h1>
-                <p
-                    class="text-2xl font-serif text-muted-foreground italic opacity-90 max-w-3xl leading-relaxed"
-                >
-                    "L'arte ti sconvolge e ti scatena conflitti nell'anima, <br
-                        class="hidden md:block"
-                    /> se non ti fa questo hai perso tempo."
-                </p>
+                        Una vita <br />
+                        <span
+                            class="italic text-transparent bg-clip-text bg-[linear-gradient(to_bottom,#2563eb,#1d4ed8)] pr-4 pb-2 block"
+                            >dedicata all'Arte</span
+                        >
+                    </h1>
+                    <div class="w-20 h-1 bg-primary/30 rounded-full"></div>
+                    <p
+                        class="text-2xl font-serif text-muted-foreground italic opacity-90 leading-relaxed border-l-2 border-primary/20 pl-6"
+                    >
+                        "L'arte ti sconvolge e ti scatena conflitti nell'anima,
+                        se non ti fa questo hai perso tempo."
+                    </p>
+                </div>
+
+                <div class="lg:w-1/2 w-full relative">
+                    <div
+                        class="aspect-[4/5] rounded-3xl overflow-hidden relative border border-white/10 bg-white/5"
+                    >
+                        {/* Placeholder per la foto di Sergio Procopio */}
+                        <img
+                            src="https://images.unsplash.com/photo-1585699324551-f6c309eedeca?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="Ritratto di Sergio Procopio in scena"
+                            class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                        />
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-[#09090b] via-transparent to-transparent opacity-80"
+                        >
+                        </div>
+                        <div class="absolute bottom-6 left-6">
+                            <span
+                                class="bg-black/50 backdrop-blur-md border border-white/10 text-white/80 text-xs tracking-widest uppercase px-4 py-2 rounded-full font-semibold"
+                            >
+                                Sergio Procopio
+                            </span>
+                        </div>
+                    </div>
+                    {/* Decorative Elements */}
+                    <div
+                        class="absolute -top-6 -right-6 w-32 h-32 bg-primary/20 rounded-full blur-[40px] -z-10"
+                    >
+                    </div>
+                    <div
+                        class="absolute -bottom-6 -left-6 w-32 h-32 bg-blue-600/20 rounded-full blur-[40px] -z-10"
+                    >
+                    </div>
+                </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
-                {/* Main Content */}
-                <div class="lg:col-span-8 space-y-20">
+                {/* Main Content - Classic Layout */}
+                <div class="lg:col-span-8 space-y-16">
                     <section>
                         <h2
-                            class="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-8 flex items-center gap-4"
+                            class="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-6 flex items-center gap-4"
                         >
-                            <span class="w-12 h-px bg-primary/30"></span> Le Origini
+                            <span class="w-12 h-px bg-primary/30"></span> 1975 - Le
+                            Origini
                         </h2>
                         <div
                             class="prose prose-invert prose-blue max-w-none prose-p:text-lg prose-p:leading-relaxed prose-p:text-muted-foreground prose-strong:text-foreground prose-strong:font-bold"
@@ -65,43 +99,33 @@ import Layout from "../layouts/Layout.astro";
                                 passione per il palcoscenico.
                             </p>
                             <p>
-                                Bano Ferrari, rinomato clown professionista, ha
-                                guidato Sergio e gli altri ragazzi del collegio,
-                                incoraggiandoli a sviluppare le proprie capacità
-                                in un autentico spirito di condivisione. Nel <strong
-                                    >1977</strong
-                                >, insieme a Bano, Don Vittorio e altri
-                                talentuosi insegnanti e ragazzi del collegio,
-                                Sergio ha contribuito a fondare la prestigiosa
-                                compagnia teatrale <strong
+                                Nel <strong>1977</strong> ha contribuito a fondare
+                                la prestigiosa compagnia teatrale <strong
                                     >"i Barabba’s Clown"</strong
-                                >.
-                            </p>
-                            <p>
-                                Durante i dodici anni di collaborazione con la
-                                compagnia, Sergio ha portato il suo talento in
-                                oltre 1800 rappresentazioni teatrali in tutta
-                                Italia e in numerosi Festival internazionali,
-                                culminando con una memorabile esibizione in
-                                Vaticano nel 1989 di fronte a Giovanni Paolo II.
+                                >, portando il suo talento in oltre 1800
+                                rappresentazioni culminando con un'esibizione in
+                                Vaticano nel 1989.
                             </p>
                         </div>
                     </section>
 
                     <section>
                         <h2
-                            class="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-8 flex items-center gap-4"
+                            class="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-6 flex items-center gap-4"
                         >
-                            <span class="w-12 h-px bg-primary/30"></span> L'Età Professionale
+                            <span class="w-12 h-px bg-primary/30"></span> 1990 - L'Età
+                            Professionale
                         </h2>
                         <div
                             class="prose prose-invert prose-blue max-w-none prose-p:text-lg prose-p:leading-relaxed prose-p:text-muted-foreground"
                         >
                             <p>
-                                Nel <strong>1990</strong>, intraprese una
-                                fruttuosa collaborazione con il regista teatrale
-                                Carlo Rossi, iniziando la sua carriera di clown
-                                professionista a tempo pieno. Fondando la <strong
+                                Intraprese una fruttuosa collaborazione con il
+                                regista teatrale Carlo Rossi, iniziando la sua
+                                carriera di clown professionista a tempo pieno.
+                            </p>
+                            <p>
+                                Fondando la <strong
                                     >"Compagnia Teatrale Sergio Procopio"</strong
                                 >, ha creato e portato in scena ben 18
                                 spettacoli, accumulando oltre 2000 repliche di
@@ -120,9 +144,10 @@ import Layout from "../layouts/Layout.astro";
 
                     <section>
                         <h2
-                            class="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-8 flex items-center gap-4"
+                            class="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-6 flex items-center gap-4"
                         >
-                            <span class="w-12 h-px bg-primary/30"></span> Eventi Internazionali
+                            <span class="w-12 h-px bg-primary/30"></span> Il Presente
+                            - Eventi Internazionali
                         </h2>
                         <div
                             class="prose prose-invert prose-blue max-w-none prose-p:text-lg prose-p:leading-relaxed prose-p:text-muted-foreground"
@@ -131,73 +156,124 @@ import Layout from "../layouts/Layout.astro";
                                 La sua carriera internazionale è stata
                                 caratterizzata da prestigiose esibizioni in
                                 Belgio, Francia, Germania, Spagna, Svizzera,
-                                Madagascar, Brasile e Perù. Nel 2006, ha
-                                lasciato un'impronta indelebile esibendosi
-                                presso il teatro Museo della Nazione in Perù, di
-                                fronte al Presidente della Repubblica.
+                                Madagascar, Brasile e Perù.
                             </p>
                             <p>
-                                Nel 2020 ha raggiunto l'incredibile traguardo di <strong
+                                Nel 2006, ha lasciato un'impronta indelebile
+                                esibendosi presso il teatro Museo della Nazione
+                                in Perù, di fronte al Presidente della
+                                Repubblica.
+                            </p>
+                            <p>
+                                Oggi, con oltre <strong
                                     >quarant'anni di attività</strong
-                                >, dimostrando che la sua passione per l'arte
-                                del clown è più viva che mai.
+                                >, dimostra che la sua passione per l'arte del
+                                clown e della pantomima è più viva che mai.
                             </p>
                         </div>
                     </section>
                 </div>
 
                 {/* Sidebar / Stats */}
-                <div class="lg:col-span-4 space-y-8">
+                <div
+                    class="lg:col-span-4 space-y-8 lg:pl-8 lg:border-l border-white/5"
+                >
                     <div
-                        class="p-8 bg-white/2 border border-white/10 rounded-3xl sticky top-32"
+                        class="p-8 bg-gradient-to-b from-primary/10 to-transparent border border-primary/20 rounded-3xl sticky top-32 backdrop-blur-sm"
                     >
                         <h3
-                            class="text-xl font-serif font-bold mb-6 text-primary"
+                            class="text-2xl font-serif font-bold mb-8 text-white flex items-center gap-3"
                         >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="text-primary"
+                                ><circle cx="12" cy="12" r="10"></circle><path
+                                    d="M12 6v6l4 2"></path></svg
+                            >
                             In Breve
                         </h3>
-                        <div class="space-y-6">
-                            <div>
+
+                        <div class="space-y-8">
+                            <div class="group">
                                 <div
-                                    class="text-[10px] uppercase tracking-widest text-muted-foreground mb-1"
+                                    class="text-[10px] uppercase tracking-[0.2em] text-primary mb-2 font-bold"
                                 >
                                     Debutto
                                 </div>
-                                <div class="text-lg font-bold font-serif">
+                                <div
+                                    class="text-3xl font-bold font-serif text-white/90 group-hover:text-white transition-colors"
+                                >
                                     1975
                                 </div>
                             </div>
-                            <div>
+
+                            <div class="group">
                                 <div
-                                    class="text-[10px] uppercase tracking-widest text-muted-foreground mb-1"
+                                    class="text-[10px] uppercase tracking-[0.2em] text-primary mb-2 font-bold"
                                 >
                                     Rappresentazioni
                                 </div>
-                                <div class="text-lg font-bold font-serif">
+                                <div
+                                    class="text-3xl font-bold font-serif text-white/90 group-hover:text-white transition-colors"
+                                >
                                     +3800
                                 </div>
                             </div>
-                            <div>
+
+                            <div class="group">
                                 <div
-                                    class="text-[10px] uppercase tracking-widest text-muted-foreground mb-1"
+                                    class="text-[10px] uppercase tracking-[0.2em] text-primary mb-2 font-bold"
                                 >
-                                    Paesi
+                                    Paesi Visitati
                                 </div>
-                                <div class="text-lg font-bold font-serif">
+                                <div
+                                    class="text-xl font-bold font-serif text-white/90 group-hover:text-white transition-colors"
+                                >
                                     Oltre 10 nazioni
                                 </div>
                             </div>
-                            <div class="pt-6 border-t border-white/5">
+
+                            <div class="pt-8 border-t border-white/10">
                                 <div
-                                    class="text-[10px] uppercase tracking-widest text-muted-foreground mb-4"
+                                    class="text-[10px] uppercase tracking-[0.2em] text-primary mb-4 font-bold"
                                 >
                                     TV & Media
                                 </div>
-                                <ul class="text-sm space-y-2 opacity-70">
-                                    <li>• Rai 1 (Caffè Italiano)</li>
-                                    <li>• Rai 2 (Oro e Argento)</li>
-                                    <li>• Rai 3 (Il circolo delle 12)</li>
-                                    <li>• Trenta ore per la vita</li>
+                                <ul
+                                    class="text-sm space-y-3 opacity-80 font-medium"
+                                >
+                                    <li class="flex items-center gap-2">
+                                        <div
+                                            class="w-1 h-1 rounded-full bg-primary"
+                                        >
+                                        </div> Rai 1 (Caffè Italiano)
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <div
+                                            class="w-1 h-1 rounded-full bg-primary"
+                                        >
+                                        </div> Rai 2 (Oro e Argento)
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <div
+                                            class="w-1 h-1 rounded-full bg-primary"
+                                        >
+                                        </div> Rai 3 (Il circolo delle 12)
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <div
+                                            class="w-1 h-1 rounded-full bg-primary"
+                                        >
+                                        </div> Trenta ore per la vita
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -205,19 +281,44 @@ import Layout from "../layouts/Layout.astro";
                 </div>
             </div>
 
+            {/* Educational Commitment Section */}
             <section
-                class="mt-32 p-12 bg-primary/5 rounded-[3rem] border border-primary/10 text-center relative overflow-hidden"
+                class="mt-32 p-12 md:p-16 bg-gradient-to-br from-[#09090b] to-primary/5 rounded-[3rem] border border-primary/20 text-center relative overflow-hidden group"
             >
                 <div
-                    class="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-primary/20 rounded-full blur-[100px] pointer-events-none"
+                    class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1514306191717-452ec28c7814?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80')] bg-cover bg-center opacity-5 mix-blend-overlay group-hover:opacity-10 transition-opacity duration-1000"
                 >
                 </div>
+                <div
+                    class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(ellipse_at_center,rgba(37,99,235,0.15)_0%,transparent_70%)] pointer-events-none"
+                >
+                </div>
+
                 <div class="relative z-10">
-                    <h2 class="text-3xl md:text-4xl font-serif font-bold mb-6">
+                    <div
+                        class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 border border-primary/30 text-primary mb-8"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="28"
+                            height="28"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            ><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"
+                            ></path><path
+                                d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"
+                            ></path></svg
+                        >
+                    </div>
+                    <h2 class="text-4xl md:text-5xl font-serif font-bold mb-8">
                         Un impegno educativo
                     </h2>
                     <p
-                        class="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed italic"
+                        class="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed italic"
                     >
                         Parallelamente alla sua carriera artistica, Sergio ha
                         dedicato oltre vent'anni a incontri per giovani e

@@ -62,14 +62,6 @@ export default function HeroSection() {
           </a>
         </motion.div>
       </div>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.8, duration: 1 }}
-        className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-30"
-      >
-        <div className="w-px h-12 bg-linear-to-b from-primary to-transparent"></div>{" "}
-      </motion.div>{" "}
     </section>
   );
 }
