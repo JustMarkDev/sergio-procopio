@@ -114,30 +114,30 @@ export default function FeaturedShows({ shows }: Props) {
                 )}
               </div>
 
-              <div className="p-8 relative z-20 bg-[#09090b] flex flex-col grow">
-                <h2 className="text-2xl font-bold font-serif text-foreground group-hover:text-primary transition-colors duration-300 leading-tight mb-6">
+              <div className="p-6 relative z-20 bg-[#09090b] flex flex-col grow">
+                <h2 className="text-3xl font-bold font-serif text-foreground group-hover:text-primary transition-colors duration-300 leading-tight mb-3">
                   {show.title}
                 </h2>
-                <div className="mt-auto">
-                  <div className="inline-flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-primary">
-                    Scopri
-                    <div className="w-8 h-8 rounded-full border border-primary/30 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="-translate-x-px group-hover:translate-x-px transition-transform duration-300"
-                      >
-                        <path d="M5 12h14" />
-                        <path d="m12 5 7 7-7 7" />
-                      </svg>
-                    </div>
+                <p className="text-sm text-muted-foreground leading-relaxed opacity-80 line-clamp-2 mb-6">
+                  {show.description}
+                </p>
+                <div className="mt-auto flex justify-end">
+                  <div className="w-10 h-10 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300 group-hover:border-primary">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="-translate-x-px group-hover:translate-x-px transition-transform duration-300"
+                    >
+                      <path d="M5 12h14" />
+                      <path d="m12 5 7 7-7 7" />
+                    </svg>
                   </div>
                 </div>
               </div>

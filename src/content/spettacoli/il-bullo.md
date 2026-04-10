@@ -2,35 +2,23 @@
 title: "Il Bullo"
 description: "Uno spettacolo-incontro contro il bullismo, l'abbandono scolastico, l'illegalità e il femminicidio."
 category: "Scuole"
-duration: "2h"
+duration: "2 ore"
 regia: "Giorgio Albini"
-etaConsigliata: "dai 11 anni in su"
+etaConsigliata: "11+"
 produzione: "Teatro Procopio"
 tecnico: "Giovanni Brovelli"
-costo: "€ 10 ad alunno"
+minimoAlunni: "Minimo di 100 alunni"
 highlight: true
 ---
 
-# Il Bullo
+## Proposta
+Vi proponiamo uno spettacolo-incontro contro il bullismo, l'abbandono scolastico, l'illegalità e il femminicidio. L'obiettivo è quello di sensibilizzare gli spettatori su questi temi importanti e far loro fare una riflessione profonda su di essi.
 
-Un viaggio profondo tra le ombre della criminalità e la luce della redenzione. "Dannato Giuseppe" non è solo uno spettacolo teatrale, ma un incontro educativo fondamentale per sensibilizzare i giovani su temi critici come il bullismo, l'abbandono scolastico, l'illegalità e il femminicidio.
+Attraverso la progressiva presa di coscienza del protagonista, lo spettacolo vuole sensibilizzare gli spettatori su temi importanti come l'abbandono scolastico, il bullismo, l'associazione a delinquere, l'illegalità e il femminicidio. Inoltre, al termine dello spettacolo, l'attore e autore dello spettacolo parlerà della sua esperienza di 10 anni trascorsi in un collegio, dove ha dovuto lottare per scegliere la strada giusta in diverse occasioni.
 
-## Lo Spettacolo
-La storia racconta di **Dannato Giuseppe**, un criminale in latitanza da vent'anni, costretto a vivere in un bunker buio. In questo isolamento forzato, il protagonista ripercorre le proprie scelte passate, mettendo in luce gli errori che lo hanno portato a una "vita senza": senza affetti, senza dignità e, soprattutto, senza libertà.
+Siamo convinti che questo spettacolo possa avere un impatto positivo sui giovani di oggi, aiutandoli a prevenire il bullismo e l'abbandono scolastico. Potremmo citare testimonianze o studi che dimostrino l'efficacia di iniziative simili nel promuovere il benessere e il successo scolastico degli studenti. Inoltre, crediamo che lo spettacolo possa contribuire a creare un ambiente scolastico più sicuro e positivo per tutti.
 
-## Obiettivi Didattici
-L'obiettivo è far maturare negli studenti una riflessione profonda sulle conseguenze delle proprie scelte. Attraverso la presa di coscienza del protagonista, lo spettacolo mostra chiaramente che la strada dell'illegalità toglie tutto ciò che rende la vita degna di essere vissuta.
+Lo spettacolo racconta la storia di Dannato Giuseppe, un criminale che ha scelto l'illegalità come strada per il potere, i soldi e il successo. Durante tutta la durata dello spettacolo, il protagonista è costretto a nascondersi in un bunker per sfuggire alla cattura delle forze dell'ordine. Ha commesso ogni tipo di crimine, collaborando con organizzazioni malavitose e uccidendo senza pietà. Ma con il passare del tempo, si rende conto che la sua scelta sbagliata gli ha tolto tutto: l'amore, la felicità, la dignità e soprattutto la libertà. La sua vita è diventata "una vita senza", priva di affetti, amore e libertà, e si è trovato solo, emarginato e abbandonato.
 
-## Struttura dell'Incontro
-L'evento è pensato per un impatto duraturo e si divide in tre fasi:
-1. **Lo Spettacolo (1h 15m)**: La rappresentazione teatrale intensa e coinvolgente.
-2. **La Testimonianza (30m)**: Sergio Procopio racconta la sua esperienza personale di 10 anni in collegio e le sue lotte per scegliere la strada giusta.
-3. **Il Dibattito (30m)**: Un momento di confronto diretto con gli studenti per approfondire i temi trattati.
-
-## Requisiti Tecnici
-- **Spazio scenico**: minimo 5 x 5 metri.
-- **Ambiente**: Attuabile anche in palestre o aule magne (necessario oscurare le vetrate).
-- **Pubblico**: Minimo 100 alunni per replica.
-- **Servizi inclusi**: Il costo include audio, luci e assistenza tecnica completa.
-
-> *"Il teatro incrementa l'autostima, attiva la concentrazione e la creatività, accresce la fiducia in se stessi e stimola il senso di appartenenza a un gruppo."*
+## Trama
+Da vent'anni in latitanza, il protagonista vive in un bunker buio e senza luce, lontano dalla vita "vera". Cerca di immaginare una vita diversa per sé, ma involontariamente ripercorre le sue scelte di vita passate, mettendo in luce gli errori commessi in passato, come il bullismo, l'abbandono scolastico, la prima rapina e l'omicidio. Lo spettacolo fornisce una visione più chiara del futuro per chi sceglie l'illegalità.

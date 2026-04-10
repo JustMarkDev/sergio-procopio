@@ -29,34 +29,6 @@ const { Content } = await render(show);
             class="container relative z-10 mx-auto px-4 py-32 min-h-screen max-w-5xl"
         >
             <div class="mb-20">
-                <a
-                    href="/spettacoli"
-                    class="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-primary hover:text-foreground transition-all mb-12"
-                >
-                    <span class="w-8 h-px bg-primary"></span> Torna al catalogo
-                </a>
-
-                <div class="flex flex-wrap items-center gap-3 mb-8">
-                    <span
-                        class="px-4 py-1.5 bg-primary/10 backdrop-blur-md border border-primary/20 text-primary rounded-full text-[10px] font-bold uppercase tracking-wider"
-                        >{show.data.category}</span
-                    >
-                    {
-                        show.data.etaConsigliata && (
-                            <span class="px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold uppercase tracking-wider">
-                                👥 {show.data.etaConsigliata}
-                            </span>
-                        )
-                    }
-                    {
-                        show.data.duration && (
-                            <span class="px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold uppercase tracking-wider">
-                                ⏱️ {show.data.duration}
-                            </span>
-                        )
-                    }
-                </div>
-
                 <h1
                     class="text-6xl md:text-8xl font-serif font-bold mb-8 tracking-tight leading-[0.9]"
                 >
@@ -69,8 +41,8 @@ const { Content } = await render(show);
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
-                <div class="lg:col-span-8 space-y-16">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                <div class="lg:col-span-8 space-y-10">
                     <div
                         class="aspect-video w-full bg-zinc-900 rounded-[2.5rem] overflow-hidden relative border border-white/5 shadow-2xl"
                     >
@@ -94,7 +66,7 @@ const { Content } = await render(show);
                     </div>
 
                     <div
-                        class="prose prose-invert prose-blue max-w-none prose-headings:font-serif prose-h2:text-4xl prose-h2:tracking-tight prose-p:text-lg prose-p:text-muted-foreground prose-p:leading-relaxed prose-li:text-muted-foreground"
+                        class="prose prose-invert max-w-none prose-headings:font-serif prose-h2:text-4xl prose-h2:font-medium prose-h2:text-foreground prose-h2:tracking-tight prose-h2:mt-24 prose-h2:mb-10 prose-h2:pb-6 prose-h2:border-b prose-h2:border-white/10 prose-h2:first:mt-0 prose-p:text-[1.125rem] prose-p:leading-[1.9] prose-p:text-muted-foreground/90 prose-p:font-light prose-p:mb-8 prose-li:text-muted-foreground/90 prose-li:font-light prose-strong:text-foreground prose-strong:font-medium"
                     >
                         <Content />
                     </div>
@@ -102,15 +74,27 @@ const { Content } = await render(show);
 
                 <div class="lg:col-span-4 space-y-8">
                     <div
-                        class="p-10 bg-white/2 border border-white/10 rounded-[2.5rem] sticky top-32 backdrop-blur-sm"
+                        class="p-8 bg-white/2 border border-white/10 rounded-[2.5rem] sticky top-32 backdrop-blur-sm"
                     >
                         <h3
-                            class="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-10 flex items-center gap-4"
+                            class="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-8 flex items-center gap-4"
                         >
                             <span class="w-8 h-px bg-primary/30"></span> Dati Tecnici
                         </h3>
 
-                        <div class="space-y-10">
+                        <div class="space-y-6">
+                            {
+                                show.data.produzione && (
+                                    <div>
+                                        <div class="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
+                                            Produzione
+                                        </div>
+                                        <div class="text-lg font-bold font-serif">
+                                            {show.data.produzione}
+                                        </div>
+                                    </div>
+                                )
+                            }
                             {
                                 show.data.regia && (
                                     <div>
@@ -124,13 +108,27 @@ const { Content } = await render(show);
                                 )
                             }
                             {
-                                show.data.produzione && (
+                                show.data.etaConsigliata && (
                                     <div>
                                         <div class="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
-                                            Produzione
+                                            Età Consigliata
                                         </div>
                                         <div class="text-lg font-bold font-serif">
-                                            {show.data.produzione}
+                                            {show.data.etaConsigliata}
+                                        </div>
+                                    </div>
+                                )
+                            }
+                            {
+                                (show.data.durataDettaglio ||
+                                    show.data.duration) && (
+                                    <div>
+                                        <div class="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
+                                            Durata
+                                        </div>
+                                        <div class="text-lg font-bold font-serif">
+                                            {show.data.durataDettaglio ||
+                                                show.data.duration}
                                         </div>
                                     </div>
                                 )
@@ -147,18 +145,39 @@ const { Content } = await render(show);
                                     </div>
                                 )
                             }
+
                             {
-                                show.data.costo && (
+                                show.data.minimoAlunni && (
                                     <div>
                                         <div class="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
-                                            Investimento
+                                            Requisiti
                                         </div>
-                                        <div class="text-3xl font-bold font-serif text-primary">
-                                            {show.data.costo}
+                                        <div class="text-lg font-bold font-serif">
+                                            {show.data.minimoAlunni}
                                         </div>
-                                        <div class="text-[9px] uppercase tracking-tighter opacity-40 mt-1">
-                                            Include audio, luci e assistenza
-                                        </div>
+                                    </div>
+                                )
+                            }
+                            {
+                                (show.data.noteAttuazione ||
+                                    show.data.spazioScenico ||
+                                    show.data.oscuramento) && (
+                                    <div class="text-sm font-medium text-muted-foreground/80 space-y-2 pt-4 border-t border-white/5">
+                                        {show.data.noteAttuazione && (
+                                            <p>{show.data.noteAttuazione}</p>
+                                        )}
+                                        <ul class="space-y-1">
+                                            {show.data.spazioScenico && (
+                                                <li>
+                                                    • {show.data.spazioScenico}
+                                                </li>
+                                            )}
+                                            {show.data.oscuramento && (
+                                                <li>
+                                                    • {show.data.oscuramento}
+                                                </li>
+                                            )}
+                                        </ul>
                                     </div>
                                 )
                             }

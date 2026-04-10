@@ -96,32 +96,32 @@ const spettacoli = await getCollection("spettacoli");
                                 )}
                             </div>
 
-                            <div class="p-8 relative z-20 bg-[#09090b] flex flex-col grow">
-                                <h2 class="text-2xl font-bold font-serif text-foreground group-hover:text-primary transition-colors duration-300 leading-tight mb-6">
+                            <div class="p-6 relative z-20 bg-[#09090b] flex flex-col grow">
+                                <h2 class="text-3xl font-bold font-serif text-foreground group-hover:text-primary transition-colors duration-300 leading-tight mb-3">
                                     {show.data.title}
                                 </h2>
-                                <div class="mt-auto">
-                                    <div class="inline-flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-primary">
-                                        Scopri
-                                        <div class="w-8 h-8 rounded-full border border-primary/30 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="14"
-                                                height="14"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                stroke-width="2"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                class="-translate-x-px group-hover:translate-x-px transition-transform duration-300"
-                                            >
-                                                <>
-                                                    <path d="M5 12h14" />
-                                                    <path d="m12 5 7 7-7 7" />
-                                                </>
-                                            </svg>
-                                        </div>
+                                <p class="text-sm text-muted-foreground leading-relaxed opacity-80 line-clamp-2 mb-6">
+                                    {show.data.description}
+                                </p>
+                                <div class="mt-auto flex justify-end">
+                                    <div class="w-10 h-10 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300 group-hover:border-primary">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="16"
+                                            height="16"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            class="-translate-x-px group-hover:translate-x-px transition-transform duration-300"
+                                        >
+                                            <>
+                                                <path d="M5 12h14" />
+                                                <path d="m12 5 7 7-7 7" />
+                                            </>
+                                        </svg>
                                     </div>
                                 </div>
                             </div>

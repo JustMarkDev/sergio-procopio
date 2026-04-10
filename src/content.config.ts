@@ -15,6 +15,12 @@ const spettacoliCollection = defineCollection({
       produzione: z.string().optional(),
       tecnico: z.string().optional(),
       costo: z.string().optional(),
+      durataDettaglio: z.string().optional(),
+      noteAttuazione: z.string().optional(),
+      spazioScenico: z.string().optional(),
+      oscuramento: z.string().optional(),
+      minimoAlunni: z.string().optional(),
+      dettagliCosto: z.string().optional(),
       highlight: z.boolean().optional().default(false),
     }),
 });
