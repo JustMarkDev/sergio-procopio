@@ -67,15 +67,10 @@ const spettacoli = await getCollection("spettacoli");
                                         {show.data.category}
                                     </span>
                                 </div>
-                            </div>
 
-                            <div class="p-8 relative z-20 bg-[#09090b] flex flex-col grow">
-                                <h2 class="text-3xl font-bold font-serif text-foreground group-hover:text-primary transition-colors duration-300 leading-tight mb-4">
-                                    {show.data.title}
-                                </h2>
-                                <div class="mt-auto">
-                                    {show.data.duration && (
-                                        <div class="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest opacity-60 mb-8 flex items-center gap-1.5">
+                                {show.data.duration && (
+                                    <div class="absolute top-6 right-6 z-20">
+                                        <div class="py-1.5 px-3 bg-black/40 backdrop-blur-md border border-white/10 rounded-full text-[10px] font-semibold text-white/80 uppercase tracking-widest flex items-center gap-1.5 shadow-lg">
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 width="12"
@@ -86,6 +81,7 @@ const spettacoli = await getCollection("spettacoli");
                                                 stroke-width="2"
                                                 stroke-linecap="round"
                                                 stroke-linejoin="round"
+                                                class="text-primary"
                                             >
                                                 <circle
                                                     cx="12"
@@ -96,10 +92,15 @@ const spettacoli = await getCollection("spettacoli");
                                             </svg>
                                             {show.data.duration}
                                         </div>
-                                    )}
-                                    {!show.data.duration && (
-                                        <div class="mb-8" />
-                                    )}
+                                    </div>
+                                )}
+                            </div>
+
+                            <div class="p-8 relative z-20 bg-[#09090b] flex flex-col grow">
+                                <h2 class="text-2xl font-bold font-serif text-foreground group-hover:text-primary transition-colors duration-300 leading-tight mb-6">
+                                    {show.data.title}
+                                </h2>
+                                <div class="mt-auto">
                                     <div class="inline-flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-primary">
                                         Scopri
                                         <div class="w-8 h-8 rounded-full border border-primary/30 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-300">

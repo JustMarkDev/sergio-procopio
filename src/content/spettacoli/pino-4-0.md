@@ -1,7 +1,7 @@
 ---
 title: "Pino 4.0"
 description: "Uno spettacolo e incontro per far conoscere il pericolo della dipendenza dal cellulare tra i giovani."
-category: "Didattico / Educativo"
+category: "Scuole"
 duration: "1h 15m"
 regia: "Daniele Broggini"
 etaConsigliata: "dai 7 anni in su"

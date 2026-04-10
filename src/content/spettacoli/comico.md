@@ -1,7 +1,7 @@
 ---
 title: "Comico"
 description: "Uno spettacolo bello, proprio come quelli di una volta, pieno di poesia e vita, perfetto per tutte le feste."
-category: "Intrattenimento / Comico"
+category: "Tutti"
 duration: "55m"
 regia: "Broggini Daniele"
 etaConsigliata: "dai 3 a 140 anni"

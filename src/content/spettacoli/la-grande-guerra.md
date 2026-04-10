@@ -1,7 +1,7 @@
 ---
 title: "La Grande Guerra"
 description: "Lo spettacolo sulla Prima Guerra Mondiale che racconta l'umanità dell'alpino, dalle prime esperienze al sacrificio finale, dedicato ai ragazzi del '99."
-category: "Spettacolo Didattico"
+category: "Scuole"
 duration: "1h 10m"
 regia: "Carlo Rossi"
 etaConsigliata: "dai 6 a 140 anni"

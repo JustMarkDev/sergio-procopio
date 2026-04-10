@@ -1,7 +1,7 @@
 ---
 title: "L'uomo e il mare di plastica"
 description: "Uno spettacolo didattico sull'educazione ambientale ispirato a 'Il vecchio e il mare', per esplorare il ruolo dell'uomo come custode dell'ambiente."
-category: "Educazione Ambientale"
+category: "Scuole"
 duration: "1h 10m"
 regia: "Carlo Rossi"
 etaConsigliata: "dai 7 a 140 anni"

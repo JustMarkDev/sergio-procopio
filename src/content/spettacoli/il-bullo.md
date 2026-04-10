@@ -1,7 +1,7 @@
 ---
 title: "Il Bullo"
 description: "Uno spettacolo-incontro contro il bullismo, l'abbandono scolastico, l'illegalità e il femminicidio."
-category: "Didattico / Sociale"
+category: "Scuole"
 duration: "2h"
 regia: "Giorgio Albini"
 etaConsigliata: "dai 11 anni in su"

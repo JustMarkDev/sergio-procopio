@@ -1,7 +1,7 @@
 ---
 title: "L'attesa"
 description: "Spegni lo schermo, accendi la mente: 'L'attesa' ti porta oltre la dipendenza dalla tecnologia."
-category: "Didattico / Sociale"
+category: "Tutti"
 duration: "1h 15m"
 regia: "Carlo Rossi"
 etaConsigliata: "dai 7 a 140 anni"
