@@ -5,6 +5,7 @@ interface Show {
   title: string;
   category: string;
   description: string;
+  duration?: string;
   image?: string;
 }
 
@@ -58,15 +59,16 @@ export default function FeaturedShows({ shows }: Props) {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {shows.map((show, index) => (
-            <motion.div
+            <motion.a
+              href={`/spettacoli/${show.id}`}
               key={show.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group relative bg-white/2 border border-white/5 rounded-3xl overflow-hidden hover:bg-white/4 hover:border-primary/30 transition-all duration-500"
+              className="group flex flex-col h-full relative bg-[#09090b] border border-white/10 rounded-4xl overflow-hidden hover:border-primary/50 hover:shadow-[0_0_30px_rgba(37,99,235,0.15)] hover:-translate-y-1 transition-all duration-500"
             >
-              <div className="aspect-square w-full bg-zinc-900 relative overflow-hidden">
+              <div className="aspect-video w-full bg-secondary/20 relative overflow-hidden flex items-center justify-center shrink-0">
                 {show.image ? (
                   <img
                     src={show.image}
@@ -75,39 +77,67 @@ export default function FeaturedShows({ shows }: Props) {
                   />
                 ) : (
                   <>
-                    <div className="absolute inset-0 bg-linear-to-t from-[#09090b] via-transparent to-transparent z-10"></div>
-                    <div className="absolute inset-0 flex items-center justify-center p-8">
-                      <span className="text-3xl font-serif font-bold text-white/10 group-hover:text-primary/20 transition-colors duration-500 text-center leading-tight">
-                        {show.title}
-                      </span>
-                    </div>
+                    <div className="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.1)_0%,transparent_100%)]" />
+                    <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 mix-blend-overlay" />
+                    <h3 className="text-4xl font-serif font-bold text-white/5 group-hover:text-primary/20 transition-colors duration-500 px-6 text-center leading-tight tracking-tighter z-10 relative">
+                      {show.title}
+                    </h3>
                   </>
                 )}
-                <div className="absolute inset-0 bg-linear-to-t from-[#09090b]/80 via-transparent to-transparent z-10"></div>
-                {/* Category Badge Over Image */}
+                <div className="absolute inset-0 bg-linear-to-t from-[#09090b] to-transparent z-10" />
                 <div className="absolute top-6 left-6 z-20">
-                  <span className="py-1 px-3 bg-primary/10 backdrop-blur-md border border-primary/20 rounded-full text-[10px] font-bold text-primary uppercase tracking-wider">
+                  <span className="py-1 px-3 bg-black/40 backdrop-blur-md border border-white/10 rounded-full text-[10px] font-bold text-primary uppercase tracking-[0.2em]">
                     {show.category}
                   </span>
                 </div>
               </div>
 
-              <div className="p-8 relative z-20">
-                <h3 className="text-2xl font-bold font-serif mb-4 group-hover:text-primary transition-colors duration-300">
+              <div className="p-8 relative z-20 bg-[#09090b]">
+                <h2 className="text-3xl font-bold font-serif text-foreground group-hover:text-primary transition-colors duration-300 leading-tight mb-2">
                   {show.title}
-                </h3>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-8 line-clamp-3 opacity-80">
-                  {show.description}
-                </p>
-                <a
-                  href={`/spettacoli/${show.id}`}
-                  className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary group/link"
-                >
-                  Dettagli Spettacolo
-                  <span className="w-8 h-px bg-primary group-hover/link:w-12 transition-all duration-300"></span>
-                </a>
+                </h2>
+                {show.duration && (
+                  <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest opacity-60 mb-8 flex items-center gap-1.5">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                    {show.duration}
+                  </div>
+                )}
+                {!show.duration && <div className="mb-8"></div>}
+                <div className="inline-flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-primary">
+                  Scopri
+                  <div className="w-8 h-8 rounded-full border border-primary/30 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="-translate-x-px group-hover:translate-x-px transition-transform duration-300"
+                    >
+                      <path d="M5 12h14" />
+                      <path d="m12 5 7 7-7 7" />
+                    </svg>
+                  </div>
+                </div>
               </div>
-            </motion.div>
+            </motion.a>
           ))}
         </div>
       </div>
