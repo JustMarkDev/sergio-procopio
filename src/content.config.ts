@@ -23,6 +23,7 @@ const spettacoliCollection = defineCollection({
       minimoAlunni: z.string().optional(),
       dettagliCosto: z.string().optional(),
       highlight: z.boolean().optional().default(false),
+      draft: z.boolean().optional().default(false),
     }),
 });
 

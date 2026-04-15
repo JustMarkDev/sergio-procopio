@@ -6,9 +6,9 @@ duration: "1h 10m"
 regia: "Broggini Daniele"
 etaConsigliata: "PLACEHOLDER"
 produzione: "Teatro Procopio"
-tecnico: "PLACEHOLDER"
-minimoAlunni: "PLACEHOLDER"
+castTecnico: "Giovanni Brovelli"
 highlight: true
+draft: true
 ---
 
 ## Proposta

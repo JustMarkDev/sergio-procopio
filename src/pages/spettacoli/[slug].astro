@@ -5,10 +5,12 @@ import { Image } from "astro:assets";
 
 export async function getStaticPaths() {
     const spettacoli = await getCollection("spettacoli");
-    return spettacoli.map((show) => ({
-        params: { slug: show.id },
-        props: { show },
-    }));
+    return spettacoli
+        .filter((show) => !show.data.draft)
+        .map((show) => ({
+            params: { slug: show.id },
+            props: { show },
+        }));
 }
 
 const { show } = Astro.props;

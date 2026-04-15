@@ -3,7 +3,9 @@ import Layout from "../../layouts/Layout.astro";
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 
-const spettacoli = await getCollection("spettacoli");
+const spettacoli = (await getCollection("spettacoli")).filter(
+    (show) => !show.data.draft,
+);
 ---
 
 <Layout title="Tutti gli Spettacoli | Sergio Procopio">

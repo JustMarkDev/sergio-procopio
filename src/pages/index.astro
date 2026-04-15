@@ -5,7 +5,9 @@ import FeaturedShows from "../components/custom/FeaturedShows";
 import ContactForm from "../components/custom/ContactForm";
 import { getCollection } from "astro:content";
 
-const allShows = await getCollection("spettacoli");
+const allShows = (await getCollection("spettacoli")).filter(
+    (show) => !show.data.draft,
+);
 // Prefer highlighted shows or first 3
 const featuredShows = allShows
     .sort((a, b) => (b.data.highlight ? 1 : 0) - (a.data.highlight ? 1 : 0))

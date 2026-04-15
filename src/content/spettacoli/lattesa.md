@@ -7,14 +7,18 @@ regia: "Carlo Rossi"
 etaConsigliata: "7+"
 produzione: "Teatro Procopio"
 tecnico: "Giorgio Albini"
-minimoAlunni: "PLACEHOLDER"
 highlight: true
 ---
 
 ## Proposta
-Spegni lo schermo, accendi la mente. "L'attesa" è un'opportunità unica per aiutare i giovani a riconnettersi con se stessi e con il mondo circostante. Attraverso una rappresentazione pratica e coinvolgente, lo spettacolo dimostra come l'uso eccessivo di tecnologie (cellulari, TV, videogiochi, social) possa compromettere la concentrazione, la fantasia e la creatività.
+I giovani stanno vivendo in un mondo virtuale, stanno perdendo valori importantissimi; l’amicizia, il tempo, il silenzio, la creatività, la fantasia e la comunicazione non verbale, e quest’ultima è certamente la cosa più importante, …perdere il corpo, il linguaggio non verbale, che è quella cosa ha permesso all’uomo di crescere e di comunicare le sfumature emotive fondamentali all’interno di una relazione.
 
-Il nostro spettacolo educativo è un investimento prezioso per il loro futuro. Attraverso il riso e il sorriso, li aiutiamo a riflettere su temi importanti e a diventare persone migliori, incoraggiandoli a disconnettersi dalle distrazioni per riconnettersi con se stessi e il mondo. Mostra il valore della comunicazione verbale e sociale, più autentica e gratificante.
+Per questo vi proponiamo uno spettacolo comico dal titolo L’attesa, uno spettacolo altamente didattico per la loro vita che ha in sé questi valori indispensabili 
+e vista l’urgenza oseremmo dire irrimandabili.
 
 ## Trama
-In una sala d'attesa, simbolo della nostra vita quotidiana, un personaggio aspetta di partire per il suo volo. Durante questa attesa, comincia a porsi domande sui suoi obiettivi, sui suoi desideri e se sta veramente andando dove vorrebbe. La rappresentazione invita gli spettatori a interrogarsi sulle proprie priorità e sui valori che li guidano. È un invito a riflettere sul significato dell'attesa e sulla direzione che stiamo prendendo nella vita.
+Uno di noi. Uno di noi in una sala d’attesa. Una sala d’attesa come le nostre, come quelle nelle quali ci tocca attendere qualcosa. In questo caso la chiamata di un volo, del nostro volo.
+Uno di noi che aspetta di volare. Volare. Non è forse il sogno di tutti? 
+Sì, certo, ma quanto c’è da aspettare? E poi, non avremo dimenticato qualcosa? 
+Il passaporto, lo spazzolino da denti, la carta d’imbarco… 
+E, soprattutto, dove siamo diretti?
