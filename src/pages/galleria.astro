@@ -17,6 +17,7 @@ const allImages = import.meta.glob<{ default: ImageMetadata }>(
 const galleryImages = Object.entries(allImages).map(([path, img], index) => {
     // Il path è qualcosa del tipo /src/assets/spettacoli/il-bullo/foto1.jpg
     const parts = path.split("/");
+    const fileName = parts[parts.length - 1].split(".")[0]; // Prende il nome del file senza estensione
     const showId = parts[parts.length - 2]; // Prende il nome della cartella (es: il-bullo)
     const showTitle = showsMap.get(showId) || "Spettacolo Teatrale";
 
@@ -28,8 +29,9 @@ const galleryImages = Object.entries(allImages).map(([path, img], index) => {
 
     return {
         src: img.default,
-        alt: `Scena dallo spettacolo ${showTitle}`,
+        alt: `${showTitle} - ${fileName}`,
         title: showTitle,
+        subtitle: fileName,
         colSpan,
     };
 });
@@ -79,8 +81,8 @@ const galleryImages = Object.entries(allImages).map(([path, img], index) => {
                                     <h3 class="text-white font-serif font-bold text-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
                                         {image.title}
                                     </h3>
-                                    <p class="text-white/70 text-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
-                                        {image.alt}
+                                    <p class="text-white/70 text-sm italic capitalize transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
+                                        {image.subtitle}
                                     </p>
                                 </div>
                             </div>
@@ -99,12 +101,6 @@ const galleryImages = Object.entries(allImages).map(([path, img], index) => {
                     </div>
                 )
             }
-
-            <div class="text-center mt-20">
-                <p class="text-muted-foreground text-sm">
-                    Presto aggiungeremo altre foto ufficiali dagli spettacoli.
-                </p>
-            </div>
         </div>
     </div>
 </Layout>
