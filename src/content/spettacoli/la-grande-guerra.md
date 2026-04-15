@@ -7,7 +7,6 @@ regia: "Carlo Rossi"
 etaConsigliata: "6+"
 produzione: "Teatro Procopio"
 tecnico: "Giovanni Brovelli"
-minimoAlunni: "PLACEHOLDER"
 highlight: false
 ---
 

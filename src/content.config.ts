@@ -14,6 +14,7 @@ const spettacoliCollection = defineCollection({
       etaConsigliata: z.string().optional(),
       produzione: z.string().optional(),
       tecnico: z.string().optional(),
+      castTecnico: z.string().optional(),
       costo: z.string().optional(),
       durataDettaglio: z.string().optional(),
       noteAttuazione: z.string().optional(),

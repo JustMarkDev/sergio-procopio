@@ -134,13 +134,15 @@ const { Content } = await render(show);
                                 )
                             }
                             {
-                                show.data.tecnico && (
+                                (show.data.castTecnico ||
+                                    show.data.tecnico) && (
                                     <div>
                                         <div class="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
                                             Cast Tecnico
                                         </div>
                                         <div class="text-lg font-bold font-serif">
-                                            {show.data.tecnico}
+                                            {show.data.castTecnico ||
+                                                show.data.tecnico}
                                         </div>
                                     </div>
                                 )
