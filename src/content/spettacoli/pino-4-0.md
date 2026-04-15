@@ -12,8 +12,6 @@ highlight: true
 ---
 
 ## Proposta
-Conoscere per capire: Spettacolo e incontro.
-
 Vi proponiamo uno spettacolo dal titolo Pino 4.0 per far conoscere il pericolo della dipendenza dal cellulare in cui incorrono molti giovani e giovanissimi. L'utilizzo eccessivo del cellulare può distrarre dallo studio e limitare la creatività e l'espressione personale, fondamentali per una vita soddisfacente.
 
 Il nostro obiettivo è di riuscire a sensibilizzare i giovani sui rischi legati all'uso incontrollato del cellulare attraverso una storia coinvolgente e divertente. Il nostro spettacolo educativo rappresenta un investimento prezioso per il futuro dei ragazzi, aiutandoli a riflettere su temi importanti e a diventare persone migliori.

@@ -6,8 +6,7 @@ duration: "1h 10m"
 regia: "Carlo Rossi"
 etaConsigliata: "7+"
 produzione: "Teatro Procopio"
-tecnico: "PLACEHOLDER"
-minimoAlunni: "PLACEHOLDER"
+castTecnico: "Giovanni Brovelli"
 highlight: true
 ---
 
