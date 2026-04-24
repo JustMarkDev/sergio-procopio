@@ -13,26 +13,18 @@ const allImages = import.meta.glob<{ default: ImageMetadata }>(
     { eager: true },
 );
 
-// Convertiamo l'oggetto in un array per poterlo ciclare e ordinarlo
-const galleryImages = Object.entries(allImages).map(([path, img], index) => {
-    // Il path è qualcosa del tipo /src/assets/spettacoli/il-bullo/foto1.jpg
+// Convertiamo l'oggetto in un array e estraiamo i metadati
+const galleryImages = Object.entries(allImages).map(([path, img]) => {
     const parts = path.split("/");
-    const fileName = parts[parts.length - 1].split(".")[0]; // Prende il nome del file senza estensione
-    const showId = parts[parts.length - 2]; // Prende il nome della cartella (es: il-bullo)
+    const fileName = parts[parts.length - 1].split(".")[0];
+    const showId = parts[parts.length - 2];
     const showTitle = showsMap.get(showId) || "Spettacolo Teatrale";
-
-    // Assegnamo delle classi masonry pseudo-casuali basate sull'indice per dare movimento alla griglia
-    let colSpan = "col-span-1 md:col-span-1 row-span-1";
-    if (index % 5 === 0) colSpan = "col-span-1 md:col-span-2 row-span-2";
-    else if (index % 3 === 0) colSpan = "col-span-1 md:col-span-1 row-span-2";
-    else if (index % 7 === 0) colSpan = "col-span-1 md:col-span-2 row-span-1";
 
     return {
         src: img.default,
         alt: `${showTitle} - ${fileName}`,
         title: showTitle,
         subtitle: fileName,
-        colSpan,
     };
 });
 ---
@@ -48,34 +40,37 @@ const galleryImages = Object.entries(allImages).map(([path, img], index) => {
         >
         </div>
 
-        <div class="container mx-auto px-4 py-32 relative z-10">
+        <div class="w-full px-6 md:px-12 py-32 relative z-10 mx-auto">
             <div class="max-w-4xl mx-auto text-center mb-20">
-                <h1
-                    class="text-5xl md:text-7xl font-serif font-bold mb-6 tracking-tight"
-                >
-                    Galleria
-                </h1>
-                <p
-                    class="text-xl text-muted-foreground font-serif italic max-w-2xl mx-auto opacity-80"
-                >
-                    "Un'immagine vale più di mille parole, specialmente quando
-                    il silenzio è il protagonista sul palcoscenico."
-                </p>
+                <div class="animate-fade-in">
+                    <h1
+                        class="text-5xl md:text-7xl font-serif font-bold mb-6 tracking-tight"
+                    >
+                        Galleria <span class="italic text-primary"
+                            >Emozionale</span
+                        >
+                    </h1>
+                    <p
+                        class="text-xl text-muted-foreground font-serif italic max-w-2xl mx-auto opacity-80"
+                    >
+                        "Un'immagine vale più di mille parole, specialmente
+                        quando il silenzio è il protagonista sul palcoscenico."
+                    </p>
+                </div>
             </div>
 
-            {/* Masonry Gallery Grid */}
+            {/* Masonry Columns Gallery - Expanded width */}
             {
                 galleryImages.length > 0 ? (
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 auto-rows-[250px] max-w-6xl mx-auto">
+                    <div class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8 max-w-[1800px] mx-auto">
                         {galleryImages.map((image) => (
-                            <div
-                                class={`relative group overflow-hidden rounded-2xl bg-white/5 border border-white/10 ${image.colSpan}`}
-                            >
+                            <div class="relative group overflow-hidden rounded-2xl bg-white/5 border border-white/10 break-inside-avoid shadow-lg">
                                 <Image
                                     src={image.src}
                                     alt={image.alt}
-                                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 group-hover:opacity-60"
+                                    class="w-full h-auto object-contain transition-all duration-700 group-hover:scale-105 group-hover:opacity-60"
                                 />
+
                                 {/* Overlay Gradient */}
                                 <div class="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col justify-end p-6">
                                     <h3 class="text-white font-serif font-bold text-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
@@ -85,6 +80,7 @@ const galleryImages = Object.entries(allImages).map(([path, img], index) => {
                                         {image.subtitle}
                                     </p>
                                 </div>
+                                {/* Subtle corner tag for mobile context if needed, but the hover overlay is better */}
                             </div>
                         ))}
                     </div>
@@ -104,3 +100,8 @@ const galleryImages = Object.entries(allImages).map(([path, img], index) => {
         </div>
     </div>
 </Layout>
+
+<script>
+    // Importiamo framer-motion se necessario o usiamo semplici classi
+    // Per ora restiamo sulle classi CSS per massimizzare le performance
+</script>
