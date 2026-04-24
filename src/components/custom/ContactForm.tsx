@@ -115,19 +115,27 @@ export default function ContactForm() {
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-widest opacity-60 ml-1">
+                  <label
+                    htmlFor="nome"
+                    className="text-xs font-bold uppercase tracking-widest opacity-60 ml-1"
+                  >
                     Nome
                   </label>
                   <input
+                    id="nome"
                     className="flex h-14 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-2 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none"
                     placeholder="Mario Rossi"
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-widest opacity-60 ml-1">
+                  <label
+                    htmlFor="email"
+                    className="text-xs font-bold uppercase tracking-widest opacity-60 ml-1"
+                  >
                     Email
                   </label>
                   <input
+                    id="email"
                     type="email"
                     className="flex h-14 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-2 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none"
                     placeholder="mario@email.it"
@@ -136,20 +144,28 @@ export default function ContactForm() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest opacity-60 ml-1">
+                <label
+                  htmlFor="oggetto"
+                  className="text-xs font-bold uppercase tracking-widest opacity-60 ml-1"
+                >
                   Oggetto
                 </label>
                 <input
+                  id="oggetto"
                   className="flex h-14 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-2 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none"
                   placeholder="Richiesta informazioni..."
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest opacity-60 ml-1">
+                <label
+                  htmlFor="messaggio"
+                  className="text-xs font-bold uppercase tracking-widest opacity-60 ml-1"
+                >
                   Messaggio
                 </label>
                 <textarea
+                  id="messaggio"
                   className="flex min-h-35 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-4 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none resize-none"
                   placeholder="Scrivi qui..."
                 ></textarea>
