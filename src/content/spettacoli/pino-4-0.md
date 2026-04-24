@@ -7,7 +7,7 @@ regia: "Daniele Broggini"
 etaConsigliata: "7+"
 produzione: "Teatro Procopio"
 tecnico: "Giorgio Albini"
-minimoAlunni: "Minimo di 100 alunni"
+minimoAlunni: "Minimo di 120 alunni"
 highlight: true
 ---
 

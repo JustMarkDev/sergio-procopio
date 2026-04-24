@@ -7,6 +7,7 @@ regia: "Broggini Daniele"
 etaConsigliata: "PLACEHOLDER"
 produzione: "Teatro Procopio"
 castTecnico: "Giovanni Brovelli"
+minimoAlunni: "Minimo di 120 alunni"
 highlight: true
 draft: true
 ---

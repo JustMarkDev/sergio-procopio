@@ -8,7 +8,7 @@ regia: "Giorgio Albini"
 etaConsigliata: "11+"
 produzione: "Teatro Procopio"
 tecnico: "Giovanni Brovelli"
-minimoAlunni: "Minimo di 100 alunni"
+minimoAlunni: "Minimo di 120 alunni"
 highlight: true
 ---
 

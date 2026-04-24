@@ -7,6 +7,7 @@ regia: "Carlo Rossi"
 etaConsigliata: "7+"
 produzione: "Teatro Procopio"
 castTecnico: "Giovanni Brovelli"
+minimoAlunni: "Minimo di 120 alunni"
 highlight: true
 ---
 
