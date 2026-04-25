@@ -47,6 +47,7 @@ const spettacoli = (await getCollection("spettacoli")).filter(
                                         src={show.data.image}
                                         alt={show.data.title}
                                         loading="lazy"
+                                        decoding="async"
                                         class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                                     />
                                 ) : (

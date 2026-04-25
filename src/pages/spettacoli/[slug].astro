@@ -53,6 +53,8 @@ const { Content } = await render(show);
                                 <Image
                                     src={show.data.image}
                                     alt={show.data.title}
+                                    loading="lazy"
+                                    decoding="async"
                                     class="w-full h-auto block"
                                 />
                             ) : (
