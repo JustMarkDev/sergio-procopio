@@ -2,6 +2,7 @@
 title: "A Volte Tornano"
 description: "Una potente riflessione sui tragici destini dei migranti e sui sogni che li accompagnano, ambientata nel silenzio degli abissi."
 category: "Scuole"
+image: "../../assets/spettacoli/a-volte-tornano/il fondo.jpg"
 duration: "60 minuti"
 regia: "Broggini Daniele"
 etaConsigliata: "12+"

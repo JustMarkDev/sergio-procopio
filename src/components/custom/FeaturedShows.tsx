@@ -23,16 +23,8 @@ export default function FeaturedShows({ shows }: Props) {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(37,99,235,0.05)_0%,transparent_70%)] pointer-events-none"></div>
 
       <div className="container relative z-10 mx-auto px-4">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div className="max-w-2xl">
-            <motion.span
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="text-primary font-bold tracking-[0.2em] text-[10px] uppercase mb-4 block"
-            >
-              Il Repertorio
-            </motion.span>
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -68,7 +60,7 @@ export default function FeaturedShows({ shows }: Props) {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               className="group flex flex-col h-full relative bg-[#09090b] border border-white/10 rounded-4xl overflow-hidden hover:border-primary/50 hover:shadow-[0_0_30px_rgba(37,99,235,0.15)] hover:-translate-y-1 transition-all duration-500"
             >
-              <div className="aspect-video w-full bg-secondary/20 relative overflow-hidden flex items-center justify-center shrink-0">
+              <div className="aspect-[4/3] w-full bg-secondary/20 relative overflow-hidden flex items-center justify-center shrink-0">
                 {show.image ? (
                   <img
                     src={show.image}
@@ -115,32 +107,13 @@ export default function FeaturedShows({ shows }: Props) {
                 )}
               </div>
 
-              <div className="p-6 relative z-20 bg-[#09090b] flex flex-col grow">
-                <h2 className="text-3xl font-bold font-serif text-foreground group-hover:text-primary transition-colors duration-300 leading-tight mb-3">
+              <div className="p-8 relative z-20 bg-[#09090b] flex flex-col grow justify-center">
+                <h2 className="text-3xl font-bold font-serif text-foreground group-hover:text-primary transition-colors duration-300 leading-tight mb-4">
                   {show.title}
                 </h2>
-                <p className="text-sm text-muted-foreground leading-relaxed opacity-80 line-clamp-2 mb-6">
+                <p className="text-sm text-muted-foreground leading-relaxed opacity-80 line-clamp-3">
                   {show.description}
                 </p>
-                <div className="mt-auto flex justify-end">
-                  <div className="w-10 h-10 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300 group-hover:border-primary">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="-translate-x-px group-hover:translate-x-px transition-transform duration-300"
-                    >
-                      <path d="M5 12h14" />
-                      <path d="m12 5 7 7-7 7" />
-                    </svg>
-                  </div>
-                </div>
               </div>
             </motion.a>
           ))}

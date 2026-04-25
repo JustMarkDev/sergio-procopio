@@ -46,25 +46,21 @@ const { Content } = await render(show);
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
                 <div class="lg:col-span-8 space-y-10">
                     <div
-                        class="aspect-video w-full bg-zinc-900 rounded-[2.5rem] overflow-hidden relative border border-white/5 shadow-2xl"
+                        class="rounded-[2.5rem] overflow-hidden border border-white/5 shadow-2xl bg-[#09090b]"
                     >
                         {
                             show.data.image ? (
                                 <Image
                                     src={show.data.image}
                                     alt={show.data.title}
-                                    class="w-full h-full object-cover"
+                                    class="w-full h-auto block"
                                 />
                             ) : (
-                                <div class="absolute inset-0 flex items-center justify-center text-muted-foreground font-serif text-3xl opacity-10">
+                                <div class="aspect-video w-full bg-zinc-900/50 flex items-center justify-center text-muted-foreground font-serif text-3xl opacity-10">
                                     {show.data.title}
                                 </div>
                             )
                         }
-                        <div
-                            class="absolute inset-0 bg-linear-to-t from-[#09090b]/80 via-transparent to-transparent"
-                        >
-                        </div>
                     </div>
 
                     <div

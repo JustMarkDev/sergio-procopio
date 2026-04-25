@@ -2,6 +2,7 @@
 title: "Comico"
 description: "Uno spettacolo bello, proprio come quelli di una volta, pieno di poesia e vita, perfetto per tutte le feste."
 category: "Tutti"
+image: "../../assets/spettacoli/comico/la presentazione.jpg"
 duration: "1 ora"
 regia: "Broggini Daniele"
 etaConsigliata: "3+"

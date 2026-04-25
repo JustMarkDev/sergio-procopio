@@ -1,7 +1,8 @@
 ---
 title: "La Valigia di S. Francesco"
 description: "Uno spettacolo comico e poetico per riscoprire il messaggio di pace e semplicità di San Francesco attraverso un viaggio interiore ed esilarante."
-category: "Tutti"
+category: "parrocchie"
+image: "../../assets/spettacoli/la-valigia-di-san-francesco/la ricerca.jpg"
 duration: "60 minuti"
 regia: "Broggini Daniele"
 etaConsigliata: "Per tutte le età"

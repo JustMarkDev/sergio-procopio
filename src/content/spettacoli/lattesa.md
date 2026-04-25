@@ -1,5 +1,5 @@
 ---
-title: "L'attesa"
+title: "L'Attesa"
 description: "Spegni lo schermo, accendi la mente: 'L'attesa' ti porta oltre la dipendenza dalla tecnologia."
 category: "Tutti"
 image: "../../assets/spettacoli/lattesa/attesa.jpg"
