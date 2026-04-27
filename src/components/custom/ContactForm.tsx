@@ -109,9 +109,10 @@ export default function ContactForm() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="relative p-10 bg-white/2 border border-white/5 rounded-[2.5rem] backdrop-blur-sm"
           >
+            {/* UI-only placeholder until a real submission flow is added. */}
             <form
               className="space-y-6"
-              onSubmit={(e: React.FormEvent) => e.preventDefault()}
+              onSubmit={(e) => e.preventDefault()}
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">

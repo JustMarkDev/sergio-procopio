@@ -11,19 +11,20 @@ This repository is an Astro 6 site with React islands. Core application code liv
 - `public/`: static files served as-is
 
 ## Build, Test, and Development Commands
-- `npm install`: install dependencies; use Node `>=22.12.0` from `package.json`
-- `npm run dev`: start the local Astro dev server on `http://localhost:4321`
-- `npm run build`: generate the production build in `dist/`
-- `npm run preview`: serve the built site locally for a final check
-- `npm run astro -- check`: run Astro's project checks when validating routes, content, and typings
+- `bun install`: install dependencies; use Node `>=22.12.0` from `package.json`
+- `bun run dev`: start the local Astro dev server on `http://localhost:4321`
+- `bun run build`: generate the production build in `dist/`
+- `bun run preview`: serve the built site locally for a final check
+- `bunx astro check`: run Astro's project checks when validating routes, content, and typings
 
 ## Coding Style & Naming Conventions
 Use TypeScript, Astro components, and functional React components. Follow the existing file naming pattern: PascalCase for components (`HeroSection.tsx`, `Layout.astro`), lowercase or slug-style names for routes and content files (`privacy-policy.astro`, `la-grande-guerra.md`).
 
 Use 2-space indentation in React/TypeScript files and 4-space indentation inside `.astro` frontmatter blocks, keeping markup indentation consistent within each component. Avoid reformatting unrelated lines. Keep utility logic in `src/lib/` and content schema changes in `src/content.config.ts`.
+Keep `src/components/custom/ContactForm.tsx` as a UI-only placeholder until a real submission flow is requested; do not add backend wiring or fake success behavior by default.
 
 ## Testing Guidelines
-Run `npm run build` before opening a PR; for content or route changes, also run `npm run astro -- check`. Verify dynamic show pages, gallery pages, and form interactions manually in `npm run dev`.
+Run `bun run build` before opening a PR; for content or route changes, also run `bunx astro check`. Verify dynamic show pages, gallery pages, and contact form UI manually in `bun run dev`.
 
 ## Commit & Pull Request Guidelines
 Recent commits use short, imperative subjects such as `image optimization` and `Bun Migration & bump dependencies`. Keep commit titles brief, specific, and focused on one change.
