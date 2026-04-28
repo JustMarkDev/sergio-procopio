@@ -35,9 +35,9 @@ export default function Header() {
           <div className="shrink-0">
             <a
               href="/"
-              className="font-serif text-xl font-bold tracking-wider text-primary"
+              className="font-serif text-2xl md:text-3xl font-bold tracking-wide text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)]"
             >
-              Sergio Procopio
+              Sergio <span className="text-primary">Procopio</span>
             </a>
           </div>
 
