@@ -34,7 +34,7 @@ export default function ContactForm() {
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_100%,rgba(37,99,235,0.08)_0%,transparent_50%)] pointer-events-none"></div>
 
       <div className="container relative z-10 mx-auto px-4 md:px-8 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
           <motion.div
             className="lg:col-span-5"
             initial={{ opacity: 0, x: -30 }}
@@ -42,9 +42,6 @@ export default function ContactForm() {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <span className="text-primary font-bold tracking-[0.2em] text-[10px] uppercase mb-4 block">
-              Contatti
-            </span>
             <h2 className="text-4xl md:text-6xl font-serif font-bold text-foreground mb-8 tracking-tight">
               Porta l'emozione <br />
               nella tua <span className="italic text-primary">scuola</span>
