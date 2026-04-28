@@ -1,11 +1,21 @@
-import { useState, useTransition } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useState, useTransition } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { actions } from "astro:actions";
 
 export default function ContactForm() {
+  const rotatingTitles = ["scuola", "parrocchia", "associazione"];
   const [isPending, startTransition] = useTransition();
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [titleIndex, setTitleIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setTitleIndex((current) => (current + 1) % rotatingTitles.length);
+    }, 2500);
+
+    return () => window.clearInterval(interval);
+  }, [rotatingTitles.length]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,9 +52,25 @@ export default function ContactForm() {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-4xl md:text-6xl font-serif font-bold text-foreground mb-8 tracking-tight">
+            <h2 className="text-4xl md:text-5xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-serif font-bold text-foreground mb-8 tracking-tight">
               Porta l'emozione <br />
-              nella tua <span className="italic text-primary">scuola</span>
+              <span className="whitespace-nowrap">
+                nella tua{" "}
+                <span className="inline-block min-w-[12ch] align-baseline">
+                  <AnimatePresence mode="wait">
+                    <motion.span
+                      key={rotatingTitles[titleIndex]}
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -12 }}
+                      transition={{ duration: 0.35 }}
+                      className="italic text-primary inline-block"
+                    >
+                      {rotatingTitles[titleIndex]}
+                    </motion.span>
+                  </AnimatePresence>
+                </span>
+              </span>
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-10 opacity-80">
               Sergio Procopio è a disposizione per spettacoli, laboratori e
