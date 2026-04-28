@@ -9,7 +9,7 @@ etaConsigliata: "Per tutte le età"
 produzione: "Teatro Procopio"
 tecnico: "Brovelli Giovanni"
 minimoAlunni: "Minimo di 120 alunni"
-highlight: false
+highlight: true
 ---
 
 ## Proposta

@@ -9,7 +9,7 @@ etaConsigliata: "7+"
 produzione: "Teatro Procopio"
 tecnico: "Giorgio Albini"
 minimoAlunni: "Minimo di 120 alunni"
-highlight: true
+highlight: false
 ---
 
 ## Proposta
