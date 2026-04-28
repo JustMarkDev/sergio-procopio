@@ -24,9 +24,9 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 w-full z-50 transition-all duration-300 border-b border-transparent ${
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-background/80 backdrop-blur-md border-white/10 shadow-lg shadow-black/20 py-2"
+          ? "bg-background/80 backdrop-blur-md shadow-lg shadow-black/20 py-2"
           : "bg-linear-to-b from-black/60 to-transparent py-4"
       }`}
     >
@@ -77,7 +77,7 @@ export default function Header() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-background border-b border-border overflow-hidden"
+            className="md:hidden bg-background overflow-hidden"
           >
             <ul className="px-4 pt-2 pb-4 space-y-1">
               {navLinks.map((link) => (
