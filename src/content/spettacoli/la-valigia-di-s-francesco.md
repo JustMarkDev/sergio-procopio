@@ -13,7 +13,6 @@ highlight: true
 ---
 
 ## Proposta
-Una nuova proposta per la Giornata di S. Francesco Patrono d’Italia.
 Nel 2026, con il ritorno ufficiale di San Francesco come Patrono d’Italia e la giornata nazionale a lui dedicata, cresce il desiderio di riscoprire il suo messaggio di pace, semplicità e fraternità.
 
 In questo spirito nasce “La Valigia di S. Francesco”, uno spettacolo unico nel suo genere: comico, poetico e profondamente spirituale, capace di parlare a tutti — bambini, giovani, adulti e anziani — con un linguaggio universale che supera le parole e arriva dritto al cuore.

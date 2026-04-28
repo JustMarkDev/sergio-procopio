@@ -13,8 +13,6 @@ highlight: true
 ---
 
 ## Proposta
-Proposta di uno spettacolo didattico sull'educazione ambientale.
-
 "L'uomo e il mare di plastica" rappresenta un'opportunità unica per coinvolgere gli studenti in un'esperienza educativa indimenticabile, che va ben oltre la tradizionale didattica in aula. Questo spettacolo suscita consapevolezza e azione. Attraverso il coinvolgimento emotivo, i giovani impareranno a essere più responsabili verso il nostro pianeta. Il dibattito con l'artista dopo lo spettacolo consentirà di esplorare ulteriormente queste importanti questioni.
 
 L'arte e la cultura sono un veicolo essenziale per l'educazione e lo sviluppo dei giovani verso la sostenibilità.

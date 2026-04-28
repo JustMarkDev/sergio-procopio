@@ -13,8 +13,6 @@ draft: true
 ---
 
 ## Proposta
-Proposta di uno spettacolo sull'Olocausto direttamente nella scuola.
-
 "Le vacanze di Henry" è uno spettacolo straordinario che mira a preservare la memoria dell'Olocausto e a coinvolgere direttamente gli studenti. Rappresenta un omaggio a coloro che hanno sofferto e un impegno a non dimenticare. Gli studenti si immergeranno in questo capitolo doloroso per preservarne la memoria, e l'apprendimento interattivo attraverso il teatro contribuisce all'educazione dei giovani sulla storia e sulle sue implicazioni.
 
 Questo spettacolo non mira solo a informare, ma a trasformare. Offre l'opportunità di riflettere sul passato, sviluppando una consapevolezza critica e un senso di responsabilità nei confronti della storia e delle ingiustizie. L'educazione sull'Olocausto è essenziale per promuovere la comprensione, l'umanità e la consapevolezza.
