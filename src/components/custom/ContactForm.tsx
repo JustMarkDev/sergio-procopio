@@ -12,7 +12,7 @@ export default function ContactForm() {
   useEffect(() => {
     const interval = window.setInterval(() => {
       setTitleIndex((current) => (current + 1) % rotatingTitles.length);
-    }, 2500);
+    }, 3000);
 
     return () => window.clearInterval(interval);
   }, [rotatingTitles.length]);
