@@ -1,6 +1,30 @@
+import { useState, useTransition } from "react";
 import { motion } from "framer-motion";
+import { actions } from "astro:actions";
 
 export default function ContactForm() {
+  const [isPending, startTransition] = useTransition();
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    
+    startTransition(async () => {
+      const { error } = await actions.sendContactEmail(formData);
+      
+      if (error) {
+        setStatus("error");
+        setErrorMessage(error.message || "Errore durante l'invio.");
+        return;
+      }
+      
+      setStatus("success");
+      (e.target as HTMLFormElement).reset();
+    });
+  };
+
   return (
     <section
       id="contatti"
@@ -104,76 +128,115 @@ export default function ContactForm() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="lg:col-span-7 relative p-10 bg-white/2 border border-white/5 rounded-[2.5rem] backdrop-blur-sm"
           >
-            {/* UI-only placeholder until a real submission flow is added. */}
-            <form
-              className="space-y-6"
-              onSubmit={(e) => e.preventDefault()}
-            >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label
-                    htmlFor="nome"
-                    className="text-xs font-bold uppercase tracking-widest opacity-60 ml-1"
-                  >
-                    Nome
-                  </label>
-                  <input
-                    id="nome"
-                    className="flex h-14 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-3 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none"
-                    placeholder="Mario Rossi"
-                  />
+            {status === "success" ? (
+              <div className="flex flex-col items-center justify-center h-full space-y-4 py-12 text-center">
+                <div className="w-16 h-16 rounded-full bg-primary/20 text-primary flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
                 </div>
-                <div className="space-y-2">
-                  <label
-                    htmlFor="email"
-                    className="text-xs font-bold uppercase tracking-widest opacity-60 ml-1"
-                  >
-                    Email
-                  </label>
-                  <input
-                    id="email"
-                    type="email"
-                    className="flex h-14 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-3 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none"
-                    placeholder="mario@email.it"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label
-                  htmlFor="oggetto"
-                  className="text-xs font-bold uppercase tracking-widest opacity-60 ml-1"
+                <h3 className="text-2xl font-bold">Messaggio Inviato!</h3>
+                <p className="text-muted-foreground">Grazie per avermi contattato. Ti risponderò il prima possibile.</p>
+                <button 
+                  onClick={() => setStatus("idle")}
+                  className="mt-6 text-sm text-primary hover:underline"
                 >
-                  Oggetto
-                </label>
-                <input
-                  id="oggetto"
-                  className="flex h-14 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-3 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none"
-                  placeholder="Richiesta informazioni..."
-                />
+                  Invia un altro messaggio
+                </button>
               </div>
-
-              <div className="space-y-2">
-                <label
-                  htmlFor="messaggio"
-                  className="text-xs font-bold uppercase tracking-widest opacity-60 ml-1"
-                >
-                  Messaggio
-                </label>
-                <textarea
-                  id="messaggio"
-                  className="flex min-h-35 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-3 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none resize-none"
-                  placeholder="Scrivi qui..."
-                ></textarea>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full rounded-2xl bg-primary px-10 py-6 text-primary-foreground font-bold uppercase tracking-widest hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 active:scale-[0.98]"
+            ) : (
+              <form
+                className="space-y-6"
+                onSubmit={handleSubmit}
               >
-                Invia Messaggio
-              </button>
-            </form>
+                {status === "error" && (
+                  <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-sm">
+                    {errorMessage}
+                  </div>
+                )}
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="nome"
+                      className="text-xs font-bold uppercase tracking-widest opacity-60 ml-1"
+                    >
+                      Nome
+                    </label>
+                    <input
+                      id="nome"
+                      name="nome"
+                      required
+                      className="flex h-14 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-3 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none"
+                      placeholder="Mario Rossi"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="email"
+                      className="text-xs font-bold uppercase tracking-widest opacity-60 ml-1"
+                    >
+                      Email
+                    </label>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      required
+                      className="flex h-14 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-3 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none"
+                      placeholder="mario@email.it"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label
+                    htmlFor="oggetto"
+                    className="text-xs font-bold uppercase tracking-widest opacity-60 ml-1"
+                  >
+                    Oggetto
+                  </label>
+                  <input
+                    id="oggetto"
+                    name="oggetto"
+                    className="flex h-14 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-3 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none"
+                    placeholder="Richiesta informazioni..."
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label
+                    htmlFor="messaggio"
+                    className="text-xs font-bold uppercase tracking-widest opacity-60 ml-1"
+                  >
+                    Messaggio
+                  </label>
+                  <textarea
+                    id="messaggio"
+                    name="messaggio"
+                    required
+                    className="flex min-h-35 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-3 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none resize-none"
+                    placeholder="Scrivi qui..."
+                  ></textarea>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isPending}
+                  className="w-full rounded-2xl bg-primary px-10 py-6 text-primary-foreground font-bold uppercase tracking-widest hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none flex justify-center items-center gap-2"
+                >
+                  {isPending ? (
+                    <>
+                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Invio in corso...
+                    </>
+                  ) : (
+                    "Invia Messaggio"
+                  )}
+                </button>
+              </form>
+            )}
           </motion.div>
         </div>
       </div>
