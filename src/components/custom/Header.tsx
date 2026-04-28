@@ -24,10 +24,10 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 w-full z-50 transition-colors duration-300 border-b border-transparent ${
+      className={`fixed top-0 w-full z-50 transition-all duration-300 border-b border-transparent ${
         scrolled
-          ? "bg-background/80 backdrop-blur-md border-border"
-          : "bg-transparent"
+          ? "bg-background/80 backdrop-blur-md border-white/10 shadow-lg shadow-black/20 py-2"
+          : "bg-linear-to-b from-black/60 to-transparent py-4"
       }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -48,7 +48,7 @@ export default function Header() {
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+                    className="text-[15px] font-semibold text-white/80 hover:text-primary transition-colors tracking-wide drop-shadow-md"
                   >
                     {link.name}
                   </a>
