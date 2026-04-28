@@ -9,7 +9,7 @@ export default function ContactForm() {
       {/* Background Glow */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_100%,rgba(37,99,235,0.08)_0%,transparent_50%)] pointer-events-none"></div>
 
-      <div className="container relative z-10 mx-auto px-4">
+      <div className="container relative z-10 mx-auto px-4 md:px-8 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
           <motion.div
             className="lg:col-span-5"
@@ -119,7 +119,7 @@ export default function ContactForm() {
                   </label>
                   <input
                     id="nome"
-                    className="flex h-14 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-2 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none"
+                    className="flex h-14 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-3 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none"
                     placeholder="Mario Rossi"
                   />
                 </div>
@@ -133,7 +133,7 @@ export default function ContactForm() {
                   <input
                     id="email"
                     type="email"
-                    className="flex h-14 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-2 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none"
+                    className="flex h-14 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-3 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none"
                     placeholder="mario@email.it"
                   />
                 </div>
@@ -148,7 +148,7 @@ export default function ContactForm() {
                 </label>
                 <input
                   id="oggetto"
-                  className="flex h-14 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-2 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none"
+                  className="flex h-14 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-3 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none"
                   placeholder="Richiesta informazioni..."
                 />
               </div>
@@ -162,14 +162,14 @@ export default function ContactForm() {
                 </label>
                 <textarea
                   id="messaggio"
-                  className="flex min-h-35 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-4 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none resize-none"
+                  className="flex min-h-35 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-3 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none resize-none"
                   placeholder="Scrivi qui..."
                 ></textarea>
               </div>
 
               <button
                 type="submit"
-                className="w-full h-14 rounded-2xl bg-primary text-primary-foreground font-bold uppercase tracking-widest hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 active:scale-[0.98]"
+                className="w-full rounded-2xl bg-primary px-10 py-6 text-primary-foreground font-bold uppercase tracking-widest hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 active:scale-[0.98]"
               >
                 Invia Messaggio
               </button>

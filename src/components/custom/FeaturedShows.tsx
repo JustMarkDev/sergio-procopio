@@ -22,7 +22,7 @@ export default function FeaturedShows({ shows }: Props) {
       {/* Decorative Background */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(37,99,235,0.05)_0%,transparent_70%)] pointer-events-none"></div>
 
-      <div className="container relative z-10 mx-auto px-4">
+      <div className="container relative z-10 mx-auto px-4 md:px-8 lg:px-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div className="max-w-2xl">
             <motion.h2
@@ -60,7 +60,7 @@ export default function FeaturedShows({ shows }: Props) {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               className="group flex flex-col h-full relative bg-[#09090b] border border-white/10 rounded-4xl overflow-hidden hover:border-primary/50 hover:shadow-[0_0_30px_rgba(37,99,235,0.15)] hover:-translate-y-1 transition-all duration-500"
             >
-              <div className="aspect-[4/3] w-full bg-secondary/20 relative overflow-hidden flex items-center justify-center shrink-0">
+              <div className="aspect-4/3 w-full bg-secondary/20 relative overflow-hidden flex items-center justify-center shrink-0">
                 {show.image ? (
                   <img
                     src={show.image}
@@ -108,7 +108,7 @@ export default function FeaturedShows({ shows }: Props) {
                 )}
               </div>
 
-              <div className="p-8 relative z-20 bg-[#09090b] flex flex-col grow justify-center">
+              <div className="p-6 relative z-20 bg-[#09090b] flex flex-col grow justify-center">
                 <h2 className="text-3xl font-bold font-serif text-foreground group-hover:text-primary transition-colors duration-300 leading-tight mb-4">
                   {show.title}
                 </h2>

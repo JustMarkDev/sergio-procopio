@@ -12,7 +12,7 @@ export default function HeroSection() {
         {/* Fine Grid Pattern with Radial Mask */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-size-[32px_32px] mask-[radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
       </div>
-      <div className="container relative z-10 mx-auto px-4 text-center">
+      <div className="container relative z-10 mx-auto px-4 md:px-8 lg:px-12 text-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -47,7 +47,7 @@ export default function HeroSection() {
           {/* Primary Action: Contattami */}
           <a
             href="#contatti"
-            className="group relative overflow-hidden inline-flex items-center justify-center px-12 py-5 rounded-full bg-primary text-primary-foreground font-bold text-xl transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(37,99,235,0.4)] active:scale-95 hover:no-underline focus:outline-none"
+            className="group relative overflow-hidden inline-flex items-center justify-center px-10 py-5 rounded-full bg-primary text-primary-foreground font-bold text-xl transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(37,99,235,0.4)] active:scale-95 hover:no-underline focus:outline-none"
           >
             <span className="relative z-10">Mettiamoci in Contatto</span>
             <div className="absolute inset-0 rounded-full bg-linear-to-tr from-blue-700 to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
