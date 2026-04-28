@@ -9,9 +9,10 @@ export default function ContactForm() {
       {/* Background Glow */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_100%,rgba(37,99,235,0.08)_0%,transparent_50%)] pointer-events-none"></div>
 
-      <div className="container relative z-10 mx-auto px-4 max-w-5xl">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+      <div className="container relative z-10 mx-auto px-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
           <motion.div
+            className="lg:col-span-5"
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -83,18 +84,12 @@ export default function ContactForm() {
                   <div className="text-[10px] uppercase tracking-wider font-bold text-primary mb-1">
                     Email
                   </div>
-                  <div className="flex flex-col">
+                  <div>
                     <a
                       href="mailto:info@sergioprocopio.it"
                       className="text-lg font-medium hover:text-primary transition-colors"
                     >
                       info@sergioprocopio.it
-                    </a>
-                    <a
-                      href="mailto:info@sergioprocopio.com"
-                      className="text-sm text-white/50 hover:text-primary transition-colors mt-1"
-                    >
-                      info@sergioprocopio.com
                     </a>
                   </div>
                 </div>
@@ -107,7 +102,7 @@ export default function ContactForm() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative p-10 bg-white/2 border border-white/5 rounded-[2.5rem] backdrop-blur-sm"
+            className="lg:col-span-7 relative p-10 bg-white/2 border border-white/5 rounded-[2.5rem] backdrop-blur-sm"
           >
             {/* UI-only placeholder until a real submission flow is added. */}
             <form

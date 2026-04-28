@@ -4,332 +4,103 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout
     title="Biografia | Sergio Procopio"
-    description="La storia di Sergio Procopio: oltre 40 anni dedicati all'arte del mimo, del clown e del teatro educativo."
+    description="La storia di Sergio Procopio: una vita dedicata all'arte del comico senza parole, trionfi televisivi e impegno educativo."
 >
-    <div class="relative overflow-hidden bg-[#09090b] min-h-screen">
+    <div class="relative overflow-hidden bg-[#09090b] min-h-screen text-white">
         {/* Background Gradients */}
-        <div
-            class="absolute top-0 right-0 w-[60%] h-[60%] bg-primary/5 rounded-full blur-[150px] pointer-events-none"
-        >
-        </div>
-        <div
-            class="absolute bottom-0 left-0 w-[50%] h-[50%] bg-blue-900/10 rounded-full blur-[150px] pointer-events-none"
-        >
-        </div>
+        <div class="absolute top-0 right-0 w-[60%] h-[60%] bg-primary/5 rounded-full blur-[150px] pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 w-[50%] h-[50%] bg-blue-900/10 rounded-full blur-[150px] pointer-events-none"></div>
 
-        <div class="container relative z-10 mx-auto px-4 py-32 max-w-6xl">
+        <div class="container relative z-10 mx-auto px-4 py-32">
             {/* Hero Section */}
-            <div class="flex flex-col lg:flex-row gap-16 items-center mb-32">
+            <div class="flex flex-col lg:flex-row gap-16 items-center mb-24">
                 <div class="lg:w-1/2 space-y-8">
-                    <h1
-                        class="text-6xl md:text-8xl font-serif font-bold tracking-tight leading-[0.9]"
-                    >
-                        Una vita <br />
-                        <span
-                            class="italic text-transparent bg-clip-text bg-[linear-gradient(to_bottom,#2563eb,#1d4ed8)] pr-4 pb-2 block"
-                            >dedicata all'Arte</span
-                        >
+                    <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-serif font-bold tracking-tight leading-[1.1]">
+                        <span class="block">Biografia</span>
                     </h1>
-                    <div class="w-20 h-1 bg-primary/30 rounded-full"></div>
-                    <p
-                        class="text-2xl font-serif text-muted-foreground italic opacity-90 leading-relaxed border-l-2 border-primary/20 pl-6"
-                    >
-                        "L'arte ti sconvolge e ti scatena conflitti nell'anima,
-                        se non ti fa questo hai perso tempo."
+                    <div class="w-20 h-1 bg-primary/50 rounded-full"></div>
+                    <p class="text-xl font-serif text-muted-foreground italic opacity-90 leading-relaxed border-l-2 border-primary/30 pl-6">
+                        "L'arte ti sconvolge e ti scatena conflitti nell'anima, se non ti fa questo hai perso tempo."
+                        <br />
+                        <span class="text-sm not-italic mt-2 block text-white/70">— Sergio Procopio</span>
                     </p>
                 </div>
 
                 <div class="lg:w-1/2 w-full relative">
-                    <div
-                        class="aspect-4/5 rounded-3xl overflow-hidden relative border border-white/10 bg-white/5"
-                    >
-                        {/* Placeholder per la foto di Sergio Procopio */}
+                    <div class="aspect-[4/5] rounded-3xl overflow-hidden relative border border-white/10 bg-white/5">
                         <img
-                            src="https://images.unsplash.com/photo-1585699324551-f6c309eedeca?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                            alt="Ritratto di Sergio Procopio in scena"
-                            loading="lazy"
-                            decoding="async"
-                            class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                            src="https://placehold.co/800x1000/1a1a1a/cccccc?text=Foto+Sergio+Procopio"
+                            alt="Ritratto di Sergio Procopio"
+                            loading="eager"
+                            class="absolute inset-0 w-full h-full object-cover"
                         />
-                        <div
-                            class="absolute inset-0 bg-linear-to-t from-[#09090b] via-transparent to-transparent opacity-80"
-                        >
-                        </div>
-                        <div class="absolute bottom-6 left-6">
-                            <span
-                                class="bg-black/50 backdrop-blur-md border border-white/10 text-white/80 text-xs tracking-widest uppercase px-4 py-2 rounded-full font-semibold"
-                            >
-                                Sergio Procopio
-                            </span>
-                        </div>
-                    </div>
-                    {/* Decorative Elements */}
-                    <div
-                        class="absolute -top-6 -right-6 w-32 h-32 bg-primary/20 rounded-full blur-2xl -z-10"
-                    >
-                    </div>
-                    <div
-                        class="absolute -bottom-6 -left-6 w-32 h-32 bg-blue-600/20 rounded-full blur-2xl -z-10"
-                    >
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                     </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
-                {/* Main Content - Classic Layout */}
-                <div class="lg:col-span-8 space-y-16">
-                    <section>
-                        <h2
-                            class="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-6 flex items-center gap-4"
-                        >
-                            <span class="w-12 h-px bg-primary/30"></span> 1975 - Le
-                            Origini
-                        </h2>
-                        <div
-                            class="prose prose-invert prose-blue max-w-none prose-p:text-lg prose-p:leading-relaxed prose-p:text-muted-foreground prose-strong:text-foreground prose-strong:font-bold"
-                        >
-                            <p>
-                                Sergio Procopio ha intrapreso il suo
-                                straordinario percorso nel mondo del clown nel
-                                lontano <strong>1975</strong>, quando, a undici
-                                anni, varcò le porte del collegio dei Salesiani
-                                di Arese. Qui ha avuto l’incredibile opportunità
-                                di incontrare due maestri di vita e teatro, <strong
-                                    >Don Vittorio Chiari</strong
-                                > e <strong>Bano Ferrari</strong>, figure che
-                                hanno plasmato il suo destino e ispirato la sua
-                                passione per il palcoscenico.
-                            </p>
-                            <p>
-                                Nel <strong>1977</strong> ha contribuito a fondare
-                                la prestigiosa compagnia teatrale <strong
-                                    >"i Barabba’s Clown"</strong
-                                >, portando il suo talento in oltre 1800
-                                rappresentazioni culminando con un'esibizione in
-                                Vaticano nel 1989.
-                            </p>
-                        </div>
-                    </section>
-
-                    <section>
-                        <h2
-                            class="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-6 flex items-center gap-4"
-                        >
-                            <span class="w-12 h-px bg-primary/30"></span> 1990 - L'Età
-                            Professionale
-                        </h2>
-                        <div
-                            class="prose prose-invert prose-blue max-w-none prose-p:text-lg prose-p:leading-relaxed prose-p:text-muted-foreground"
-                        >
-                            <p>
-                                Intraprese una fruttuosa collaborazione con il
-                                regista teatrale Carlo Rossi, iniziando la sua
-                                carriera di clown professionista a tempo pieno.
-                            </p>
-                            <p>
-                                Fondando la <strong
-                                    >"Compagnia Teatrale Sergio Procopio"</strong
-                                >, ha creato e portato in scena ben 18
-                                spettacoli, accumulando oltre 2000 repliche di
-                                successo.
-                            </p>
-                            <p>
-                                La sua formazione artistica è stata arricchita
-                                dalla frequenza della scuola svizzera di Pierre
-                                Bayland e dalla scuola di <strong
-                                    >Marcel Marceau</strong
-                                >, riconosciuto come il più grande mimo di tutti
-                                i tempi.
-                            </p>
-                        </div>
-                    </section>
-
-                    <section>
-                        <h2
-                            class="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-6 flex items-center gap-4"
-                        >
-                            <span class="w-12 h-px bg-primary/30"></span> Il Presente
-                            - Eventi Internazionali
-                        </h2>
-                        <div
-                            class="prose prose-invert prose-blue max-w-none prose-p:text-lg prose-p:leading-relaxed prose-p:text-muted-foreground"
-                        >
-                            <p>
-                                La sua carriera internazionale è stata
-                                caratterizzata da prestigiose esibizioni in
-                                Belgio, Francia, Germania, Spagna, Svizzera,
-                                Madagascar, Brasile e Perù.
-                            </p>
-                            <p>
-                                Nel 2006, ha lasciato un'impronta indelebile
-                                esibendosi presso il teatro Museo della Nazione
-                                in Perù, di fronte al Presidente della
-                                Repubblica.
-                            </p>
-                            <p>
-                                Oggi, con oltre <strong
-                                    >quarant'anni di attività</strong
-                                >, dimostra che la sua passione per l'arte del
-                                clown e della pantomima è più viva che mai.
-                            </p>
-                        </div>
-                    </section>
-                </div>
-
-                {/* Sidebar / Stats */}
-                <div
-                    class="lg:col-span-4 space-y-8 lg:pl-8 lg:border-l border-white/5"
-                >
-                    <div
-                        class="p-8 bg-linear-to-b from-primary/10 to-transparent border border-primary/20 rounded-3xl sticky top-32 backdrop-blur-sm"
-                    >
-                        <h3
-                            class="text-2xl font-serif font-bold mb-8 text-white flex items-center gap-3"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="text-primary"
-                                ><circle cx="12" cy="12" r="10"></circle><path
-                                    d="M12 6v6l4 2"></path></svg
-                            >
-                            In Breve
-                        </h3>
-
-                        <div class="space-y-8">
-                            <div class="group">
-                                <div
-                                    class="text-[10px] uppercase tracking-[0.2em] text-primary mb-2 font-bold"
-                                >
-                                    Debutto
-                                </div>
-                                <div
-                                    class="text-3xl font-bold font-serif text-white/90 group-hover:text-white transition-colors"
-                                >
-                                    1975
-                                </div>
-                            </div>
-
-                            <div class="group">
-                                <div
-                                    class="text-[10px] uppercase tracking-[0.2em] text-primary mb-2 font-bold"
-                                >
-                                    Rappresentazioni
-                                </div>
-                                <div
-                                    class="text-3xl font-bold font-serif text-white/90 group-hover:text-white transition-colors"
-                                >
-                                    +3800
-                                </div>
-                            </div>
-
-                            <div class="group">
-                                <div
-                                    class="text-[10px] uppercase tracking-[0.2em] text-primary mb-2 font-bold"
-                                >
-                                    Paesi Visitati
-                                </div>
-                                <div
-                                    class="text-xl font-bold font-serif text-white/90 group-hover:text-white transition-colors"
-                                >
-                                    Oltre 10 nazioni
-                                </div>
-                            </div>
-
-                            <div class="pt-8 border-t border-white/10">
-                                <div
-                                    class="text-[10px] uppercase tracking-[0.2em] text-primary mb-4 font-bold"
-                                >
-                                    TV & Media
-                                </div>
-                                <ul
-                                    class="text-sm space-y-3 opacity-80 font-medium"
-                                >
-                                    <li class="flex items-center gap-2">
-                                        <div
-                                            class="w-1 h-1 rounded-full bg-primary"
-                                        >
-                                        </div> Rai 1 (Caffè Italiano)
-                                    </li>
-                                    <li class="flex items-center gap-2">
-                                        <div
-                                            class="w-1 h-1 rounded-full bg-primary"
-                                        >
-                                        </div> Rai 2 (Oro e Argento)
-                                    </li>
-                                    <li class="flex items-center gap-2">
-                                        <div
-                                            class="w-1 h-1 rounded-full bg-primary"
-                                        >
-                                        </div> Rai 3 (Il circolo delle 12)
-                                    </li>
-                                    <li class="flex items-center gap-2">
-                                        <div
-                                            class="w-1 h-1 rounded-full bg-primary"
-                                        >
-                                        </div> Trenta ore per la vita
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Educational Commitment Section */}
-            <section
-                class="mt-32 p-12 md:p-16 bg-linear-to-br from-[#09090b] to-primary/5 rounded-[3rem] border border-primary/20 text-center relative overflow-hidden group"
-            >
-                <div
-                    class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1514306191717-452ec28c7814?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80')] bg-cover bg-center opacity-5 mix-blend-overlay group-hover:opacity-10 transition-opacity duration-1000"
-                >
-                </div>
-                <div
-                    class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(ellipse_at_center,rgba(37,99,235,0.15)_0%,transparent_70%)] pointer-events-none"
-                >
-                </div>
-
-                <div class="relative z-10">
-                    <div
-                        class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 border border-primary/30 text-primary mb-8"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="28"
-                            height="28"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            ><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"
-                            ></path><path
-                                d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"
-                            ></path></svg
-                        >
-                    </div>
-                    <h2 class="text-4xl md:text-5xl font-serif font-bold mb-8">
-                        Un impegno educativo
+            {/* Content Sections */}
+            <div class="space-y-24">
+                {/* Section 1 */}
+                <section class="space-y-6">
+                    <h2 class="text-3xl md:text-4xl font-serif font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">
+                        Una vita dedicata all'arte del comico senza parole
                     </h2>
-                    <p
-                        class="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed italic"
-                    >
-                        Parallelamente alla sua carriera artistica, Sergio ha
-                        dedicato oltre vent'anni a incontri per giovani e
-                        famiglie su temi educativi della crescita, collaborando
-                        con scuole, associazioni e oratori, portando i valori
-                        appresi nel suo percorso di ex allievo Salesiano.
-                    </p>
-                </div>
-            </section>
+                    <div class="space-y-4 text-lg text-white/80 leading-relaxed max-w-4xl">
+                        <p>
+                            Sergio Procopio ha intrapreso il suo straordinario percorso nel mondo del clown nel lontano 1975, quando, a undici anni, varcò le porte del collegio dei Salesiani di Arese. Qui ha avuto l'incredibile opportunità di incontrare due maestri di vita e teatro, Don Vittorio Chiari e Bano Ferrari, figure che hanno plasmato il suo destino e ispirato la sua passione per il palcoscenico. Bano Ferrari, rinomato clown professionista, ha guidato Sergio e gli altri ragazzi del collegio, incoraggiandoli a sviluppare le proprie capacità in un autentico spirito di condivisione.
+                        </p>
+                        <p>
+                            Nel 1977, insieme a Bano, Don Vittorio e altri talentuosi insegnanti e ragazzi del collegio, Sergio ha contribuito a fondare la prestigiosa compagnia teatrale "I Barabba's Clown". Durante i dodici anni di collaborazione con la compagnia, Sergio ha portato il suo talento in oltre 1800 rappresentazioni teatrali in tutta Italia e in numerosi Festival internazionali, culminando con una memorabile esibizione in Vaticano nel 1989 di fronte a Giovanni Paolo II.
+                        </p>
+                        <p>
+                            Nel 1990, intraprese una fruttuosa collaborazione con il regista teatrale Carlo Rossi, iniziando la sua carriera di clown professionista a tempo pieno. Fondando la "Compagnia Teatrale Sergio Procopio", ha creato e portato in scena ben 18 spettacoli, accumulando oltre 2000 repliche di successo. La sua formazione artistica è stata arricchita dalla frequenza della scuola svizzera di Pierre Bayland e dalla scuola di Marcel Marceau, riconosciuto come il più grande mimo di tutti i tempi.
+                        </p>
+                    </div>
+                </section>
+
+                {/* Section 2 */}
+                <section class="space-y-6">
+                    <h2 class="text-3xl md:text-4xl font-serif font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">
+                        Trionfo sullo schermo
+                    </h2>
+                    <div class="space-y-4 text-lg text-white/80 leading-relaxed max-w-4xl">
+                        <p>
+                            Sergio Procopio ha brillato anche sul piccolo schermo, con numerose apparizioni televisive che testimoniano il suo carisma e il suo talento. Tra queste, si ricordano le partecipazioni a programmi come "Oro e argento" su Rai 2 nel 1990, "Il circolo delle 12" su Rai 3 nel 1992, "Caffè Italiano" su Rai 1 nel 1993 e molte altre, culminando con la sua presenza nel programma "Trenta ore per la vita" su Rai 2 nel 2006, condotto da Tiberio Timperi.
+                        </p>
+                    </div>
+                </section>
+
+                {/* Section 3 */}
+                <section class="space-y-6">
+                    <h2 class="text-3xl md:text-4xl font-serif font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">
+                        Presenza costante nei grandi eventi
+                    </h2>
+                    <div class="space-y-4 text-lg text-white/80 leading-relaxed max-w-4xl">
+                        <p>
+                            La sua presenza è stata costante in importanti Festival e manifestazioni, tra cui il Festival Internazionale del Clown di Milano nel 1993, dove ha lasciato il pubblico senza fiato. Nel 1996, al Festival Internazionale del Riso di Bordighera, Sergio è stato acclamato come il più applaudito, sottolineando la sua capacità di trasmettere gioia e emozioni attraverso la sua arte unica. Da oltre vent'anni, Sergio Procopio si esibisce regolarmente presso l'Università Bocconi di Milano, consolidando la sua reputazione di artista di grande caratura. Nel 2006, ha festeggiato i suoi 25 anni di attività al Piccolo Teatro Studio di Milano, accolto dagli applausi entusiastici del pubblico.
+                        </p>
+                        <p>
+                            La sua carriera internazionale è stata caratterizzata da prestigiose esibizioni in Belgio, Francia, Germania, Spagna, Svizzera, Madagascar, Brasile e Perù. Nel 2006, ha lasciato un'impronta indelebile esibendosi presso il teatro Museo della Nazione in Perù, di fronte al Presidente della Repubblica. Questo è solo un assaggio della sua straordinaria carriera, che nel 2020 ha raggiunto l'incredibile traguardo di quarant'anni di attività, dimostrando che la sua passione per l'arte del clown è più viva che mai.
+                        </p>
+                    </div>
+                </section>
+
+                {/* Section 4 */}
+                <section class="space-y-6">
+                    <h2 class="text-3xl md:text-4xl font-serif font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">
+                        Un impegno educativo per giovani e famiglie
+                    </h2>
+                    <div class="space-y-4 text-lg text-white/80 leading-relaxed max-w-4xl">
+                        <p>
+                            Parallelamente alla sua carriera artistica, Sergio ha dedicato oltre vent'anni a incontri per giovani e famiglie su temi educativi della crescita, collaborando con scuole, associazioni, comuni, oratori e altre istituzioni. In questi contesti, ha trattato temi importanti e attuali, costruendo momenti di riflessione e confronto. Inoltre, da più di vent'anni conduce corsi sulla responsabilità dedicati agli educatori in oratorio, ispirandosi ai valori e all'etica appresa dai Salesiani, dove è cresciuto come ex allievo.
+                        </p>
+                        <p>
+                            Con il suo inconfondibile stile e il suo impegno costante, Sergio Procopio continua a emozionare e ispirare il pubblico in tutto il mondo, non solo come artista, ma anche come educatore e padre di tre figli. La sua è una storia di dedizione, talento e successo, e sembra che non abbia alcuna intenzione di smettere di regalare sorrisi e profonde emozioni al suo affezionato pubblico.
+                        </p>
+                    </div>
+                </section>
+            </div>
         </div>
     </div>
 </Layout>

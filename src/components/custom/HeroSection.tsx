@@ -18,7 +18,7 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
         >
-          <h1 className="text-7xl md:text-[11rem] font-serif font-bold text-foreground mb-10 tracking-tighter leading-[0.85] select-none">
+          <h1 className="text-6xl sm:text-8xl lg:text-9xl xl:text-[11rem] font-serif font-bold text-foreground mb-10 tracking-tighter leading-[0.85] select-none">
             Sergio <br />
             <span className="text-transparent bg-clip-text bg-linear-to-b from-primary via-primary to-blue-700 italic pb-4 pr-12">
               Procopio
