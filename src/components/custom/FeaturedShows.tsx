@@ -5,7 +5,7 @@ interface Show {
   title: string;
   category: string;
   description: string;
-  duration?: string;
+  durata?: string;
   image?: string;
 }
 
@@ -84,7 +84,7 @@ export default function FeaturedShows({ shows }: Props) {
                     {show.category}
                   </span>
                 </div>
-                {show.duration && (
+                {show.durata && (
                   <div className="absolute top-6 right-6 z-20">
                     <div className="py-1.5 px-3 bg-black/40 backdrop-blur-md border border-white/10 rounded-full text-[10px] font-semibold text-white/80 uppercase tracking-widest flex items-center gap-1.5 shadow-lg">
                       <svg
@@ -102,7 +102,7 @@ export default function FeaturedShows({ shows }: Props) {
                         <circle cx="12" cy="12" r="10" />
                         <polyline points="12 6 12 12 16 14" />
                       </svg>
-                      {show.duration}
+                      {show.durata}
                     </div>
                   </div>
                 )}

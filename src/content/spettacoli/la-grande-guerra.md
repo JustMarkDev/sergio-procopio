@@ -3,12 +3,12 @@ title: "La Grande Guerra e il piccolo alpino"
 description: "Lo spettacolo sulla Prima Guerra Mondiale che racconta l'umanità dell'alpino, dalle prime esperienze al sacrificio finale, dedicato ai ragazzi del '99."
 category: "alpini"
 image: "../../assets/spettacoli/la-grande-guerra/sentinella.jpg"
-duration: "1h 10m"
+durata: "1h 10m"
 regia: "Carlo Rossi"
-etaConsigliata: "6+"
+eta: "6+"
 produzione: "Teatro Procopio"
 tecnico: "Giovanni Brovelli"
-minimoAlunni: "Minimo di 120 alunni"
+requisiti: "Minimo di 120 alunni"
 highlight: false
 ---
 

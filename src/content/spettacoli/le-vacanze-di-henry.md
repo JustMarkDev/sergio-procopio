@@ -2,12 +2,12 @@
 title: "Le vacanze di Henry"
 description: "Uno spettacolo sull'Olocausto che racconta la storia di un uomo-bambino coinvolto nell'orrore per preservare la memoria."
 category: "Scuole"
-duration: "1h 10m"
-regia: "Broggini Daniele"
-etaConsigliata: "PLACEHOLDER"
+durata: "1h 10m"
+regia: "Daniele Broggini"
+eta: "PLACEHOLDER"
 produzione: "Teatro Procopio"
-castTecnico: "Giovanni Brovelli"
-minimoAlunni: "Minimo di 120 alunni"
+tecnico: "Giovanni Brovelli"
+requisiti: "Minimo di 120 alunni"
 highlight: true
 draft: true
 ---

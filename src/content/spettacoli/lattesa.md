@@ -3,12 +3,12 @@ title: "L'Attesa"
 description: "Spegni lo schermo, accendi la mente: 'L'attesa' ti porta oltre la dipendenza dalla tecnologia."
 category: "Tutti"
 image: "../../assets/spettacoli/lattesa/attesa.jpg"
-duration: "1h 15m"
+durata: "1h 15m"
 regia: "Carlo Rossi"
-etaConsigliata: "7+"
+eta: "7+"
 produzione: "Teatro Procopio"
 tecnico: "Giorgio Albini"
-minimoAlunni: "Minimo di 120 alunni"
+requisiti: "Minimo di 120 alunni"
 highlight: false
 ---
 

@@ -2,6 +2,7 @@
 import Layout from "../../layouts/Layout.astro";
 import { getCollection, render } from "astro:content";
 import { Image } from "astro:assets";
+import { getShowSpecs } from "../../lib/show-specs";
 
 export async function getStaticPaths() {
     const spettacoli = await getCollection("spettacoli");
@@ -15,6 +16,7 @@ export async function getStaticPaths() {
 
 const { show } = Astro.props;
 const { Content } = await render(show);
+const specGroups = getShowSpecs(show);
 ---
 
 <Layout
@@ -82,104 +84,20 @@ const { Content } = await render(show);
 
                         <div class="space-y-6">
                             {
-                                show.data.produzione && (
+                                specGroups.map((group) => (
                                     <div>
-                                        <div class="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
-                                            Produzione
-                                        </div>
-                                        <div class="text-lg font-bold font-serif">
-                                            {show.data.produzione}
-                                        </div>
+                                        {group.items.map((item) => (
+                                            <div class="mb-6 last:mb-0">
+                                                <div class="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
+                                                    {item.label}
+                                                </div>
+                                                <div class="text-lg font-bold font-serif">
+                                                    {item.value}
+                                                </div>
+                                            </div>
+                                        ))}
                                     </div>
-                                )
-                            }
-                            {
-                                show.data.regia && (
-                                    <div>
-                                        <div class="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
-                                            Regia
-                                        </div>
-                                        <div class="text-lg font-bold font-serif">
-                                            {show.data.regia}
-                                        </div>
-                                    </div>
-                                )
-                            }
-                            {
-                                show.data.etaConsigliata && (
-                                    <div>
-                                        <div class="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
-                                            Età Consigliata
-                                        </div>
-                                        <div class="text-lg font-bold font-serif">
-                                            {show.data.etaConsigliata}
-                                        </div>
-                                    </div>
-                                )
-                            }
-                            {
-                                (show.data.durataDettaglio ||
-                                    show.data.duration) && (
-                                    <div>
-                                        <div class="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
-                                            Durata
-                                        </div>
-                                        <div class="text-lg font-bold font-serif">
-                                            {show.data.durataDettaglio ||
-                                                show.data.duration}
-                                        </div>
-                                    </div>
-                                )
-                            }
-                            {
-                                (show.data.castTecnico ||
-                                    show.data.tecnico) && (
-                                    <div>
-                                        <div class="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
-                                            Cast Tecnico
-                                        </div>
-                                        <div class="text-lg font-bold font-serif">
-                                            {show.data.castTecnico ||
-                                                show.data.tecnico}
-                                        </div>
-                                    </div>
-                                )
-                            }
-
-                            {
-                                show.data.minimoAlunni && (
-                                    <div>
-                                        <div class="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
-                                            Requisiti
-                                        </div>
-                                        <div class="text-lg font-bold font-serif">
-                                            {show.data.minimoAlunni}
-                                        </div>
-                                    </div>
-                                )
-                            }
-                            {
-                                (show.data.noteAttuazione ||
-                                    show.data.spazioScenico ||
-                                    show.data.oscuramento) && (
-                                    <div class="text-sm font-medium text-muted-foreground/80 space-y-2 pt-4 border-t border-white/5">
-                                        {show.data.noteAttuazione && (
-                                            <p>{show.data.noteAttuazione}</p>
-                                        )}
-                                        <ul class="space-y-1">
-                                            {show.data.spazioScenico && (
-                                                <li>
-                                                    • {show.data.spazioScenico}
-                                                </li>
-                                            )}
-                                            {show.data.oscuramento && (
-                                                <li>
-                                                    • {show.data.oscuramento}
-                                                </li>
-                                            )}
-                                        </ul>
-                                    </div>
-                                )
+                                ))
                             }
                         </div>
 

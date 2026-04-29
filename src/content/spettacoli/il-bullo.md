@@ -3,12 +3,12 @@ title: "Il Bullo"
 description: "Uno spettacolo-incontro contro il bullismo, l'abbandono scolastico, l'illegalità e il femminicidio."
 category: "Scuole"
 image: "../../assets/spettacoli/il-bullo/letto.jpg"
-duration: "2 ore"
+durata: "2 ore"
 regia: "Giorgio Albini"
-etaConsigliata: "11+"
+eta: "11+"
 produzione: "Teatro Procopio"
 tecnico: "Giovanni Brovelli"
-minimoAlunni: "Minimo di 120 alunni"
+requisiti: "Minimo di 120 alunni"
 highlight: true
 ---
 

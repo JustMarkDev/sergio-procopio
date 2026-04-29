@@ -3,12 +3,12 @@ title: "L'uomo e il mare di plastica"
 description: "Uno spettacolo didattico sull'educazione ambientale ispirato a 'Il vecchio e il mare', per esplorare il ruolo dell'uomo come custode dell'ambiente."
 category: "Scuole"
 image: "../../assets/spettacoli/luomo-e-il-mare-di-plastica/la grande pesca.jpg"
-duration: "1h 10m"
+durata: "1h 10m"
 regia: "Carlo Rossi"
-etaConsigliata: "7+"
+eta: "7+"
 produzione: "Teatro Procopio"
-castTecnico: "Giovanni Brovelli"
-minimoAlunni: "Minimo di 120 alunni"
+tecnico: "Giovanni Brovelli"
+requisiti: "Minimo di 120 alunni"
 highlight: true
 ---
 

@@ -3,12 +3,12 @@ title: "Pino 4.0"
 description: "Uno spettacolo e incontro per far conoscere il pericolo della dipendenza dal cellulare tra i giovani."
 category: "Scuole"
 image: "../../assets/spettacoli/pino-4-0/la noia.jpg"
-duration: "1h 15m"
+durata: "1h 15m"
 regia: "Daniele Broggini"
-etaConsigliata: "7+"
+eta: "7+"
 produzione: "Teatro Procopio"
 tecnico: "Giorgio Albini"
-minimoAlunni: "Minimo di 120 alunni"
+requisiti: "Minimo di 120 alunni"
 highlight: true
 ---
 

@@ -3,12 +3,12 @@ title: "La Valigia di S. Francesco"
 description: "Uno spettacolo comico e poetico per riscoprire il messaggio di pace e semplicità di San Francesco attraverso un viaggio interiore ed esilarante."
 category: "parrocchie"
 image: "../../assets/spettacoli/la-valigia-di-san-francesco/la ricerca.jpg"
-duration: "60 minuti"
-regia: "Broggini Daniele"
-etaConsigliata: "Per tutte le età"
+durata: "60 minuti"
+regia: "Daniele Broggini"
+eta: "Per tutte le età"
 produzione: "Teatro Procopio"
-tecnico: "Brovelli Giovanni"
-minimoAlunni: "Minimo di 120 alunni"
+tecnico: "Giovanni Brovelli"
+requisiti: "Minimo di 120 alunni"
 highlight: true
 ---
 
