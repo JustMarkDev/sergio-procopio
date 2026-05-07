@@ -2,8 +2,6 @@ import { defineAction } from "astro:actions";
 import { z } from "zod";
 import { Resend } from "resend";
 
-const resend = new Resend(import.meta.env.RESEND_API_KEY || 're_dummy_key_for_build');
-
 export const server = {
   sendContactEmail: defineAction({
     accept: "form",
@@ -14,14 +12,40 @@ export const server = {
       messaggio: z.string().min(1, "Messaggio obbligatorio"),
     }),
     handler: async (input) => {
+      // L'integrazione di Vercel espone la chiave come RESEND_API_KEY.
+      // Cerchiamo in import.meta.env (Astro) e process.env (Node/Vercel runtime)
+      const apiKey =
+        import.meta.env.RESEND_API_KEY ||
+        (globalThis as any).process?.env?.RESEND_API_KEY;
+
+      if (!apiKey) {
+        console.error("Errore: RESEND_API_KEY non trovata nell'ambiente.");
+        throw new Error("Configurazione server incompleta (API Key mancante).");
+      }
+
+      const resend = new Resend(apiKey);
       const { data, error } = await resend.emails.send({
-        from: "Sito Web <onboarding@resend.dev>", // Change to your verified domain later
-        to: "info@sergioprocopio.it", // Replace with destination email
-        subject: `Nuovo messaggio da: ${input.nome} - ${input.oggetto || "Senza oggetto"}`,
-        text: `Nome: ${input.nome}\nEmail: ${input.email}\nMessaggio:\n${input.messaggio}`,
+        from: "Sito Web <sito@contatti.sergioprocopio.it>",
+        to: "info@sergioprocopio.it",
+        replyTo: input.email,
+        subject: `Nuovo contatto dal sito web da ${input.nome}`,
+        html: `
+          <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
+            <h2 style="color: #2563eb; border-bottom: 2px solid #2563eb; padding-bottom: 10px;">Nuovo contatto dal sito web</h2>
+            <p><strong>Nome:</strong> ${input.nome}</p>
+            <p><strong>Email:</strong> ${input.email}</p>
+            <p><strong>Oggetto:</strong> ${input.oggetto || "Nessun oggetto"}</p>
+            <div style="margin-top: 20px; padding: 15px; background-color: #f9fafb; border-radius: 5px;">
+              <p><strong>Messaggio:</strong></p>
+              <p style="white-space: pre-wrap;">${input.messaggio}</p>
+            </div>
+          </div>
+        `,
+        text: `Nuovo contatto dal sito web\n\nNome: ${input.nome}\nEmail: ${input.email}\nOggetto: ${input.oggetto || "Nessun oggetto"}\n\nMessaggio:\n${input.messaggio}`,
       });
 
       if (error) {
+        console.error("Resend Error:", error);
         throw new Error(error.message);
       }
 

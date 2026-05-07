@@ -25,6 +25,7 @@
     "react-dom": "^19.2.5",
     "resend": "^6.12.2",
     "tailwindcss": "^4.2.4",
+    "vercel": "^53.2.0",
     "zod": "^4.3.6"
   },
   "overrides": {
