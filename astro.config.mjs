@@ -10,6 +10,9 @@ import vercel from "@astrojs/vercel";
 export default defineConfig({
   site: "https://sergioprocopio.com",
   output: "static",
+  security: {
+    checkOrigin: false,
+  },
   adapter: vercel({
     webAnalytics: { enabled: true },
   }),
