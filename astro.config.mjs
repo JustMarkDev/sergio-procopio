@@ -8,8 +8,18 @@ import vercel from "@astrojs/vercel";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://sergioprocopio.com",
+  site: "https://sergioprocopio.it",
   output: "static",
+  security: {
+    checkOrigin: true,
+    allowedDomains: [
+      { hostname: "sergioprocopio.it" },
+      { hostname: "www.sergioprocopio.it" },
+      { hostname: "sergioprocopio.com" },
+      { hostname: "www.sergioprocopio.com" },
+      { hostname: "localhost" },
+    ],
+  },
   adapter: vercel({
     webAnalytics: { enabled: true },
   }),
