@@ -109,9 +109,9 @@ export default function FeaturedShows({ shows }: Props) {
               </div>
 
               <div className="p-6 relative z-20 bg-[#09090b] flex flex-col grow justify-center">
-                <h2 className="text-3xl font-bold font-serif text-foreground group-hover:text-primary transition-colors duration-300 leading-tight mb-4">
+                <h3 className="text-3xl font-bold font-serif text-foreground group-hover:text-primary transition-colors duration-300 leading-tight mb-4">
                   {show.title}
-                </h2>
+                </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed opacity-80 line-clamp-3">
                   {show.description}
                 </p>

@@ -1,0 +1,35 @@
+---
+import { SITE_TITLE, SITE_DESCRIPTION, SOCIAL_LINKS } from '../consts';
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": "https://sergioprocopio.it/#person",
+  "name": "Sergio Procopio",
+  "url": "https://sergioprocopio.it",
+  "image": "https://sergioprocopio.it/favicon.svg",
+  "description": SITE_DESCRIPTION,
+  "jobTitle": "Attore, mimo e regista teatrale",
+  "sameAs": [
+    SOCIAL_LINKS.instagram,
+    SOCIAL_LINKS.facebook,
+    SOCIAL_LINKS.youtube
+  ]
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://sergioprocopio.it/#website",
+  "url": "https://sergioprocopio.it",
+  "name": SITE_TITLE,
+  "description": SITE_DESCRIPTION,
+  "publisher": {
+    "@id": "https://sergioprocopio.it/#person"
+  },
+  "inLanguage": "it-IT"
+};
+---
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(personSchema)} />
+<script type="application/ld+json" is:inline set:html={JSON.stringify(websiteSchema)} />

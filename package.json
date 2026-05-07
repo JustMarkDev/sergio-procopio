@@ -18,24 +18,24 @@
     "@types/react-dom": "^19.2.3",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
-    "astro": "^6.1.9",
+    "astro": "^6.3.0",
     "framer-motion": "^12.38.0",
-    "lucide-react": "^1.11.0",
-    "react": "^19.2.5",
-    "react-dom": "^19.2.5",
-    "resend": "^6.12.2",
+    "lucide-react": "^1.14.0",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "resend": "^6.12.3",
     "tailwindcss": "^4.2.4",
     "vercel": "^53.2.0",
-    "zod": "^4.3.6"
+    "zod": "^4.4.3"
   },
   "overrides": {
     "path-to-regexp": "6.3.0"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.8",
+    "@astrojs/check": "^0.9.9",
     "@astrojs/react": "^5.0.4",
     "@astrojs/sitemap": "^3.7.2",
-    "@astrojs/vercel": "^10.0.5",
+    "@astrojs/vercel": "^10.0.6",
     "@tailwindcss/vite": "^4.2.4",
     "typescript": "^5.9.3"
   }

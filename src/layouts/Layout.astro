@@ -3,6 +3,7 @@ import '@fontsource/inter';
 import '@fontsource/playfair-display';
 import '../styles/globals.css';
 import SEO from '../components/SEO.astro';
+import Schema from '../components/Schema.astro';
 import Header from '../components/custom/Header';
 import Footer from '../components/custom/Footer.astro';
 import SpeedInsights from '@vercel/speed-insights/astro';
@@ -20,6 +21,7 @@ const { title, description } = Astro.props;
 <html lang="it" class="dark scroll-smooth">
 	<head>
 		<SEO title={title} description={description} />
+		<Schema />
 	</head>
 	<body>
 		<Header client:load />

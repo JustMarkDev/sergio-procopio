@@ -31,11 +31,11 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
         >
-          <p className="text-xl md:text-3xl font-serif text-muted-foreground max-w-4xl mx-auto mb-16 leading-relaxed italic opacity-80">
+          <h2 className="text-xl md:text-3xl font-serif text-muted-foreground max-w-4xl mx-auto mb-16 leading-relaxed italic opacity-80">
             "L'arte del comico senza parole al servizio{" "}
             <br className="hidden md:block" />
             dell'educazione e delle emozioni."
-          </p>
+          </h2>
         </motion.div>
 
         <motion.div
