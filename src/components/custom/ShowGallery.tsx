@@ -21,12 +21,35 @@ interface ShowGalleryProps {
 
 export default function ShowGallery({ mainImageSrc, mainImageOriginalSrc, images, alt }: ShowGalleryProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [isImageLoading, setIsImageLoading] = useState(true);
   const thumbnailsRef = useRef<HTMLDivElement>(null);
 
   // Find index of the main image inside the show images array to start the lightbox there.
   // We match against the original unresolved asset source string for bulletproof accuracy!
   const mainImageIndex = images.findIndex((img) => img.originalSrc === mainImageOriginalSrc);
   const activeIndexToUse = mainImageIndex >= 0 ? mainImageIndex : 0;
+
+  // Reset loading state whenever the active index changes
+  useEffect(() => {
+    if (activeIndex !== null) {
+      setIsImageLoading(true);
+    }
+  }, [activeIndex]);
+
+  // Proactive Background Preloading: caches adjacent images (next/prev) in background memory
+  useEffect(() => {
+    if (activeIndex === null || images.length <= 1) return;
+
+    // Preload next image
+    const nextIdx = (activeIndex + 1) % images.length;
+    const nextImg = new Image();
+    nextImg.src = images[nextIdx].src;
+
+    // Preload previous image
+    const prevIdx = (activeIndex - 1 + images.length) % images.length;
+    const prevImg = new Image();
+    prevImg.src = images[prevIdx].src;
+  }, [activeIndex, images]);
 
   // Prevent parent page scrolling while image is maximized
   useEffect(() => {
@@ -175,13 +198,24 @@ export default function ShowGallery({ mainImageSrc, mainImageOriginalSrc, images
 
               {/* Central Image Container (fixed-height wrapper prevents screen height shift) */}
               <div className="relative h-[60vh] md:h-[70vh] w-full max-w-[95vw] md:max-w-[85vw] flex items-center justify-center z-10">
+                {/* Premium Centered Loader */}
+                {isImageLoading && (
+                  <div
+                    className="absolute w-44 h-44 md:w-56 md:h-56 bg-zinc-900/60 border border-white/5 rounded-2xl flex items-center justify-center shadow-xl backdrop-blur-md animate-pulse"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div className="w-10 h-10 border-4 border-white/10 border-t-primary rounded-full animate-spin"></div>
+                  </div>
+                )}
+
                 <motion.img
                   key={activeIndex}
                   src={currentImage.src}
                   alt={currentImage.alt}
-                  initial={{ opacity: 0.7 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.2 }}
+                  onLoad={() => setIsImageLoading(false)}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: isImageLoading ? 0 : 1 }}
+                  transition={{ duration: 0.25 }}
                   className="max-h-full max-w-full w-auto h-auto object-contain rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] border border-white/10 select-none"
                   onClick={(e) => e.stopPropagation()}
                 />
