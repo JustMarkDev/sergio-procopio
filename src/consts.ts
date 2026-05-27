@@ -3,5 +3,5 @@ export const SITE_DESCRIPTION = 'Sergio Procopio: attore, mimo e regista teatral
 export const SOCIAL_LINKS = {
   instagram: 'https://instagram.com/sergioprocopio',
   facebook: 'https://facebook.com/sergioprocopio',
-  youtube: 'https://youtube.com/sergioprocopio',
+  youtube: 'https://www.youtube.com/@tuttosorriso',
 };
