@@ -44,12 +44,12 @@ Per avviare il progetto in locale, segui questi passaggi:
 
 2. **Installa le dipendenze:**
    ```sh
-   npm install
+   bun install
    ```
 
 3. **Avvia il server di sviluppo:**
    ```sh
-   npm run dev
+   bun run dev
    ```
    Il sito sarà accessibile all'indirizzo `http://localhost:4321`.
 
@@ -57,10 +57,10 @@ Per avviare il progetto in locale, segui questi passaggi:
 
 | Comando | Descrizione |
 | :--- | :--- |
-| `npm run dev` | Avvia il server di sviluppo locale. |
-| `npm run build` | Genera la versione statica per la produzione in `./dist/`. |
-| `npm run preview` | Visualizza in anteprima la build locale. |
-| `npm run astro ...` | Esegue comandi specifici della CLI di Astro. |
+| `bun run dev` | Avvia il server di sviluppo locale. |
+| `bun run build` | Genera la versione statica per la produzione in `./dist/`. |
+| `bun run preview` | Visualizza in anteprima la build locale. |
+| `bunx astro ...` | Esegue comandi specifici della CLI di Astro. |
 
 ## 🌐 Deploy
 
