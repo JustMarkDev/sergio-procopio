@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
+import { getImage } from "astro:assets";
 import GalleryView from "../components/custom/GalleryView";
 
 // Mappiamo gli spettacoli per poter risalire al titolo dalla cartella
@@ -13,8 +14,8 @@ const allImages = import.meta.glob<{ default: ImageMetadata }>(
     { eager: true },
 );
 
-// Convertiamo l'oggetto in un array e estraiamo i metadati
-const galleryImages = Object.entries(allImages).map(([path, img]) => {
+// Convertiamo l'oggetto in un array e estraiamo i metadati grezzi
+const rawGalleryImages = Object.entries(allImages).map(([path, img]) => {
     const parts = path.split("/");
     const fileName = parts[parts.length - 1].split(".")[0];
     let showId = parts[parts.length - 2];
@@ -31,6 +32,46 @@ const galleryImages = Object.entries(allImages).map(([path, img]) => {
         subtitle: fileName,
     };
 });
+
+// Ottimizziamo tutte le immagini lato server in parallelo prima di passarle a React
+const galleryImages = await Promise.all(
+    rawGalleryImages.map(async (image) => {
+        // 1. Immagine grande per lightbox (1200px)
+        const optimizedLarge = await getImage({
+            src: image.src,
+            width: 1200,
+            format: "webp",
+            quality: 80,
+        });
+
+        // 2. Immagine media per la griglia masonry (600px)
+        const optimizedGrid = await getImage({
+            src: image.src,
+            width: 600,
+            format: "webp",
+            quality: 75,
+        });
+
+        // 3. Miniatura molto piccola per le anteprime (120px)
+        const optimizedThumb = await getImage({
+            src: image.src,
+            width: 120,
+            height: 120,
+            format: "webp",
+            quality: 60,
+        });
+
+        return {
+            src: optimizedLarge.src,
+            gridSrc: optimizedGrid.src,
+            thumbSrc: optimizedThumb.src,
+            originalSrc: image.src.src,
+            alt: image.alt,
+            title: image.title,
+            subtitle: image.subtitle,
+        };
+    })
+);
 ---
 
 <Layout

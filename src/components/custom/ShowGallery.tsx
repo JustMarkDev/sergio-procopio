@@ -3,39 +3,29 @@ import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export interface GalleryImage {
-  src: {
-    src: string;
-    width: number;
-    height: number;
-    format: string;
-    [key: string]: any;
-  } | string;
+  src: string;         // 1200px optimized WebP
+  gridSrc: string;     // 600px optimized WebP
+  thumbSrc: string;    // 120px optimized WebP
+  originalSrc: string; // Original unresolved asset path string
   alt: string;
   title: string;
   subtitle: string;
 }
 
 interface ShowGalleryProps {
-  mainImage: any;
+  mainImageSrc: string;
+  mainImageOriginalSrc: string;
   images: GalleryImage[];
   alt: string;
 }
 
-export default function ShowGallery({ mainImage, images, alt }: ShowGalleryProps) {
+export default function ShowGallery({ mainImageSrc, mainImageOriginalSrc, images, alt }: ShowGalleryProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const thumbnailsRef = useRef<HTMLDivElement>(null);
 
-  // Helper to extract string URL from either string path or Astro ImageMetadata
-  const getImgSrc = (src: any): string => {
-    if (!src) return "";
-    if (typeof src === "string") return src;
-    if (src.src) return src.src;
-    return "";
-  };
-
-  // Find index of the main image inside the show images array to start the lightbox there
-  const mainImageSrc = getImgSrc(mainImage);
-  const mainImageIndex = images.findIndex((img) => getImgSrc(img.src) === mainImageSrc);
+  // Find index of the main image inside the show images array to start the lightbox there.
+  // We match against the original unresolved asset source string for bulletproof accuracy!
+  const mainImageIndex = images.findIndex((img) => img.originalSrc === mainImageOriginalSrc);
   const activeIndexToUse = mainImageIndex >= 0 ? mainImageIndex : 0;
 
   // Prevent parent page scrolling while image is maximized
@@ -187,7 +177,7 @@ export default function ShowGallery({ mainImage, images, alt }: ShowGalleryProps
               <div className="relative h-[60vh] md:h-[70vh] w-full max-w-[95vw] md:max-w-[85vw] flex items-center justify-center z-10">
                 <motion.img
                   key={activeIndex}
-                  src={getImgSrc(currentImage.src)}
+                  src={currentImage.src}
                   alt={currentImage.alt}
                   initial={{ opacity: 0.7 }}
                   animate={{ opacity: 1 }}
@@ -233,7 +223,7 @@ export default function ShowGallery({ mainImage, images, alt }: ShowGalleryProps
                       }`}
                     >
                       <img
-                        src={getImgSrc(img.src)}
+                        src={img.thumbSrc}
                         alt={img.alt}
                         className="w-full h-full object-cover select-none"
                         loading="lazy"

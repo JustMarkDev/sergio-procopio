@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getCollection, render } from "astro:content";
+import { getImage } from "astro:assets";
 import { getShowSpecs } from "../../lib/show-specs";
 import ShowGallery from "../../components/custom/ShowGallery";
 
@@ -25,7 +26,7 @@ const allImages = import.meta.glob<{ default: ImageMetadata }>(
     { eager: true },
 );
 
-const showImages = Object.entries(allImages)
+const rawShowImages = Object.entries(allImages)
     .filter(([path]) => {
         const parts = path.split("/");
         let folderName = parts[parts.length - 2];
@@ -45,6 +46,55 @@ const showImages = Object.entries(allImages)
             subtitle: fileName,
         };
     });
+
+// Ottimizziamo tutte le immagini dello spettacolo in parallelo lato server
+const showImages = await Promise.all(
+    rawShowImages.map(async (image) => {
+        const optimizedLarge = await getImage({
+            src: image.src,
+            width: 1200,
+            format: "webp",
+            quality: 80,
+        });
+
+        const optimizedGrid = await getImage({
+            src: image.src,
+            width: 600,
+            format: "webp",
+            quality: 75,
+        });
+
+        const optimizedThumb = await getImage({
+            src: image.src,
+            width: 120,
+            height: 120,
+            format: "webp",
+            quality: 60,
+        });
+
+        return {
+            src: optimizedLarge.src,
+            gridSrc: optimizedGrid.src,
+            thumbSrc: optimizedThumb.src,
+            originalSrc: image.src.src,
+            alt: image.alt,
+            title: image.title,
+            subtitle: image.subtitle,
+        };
+    })
+);
+
+// E per l'immagine principale: la ottimizziamo anche per un caricamento istantaneo
+let optimizedMainImage = "";
+if (show.data.image) {
+    const optimized = await getImage({
+        src: show.data.image,
+        width: 1000,
+        format: "webp",
+        quality: 80,
+    });
+    optimizedMainImage = optimized.src;
+}
 
 const showSchema = {
   "@context": "https://schema.org",
@@ -95,7 +145,8 @@ const showSchema = {
                         show.data.image ? (
                             <ShowGallery
                                 client:load
-                                mainImage={show.data.image}
+                                mainImageSrc={optimizedMainImage}
+                                mainImageOriginalSrc={show.data.image.src}
                                 images={showImages}
                                 alt={show.data.title}
                             />
