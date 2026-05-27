@@ -1,7 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
-import { Image } from "astro:assets";
+import GalleryView from "../components/custom/GalleryView";
 
 // Mappiamo gli spettacoli per poter risalire al titolo dalla cartella
 const spettacoli = await getCollection("spettacoli");
@@ -17,7 +17,11 @@ const allImages = import.meta.glob<{ default: ImageMetadata }>(
 const galleryImages = Object.entries(allImages).map(([path, img]) => {
     const parts = path.split("/");
     const fileName = parts[parts.length - 1].split(".")[0];
-    const showId = parts[parts.length - 2];
+    let showId = parts[parts.length - 2];
+    // Normalizziamo le difformità tra nomi cartelle e ID spettacoli
+    if (showId === "la-valigia-di-san-francesco") {
+        showId = "la-valigia-di-s-francesco";
+    }
     const showTitle = showsMap.get(showId) || "Spettacolo Teatrale";
 
     return {
@@ -62,31 +66,7 @@ const galleryImages = Object.entries(allImages).map(([path, img]) => {
             {/* Masonry Columns Gallery - Expanded width */}
             {
                 galleryImages.length > 0 ? (
-                    <div class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8 max-w-450 mx-auto">
-                        {galleryImages.map((image, index) => (
-                            <div class="relative group overflow-hidden rounded-2xl bg-white/5 border border-white/10 break-inside-avoid shadow-lg">
-                                <Image
-                                    src={image.src}
-                                    alt={image.alt}
-                                    loading={index < 2 ? "eager" : "lazy"}
-                                    decoding="async"
-                                    fetchpriority={index === 0 ? "high" : undefined}
-                                    class="w-full h-auto object-contain transition-all duration-700 group-hover:scale-105 group-hover:opacity-60"
-                                />
-
-                                {/* Overlay Gradient */}
-                                <div class="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col justify-end p-6">
-                                    <h3 class="text-white font-serif font-bold text-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                                        {image.title}
-                                    </h3>
-                                    <p class="text-white/70 text-sm italic capitalize transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
-                                        {image.subtitle}
-                                    </p>
-                                </div>
-                                {/* Subtle corner tag for mobile context if needed, but the hover overlay is better */}
-                            </div>
-                        ))}
-                    </div>
+                    <GalleryView client:load images={galleryImages} />
                 ) : (
                     <div class="text-center py-20 bg-white/5 border border-white/10 rounded-3xl max-w-4xl mx-auto">
                         <p class="text-xl font-serif text-muted-foreground">
