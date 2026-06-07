@@ -40,7 +40,7 @@ function GalleryCard({ image, index, onOpen }: GalleryCardProps) {
   return (
     <div
       onClick={onOpen}
-      className="relative group mb-6 md:mb-8 overflow-hidden rounded-2xl bg-zinc-900 break-inside-avoid cursor-pointer transition-all duration-300 ring-1 ring-white/[0.06] hover:ring-primary/40"
+      className="relative group mb-6 md:mb-8 overflow-hidden rounded-2xl bg-zinc-900 break-inside-avoid cursor-pointer transition-all duration-300 ring-1 ring-white/6 hover:ring-primary/40"
       style={{ aspectRatio: `${image.width} / ${image.height}` }}
     >
       <div
@@ -49,7 +49,7 @@ function GalleryCard({ image, index, onOpen }: GalleryCardProps) {
         }`}
         aria-hidden="true"
       >
-        <div className="absolute inset-0 bg-linear-to-br from-white/[0.03] via-white/[0.08] to-white/[0.03] animate-pulse" />
+        <div className="absolute inset-0 bg-linear-to-br from-white/3 via-white/8 to-white/3 animate-pulse" />
       </div>
 
       <img
