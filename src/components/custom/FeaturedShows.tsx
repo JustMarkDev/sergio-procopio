@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 
 interface Show {
   id: string;
@@ -11,6 +12,43 @@ interface Show {
 
 interface Props {
   shows: Show[];
+}
+
+function ShowImage({ src, alt }: { src: string; alt: string }) {
+  const imageRef = useRef<HTMLImageElement>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const image = imageRef.current;
+    if (image?.complete && image.naturalWidth > 0) {
+      setIsLoaded(true);
+    }
+  }, [src]);
+
+  return (
+    <>
+      <div
+        className={`absolute inset-0 overflow-hidden bg-zinc-900 transition-opacity duration-500 ${
+          isLoaded ? "opacity-0" : "opacity-100"
+        }`}
+      >
+        <div className="absolute inset-0 bg-linear-to-br from-zinc-800 via-zinc-700 to-zinc-900" />
+        <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.8s_ease-in-out_infinite] bg-linear-to-r from-transparent via-white/10 to-transparent" />
+        <div className="absolute inset-0 shadow-[0_0_36px_rgba(37,99,235,0.18)]" />
+      </div>
+      <img
+        ref={imageRef}
+        src={src}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        onLoad={() => setIsLoaded(true)}
+        className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105 ${
+          isLoaded ? "opacity-100 blur-0" : "opacity-0 blur-sm"
+        }`}
+      />
+    </>
+  );
 }
 
 export default function FeaturedShows({ shows }: Props) {
@@ -62,13 +100,7 @@ export default function FeaturedShows({ shows }: Props) {
             >
               <div className="aspect-4/3 w-full bg-secondary/20 relative overflow-hidden flex items-center justify-center shrink-0">
                 {show.image ? (
-                  <img
-                    src={show.image}
-                    alt={show.title}
-                    loading="lazy"
-                    decoding="async"
-                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
+                  <ShowImage src={show.image} alt={show.title} />
                 ) : (
                   <>
                     <div className="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.1)_0%,transparent_100%)]" />
@@ -79,14 +111,12 @@ export default function FeaturedShows({ shows }: Props) {
                   </>
                 )}
                 <div className="absolute inset-0 bg-linear-to-t from-[#09090b] to-transparent z-10" />
-                <div className="absolute top-6 left-6 z-20">
-                  <span className="py-1 px-3 bg-black/40 backdrop-blur-md border border-white/10 rounded-full text-[10px] font-bold text-primary uppercase tracking-[0.2em]">
+                <div className="absolute top-4 left-4 right-4 z-20 flex flex-wrap items-start justify-between gap-2 sm:top-6 sm:left-6 sm:right-6">
+                  <span className="max-w-full py-1 px-3 bg-black/40 backdrop-blur-md border border-white/10 rounded-full text-[10px] font-bold text-primary uppercase tracking-[0.16em] break-words sm:tracking-[0.2em]">
                     {show.category}
                   </span>
-                </div>
-                {show.durata && (
-                  <div className="absolute top-6 right-6 z-20">
-                    <div className="py-1.5 px-3 bg-black/40 backdrop-blur-md border border-white/10 rounded-full text-[10px] font-semibold text-white/80 uppercase tracking-widest flex items-center gap-1.5 shadow-lg">
+                  {show.durata && (
+                    <span className="py-1.5 px-3 bg-black/40 backdrop-blur-md border border-white/10 rounded-full text-[10px] font-semibold text-white/80 uppercase tracking-widest inline-flex items-center gap-1.5 shadow-lg whitespace-nowrap">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="12"
@@ -103,9 +133,9 @@ export default function FeaturedShows({ shows }: Props) {
                         <polyline points="12 6 12 12 16 14" />
                       </svg>
                       {show.durata}
-                    </div>
-                  </div>
-                )}
+                    </span>
+                  )}
+                </div>
               </div>
 
               <div className="p-6 relative z-20 bg-[#09090b] flex flex-col grow justify-center">

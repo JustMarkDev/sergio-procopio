@@ -2,6 +2,7 @@
 title: "Le vacanze di Henry"
 description: "Uno spettacolo sull'Olocausto che racconta la storia di un uomo-bambino coinvolto nell'orrore per preservare la memoria."
 category: "Scuole"
+assetFolder: "le-vacanze-di-henry"
 durata: "1h 10m"
 regia: "Daniele Broggini"
 eta: "PLACEHOLDER"

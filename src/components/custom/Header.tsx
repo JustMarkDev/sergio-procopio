@@ -6,6 +6,7 @@ const navLinks = [
   { name: "Home", href: "/" },
   { name: "Biografia", href: "/biografia" },
   { name: "Spettacoli", href: "/spettacoli" },
+  { name: "Calendario", href: "/calendario" },
   { name: "Galleria", href: "/galleria" },
   { name: "Contatti", href: "/#contatti" },
 ];
@@ -31,24 +32,24 @@ export default function Header() {
       }`}
     >
       <div className="container mx-auto px-4 md:px-8 lg:px-12">
-        <div className="flex items-center justify-between h-16">
-          <div className="shrink-0">
+        <div className="flex items-center justify-between gap-4 min-h-16">
+          <div className="shrink-0 min-w-0">
             <a
               href="/"
-              className="font-serif text-2xl md:text-3xl font-bold tracking-wide text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)]"
+              className="block font-serif text-2xl lg:text-3xl font-bold tracking-wide text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)] whitespace-nowrap"
             >
               Sergio <span className="text-primary">Procopio</span>
             </a>
           </div>
 
           {/* Desktop Menu */}
-          <nav className="hidden md:block">
-            <ul className="flex space-x-8">
+          <nav className="hidden lg:block min-w-0">
+            <ul className="flex items-center gap-4 xl:gap-7">
               {navLinks.map((link) => (
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className="text-[15px] font-semibold text-white/80 hover:text-primary transition-colors tracking-wide drop-shadow-md"
+                    className="text-sm xl:text-[15px] font-semibold text-white/80 hover:text-primary transition-colors tracking-wide drop-shadow-md whitespace-nowrap"
                   >
                     {link.name}
                   </a>
@@ -58,7 +59,7 @@ export default function Header() {
           </nav>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="text-foreground hover:text-primary focus:outline-none"
@@ -77,7 +78,7 @@ export default function Header() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-background overflow-hidden"
+            className="lg:hidden bg-background overflow-hidden"
           >
             <ul className="px-4 pt-2 pb-4 space-y-1">
               {navLinks.map((link) => (

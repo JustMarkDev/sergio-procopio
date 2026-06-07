@@ -3,10 +3,21 @@ import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
 import { getImage } from "astro:assets";
 import GalleryView from "../components/custom/GalleryView";
+import { getAssetFolderFromPath, getShowAssetFolder } from "../lib/show-assets";
 
-// Mappiamo gli spettacoli per poter risalire al titolo dalla cartella
+// Mappiamo gli spettacoli per poter risalire al titolo dalla cartella asset dichiarata nel contenuto.
 const spettacoli = await getCollection("spettacoli");
-const showsMap = new Map(spettacoli.map((show) => [show.id, show.data.title]));
+const showsMap = new Map(
+    spettacoli
+        .filter((show) => !show.data.draft)
+        .map((show) => [
+            getShowAssetFolder(show),
+            {
+                id: show.id,
+                title: show.data.title,
+            },
+        ]),
+);
 
 // Carichiamo tutte le immagini dalla cartella spettacoli
 const allImages = import.meta.glob<{ default: ImageMetadata }>(
@@ -18,24 +29,44 @@ const allImages = import.meta.glob<{ default: ImageMetadata }>(
 const rawGalleryImages = Object.entries(allImages).map(([path, img]) => {
     const parts = path.split("/");
     const fileName = parts[parts.length - 1].split(".")[0];
-    let showId = parts[parts.length - 2];
-    // Normalizziamo le difformità tra nomi cartelle e ID spettacoli
-    if (showId === "la-valigia-di-san-francesco") {
-        showId = "la-valigia-di-s-francesco";
-    }
-    const showTitle = showsMap.get(showId) || "Spettacolo Teatrale";
+    const assetFolder = getAssetFolderFromPath(path);
+    const show = showsMap.get(assetFolder);
+    const showTitle = show?.title || "Spettacolo Teatrale";
 
     return {
         src: img.default,
         alt: `${showTitle} - ${fileName}`,
+        showId: show?.id || assetFolder,
         title: showTitle,
         subtitle: fileName,
+        width: img.default.width,
+        height: img.default.height,
     };
 });
 
+const explicitGalleryImages = spettacoli
+    .filter((show) => !show.data.draft)
+    .flatMap((show) =>
+        show.data.galleryImages.map((image, index) => ({
+            src: image,
+            alt: `${show.data.title} - immagine ${index + 1}`,
+            showId: show.id,
+            title: show.data.title,
+            subtitle: `immagine ${index + 1}`,
+            width: image.width,
+            height: image.height,
+        })),
+    );
+
+const galleryImagesBySource = new Map<string, (typeof rawGalleryImages)[number]>();
+for (const image of [...rawGalleryImages, ...explicitGalleryImages]) {
+    galleryImagesBySource.set(image.src.src, image);
+}
+const allGalleryImages = Array.from(galleryImagesBySource.values());
+
 // Ottimizziamo tutte le immagini lato server in parallelo prima di passarle a React
 const galleryImages = await Promise.all(
-    rawGalleryImages.map(async (image) => {
+    allGalleryImages.map(async (image) => {
         // 1. Immagine grande per lightbox (1200px)
         const optimizedLarge = await getImage({
             src: image.src,
@@ -67,11 +98,15 @@ const galleryImages = await Promise.all(
             thumbSrc: optimizedThumb.src,
             originalSrc: image.src.src,
             alt: image.alt,
+            showId: image.showId,
             title: image.title,
             subtitle: image.subtitle,
+            width: image.width,
+            height: image.height,
         };
     })
 );
+
 ---
 
 <Layout
@@ -107,7 +142,7 @@ const galleryImages = await Promise.all(
             {/* Masonry Columns Gallery - Expanded width */}
             {
                 galleryImages.length > 0 ? (
-                    <GalleryView client:load images={galleryImages} />
+                    <GalleryView client:visible images={galleryImages} />
                 ) : (
                     <div class="text-center py-20 bg-white/5 border border-white/10 rounded-3xl max-w-4xl mx-auto">
                         <p class="text-xl font-serif text-muted-foreground">

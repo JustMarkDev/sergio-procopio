@@ -2,6 +2,7 @@
 title: "La Grande Guerra e il piccolo alpino"
 description: "Lo spettacolo sulla Prima Guerra Mondiale che racconta l'umanità dell'alpino, dalle prime esperienze al sacrificio finale, dedicato ai ragazzi del '99."
 category: "alpini"
+assetFolder: "la-grande-guerra"
 image: "../../assets/spettacoli/la-grande-guerra/sentinella.jpg"
 durata: "1h 10m"
 regia: "Carlo Rossi"

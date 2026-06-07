@@ -8,12 +8,75 @@ export interface GalleryImage {
   thumbSrc: string;    // 120px optimized WebP
   originalSrc: string; // Original unresolved asset path string
   alt: string;
+  showId: string;
   title: string;
   subtitle: string;
+  width: number;
+  height: number;
 }
 
 interface GalleryViewProps {
   images: GalleryImage[];
+}
+
+interface GalleryCardProps {
+  image: GalleryImage;
+  index: number;
+  onOpen: () => void;
+}
+
+function GalleryCard({ image, index, onOpen }: GalleryCardProps) {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const imageRef = useRef<HTMLImageElement>(null);
+  const imageKey = `${image.showId}-${image.originalSrc}`;
+
+  useEffect(() => {
+    const element = imageRef.current;
+    if (element?.complete && element.naturalWidth > 0) {
+      setIsLoaded(true);
+    }
+  }, [imageKey]);
+
+  return (
+    <div
+      onClick={onOpen}
+      className="relative group mb-6 md:mb-8 overflow-hidden rounded-2xl bg-zinc-900 break-inside-avoid cursor-pointer transition-all duration-300 ring-1 ring-white/[0.06] hover:ring-primary/40"
+      style={{ aspectRatio: `${image.width} / ${image.height}` }}
+    >
+      <div
+        className={`absolute inset-0 overflow-hidden bg-zinc-900 transition-opacity duration-300 ${
+          isLoaded ? "opacity-0" : "opacity-100"
+        }`}
+        aria-hidden="true"
+      >
+        <div className="absolute inset-0 bg-linear-to-br from-white/[0.03] via-white/[0.08] to-white/[0.03] animate-pulse" />
+      </div>
+
+      <img
+        ref={imageRef}
+        src={image.gridSrc}
+        alt={image.alt}
+        loading={index < 6 ? "eager" : "lazy"}
+        decoding="async"
+        width={image.width}
+        height={image.height}
+        className={`absolute inset-0 h-full w-full object-cover transition-all duration-500 group-hover:scale-105 ${
+          isLoaded ? "opacity-100 group-hover:opacity-60" : "opacity-0"
+        }`}
+        onLoad={() => setIsLoaded(true)}
+        onError={() => setIsLoaded(true)}
+      />
+
+      <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col justify-end p-6">
+        <h3 className="text-white font-serif font-bold text-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+          {image.title}
+        </h3>
+        <p className="text-white/70 text-sm italic capitalize transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75 font-serif">
+          {image.subtitle}
+        </p>
+      </div>
+    </div>
+  );
 }
 
 export default function GalleryView({ images }: GalleryViewProps) {
@@ -119,31 +182,14 @@ export default function GalleryView({ images }: GalleryViewProps) {
   return (
     <>
       {/* Masonry Columns Gallery */}
-      <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8 max-w-[1200px] mx-auto">
+      <div className="columns-1 md:columns-2 lg:columns-3 gap-6 md:gap-8 space-y-6 md:space-y-8 max-w-[1200px] mx-auto">
         {images.map((image, index) => (
-          <div
-            key={index}
-            onClick={() => setActiveIndex(index)}
-            className="relative group overflow-hidden rounded-2xl bg-white/5 border border-white/10 break-inside-avoid shadow-lg cursor-pointer transition-all duration-300 hover:border-primary/30"
-          >
-            <img
-              src={image.gridSrc}
-              alt={image.alt}
-              loading={index < 2 ? "eager" : "lazy"}
-              decoding="async"
-              className="w-full h-auto object-contain transition-all duration-700 group-hover:scale-105 group-hover:opacity-60"
-            />
-
-            {/* Overlay Gradient on Hover */}
-            <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col justify-end p-6">
-              <h3 className="text-white font-serif font-bold text-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                {image.title}
-              </h3>
-              <p className="text-white/70 text-sm italic capitalize transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75 font-serif">
-                {image.subtitle}
-              </p>
-            </div>
-          </div>
+          <GalleryCard
+            key={`${image.showId}-${image.originalSrc}`}
+            image={image}
+            index={index}
+            onOpen={() => setActiveIndex(index)}
+          />
         ))}
       </div>
 
@@ -155,25 +201,25 @@ export default function GalleryView({ images }: GalleryViewProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 bg-black/90 backdrop-blur-xl z-40 flex flex-col justify-between"
+            className="fixed inset-0 h-[100dvh] bg-black/90 backdrop-blur-xl z-40 flex flex-col overflow-hidden"
             onClick={() => setActiveIndex(null)}
           >
             {/* Top Section - Show Title / Description & Close Button */}
             <div
-              className="w-full pt-24 md:pt-28 pb-4 px-6 text-center select-none relative z-50 shrink-0"
+              className="w-full pt-16 md:pt-24 pb-2 md:pb-4 px-16 md:px-20 text-center select-none relative z-50 shrink-0"
               onClick={(e) => e.stopPropagation()}
             >
-              <h2 className="text-2xl md:text-4xl font-serif font-bold text-white tracking-wide drop-shadow-md">
+              <h2 className="text-lg sm:text-2xl md:text-4xl font-serif font-bold text-white tracking-wide drop-shadow-md truncate">
                 {currentImage.title}
               </h2>
-              <p className="text-xs md:text-sm text-primary uppercase tracking-[0.2em] font-bold mt-2 italic font-serif capitalize">
+              <p className="text-[10px] md:text-sm text-primary uppercase tracking-[0.18em] font-bold mt-1 md:mt-2 italic font-serif capitalize truncate">
                 {currentImage.subtitle}
               </p>
 
               {/* Close Button: Explicit X at top right under sticky navbar */}
               <button
                 onClick={() => setActiveIndex(null)}
-                className="absolute top-24 right-4 md:right-8 bg-white/5 hover:bg-primary/20 border border-white/10 hover:border-primary/50 text-white p-2.5 rounded-full backdrop-blur-md transition-all duration-300 shadow-lg cursor-pointer flex items-center justify-center focus:outline-none"
+                className="absolute top-16 md:top-24 right-4 md:right-8 bg-white/5 hover:bg-primary/20 border border-white/10 hover:border-primary/50 text-white p-2.5 rounded-full backdrop-blur-md transition-all duration-300 shadow-lg cursor-pointer flex items-center justify-center focus:outline-none"
                 aria-label="Chiudi galleria"
               >
                 <X size={20} />
@@ -181,25 +227,25 @@ export default function GalleryView({ images }: GalleryViewProps) {
             </div>
 
             {/* Center Section - Image & Arrow Navigations */}
-            <div className="flex-1 flex items-center justify-center relative min-h-0 px-4 md:px-24">
+            <div className="flex-1 flex items-center justify-center relative min-h-0 px-14 md:px-24 py-2">
               {/* Previous Arrow */}
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   showPrev();
                 }}
-                className="absolute left-4 md:left-8 bg-black/40 hover:bg-primary/20 text-white p-3.5 rounded-full border border-white/10 hover:border-primary/50 transition-all duration-300 backdrop-blur-md shadow-lg cursor-pointer flex items-center justify-center z-50 focus:outline-none"
+                className="absolute left-2 md:left-8 bg-black/55 hover:bg-primary/20 text-white p-2.5 md:p-3.5 rounded-full border border-white/10 hover:border-primary/50 transition-all duration-300 backdrop-blur-md shadow-lg cursor-pointer flex items-center justify-center z-50 focus:outline-none"
                 aria-label="Immagine precedente"
               >
-                <ChevronLeft size={24} />
+                <ChevronLeft size={22} />
               </button>
 
               {/* Central Image Container (fixed-height wrapper prevents screen height shift) */}
-              <div className="relative h-[60vh] md:h-[70vh] w-full max-w-[95vw] md:max-w-[85vw] flex items-center justify-center z-10">
+              <div className="relative h-full w-full flex items-center justify-center z-10">
                 {/* Premium Centered Loader */}
                 {isImageLoading && (
                   <div
-                    className="absolute w-44 h-44 md:w-56 md:h-56 bg-zinc-900/60 border border-white/5 rounded-2xl flex items-center justify-center shadow-xl backdrop-blur-md animate-pulse"
+                    className="absolute w-28 h-28 md:w-44 md:h-44 bg-zinc-900/60 border border-white/5 rounded-2xl flex items-center justify-center shadow-xl backdrop-blur-md animate-pulse"
                     onClick={(e) => e.stopPropagation()}
                   >
                     <div className="w-10 h-10 border-4 border-white/10 border-t-primary rounded-full animate-spin"></div>
@@ -214,7 +260,7 @@ export default function GalleryView({ images }: GalleryViewProps) {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: isImageLoading ? 0 : 1 }}
                   transition={{ duration: 0.25 }}
-                  className="max-h-full max-w-full w-auto h-auto object-contain rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] border border-white/10 select-none"
+                  className="max-h-full max-w-full w-auto h-auto object-contain rounded-xl md:rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] border border-white/10 select-none"
                   onClick={(e) => e.stopPropagation()}
                 />
               </div>
@@ -225,21 +271,21 @@ export default function GalleryView({ images }: GalleryViewProps) {
                   e.stopPropagation();
                   showNext();
                 }}
-                className="absolute right-4 md:right-8 bg-black/40 hover:bg-primary/20 text-white p-3.5 rounded-full border border-white/10 hover:border-primary/50 transition-all duration-300 backdrop-blur-md shadow-lg cursor-pointer flex items-center justify-center z-50 focus:outline-none"
+                className="absolute right-2 md:right-8 bg-black/55 hover:bg-primary/20 text-white p-2.5 md:p-3.5 rounded-full border border-white/10 hover:border-primary/50 transition-all duration-300 backdrop-blur-md shadow-lg cursor-pointer flex items-center justify-center z-50 focus:outline-none"
                 aria-label="Immagine successiva"
               >
-                <ChevronRight size={24} />
+                <ChevronRight size={22} />
               </button>
             </div>
 
             {/* Bottom Section - Floating Island Thumbnails Row (no stark background, longer span, LTR-safe, constant dimensions) */}
             <div
-              className="w-full pb-8 pt-2 px-4 shrink-0 relative z-50 flex justify-center"
+              className="w-full pb-3 md:pb-6 pt-1 px-3 shrink-0 relative z-50 flex justify-center"
               onClick={(e) => e.stopPropagation()}
             >
               <div
                 ref={thumbnailsRef}
-                className="flex gap-3 overflow-x-auto justify-start items-center px-4 py-2 w-full max-w-[95vw] md:max-w-5xl scrollbar-none relative"
+                className="flex gap-2 md:gap-3 overflow-x-auto justify-start items-center px-3 py-2 w-full max-w-[95vw] md:max-w-5xl scrollbar-none relative"
                 style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
               >
                 {images.map((img, idx) => {
@@ -248,7 +294,7 @@ export default function GalleryView({ images }: GalleryViewProps) {
                     <button
                       key={idx}
                       onClick={() => setActiveIndex(idx)}
-                      className={`relative shrink-0 transition-all duration-300 w-12 h-12 md:w-14 md:h-14 rounded-xl overflow-hidden cursor-pointer flex items-center justify-center ${
+                      className={`relative shrink-0 transition-all duration-300 w-10 h-10 md:w-14 md:h-14 rounded-lg md:rounded-xl overflow-hidden cursor-pointer flex items-center justify-center ${
                         isActive
                           ? "border-2 border-primary scale-110 opacity-100 z-10"
                           : "border border-white/10 opacity-40 hover:opacity-85 hover:scale-105"

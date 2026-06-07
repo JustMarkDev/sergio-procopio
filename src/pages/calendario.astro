@@ -1,0 +1,141 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+
+const eventi = (await getCollection("eventi"))
+    .filter((event) => !event.data.draft && event.data.isPublic)
+    .sort((a, b) => a.data.date.getTime() - b.data.date.getTime());
+
+const upcomingEvents = eventi.filter((event) => event.data.date >= today);
+const pastEvents = eventi.filter((event) => event.data.date < today).reverse();
+
+const dateFormatter = new Intl.DateTimeFormat("it-IT", {
+    weekday: "long",
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+});
+
+const formatDate = (date: Date) => dateFormatter.format(date);
+---
+
+<Layout
+    title="Calendario | Sergio Procopio"
+    description="Calendario ufficiale degli spettacoli e degli eventi di Sergio Procopio."
+>
+    <div class="relative overflow-hidden bg-[#09090b] min-h-screen">
+        <div
+            class="absolute top-0 left-0 w-full h-[50vh] bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.06)_0%,transparent_70%)] pointer-events-none"
+        >
+        </div>
+
+        <div class="container relative z-10 mx-auto px-4 md:px-8 lg:px-12 py-32">
+            <div class="max-w-4xl mb-16">
+                <h1 class="text-5xl md:text-7xl font-serif font-bold mb-6 tracking-tight">
+                    Calendario <span class="italic text-primary">ufficiale</span>
+                </h1>
+                <p class="text-xl text-muted-foreground max-w-2xl italic opacity-80 leading-relaxed">
+                    Date pubbliche, spettacoli e appuntamenti in programma.
+                </p>
+            </div>
+
+            <section class="mb-20">
+                <div class="flex items-center gap-4 mb-8">
+                    <span class="h-px w-10 bg-primary/40"></span>
+                    <h2 class="text-sm font-bold uppercase tracking-[0.25em] text-primary">
+                        Prossimi eventi
+                    </h2>
+                </div>
+
+                {
+                    upcomingEvents.length > 0 ? (
+                        <div class="space-y-5">
+                            {upcomingEvents.map((event) => (
+                                <article class="grid grid-cols-1 lg:grid-cols-12 gap-6 rounded-3xl border border-white/10 bg-white/[0.04] p-6 md:p-8 hover:border-primary/40 transition-colors">
+                                    <div class="lg:col-span-3">
+                                        <div class="text-sm font-bold uppercase tracking-widest text-primary mb-2">
+                                            {formatDate(event.data.date)}
+                                        </div>
+                                        {event.data.time && (
+                                            <div class="text-3xl font-serif font-bold">
+                                                {event.data.time}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div class="lg:col-span-6">
+                                        <h3 class="text-2xl md:text-3xl font-serif font-bold mb-2">
+                                            {event.data.title}
+                                        </h3>
+                                        {event.data.spettacolo && (
+                                            <p class="text-primary font-semibold mb-3">
+                                                {event.data.spettacolo}
+                                            </p>
+                                        )}
+                                        {event.data.description && (
+                                            <p class="text-muted-foreground leading-relaxed">
+                                                {event.data.description}
+                                            </p>
+                                        )}
+                                    </div>
+
+                                    <div class="lg:col-span-3 lg:text-right">
+                                        <div class="text-lg font-semibold">{event.data.venue}</div>
+                                        <div class="text-muted-foreground">{event.data.city}</div>
+                                        {event.data.address && (
+                                            <div class="text-sm text-muted-foreground/70 mt-2">
+                                                {event.data.address}
+                                            </div>
+                                        )}
+                                        {event.data.ticketUrl && (
+                                            <a
+                                                href={event.data.ticketUrl}
+                                                class="inline-flex mt-5 rounded-2xl bg-primary px-5 py-3 text-xs font-bold uppercase tracking-widest text-primary-foreground hover:bg-primary/90 transition-colors"
+                                            >
+                                                Biglietti
+                                            </a>
+                                        )}
+                                    </div>
+                                </article>
+                            ))}
+                        </div>
+                    ) : (
+                        <div class="rounded-3xl border border-white/10 bg-white/[0.04] p-8 text-muted-foreground">
+                            Non ci sono ancora eventi pubblici in calendario.
+                        </div>
+                    )
+                }
+            </section>
+
+            {
+                pastEvents.length > 0 && (
+                    <section>
+                        <div class="flex items-center gap-4 mb-8">
+                            <span class="h-px w-10 bg-white/20"></span>
+                            <h2 class="text-sm font-bold uppercase tracking-[0.25em] text-muted-foreground">
+                                Archivio
+                            </h2>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            {pastEvents.slice(0, 8).map((event) => (
+                                <article class="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+                                    <div class="text-xs font-bold uppercase tracking-widest text-primary mb-2">
+                                        {formatDate(event.data.date)}
+                                    </div>
+                                    <h3 class="text-xl font-serif font-bold">{event.data.title}</h3>
+                                    <p class="text-sm text-muted-foreground mt-2">
+                                        {event.data.venue}, {event.data.city}
+                                    </p>
+                                </article>
+                            ))}
+                        </div>
+                    </section>
+                )
+            }
+        </div>
+    </div>
+</Layout>

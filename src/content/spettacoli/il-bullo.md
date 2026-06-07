@@ -2,6 +2,7 @@
 title: "Il Bullo"
 description: "Uno spettacolo-incontro contro il bullismo, l'abbandono scolastico, l'illegalità e il femminicidio."
 category: "Scuole"
+assetFolder: "il-bullo"
 image: "../../assets/spettacoli/il-bullo/letto.jpg"
 durata: "2 ore"
 regia: "Giorgio Albini"

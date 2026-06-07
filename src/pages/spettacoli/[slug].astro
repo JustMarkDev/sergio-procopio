@@ -3,6 +3,7 @@ import Layout from "../../layouts/Layout.astro";
 import { getCollection, render } from "astro:content";
 import { getImage } from "astro:assets";
 import { getShowSpecs } from "../../lib/show-specs";
+import { getAssetFolderFromPath, getShowAssetFolder } from "../../lib/show-assets";
 import ShowGallery from "../../components/custom/ShowGallery";
 
 export async function getStaticPaths() {
@@ -20,7 +21,7 @@ const { Content } = await render(show);
 const specGroups = getShowSpecs(show);
 
 // Carichiamo e filtriamo tutte le immagini associate a questo spettacolo
-const showId = show.id;
+const assetFolder = getShowAssetFolder(show);
 const allImages = import.meta.glob<{ default: ImageMetadata }>(
     "/src/assets/spettacoli/**/*.{jpeg,jpg,png,gif,webp}",
     { eager: true },
@@ -28,13 +29,7 @@ const allImages = import.meta.glob<{ default: ImageMetadata }>(
 
 const rawShowImages = Object.entries(allImages)
     .filter(([path]) => {
-        const parts = path.split("/");
-        let folderName = parts[parts.length - 2];
-        // Normalizziamo le difformità tra nomi cartelle e ID spettacoli
-        if (folderName === "la-valigia-di-san-francesco") {
-            folderName = "la-valigia-di-s-francesco";
-        }
-        return folderName === showId;
+        return getAssetFolderFromPath(path) === assetFolder;
     })
     .map(([path, img]) => {
         const parts = path.split("/");
@@ -44,12 +39,29 @@ const rawShowImages = Object.entries(allImages)
             alt: `${show.data.title} - ${fileName}`,
             title: show.data.title,
             subtitle: fileName,
+            width: img.default.width,
+            height: img.default.height,
         };
     });
 
+const explicitShowImages = show.data.galleryImages.map((image, index) => ({
+    src: image,
+    alt: `${show.data.title} - immagine ${index + 1}`,
+    title: show.data.title,
+    subtitle: `immagine ${index + 1}`,
+    width: image.width,
+    height: image.height,
+}));
+
+const showImagesBySource = new Map<string, (typeof rawShowImages)[number]>();
+for (const image of [...rawShowImages, ...explicitShowImages]) {
+    showImagesBySource.set(image.src.src, image);
+}
+const allShowImages = Array.from(showImagesBySource.values());
+
 // Ottimizziamo tutte le immagini dello spettacolo in parallelo lato server
 const showImages = await Promise.all(
-    rawShowImages.map(async (image) => {
+    allShowImages.map(async (image) => {
         const optimizedLarge = await getImage({
             src: image.src,
             width: 1200,
@@ -80,6 +92,8 @@ const showImages = await Promise.all(
             alt: image.alt,
             title: image.title,
             subtitle: image.subtitle,
+            width: image.width,
+            height: image.height,
         };
     })
 );
