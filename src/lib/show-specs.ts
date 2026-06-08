@@ -21,8 +21,7 @@ export function getShowSpecs(show: CollectionEntry<"spettacoli">): SpecGroup[] {
   if (data.regia) primaryItems.push({ label: "Regia", value: data.regia });
   if (data.eta) primaryItems.push({ label: "Età Consigliata", value: data.eta });
   if (data.durata) primaryItems.push({ label: "Durata", value: data.durata });
-  if (data.cast) primaryItems.push({ label: "Cast", value: data.cast });
-  if (data.tecnico) primaryItems.push({ label: "Cast Tecnico", value: data.tecnico });
+  if (data.tecnico) primaryItems.push({ label: "Tecnico audio/luci", value: data.tecnico });
 
   if (primaryItems.length > 0) {
     groups.push({ id: "primary", items: primaryItems });

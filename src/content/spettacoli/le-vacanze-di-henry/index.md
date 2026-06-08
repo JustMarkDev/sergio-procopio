@@ -6,7 +6,7 @@ durata: "1h 10m"
 regia: "Daniele Broggini"
 eta: "PLACEHOLDER"
 produzione: "Teatro Procopio"
-tecnico: "Giovanni Brovelli"
+tecnico: "Giorgio Albini"
 requisiti: "Minimo di 120 alunni"
 highlight: true
 draft: true

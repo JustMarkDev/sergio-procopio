@@ -3,48 +3,10 @@ import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
 import { getImage } from "astro:assets";
 import GalleryView from "../components/custom/GalleryView";
-import { getAssetFolderFromPath, getShowAssetFolder } from "../lib/show-assets";
 
-// Mappiamo gli spettacoli per poter risalire al titolo dalla cartella asset dichiarata nel contenuto.
 const spettacoli = await getCollection("spettacoli");
-const showsMap = new Map(
-    spettacoli
-        .filter((show) => !show.data.draft)
-        .map((show) => [
-            getShowAssetFolder(show),
-            {
-                id: show.id,
-                title: show.data.title,
-            },
-        ]),
-);
 
-// Carichiamo tutte le immagini dalla cartella spettacoli
-const allImages = import.meta.glob<{ default: ImageMetadata }>(
-    "/src/content/spettacoli/**/immagini/*.{jpeg,jpg,png,gif,webp}",
-    { eager: true },
-);
-
-// Convertiamo l'oggetto in un array e estraiamo i metadati grezzi
-const rawGalleryImages = Object.entries(allImages).map(([path, img]) => {
-    const parts = path.split("/");
-    const fileName = parts[parts.length - 1].split(".")[0];
-    const assetFolder = getAssetFolderFromPath(path);
-    const show = showsMap.get(assetFolder);
-    const showTitle = show?.title || "Spettacolo Teatrale";
-
-    return {
-        src: img.default,
-        alt: `${showTitle} - ${fileName}`,
-        showId: show?.id || assetFolder,
-        title: showTitle,
-        subtitle: fileName,
-        width: img.default.width,
-        height: img.default.height,
-    };
-});
-
-const explicitGalleryImages = spettacoli
+const galleryImagesFromShows = spettacoli
     .filter((show) => !show.data.draft)
     .flatMap((show) =>
         show.data.galleryImages.map((image, index) => ({
@@ -58,8 +20,8 @@ const explicitGalleryImages = spettacoli
         })),
     );
 
-const galleryImagesBySource = new Map<string, (typeof rawGalleryImages)[number]>();
-for (const image of [...rawGalleryImages, ...explicitGalleryImages]) {
+const galleryImagesBySource = new Map<string, (typeof galleryImagesFromShows)[number]>();
+for (const image of galleryImagesFromShows) {
     galleryImagesBySource.set(image.src.src, image);
 }
 const allGalleryImages = Array.from(galleryImagesBySource.values());
@@ -150,8 +112,8 @@ const galleryImages = await Promise.all(
                         </p>
                         <p class="text-sm text-muted-foreground/60 mt-2">
                             Aggiungi delle immagini nelle cartelle
-                            nella cartella immagini di uno spettacolo per vederle
-                            apparire qui.
+                            dal campo Immagini galleria di uno spettacolo per
+                            vederle apparire qui.
                         </p>
                     </div>
                 )

@@ -10,146 +10,17 @@ export const prerender = true;
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Sergio Procopio CMS</title>
         <style is:inline>
-            :root {
-                color-scheme: dark;
-                font-family:
-                    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-                    "Segoe UI", sans-serif;
-                background: #09090b;
-            }
-
-            body {
-                margin: 0;
-                min-height: 100vh;
-                background:
-                    radial-gradient(circle at 20% 0%, rgba(37, 99, 235, 0.16), transparent 34rem),
-                    radial-gradient(circle at 100% 20%, rgba(255, 255, 255, 0.08), transparent 28rem),
-                    #09090b;
-            }
-
-            .admin-shell {
-                min-height: 100vh;
-                display: grid;
-                grid-template-columns: minmax(17rem, 22rem) minmax(0, 1fr);
-            }
-
-            .admin-brand {
-                position: sticky;
-                top: 0;
-                height: 100vh;
-                box-sizing: border-box;
-                padding: 2rem;
-                border-right: 1px solid rgba(255, 255, 255, 0.1);
-                background: rgba(9, 9, 11, 0.78);
-                backdrop-filter: blur(20px);
-                color: white;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                gap: 2rem;
-            }
-
-            .admin-brand__mark {
-                width: 3rem;
-                height: 3rem;
-                display: grid;
-                place-items: center;
-                border-radius: 1rem;
-                background: #2563eb;
-                box-shadow: 0 1rem 2.5rem rgba(37, 99, 235, 0.35);
-            }
-
-            .admin-brand__mark img {
-                width: 1.75rem;
-                height: 1.75rem;
-            }
-
-            .admin-brand h1 {
-                margin: 1.5rem 0 0.75rem;
-                font-family: Georgia, "Times New Roman", serif;
-                font-size: clamp(2rem, 4vw, 3.25rem);
-                line-height: 0.95;
-                letter-spacing: 0;
-            }
-
-            .admin-brand p {
-                margin: 0;
-                color: rgba(255, 255, 255, 0.66);
-                font-size: 0.98rem;
-                line-height: 1.65;
-            }
-
-            .admin-brand__meta {
-                display: grid;
-                gap: 0.6rem;
-                color: rgba(255, 255, 255, 0.54);
-                font-size: 0.8rem;
-                line-height: 1.5;
-            }
-
-            .admin-brand__meta strong {
-                color: rgba(255, 255, 255, 0.86);
-                font-size: 0.72rem;
-                text-transform: uppercase;
-                letter-spacing: 0.16em;
-            }
-
+            html,
+            body,
             #nc-root {
-                min-width: 0;
-                min-height: 100vh;
-                background: rgba(250, 250, 250, 0.98);
-            }
-
-            @media (max-width: 920px) {
-                .admin-shell {
-                    display: block;
-                }
-
-                .admin-brand {
-                    position: relative;
-                    height: auto;
-                    padding: 1.25rem;
-                    border-right: 0;
-                    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-                }
-
-                .admin-brand h1 {
-                    margin-top: 1rem;
-                    font-size: 2.25rem;
-                }
-
-                .admin-brand__meta {
-                    display: none;
-                }
-
-                #nc-root {
-                    min-height: calc(100vh - 13rem);
-                }
+                margin: 0;
+                min-height: 100%;
+                background: #fff;
             }
         </style>
     </head>
     <body>
-        <main class="admin-shell">
-            <aside class="admin-brand" aria-label="Sergio Procopio CMS">
-                <div>
-                    <div class="admin-brand__mark">
-                        <img src="/favicon.svg" alt="" />
-                    </div>
-                    <h1>Sergio Procopio CMS</h1>
-                    <p>
-                        Area editoriale per aggiornare biografia, spettacoli,
-                        immagini e calendario mantenendo tutto versionato su GitHub.
-                    </p>
-                </div>
-
-                <div class="admin-brand__meta">
-                    <strong>Workflow</strong>
-                    <span>Salva dal CMS, GitHub registra la modifica, Vercel pubblica il sito.</span>
-                </div>
-            </aside>
-
-            <div id="nc-root"></div>
-        </main>
+        <div id="nc-root"></div>
         <script is:inline src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
     </body>
 </html>

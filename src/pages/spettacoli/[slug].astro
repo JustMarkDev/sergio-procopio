@@ -3,7 +3,6 @@ import Layout from "../../layouts/Layout.astro";
 import { getCollection, render } from "astro:content";
 import { getImage } from "astro:assets";
 import { getShowSpecs } from "../../lib/show-specs";
-import { getAssetFolderFromPath, getShowAssetFolder } from "../../lib/show-assets";
 import ShowGallery from "../../components/custom/ShowGallery";
 
 export async function getStaticPaths() {
@@ -20,30 +19,6 @@ const { show } = Astro.props;
 const { Content } = await render(show);
 const specGroups = getShowSpecs(show);
 
-// Carichiamo e filtriamo tutte le immagini associate a questo spettacolo
-const assetFolder = getShowAssetFolder(show);
-const allImages = import.meta.glob<{ default: ImageMetadata }>(
-    "/src/content/spettacoli/**/immagini/*.{jpeg,jpg,png,gif,webp}",
-    { eager: true },
-);
-
-const rawShowImages = Object.entries(allImages)
-    .filter(([path]) => {
-        return getAssetFolderFromPath(path) === assetFolder;
-    })
-    .map(([path, img]) => {
-        const parts = path.split("/");
-        const fileName = parts[parts.length - 1].split(".")[0];
-        return {
-            src: img.default,
-            alt: `${show.data.title} - ${fileName}`,
-            title: show.data.title,
-            subtitle: fileName,
-            width: img.default.width,
-            height: img.default.height,
-        };
-    });
-
 const explicitShowImages = show.data.galleryImages.map((image, index) => ({
     src: image,
     alt: `${show.data.title} - immagine ${index + 1}`,
@@ -53,8 +28,8 @@ const explicitShowImages = show.data.galleryImages.map((image, index) => ({
     height: image.height,
 }));
 
-const showImagesBySource = new Map<string, (typeof rawShowImages)[number]>();
-for (const image of [...rawShowImages, ...explicitShowImages]) {
+const showImagesBySource = new Map<string, (typeof explicitShowImages)[number]>();
+for (const image of explicitShowImages) {
     showImagesBySource.set(image.src.src, image);
 }
 const allShowImages = Array.from(showImagesBySource.values());

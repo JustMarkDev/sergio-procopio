@@ -32,7 +32,6 @@ collections:
         public_folder: biografia/immagini
         fields:
           - { name: title, label: Titolo, widget: string }
-          - { name: description, label: Descrizione SEO, widget: text }
           - { name: quote, label: Citazione, widget: text, required: false }
           - { name: image, label: Immagine principale, widget: image, required: false }
           - { name: body, label: Testo biografia, widget: richtext }
@@ -62,13 +61,12 @@ collections:
         widget: image
         multiple: true
         required: false
-        hint: Carica qui le immagini mentre stai modificando lo spettacolo. La libreria Asset generale non permette di scegliere manualmente la cartella dello spettacolo.
+        hint: Le immagini visibili nella galleria sono solo quelle elencate qui. Per rimuoverne una dal sito, rimuovila da questo campo e salva lo spettacolo.
       - { name: durata, label: Durata, widget: string, required: false }
       - { name: regia, label: Regia, widget: string, required: false }
       - { name: eta, label: Eta consigliata, widget: string, required: false }
       - { name: produzione, label: Produzione, widget: string, required: false }
-      - { name: cast, label: Cast, widget: string, required: false }
-      - { name: tecnico, label: Cast tecnico, widget: string, required: false }
+      - { name: tecnico, label: Tecnico audio/luci, widget: string, required: false }
       - { name: requisiti, label: Requisiti, widget: text, required: false }
       - { name: highlight, label: In evidenza in homepage, widget: boolean, default: false, required: false }
       - { name: draft, label: Bozza, widget: boolean, default: true, required: false }
@@ -99,8 +97,6 @@ collections:
       - { name: city, label: Citta, widget: string }
       - { name: address, label: Indirizzo, widget: string, required: false }
       - { name: googleMapsUrl, label: Link Google Maps, widget: string, required: false }
-      - { name: ticketUrl, label: Link biglietti, widget: string, required: false }
       - { name: description, label: Descrizione, widget: text, required: false }
       - { name: isPublic, label: Pubblico, widget: boolean, default: true, required: false }
       - { name: draft, label: Bozza, widget: boolean, default: true, required: false }
-      - { name: body, label: Note interne o testo aggiuntivo, widget: richtext, required: false }

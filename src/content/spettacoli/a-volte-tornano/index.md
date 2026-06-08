@@ -3,11 +3,21 @@ title: "A Volte Tornano"
 description: "Una potente riflessione sui tragici destini dei migranti e sui sogni che li accompagnano, ambientata nel silenzio degli abissi."
 category: "Scuole"
 image: "immagini/il fondo.jpg"
+galleryImages:
+  - "immagini/aria.jpg"
+  - "immagini/da non credere.jpg"
+  - "immagini/dispersa.jpg"
+  - "immagini/il cattivo.jpg"
+  - "immagini/il compagno.jpg"
+  - "immagini/il fondo.jpg"
+  - "immagini/la partita.jpg"
+  - "immagini/la pausa.jpg"
+
 durata: "1 ora"
 regia: "Daniele Broggini"
 eta: "12+"
 produzione: "Teatro Procopio"
-tecnico: "Giovanni Brovelli"
+tecnico: "Giorgio Albini"
 requisiti: "Minimo di 120 alunni"
 highlight: false
 ---
