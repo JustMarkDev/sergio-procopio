@@ -241,7 +241,7 @@ export default function ShowGallery({ mainImageSrc, mainImageOriginalSrc, images
             >
               <div
                 ref={thumbnailsRef}
-                className="flex gap-2 md:gap-3 overflow-x-auto justify-start items-center px-3 py-2 w-full max-w-[95vw] md:max-w-5xl scrollbar-none relative"
+                className="flex gap-2 md:gap-3 overflow-x-auto justify-start items-center px-3 py-2 w-fit max-w-[95vw] md:max-w-5xl scrollbar-none relative"
                 style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
               >
                 {images.map((img, idx) => {
