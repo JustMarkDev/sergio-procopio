@@ -21,7 +21,7 @@ const showsMap = new Map(
 
 // Carichiamo tutte le immagini dalla cartella spettacoli
 const allImages = import.meta.glob<{ default: ImageMetadata }>(
-    "/src/assets/spettacoli/**/*.{jpeg,jpg,png,gif,webp}",
+    "/src/content/spettacoli/**/immagini/*.{jpeg,jpg,png,gif,webp}",
     { eager: true },
 );
 
@@ -150,7 +150,7 @@ const galleryImages = await Promise.all(
                         </p>
                         <p class="text-sm text-muted-foreground/60 mt-2">
                             Aggiungi delle immagini nelle cartelle
-                            src/assets/spettacoli/[nome-spettacolo]/ per vederle
+                            nella cartella immagini di uno spettacolo per vederle
                             apparire qui.
                         </p>
                     </div>

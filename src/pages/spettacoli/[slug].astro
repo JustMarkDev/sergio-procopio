@@ -23,7 +23,7 @@ const specGroups = getShowSpecs(show);
 // Carichiamo e filtriamo tutte le immagini associate a questo spettacolo
 const assetFolder = getShowAssetFolder(show);
 const allImages = import.meta.glob<{ default: ImageMetadata }>(
-    "/src/assets/spettacoli/**/*.{jpeg,jpg,png,gif,webp}",
+    "/src/content/spettacoli/**/immagini/*.{jpeg,jpg,png,gif,webp}",
     { eager: true },
 );
 

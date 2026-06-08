@@ -50,7 +50,6 @@
 
 @layer base {
     :root {
-        /* Forcing dark mode variables to be default on root as requested by plan */
         --background: #09090b; /* Zinc 950 */
         --foreground: #fafafa; /* Zinc 50 */
 

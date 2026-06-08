@@ -90,14 +90,26 @@ const formatDate = (date: Date) => dateFormatter.format(date);
                                                 {event.data.address}
                                             </div>
                                         )}
-                                        {event.data.ticketUrl && (
-                                            <a
-                                                href={event.data.ticketUrl}
-                                                class="inline-flex mt-5 rounded-2xl bg-primary px-5 py-3 text-xs font-bold uppercase tracking-widest text-primary-foreground hover:bg-primary/90 transition-colors"
-                                            >
-                                                Biglietti
-                                            </a>
-                                        )}
+                                        <div class="mt-5 flex flex-wrap gap-3 lg:justify-end">
+                                            {event.data.googleMapsUrl && (
+                                                <a
+                                                    href={event.data.googleMapsUrl}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    class="inline-flex rounded-2xl border border-white/15 px-5 py-3 text-xs font-bold uppercase tracking-widest text-white/85 hover:border-primary/50 hover:text-primary transition-colors"
+                                                >
+                                                    Mappa
+                                                </a>
+                                            )}
+                                            {event.data.ticketUrl && (
+                                                <a
+                                                    href={event.data.ticketUrl}
+                                                    class="inline-flex rounded-2xl bg-primary px-5 py-3 text-xs font-bold uppercase tracking-widest text-primary-foreground hover:bg-primary/90 transition-colors"
+                                                >
+                                                    Biglietti
+                                                </a>
+                                            )}
+                                        </div>
                                     </div>
                                 </article>
                             ))}
