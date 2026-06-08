@@ -13,6 +13,9 @@ logo:
   show_in_header: true
 locale: it
 
+editor:
+  preview: false
+
 media_folder: public/uploads
 public_folder: /uploads
 media_libraries:
