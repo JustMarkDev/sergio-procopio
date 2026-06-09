@@ -10,6 +10,14 @@ settings:
       delete: "cms: elimina {path}"
       rename: "cms: rinomina {oldPath} in {newPath}"
 
+media:
+  - name: spettacoli-images
+    label: Immagini spettacoli
+    input: src/content/spettacoli
+    output: .
+    categories: [image]
+    rename: false
+
 content:
   - name: spettacoli
     label: Spettacoli
@@ -72,15 +80,18 @@ content:
         type: image
         description: "Carica o scegli un'immagine nella cartella dello spettacolo"
         options:
-          path: src/content/spettacoli/{slug}/immagini
+          media: spettacoli-images
+          path: immagini
 
       - name: galleryImages
         label: Galleria immagini
         type: image
-        list: true
         description: "Immagini mostrate nella galleria dello spettacolo"
         options:
-          path: src/content/spettacoli/{slug}/immagini
+          media: spettacoli-images
+          path: immagini
+          multiple: true
+          unique: true
 
       - name: durata
         label: Durata
