@@ -11,6 +11,133 @@ settings:
       rename: "cms: rinomina {oldPath} in {newPath}"
 
 content:
+  - name: spettacoli
+    label: Spettacoli
+    type: collection
+    path: src/content/spettacoli
+    format: yaml-frontmatter
+    subfolders: true
+    filename:
+      template: "{slug}/index.md"
+      field: slug
+    operations:
+      create: true
+      rename: true
+      delete: true
+    view:
+      fields: [title, category, durata, eta, highlight, draft]
+      primary: title
+      sort: [title]
+      search: [title, description, category]
+      default:
+        sort: title
+        order: asc
+    fields:
+      - name: title
+        label: Titolo
+        type: string
+        required: true
+        options:
+          maxlength: 120
+
+      - name: slug
+        label: Slug URL
+        type: string
+        required: true
+        description: "Solo per nuovi spettacoli. Esempio: la-grande-guerra"
+        options:
+          maxlength: 120
+        pattern:
+          regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          message: "Usa solo lettere minuscole, numeri e trattini"
+
+      - name: description
+        label: Descrizione breve
+        type: text
+        required: true
+        description: "Testo mostrato nella scheda e in apertura pagina"
+        options:
+          maxlength: 300
+
+      - name: category
+        label: Categoria
+        type: string
+        required: true
+        description: "Esempio: Scuole, alpini, teatro"
+        options:
+          maxlength: 80
+
+      - name: image
+        label: Immagine principale
+        type: image
+        description: "Carica o scegli un'immagine nella cartella dello spettacolo"
+        options:
+          path: src/content/spettacoli/{slug}/immagini
+
+      - name: galleryImages
+        label: Galleria immagini
+        type: image
+        list: true
+        description: "Immagini mostrate nella galleria dello spettacolo"
+        options:
+          path: src/content/spettacoli/{slug}/immagini
+
+      - name: durata
+        label: Durata
+        type: string
+        description: "Esempio: 1h 15m"
+        options:
+          maxlength: 40
+
+      - name: regia
+        label: Regia
+        type: string
+        options:
+          maxlength: 120
+
+      - name: eta
+        label: Eta consigliata
+        type: string
+        description: "Esempio: 7+"
+        options:
+          maxlength: 40
+
+      - name: produzione
+        label: Produzione
+        type: string
+        options:
+          maxlength: 120
+
+      - name: tecnico
+        label: Tecnico
+        type: string
+        options:
+          maxlength: 120
+
+      - name: requisiti
+        label: Requisiti
+        type: string
+        options:
+          maxlength: 180
+
+      - name: highlight
+        label: In evidenza
+        type: boolean
+        default: false
+        description: "Mostra lo spettacolo tra quelli in evidenza, se previsto dal sito"
+
+      - name: draft
+        label: Bozza
+        type: boolean
+        default: false
+        description: "Attiva per salvare senza pubblicare la pagina dello spettacolo"
+
+      - name: body
+        label: Contenuto pagina
+        type: rich-text
+        required: true
+        description: "Testo principale della pagina. Usa titoli come Proposta e Trama"
+
   - name: eventi
     label: Eventi
     type: collection
