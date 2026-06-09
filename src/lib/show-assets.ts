@@ -18,11 +18,11 @@ export function getAssetFolderFromPath(path: string) {
   return afterMarker.split("/")[0] || "";
 }
 
-export function getImageTitleFromPath(path: string | { src: string }) {
-  const rawPath = typeof path === "string" ? path : path.src;
-  const normalizedPath = rawPath.replaceAll("\\", "/");
+export function getImageTitleFromPath(path: string) {
+  const normalizedPath = path.replaceAll("\\", "/");
   const filename = normalizedPath.split("/").pop() || "";
   const title = filename
+    .replace(/\.[A-Za-z0-9_-]{6,}(?=\.[^.]+$)/, "")
     .replace(/\.[^.]+$/, "")
     .replace(/[-_]+/g, " ")
     .replace(/\s+/g, " ")
