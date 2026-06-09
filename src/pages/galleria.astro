@@ -12,10 +12,11 @@ const galleryImagesFromShows = spettacoli
     .flatMap((show) =>
         show.data.galleryImages.map((image, index) => ({
             src: image,
+            originalPath: image,
             alt: `${show.data.title} - immagine ${index + 1}`,
             showId: show.id,
             title: show.data.title,
-            subtitle: getImageTitleFromPath(image.src) || `immagine ${index + 1}`,
+            subtitle: getImageTitleFromPath(image) || `immagine ${index + 1}`,
             width: image.width,
             height: image.height,
         })),
@@ -60,6 +61,7 @@ const galleryImages = await Promise.all(
             gridSrc: optimizedGrid.src,
             thumbSrc: optimizedThumb.src,
             originalSrc: image.src.src,
+            originalPath: image.originalPath,
             alt: image.alt,
             showId: image.showId,
             title: image.title,

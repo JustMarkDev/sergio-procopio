@@ -22,9 +22,10 @@ const specGroups = getShowSpecs(show);
 
 const explicitShowImages = show.data.galleryImages.map((image, index) => ({
     src: image,
+    originalPath: image,
     alt: `${show.data.title} - immagine ${index + 1}`,
     title: show.data.title,
-    subtitle: getImageTitleFromPath(image.src) || `immagine ${index + 1}`,
+    subtitle: getImageTitleFromPath(image) || `immagine ${index + 1}`,
     width: image.width,
     height: image.height,
 }));
@@ -65,6 +66,7 @@ const showImages = await Promise.all(
             gridSrc: optimizedGrid.src,
             thumbSrc: optimizedThumb.src,
             originalSrc: image.src.src,
+            originalPath: image.originalPath,
             alt: image.alt,
             title: image.title,
             subtitle: image.subtitle,
