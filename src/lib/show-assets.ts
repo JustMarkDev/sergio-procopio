@@ -17,3 +17,15 @@ export function getAssetFolderFromPath(path: string) {
   const afterMarker = normalizedPath.slice(markerIndex + marker.length);
   return afterMarker.split("/")[0] || "";
 }
+
+export function getImageTitleFromPath(path: string) {
+  const normalizedPath = path.replaceAll("\\", "/");
+  const filename = normalizedPath.split("/").pop() || "";
+  const title = filename
+    .replace(/\.[^.]+$/, "")
+    .replace(/[-_]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  return title ? title.charAt(0).toUpperCase() + title.slice(1) : "";
+}

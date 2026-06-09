@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
 import { getImage } from "astro:assets";
 import GalleryView from "../components/custom/GalleryView";
+import { getImageTitleFromPath } from "../lib/show-assets";
 
 const spettacoli = await getCollection("spettacoli");
 
@@ -14,7 +15,7 @@ const galleryImagesFromShows = spettacoli
             alt: `${show.data.title} - immagine ${index + 1}`,
             showId: show.id,
             title: show.data.title,
-            subtitle: `immagine ${index + 1}`,
+            subtitle: getImageTitleFromPath(image.src) || `immagine ${index + 1}`,
             width: image.width,
             height: image.height,
         })),

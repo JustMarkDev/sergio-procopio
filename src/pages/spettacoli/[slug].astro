@@ -3,6 +3,7 @@ import Layout from "../../layouts/Layout.astro";
 import { getCollection, render } from "astro:content";
 import { getImage } from "astro:assets";
 import { getShowSpecs } from "../../lib/show-specs";
+import { getImageTitleFromPath } from "../../lib/show-assets";
 import ShowGallery from "../../components/custom/ShowGallery";
 
 export async function getStaticPaths() {
@@ -23,7 +24,7 @@ const explicitShowImages = show.data.galleryImages.map((image, index) => ({
     src: image,
     alt: `${show.data.title} - immagine ${index + 1}`,
     title: show.data.title,
-    subtitle: `immagine ${index + 1}`,
+    subtitle: getImageTitleFromPath(image.src) || `immagine ${index + 1}`,
     width: image.width,
     height: image.height,
 }));
