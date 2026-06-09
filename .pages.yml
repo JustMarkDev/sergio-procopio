@@ -12,9 +12,72 @@ settings:
 
 media:
   - name: spettacoli-images
-    label: Immagini spettacoli
+    label: Tutte le immagini spettacoli
     input: src/content/spettacoli
     output: .
+    categories: [image]
+    rename: false
+
+  - name: immagini-a-volte-tornano
+    label: A volte tornano
+    input: src/content/spettacoli/a-volte-tornano/immagini
+    output: immagini
+    categories: [image]
+    rename: false
+
+  - name: immagini-comico
+    label: Comico
+    input: src/content/spettacoli/comico/immagini
+    output: immagini
+    categories: [image]
+    rename: false
+
+  - name: immagini-il-bullo
+    label: Il bullo
+    input: src/content/spettacoli/il-bullo/immagini
+    output: immagini
+    categories: [image]
+    rename: false
+
+  - name: immagini-la-grande-guerra
+    label: La Grande Guerra
+    input: src/content/spettacoli/la-grande-guerra/immagini
+    output: immagini
+    categories: [image]
+    rename: false
+
+  - name: immagini-la-valigia-di-s-francesco
+    label: La valigia di S. Francesco
+    input: src/content/spettacoli/la-valigia-di-s-francesco/immagini
+    output: immagini
+    categories: [image]
+    rename: false
+
+  - name: immagini-lattesa
+    label: L'attesa
+    input: src/content/spettacoli/lattesa/immagini
+    output: immagini
+    categories: [image]
+    rename: false
+
+  - name: immagini-le-vacanze-di-henry
+    label: Le vacanze di Henry
+    input: src/content/spettacoli/le-vacanze-di-henry/immagini
+    output: immagini
+    categories: [image]
+    rename: false
+
+  - name: immagini-luomo-e-il-mare-di-plastica
+    label: L'uomo e il mare di plastica
+    input: src/content/spettacoli/luomo-e-il-mare-di-plastica/immagini
+    output: immagini
+    categories: [image]
+    rename: false
+
+  - name: immagini-pino-4-0
+    label: Pino 4.0
+    input: src/content/spettacoli/pino-4-0/immagini
+    output: immagini
     categories: [image]
     rename: false
 
@@ -81,7 +144,7 @@ content:
         description: "Carica o scegli un'immagine nella cartella dello spettacolo"
         options:
           media: spettacoli-images
-          path: immagini
+          path: "{slug}/immagini"
 
       - name: galleryImages
         label: Galleria immagini
@@ -89,7 +152,7 @@ content:
         description: "Immagini mostrate nella galleria dello spettacolo"
         options:
           media: spettacoli-images
-          path: immagini
+          path: "{slug}/immagini"
           multiple: true
           unique: true
 
