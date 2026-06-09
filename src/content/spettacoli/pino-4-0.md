@@ -2,18 +2,18 @@
 title: "Pino 4.0"
 description: "Uno spettacolo e incontro per far conoscere il pericolo della dipendenza dal cellulare tra i giovani."
 category: "Scuole"
-image: "immagini/la noia.jpg"
+image: "../../assets/spettacoli/pino-4-0/la noia.jpg"
 galleryImages:
-  - "immagini/atteragio.jpg"
-  - "immagini/gli Abbagnale.jpg"
-  - "immagini/il regalo.jpg"
-  - "immagini/l'attesa.jpg"
-  - "immagini/l'incontro con Pino.jpg"
-  - "immagini/la coppa.jpg"
-  - "immagini/la corsa.jpg"
-  - "immagini/la noia.jpg"
-  - "immagini/la salita.jpg"
-  - "immagini/surf.jpg"
+  - "../../assets/spettacoli/pino-4-0/atteragio.jpg"
+  - "../../assets/spettacoli/pino-4-0/gli Abbagnale.jpg"
+  - "../../assets/spettacoli/pino-4-0/il regalo.jpg"
+  - "../../assets/spettacoli/pino-4-0/l'attesa.jpg"
+  - "../../assets/spettacoli/pino-4-0/l'incontro con Pino.jpg"
+  - "../../assets/spettacoli/pino-4-0/la coppa.jpg"
+  - "../../assets/spettacoli/pino-4-0/la corsa.jpg"
+  - "../../assets/spettacoli/pino-4-0/la noia.jpg"
+  - "../../assets/spettacoli/pino-4-0/la salita.jpg"
+  - "../../assets/spettacoli/pino-4-0/surf.jpg"
 
 durata: "1h 15m"
 regia: "Daniele Broggini"
@@ -25,12 +25,14 @@ highlight: true
 ---
 
 ## Proposta
+
 Vi proponiamo uno spettacolo dal titolo Pino 4.0 per far conoscere il pericolo della dipendenza dal cellulare in cui incorrono molti giovani e giovanissimi. L'utilizzo eccessivo del cellulare può distrarre dallo studio e limitare la creatività e l'espressione personale, fondamentali per una vita soddisfacente.
 
 Il nostro obiettivo è di riuscire a sensibilizzare i giovani sui rischi legati all'uso incontrollato del cellulare attraverso una storia coinvolgente e divertente. Il nostro spettacolo educativo rappresenta un investimento prezioso per il futuro dei ragazzi, aiutandoli a riflettere su temi importanti e a diventare persone migliori.
 
 ## Trama
-Ci troviamo in una sala d'aspetto, una sala come tante altre, anche se questa è molto particolare, dove le persone si incontrano e cercano di comunicare. 
+
+Ci troviamo in una sala d'aspetto, una sala come tante altre, anche se questa è molto particolare, dove le persone si incontrano e cercano di comunicare.
 
 La nostra storia inizia qui, con un giovane curvo sulla sedia e il suo amico che viene a trovarlo. Accade praticamente a ogni fine stagione, e ogni volta il giovane racconta al suo amico Pino, sempre curvo sulla sedia, di sé, delle sue avventure e dei suoi desideri. Pino, però, è piuttosto chiuso e fatica ad essere coinvolto, tanto che non si accorge che il suo amico è passato a trovarlo.
 

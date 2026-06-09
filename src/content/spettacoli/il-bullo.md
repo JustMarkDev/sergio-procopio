@@ -2,22 +2,22 @@
 title: "Il Bullo"
 description: "Uno spettacolo-incontro contro il bullismo, l'abbandono scolastico, l'illegalità e il femminicidio."
 category: "Scuole"
-image: "immagini/letto.jpg"
+image: "../../assets/spettacoli/il-bullo/letto.jpg"
 galleryImages:
-  - "immagini/cio che rimane dell'amore.jpg"
-  - "immagini/coinvolgimento.jpg"
-  - "immagini/compagno di solitudine.jpg"
-  - "immagini/credenze di potere.jpg"
-  - "immagini/l'alimentazione.jpg"
-  - "immagini/letto.jpg"
-  - "immagini/maria nascosta.jpg"
-  - "immagini/panni dorati.jpg"
-  - "immagini/riflessioni partecipate.jpg"
-  - "immagini/scarpe doro.jpg"
-  - "immagini/sedia.jpg"
-  - "immagini/solitudine.jpg"
-  - "immagini/uccello.jpg"
-  - "immagini/vittoria.jpg"
+  - "../../assets/spettacoli/il-bullo/cio che rimane dell'amore.jpg"
+  - "../../assets/spettacoli/il-bullo/coinvolgimento.jpg"
+  - "../../assets/spettacoli/il-bullo/compagno di solitudine.jpg"
+  - "../../assets/spettacoli/il-bullo/credenze di potere.jpg"
+  - "../../assets/spettacoli/il-bullo/l'alimentazione.jpg"
+  - "../../assets/spettacoli/il-bullo/letto.jpg"
+  - "../../assets/spettacoli/il-bullo/maria nascosta.jpg"
+  - "../../assets/spettacoli/il-bullo/panni dorati.jpg"
+  - "../../assets/spettacoli/il-bullo/riflessioni partecipate.jpg"
+  - "../../assets/spettacoli/il-bullo/scarpe doro.jpg"
+  - "../../assets/spettacoli/il-bullo/sedia.jpg"
+  - "../../assets/spettacoli/il-bullo/solitudine.jpg"
+  - "../../assets/spettacoli/il-bullo/uccello.jpg"
+  - "../../assets/spettacoli/il-bullo/vittoria.jpg"
 
 durata: "2 ore"
 regia: "Giorgio Albini"
@@ -29,6 +29,7 @@ highlight: true
 ---
 
 ## Proposta
+
 Vi proponiamo uno spettacolo-incontro contro il bullismo, l'abbandono scolastico, l'illegalità e il femminicidio. L'obiettivo è quello di sensibilizzare gli spettatori su questi temi importanti e far loro fare una riflessione profonda su di essi.
 
 Attraverso la progressiva presa di coscienza del protagonista, lo spettacolo vuole sensibilizzare gli spettatori su temi importanti come l'abbandono scolastico, il bullismo, l'associazione a delinquere, l'illegalità e il femminicidio. Inoltre, al termine dello spettacolo, l'attore e autore dello spettacolo parlerà della sua esperienza di 10 anni trascorsi in un collegio, dove ha dovuto lottare per scegliere la strada giusta in diverse occasioni.
@@ -38,4 +39,5 @@ Siamo convinti che questo spettacolo possa avere un impatto positivo sui giovani
 Lo spettacolo racconta la storia di Dannato Giuseppe, un criminale che ha scelto l'illegalità come strada per il potere, i soldi e il successo. Durante tutta la durata dello spettacolo, il protagonista è costretto a nascondersi in un bunker per sfuggire alla cattura delle forze dell'ordine. Ha commesso ogni tipo di crimine, collaborando con organizzazioni malavitose e uccidendo senza pietà. Ma con il passare del tempo, si rende conto che la sua scelta sbagliata gli ha tolto tutto: l'amore, la felicità, la dignità e soprattutto la libertà. La sua vita è diventata "una vita senza", priva di affetti, amore e libertà, e si è trovato solo, emarginato e abbandonato.
 
 ## Trama
+
 Da vent'anni in latitanza, il protagonista vive in un bunker buio e senza luce, lontano dalla vita "vera". Cerca di immaginare una vita diversa per sé, ma involontariamente ripercorre le sue scelte di vita passate, mettendo in luce gli errori commessi in passato, come il bullismo, l'abbandono scolastico, la prima rapina e l'omicidio. Lo spettacolo fornisce una visione più chiara del futuro per chi sceglie l'illegalità.

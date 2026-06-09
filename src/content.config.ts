@@ -7,14 +7,10 @@ const optionalUrl = z.preprocess(
   z.url().optional(),
 );
 
-const folderIndexId = ({ entry }: { entry: string }) =>
-  entry.replace(/\/index\.md$/, "").replace(/\.md$/, "");
-
 const spettacoliCollection = defineCollection({
   loader: glob({
-    pattern: "**/index.md",
+    pattern: "*.md",
     base: "./src/content/spettacoli",
-    generateId: folderIndexId,
   }),
   schema: ({ image }) =>
     z.object({
