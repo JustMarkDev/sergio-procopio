@@ -249,3 +249,45 @@ content:
         type: boolean
         default: false
         description: "Attiva per salvare senza pubblicare sul calendario"
+
+  - name: biografia
+    label: Biografia
+    type: file
+    path: src/content/pages/biografia.md
+    format: yaml-frontmatter
+    fields:
+      - name: title
+        label: Titolo
+        type: string
+        required: true
+        options:
+          maxlength: 120
+
+      - name: description
+        label: Descrizione SEO
+        type: text
+        required: true
+        description: "Testo usato come descrizione della pagina"
+        options:
+          maxlength: 300
+
+      - name: quote
+        label: Citazione
+        type: text
+        description: "Frase in evidenza nella pagina biografia"
+        options:
+          maxlength: 240
+
+      - name: image
+        label: Immagine biografia
+        type: image
+        description: "Scegli un'immagine dalla cartella biografia"
+        options:
+          media: assets
+          path: biografia
+
+      - name: body
+        label: Contenuto pagina
+        type: rich-text
+        required: true
+        description: "Testo principale della biografia"
