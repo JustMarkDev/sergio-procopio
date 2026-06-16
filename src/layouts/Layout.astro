@@ -12,15 +12,16 @@ import Analytics from '@vercel/analytics/astro';
 interface Props {
 	title?: string;
 	description?: string;
+	canonicalPath?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, canonicalPath } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="it" class="dark scroll-smooth">
 	<head>
-		<SEO title={title} description={description} />
+		<SEO title={title} description={description} canonicalPath={canonicalPath} />
 		<Schema />
 	</head>
 	<body>

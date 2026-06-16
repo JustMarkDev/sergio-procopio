@@ -86,12 +86,13 @@ if (show.data.image) {
     optimizedMainImage = optimized.src;
 }
 
+const site = Astro.site ?? new URL("https://sergioprocopio.it");
 const showSchema = {
   "@context": "https://schema.org",
   "@type": "Product",
   "name": show.data.title,
   "description": show.data.description,
-  "image": show.data.image ? new URL(show.data.image.src, Astro.url).toString() : undefined,
+  "image": show.data.image ? new URL(show.data.image.src, site).toString() : undefined,
   "brand": {
     "@type": "Person",
     "name": "Sergio Procopio"
@@ -99,7 +100,7 @@ const showSchema = {
   "offers": {
     "@type": "Offer",
     "availability": "https://schema.org/InStock",
-    "url": Astro.url.toString()
+    "url": new URL(`/spettacoli/${show.id}`, site).toString()
   }
 };
 ---
@@ -107,6 +108,7 @@ const showSchema = {
 <Layout
     title={`${show.data.title} | Sergio Procopio`}
     description={show.data.description}
+    canonicalPath={`/spettacoli/${show.id}`}
 >
     <script type="application/ld+json" is:inline set:html={JSON.stringify(showSchema)} />
     <div class="relative overflow-hidden bg-[#09090b]">

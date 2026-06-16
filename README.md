@@ -46,7 +46,7 @@ RESEND_API_KEY=...
 | `bun run dev` | Avvia il server Astro locale. |
 | `bun run build` | Genera la build di produzione in `dist/`. |
 | `bun run preview` | Serve localmente la build generata. |
-| `bunx astro check` | Controlla tipi Astro, contenuti e route. |
+| `bun run check` | Controlla tipi Astro, contenuti e route. |
 
 ## Struttura
 
@@ -85,7 +85,7 @@ RESEND_API_KEY=...
 
 ## Gestione Contenuti
 
-Gli schemi sono definiti in `src/content.config.ts`. Dopo modifiche ai contenuti, esegui `bunx astro check`.
+Gli schemi sono definiti in `src/content.config.ts`. Dopo modifiche ai contenuti, esegui `bun run check`.
 
 ### Spettacoli
 
@@ -161,7 +161,7 @@ Font principali:
 ## Verifica Prima del Deploy
 
 ```sh
-bunx astro check
+bun run check
 bun run build
 ```
 

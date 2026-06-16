@@ -1,16 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
-
-const today = new Date();
-today.setHours(0, 0, 0, 0);
+import { splitEventsByDate } from "../lib/calendar-dates";
 
 const eventi = (await getCollection("eventi"))
     .filter((event) => !event.data.draft && event.data.isPublic)
     .sort((a, b) => a.data.date.getTime() - b.data.date.getTime());
 
-const upcomingEvents = eventi.filter((event) => event.data.date >= today);
-const pastEvents = eventi.filter((event) => event.data.date < today).reverse();
+const { upcomingEvents, pastEvents } = splitEventsByDate(eventi);
 
 const dateFormatter = new Intl.DateTimeFormat("it-IT", {
     weekday: "long",

@@ -1,6 +1,6 @@
 import { defineAction } from "astro:actions";
-import { z } from "zod";
 import { Resend } from "resend";
+import { contactFormSchema } from "./contact-schema";
 
 function escapeHtml(value: string) {
   return value.replace(/[&<>"']/g, (char) => {
@@ -24,12 +24,7 @@ function escapeHtml(value: string) {
 export const server = {
   sendContactEmail: defineAction({
     accept: "form",
-    input: z.object({
-      nome: z.string().min(1, "Nome obbligatorio"),
-      email: z.email("Email non valida"),
-      oggetto: z.string().optional(),
-      messaggio: z.string().min(1, "Messaggio obbligatorio"),
-    }),
+    input: contactFormSchema,
     handler: async (input) => {
       // L'integrazione di Vercel espone la chiave come RESEND_API_KEY.
       // Cerchiamo in import.meta.env (Astro) e process.env (Node/Vercel runtime)

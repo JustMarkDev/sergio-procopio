@@ -2,6 +2,12 @@ import { useEffect, useState, useTransition } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { actions } from "astro:actions";
 
+// Keep in sync with src/actions/contact-schema.ts.
+const CONTACT_NAME_MAX_LENGTH = 120;
+const CONTACT_EMAIL_MAX_LENGTH = 254;
+const CONTACT_SUBJECT_MAX_LENGTH = 160;
+const CONTACT_MESSAGE_MAX_LENGTH = 4000;
+
 export default function ContactForm() {
   const rotatingTitles = ["scuola", "parrocchia", "associazione"];
   const [isPending, startTransition] = useTransition();
@@ -188,6 +194,7 @@ export default function ContactForm() {
                       id="nome"
                       name="nome"
                       required
+                      maxLength={CONTACT_NAME_MAX_LENGTH}
                       className="flex h-14 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-3 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none"
                       placeholder="Mario Rossi"
                     />
@@ -204,6 +211,7 @@ export default function ContactForm() {
                       name="email"
                       type="email"
                       required
+                      maxLength={CONTACT_EMAIL_MAX_LENGTH}
                       className="flex h-14 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-3 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none"
                       placeholder="mario@email.it"
                     />
@@ -220,6 +228,7 @@ export default function ContactForm() {
                   <input
                     id="oggetto"
                     name="oggetto"
+                    maxLength={CONTACT_SUBJECT_MAX_LENGTH}
                     className="flex h-14 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-3 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none"
                     placeholder="Richiesta informazioni..."
                   />
@@ -236,6 +245,7 @@ export default function ContactForm() {
                     id="messaggio"
                     name="messaggio"
                     required
+                    maxLength={CONTACT_MESSAGE_MAX_LENGTH}
                     className="flex min-h-35 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-3 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none resize-none"
                     placeholder="Scrivi qui..."
                   ></textarea>
