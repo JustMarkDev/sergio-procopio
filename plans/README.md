@@ -8,7 +8,7 @@ honor its STOP conditions, and update your row when done.
 
 | Plan | Title | Priority | Effort | Depends on | Status |
 |------|-------|----------|--------|------------|--------|
-| 005 | Triage vulnerable dependencies | P2 | M | - | BLOCKED - remaining high advisories require major Vercel/Vite/esbuild dependency migration |
+| 005 | Triage vulnerable dependencies | P2 | M | - | DONE |
 
 Status values: TODO | IN PROGRESS | DONE | BLOCKED (with one-line reason) | REJECTED (with one-line rationale)
 
