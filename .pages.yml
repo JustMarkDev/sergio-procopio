@@ -163,7 +163,7 @@ content:
       rename: false
       delete: true
     view:
-      fields: [date, spettacolo, venue, city, isPublic, draft]
+      fields: [date, time, spettacolo, venue, city, isPublic, draft]
       primary: venue
       sort: [date, spettacolo, city]
       search: [spettacolo, venue, city]
@@ -182,12 +182,22 @@ content:
           label: "{title}"
 
       - name: date
-        label: Data e ora
+        label: Data
         type: date
         required: true
         options:
-          time: true
-          format: dd-MM-yyyy HH:mm
+          format: dd-MM-yyyy
+
+      - name: time
+        label: Ora
+        type: string
+        required: true
+        description: "Formato 24 ore, esempio: 20:30"
+        pattern:
+          regex: "^([01][0-9]|2[0-3]):[0-5][0-9]$"
+          message: "Usa il formato 24 ore, esempio: 20:30"
+        options:
+          maxlength: 5
 
       - name: venue
         label: Teatro o luogo

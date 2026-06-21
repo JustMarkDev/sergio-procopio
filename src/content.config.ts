@@ -7,24 +7,26 @@ const optionalUrl = z.preprocess(
   z.url().optional(),
 );
 
-const parseEventDateTime = (dateValue: unknown, timeValue?: string) => {
-  if (typeof dateValue === "string") {
-    const dayMonthYearTime = dateValue.match(
-      /^(\d{2})-(\d{2})-(\d{4})\s+([01]\d|2[0-3]):([0-5]\d)$/,
-    );
+const parseEventDateTime = (dateValue: unknown, timeValue: string) => {
+  if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(timeValue)) {
+    return null;
+  }
 
-    if (dayMonthYearTime) {
-      const [, day, month, year, hour, minute] = dayMonthYearTime;
+  if (typeof dateValue === "string") {
+    const dayMonthYear = dateValue.match(/^(\d{2})-(\d{2})-(\d{4})$/);
+
+    if (dayMonthYear) {
+      const [, day, month, year] = dayMonthYear;
 
       return {
         date: new Date(Date.UTC(Number(year), Number(month) - 1, Number(day))),
-        time: `${hour}:${minute}`,
+        time: timeValue,
       };
     }
 
     const yearMonthDay = dateValue.match(/^(\d{4})-(\d{2})-(\d{2})$/);
 
-    if (yearMonthDay && timeValue) {
+    if (yearMonthDay) {
       const [, year, month, day] = yearMonthDay;
 
       return {
@@ -43,24 +45,14 @@ const parseEventDateTime = (dateValue: unknown, timeValue?: string) => {
           dateValue.getUTCDate(),
         ),
       ),
-      time:
-        timeValue ??
-        dateValue.toLocaleTimeString("it-IT", {
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: false,
-          timeZone: "Europe/Rome",
-        }),
+      time: timeValue,
     };
   }
 
   return null;
 };
 
-const eventTimeSchema = z
-  .string()
-  .regex(/^([01]\d|2[0-3]):[0-5]\d$/)
-  .optional();
+const eventTimeSchema = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/);
 
 const spettacoliCollection = defineCollection({
   loader: glob({
@@ -107,7 +99,7 @@ const eventiCollection = defineCollection({
       if (!dateTime) {
         ctx.addIssue({
           code: "custom",
-          message: "Usa il formato data e ora: 28-06-2026 20:30",
+          message: "Usa data in formato 28-06-2026 e ora in formato 24 ore, esempio: 20:30",
           path: ["date"],
         });
 
