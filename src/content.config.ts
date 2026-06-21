@@ -7,26 +7,28 @@ const optionalUrl = z.preprocess(
   z.url().optional(),
 );
 
-const parseEventDateTime = (dateValue: unknown, timeValue: string) => {
-  if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(timeValue)) {
+const parseEventDateTime = (dateValue: unknown, timeValue?: string) => {
+  if (timeValue && !/^([01]\d|2[0-3]):[0-5]\d$/.test(timeValue)) {
     return null;
   }
 
   if (typeof dateValue === "string") {
-    const dayMonthYear = dateValue.match(/^(\d{2})-(\d{2})-(\d{4})$/);
+    const dayMonthYearTime = dateValue.match(
+      /^(\d{2})-(\d{2})-(\d{4})\s+([01]\d|2[0-3]):([0-5]\d)$/,
+    );
 
-    if (dayMonthYear) {
-      const [, day, month, year] = dayMonthYear;
+    if (dayMonthYearTime) {
+      const [, day, month, year, hour, minute] = dayMonthYearTime;
 
       return {
         date: new Date(Date.UTC(Number(year), Number(month) - 1, Number(day))),
-        time: timeValue,
+        time: `${hour}:${minute}`,
       };
     }
 
     const yearMonthDay = dateValue.match(/^(\d{4})-(\d{2})-(\d{2})$/);
 
-    if (yearMonthDay) {
+    if (yearMonthDay && timeValue) {
       const [, year, month, day] = yearMonthDay;
 
       return {
@@ -45,14 +47,24 @@ const parseEventDateTime = (dateValue: unknown, timeValue: string) => {
           dateValue.getUTCDate(),
         ),
       ),
-      time: timeValue,
+      time:
+        timeValue ??
+        dateValue.toLocaleTimeString("it-IT", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+          timeZone: "Europe/Rome",
+        }),
     };
   }
 
   return null;
 };
 
-const eventTimeSchema = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/);
+const eventTimeSchema = z
+  .string()
+  .regex(/^([01]\d|2[0-3]):[0-5]\d$/)
+  .optional();
 
 const spettacoliCollection = defineCollection({
   loader: glob({
@@ -99,7 +111,7 @@ const eventiCollection = defineCollection({
       if (!dateTime) {
         ctx.addIssue({
           code: "custom",
-          message: "Usa data in formato 28-06-2026 e ora in formato 24 ore, esempio: 20:30",
+          message: "Usa data e ora in formato 28-06-2026 20:30",
           path: ["date"],
         });
 
