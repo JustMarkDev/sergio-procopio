@@ -64,41 +64,30 @@ const formatDate = (date: Date) => dateFormatter.format(date);
                                     </div>
 
                                     <div class="lg:col-span-6">
-                                        <h3 class="text-2xl md:text-3xl font-serif font-bold mb-2">
+                                        <h3 class="text-2xl md:text-3xl font-serif font-bold">
                                             {event.data.title}
                                         </h3>
-                                        {event.data.spettacolo && (
-                                            <p class="text-primary font-semibold mb-3">
-                                                {event.data.spettacolo}
-                                            </p>
-                                        )}
-                                        {event.data.description && (
-                                            <p class="text-muted-foreground leading-relaxed">
-                                                {event.data.description}
-                                            </p>
-                                        )}
                                     </div>
 
-                                    <div class="lg:col-span-3 lg:text-right">
-                                        <div class="text-lg font-semibold">{event.data.venue}</div>
-                                        <div class="text-muted-foreground">{event.data.city}</div>
+                                    <div class="lg:col-span-3 flex flex-col items-start lg:items-end gap-3 lg:text-right">
+                                        <div class="text-xl font-serif font-bold leading-tight text-foreground">
+                                            {event.data.city}
+                                        </div>
                                         {event.data.address && (
-                                            <div class="text-sm text-muted-foreground/70 mt-2">
+                                            <div class="max-w-xs text-sm text-muted-foreground leading-relaxed">
                                                 {event.data.address}
                                             </div>
                                         )}
-                                        <div class="mt-5 flex flex-wrap gap-3 lg:justify-end">
-                                            {event.data.googleMapsUrl && (
-                                                <a
-                                                    href={event.data.googleMapsUrl}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    class="inline-flex rounded-2xl border border-white/15 px-5 py-3 text-xs font-bold uppercase tracking-widest text-white/85 hover:border-primary/50 hover:text-primary transition-colors"
-                                                >
-                                                    Mappa
-                                                </a>
-                                            )}
-                                        </div>
+                                        {event.data.googleMapsUrl && (
+                                            <a
+                                                href={event.data.googleMapsUrl}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                class="mt-1 inline-flex rounded-2xl border border-white/15 px-5 py-3 text-xs font-bold uppercase tracking-widest text-white/85 hover:border-primary/50 hover:text-primary transition-colors"
+                                            >
+                                                Mappa
+                                            </a>
+                                        )}
                                     </div>
                                 </article>
                             ))}
@@ -129,7 +118,7 @@ const formatDate = (date: Date) => dateFormatter.format(date);
                                     </div>
                                     <h3 class="text-xl font-serif font-bold">{event.data.title}</h3>
                                     <p class="text-sm text-muted-foreground mt-2">
-                                        {event.data.venue}, {event.data.city}
+                                        {event.data.city}
                                     </p>
                                 </article>
                             ))}
