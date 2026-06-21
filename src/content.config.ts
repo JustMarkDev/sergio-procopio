@@ -7,30 +7,60 @@ const optionalUrl = z.preprocess(
   z.url().optional(),
 );
 
-const parseEventDate = (value: unknown) => {
-  if (typeof value === "string") {
-    const dayMonthYear = value.match(/^(\d{2})-(\d{2})-(\d{4})$/);
+const parseEventDateTime = (dateValue: unknown, timeValue?: string) => {
+  if (typeof dateValue === "string") {
+    const dayMonthYearTime = dateValue.match(
+      /^(\d{2})-(\d{2})-(\d{4})\s+([01]\d|2[0-3]):([0-5]\d)$/,
+    );
 
-    if (dayMonthYear) {
-      const [, day, month, year] = dayMonthYear;
-      return `${year}-${month}-${day}`;
+    if (dayMonthYearTime) {
+      const [, day, month, year, hour, minute] = dayMonthYearTime;
+
+      return {
+        date: new Date(Date.UTC(Number(year), Number(month) - 1, Number(day))),
+        time: `${hour}:${minute}`,
+      };
+    }
+
+    const yearMonthDay = dateValue.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+
+    if (yearMonthDay && timeValue) {
+      const [, year, month, day] = yearMonthDay;
+
+      return {
+        date: new Date(Date.UTC(Number(year), Number(month) - 1, Number(day))),
+        time: timeValue,
+      };
     }
   }
 
-  return value;
-};
-
-const eventTimeSchema = z.preprocess((value) => {
-  if (value instanceof Date) {
-    return value.toLocaleTimeString("it-IT", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    });
+  if (dateValue instanceof Date && !Number.isNaN(dateValue.getTime())) {
+    return {
+      date: new Date(
+        Date.UTC(
+          dateValue.getUTCFullYear(),
+          dateValue.getUTCMonth(),
+          dateValue.getUTCDate(),
+        ),
+      ),
+      time:
+        timeValue ??
+        dateValue.toLocaleTimeString("it-IT", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+          timeZone: "Europe/Rome",
+        }),
+    };
   }
 
-  return value === "" ? undefined : value;
-}, z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/).optional());
+  return null;
+};
+
+const eventTimeSchema = z
+  .string()
+  .regex(/^([01]\d|2[0-3]):[0-5]\d$/)
+  .optional();
 
 const spettacoliCollection = defineCollection({
   loader: glob({
@@ -61,7 +91,7 @@ const eventiCollection = defineCollection({
     .object({
       title: z.string().optional(),
       spettacolo: z.string(),
-      date: z.preprocess(parseEventDate, z.coerce.date()),
+      date: z.union([z.string(), z.date()]),
       time: eventTimeSchema,
       venue: z.string(),
       city: z.string(),
@@ -71,10 +101,26 @@ const eventiCollection = defineCollection({
       isPublic: z.boolean().optional().default(true),
       draft: z.boolean().optional().default(false),
     })
-    .transform((event) => ({
-      ...event,
-      title: `${event.spettacolo} al ${event.venue}`,
-    })),
+    .transform((event, ctx) => {
+      const dateTime = parseEventDateTime(event.date, event.time);
+
+      if (!dateTime) {
+        ctx.addIssue({
+          code: "custom",
+          message: "Usa il formato data e ora: 28-06-2026 20:30",
+          path: ["date"],
+        });
+
+        return z.NEVER;
+      }
+
+      return {
+        ...event,
+        date: dateTime.date,
+        time: dateTime.time,
+        title: `${event.spettacolo} al ${event.venue}`,
+      };
+    }),
 });
 
 const pagesCollection = defineCollection({

@@ -163,7 +163,7 @@ content:
       rename: false
       delete: true
     view:
-      fields: [date, time, spettacolo, venue, city, isPublic, draft]
+      fields: [date, spettacolo, venue, city, isPublic, draft]
       primary: venue
       sort: [date, spettacolo, city]
       search: [spettacolo, venue, city]
@@ -182,18 +182,12 @@ content:
           label: "{title}"
 
       - name: date
-        label: Data
+        label: Data e ora
         type: date
         required: true
         options:
-          format: dd-MM-yyyy
-
-      - name: time
-        label: Ora
-        type: date
-        options:
           time: true
-          format: HH:mm
+          format: dd-MM-yyyy HH:mm
 
       - name: venue
         label: Teatro o luogo
