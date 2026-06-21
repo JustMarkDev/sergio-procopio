@@ -1,7 +1,7 @@
 ---
 title: Operazione Mato Grosso
-spettacolo: La Valigia di San Francesco
-date: 2026-06-28
+spettacolo: La Valigia di S. Francesco
+date: 21-06-2026
 time: 20:30
 venue: Oratorio Carlo Acutis
 city: Colico
