@@ -26,6 +26,17 @@ const parseEventDateTime = (dateValue: unknown, timeValue?: string) => {
       };
     }
 
+    const dayMonthYear = dateValue.match(/^(\d{2})-(\d{2})-(\d{4})$/);
+
+    if (dayMonthYear && timeValue) {
+      const [, day, month, year] = dayMonthYear;
+
+      return {
+        date: new Date(Date.UTC(Number(year), Number(month) - 1, Number(day))),
+        time: timeValue,
+      };
+    }
+
     const yearMonthDay = dateValue.match(/^(\d{4})-(\d{2})-(\d{2})$/);
 
     if (yearMonthDay && timeValue) {
