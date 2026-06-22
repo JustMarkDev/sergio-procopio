@@ -60,11 +60,10 @@ export default function FeaturedShows({ shows }: Props) {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {shows.map((show) => (
-            <motion.a
+            <a
               href={`/spettacoli/${show.id}`}
               key={show.id}
-              initial={false}
-              className="group flex flex-col h-full relative bg-[#09090b] rounded-4xl overflow-hidden shadow-[0_0_0_1px_rgba(255,255,255,0.1),0_10px_35px_rgba(0,0,0,0.18)] hover:shadow-[0_0_0_1px_rgba(37,99,235,0.5),0_16px_40px_rgba(37,99,235,0.14)] hover:-translate-y-1 transition-[transform,box-shadow] duration-500 active:scale-[0.96]"
+              className="group flex flex-col h-full relative bg-[#09090b] border border-white/10 rounded-4xl overflow-hidden transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_0_30px_rgba(37,99,235,0.15)] active:scale-[0.96]"
             >
               <div className="aspect-4/3 w-full bg-secondary/20 relative overflow-hidden flex items-center justify-center shrink-0">
                 {show.image ? (
@@ -114,7 +113,7 @@ export default function FeaturedShows({ shows }: Props) {
                   {show.description}
                 </p>
               </div>
-            </motion.a>
+            </a>
           ))}
         </div>
       </div>
