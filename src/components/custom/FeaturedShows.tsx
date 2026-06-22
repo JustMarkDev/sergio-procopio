@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
 
 interface Show {
   id: string;
@@ -15,39 +14,15 @@ interface Props {
 }
 
 function ShowImage({ src, alt }: { src: string; alt: string }) {
-  const imageRef = useRef<HTMLImageElement>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    const image = imageRef.current;
-    if (image?.complete && image.naturalWidth > 0) {
-      setIsLoaded(true);
-    }
-  }, [src]);
-
   return (
-    <>
-      <div
-        className={`absolute inset-0 overflow-hidden bg-zinc-900 transition-opacity duration-500 ${
-          isLoaded ? "opacity-0" : "opacity-100"
-        }`}
-      >
-        <div className="absolute inset-0 bg-linear-to-br from-zinc-800 via-zinc-700 to-zinc-900" />
-        <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.8s_ease-in-out_infinite] bg-linear-to-r from-transparent via-white/10 to-transparent" />
-        <div className="absolute inset-0 shadow-[0_0_36px_rgba(37,99,235,0.18)]" />
-      </div>
-      <img
-        ref={imageRef}
-        src={src}
-        alt={alt}
-        loading="lazy"
-        decoding="async"
-        onLoad={() => setIsLoaded(true)}
-        className={`absolute inset-0 w-full h-full object-cover transition-[scale,opacity,filter] duration-700 group-hover:scale-105 ${
-          isLoaded ? "opacity-100 blur-0" : "opacity-0 blur-sm"
-        }`}
-      />
-    </>
+    <img
+      src={src}
+      alt={alt}
+      loading="eager"
+      fetchPriority="high"
+      decoding="async"
+      className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+    />
   );
 }
 
@@ -64,9 +39,7 @@ export default function FeaturedShows({ shows }: Props) {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div className="max-w-2xl">
             <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              initial={false}
               className="text-4xl md:text-6xl font-serif font-bold text-foreground"
             >
               Spettacoli in{" "}
@@ -74,9 +47,7 @@ export default function FeaturedShows({ shows }: Props) {
             </motion.h2>
           </div>
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
+            initial={false}
           >
             <a
               href="/spettacoli"
@@ -88,14 +59,11 @@ export default function FeaturedShows({ shows }: Props) {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {shows.map((show, index) => (
+          {shows.map((show) => (
             <motion.a
               href={`/spettacoli/${show.id}`}
               key={show.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              initial={false}
               className="group flex flex-col h-full relative bg-[#09090b] rounded-4xl overflow-hidden shadow-[0_0_0_1px_rgba(255,255,255,0.1),0_10px_35px_rgba(0,0,0,0.18)] hover:shadow-[0_0_0_1px_rgba(37,99,235,0.5),0_16px_40px_rgba(37,99,235,0.14)] hover:-translate-y-1 transition-[transform,box-shadow] duration-500 active:scale-[0.96]"
             >
               <div className="aspect-4/3 w-full bg-secondary/20 relative overflow-hidden flex items-center justify-center shrink-0">
