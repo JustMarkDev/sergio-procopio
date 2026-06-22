@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -8,48 +8,55 @@ const navLinks = [
   { name: "Spettacoli", href: "/spettacoli" },
   { name: "Calendario", href: "/calendario" },
   { name: "Galleria", href: "/galleria" },
-  { name: "Contatti", href: "/#contatti" },
 ];
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hoveredLink, setHoveredLink] = useState<string | null>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll);
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <header
-      className={`fixed top-0 w-full z-50 transition-[background-color,box-shadow,padding,backdrop-filter] duration-300 ${
-        scrolled
-          ? "bg-background/80 backdrop-blur-md shadow-lg shadow-black/20 py-2"
-          : "bg-linear-to-b from-black/60 to-transparent py-4"
-      }`}
-    >
+    <header className="fixed inset-x-0 top-0 z-50 pt-4 sm:pt-5">
       <div className="container mx-auto px-4 md:px-8 lg:px-12">
-        <div className="flex items-center justify-between gap-4 min-h-16">
-          <div className="shrink-0 min-w-0">
-            <a
-              href="/"
-              className="block font-serif text-2xl lg:text-3xl font-bold tracking-wide text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)] whitespace-nowrap"
-            >
-              Sergio <span className="text-primary">Procopio</span>
-            </a>
-          </div>
+        <div
+          className={`relative w-full rounded-[28px] bg-zinc-950/45 p-2 shadow-[0_14px_45px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.18),inset_0_-1px_0_rgba(255,255,255,0.04)] backdrop-blur-2xl backdrop-saturate-150 transition-[background-color,box-shadow] duration-300 ${
+          scrolled ? "bg-zinc-950/62 shadow-[0_18px_50px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.15),inset_0_-1px_0_rgba(255,255,255,0.04)]" : ""
+        }`}
+        >
+        <div className="flex min-h-14 items-center gap-3 px-2 sm:px-3">
+          <a
+            href="/"
+            className="flex min-h-11 w-12 shrink-0 items-center justify-center font-serif text-[24px] font-bold leading-none tracking-[-0.07em] text-white transition-[opacity,scale] duration-200 hover:opacity-80 active:scale-[0.96]"
+            aria-label="Sergio Procopio, home"
+          >
+            <span aria-hidden="true">S<span className="text-primary">P</span></span>
+          </a>
 
-          {/* Desktop Menu */}
-          <nav className="hidden lg:block min-w-0">
-            <ul className="flex items-center gap-4 xl:gap-7">
+          <nav
+            className="absolute left-1/2 hidden -translate-x-1/2 lg:block"
+            onMouseLeave={() => setHoveredLink(null)}
+            aria-label="Navigazione principale"
+          >
+            <ul className="flex items-center gap-1">
               {navLinks.map((link) => (
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className="text-sm xl:text-[15px] font-semibold text-white/80 hover:text-primary transition-colors tracking-wide drop-shadow-md whitespace-nowrap"
+                    onMouseEnter={() => setHoveredLink(link.name)}
+                    onFocus={() => setHoveredLink(link.name)}
+                    onBlur={() => setHoveredLink(null)}
+                    className={`flex min-h-10 items-center px-4 text-[15px] font-bold transition-colors duration-200 ${
+                      hoveredLink === null || hoveredLink === link.name
+                        ? "text-white/90"
+                        : "text-white/35"
+                    }`}
                   >
                     {link.name}
                   </a>
@@ -58,45 +65,60 @@ export default function Header() {
             </ul>
           </nav>
 
-          {/* Mobile Menu Button */}
-          <div className="lg:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="grid size-11 place-items-center rounded-full text-foreground transition-[color,background-color,scale] duration-150 ease-out hover:bg-white/5 hover:text-primary active:scale-[0.96]"
-              aria-label={isOpen ? "Chiudi menu" : "Apri menu"}
-              aria-expanded={isOpen}
-            >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-background overflow-hidden"
+          <a
+            href="/#contatti"
+            className="ml-auto hidden min-h-11 shrink-0 items-center rounded-full bg-primary px-5 text-sm font-bold text-primary-foreground shadow-[0_6px_18px_rgba(37,99,235,0.34)] transition-[background-color,scale,box-shadow] duration-200 hover:bg-blue-500 hover:shadow-[0_8px_24px_rgba(37,99,235,0.45)] active:scale-[0.96] lg:flex"
           >
-            <ul className="px-4 pt-2 pb-4 space-y-1">
-              {navLinks.map((link) => (
-                <li key={link.name}>
+            Contatti
+          </a>
+
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="ml-auto grid size-11 place-items-center rounded-full text-white transition-[color,background-color,scale] duration-150 hover:bg-white/8 hover:text-primary active:scale-[0.96] lg:hidden"
+            aria-label={isOpen ? "Chiudi menu" : "Apri menu"}
+            aria-expanded={isOpen}
+          >
+            {isOpen ? <X size={23} /> : <Menu size={23} />}
+          </button>
+        </div>
+
+        <AnimatePresence initial={false}>
+          {isOpen && (
+            <motion.nav
+              initial={{ opacity: 0, height: 0, y: -6 }}
+              animate={{ opacity: 1, height: "auto", y: 0 }}
+              exit={{ opacity: 0, height: 0, y: -6 }}
+              transition={{ type: "spring", duration: 0.3, bounce: 0 }}
+              className="overflow-hidden lg:hidden"
+              aria-label="Menu mobile"
+            >
+              <ul className="space-y-1 px-2 pb-2 pt-1">
+                {navLinks.map((link) => (
+                  <li key={link.name}>
+                    <a
+                      href={link.href}
+                      onClick={() => setIsOpen(false)}
+                      className="flex min-h-12 items-center rounded-2xl px-4 text-base font-medium text-white/80 transition-colors duration-200 hover:bg-white/7 hover:text-white"
+                    >
+                      {link.name}
+                    </a>
+                  </li>
+                ))}
+                <li className="pt-2">
                   <a
-                    href={link.href}
+                    href="/#contatti"
                     onClick={() => setIsOpen(false)}
-                    className="block px-3 py-2 rounded-md text-base font-medium text-foreground hover:bg-secondary hover:text-primary transition-colors"
+                    className="flex min-h-12 items-center justify-center rounded-2xl bg-primary px-4 font-bold text-primary-foreground transition-[background-color,scale] duration-200 hover:bg-blue-500 active:scale-[0.96]"
                   >
-                    {link.name}
+                    Contatti
                   </a>
                 </li>
-              ))}
-            </ul>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              </ul>
+            </motion.nav>
+          )}
+        </AnimatePresence>
+        </div>
+      </div>
     </header>
   );
 }

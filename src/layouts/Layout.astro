@@ -8,6 +8,7 @@ import Header from '../components/custom/Header';
 import Footer from '../components/custom/Footer.astro';
 import SpeedInsights from '@vercel/speed-insights/astro';
 import Analytics from '@vercel/analytics/astro';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
 	title?: string;
@@ -23,9 +24,10 @@ const { title, description, canonicalPath } = Astro.props;
 	<head>
 		<SEO title={title} description={description} canonicalPath={canonicalPath} />
 		<Schema />
+		<ClientRouter />
 	</head>
 	<body>
-		<Header client:load />
+		<Header client:load transition:persist />
 		<main>
 			<slot />
 		</main>
