@@ -43,7 +43,7 @@ function ShowImage({ src, alt }: { src: string; alt: string }) {
         loading="lazy"
         decoding="async"
         onLoad={() => setIsLoaded(true)}
-        className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105 ${
+        className={`absolute inset-0 w-full h-full object-cover transition-[scale,opacity,filter] duration-700 group-hover:scale-105 ${
           isLoaded ? "opacity-100 blur-0" : "opacity-0 blur-sm"
         }`}
       />
@@ -80,7 +80,7 @@ export default function FeaturedShows({ shows }: Props) {
           >
             <a
               href="/spettacoli"
-              className="text-sm font-bold tracking-wider uppercase border-b-2 border-primary/30 pb-1 hover:border-primary transition-all"
+              className="inline-flex min-h-11 items-center text-sm font-bold uppercase tracking-wider shadow-[inset_0_-2px_0_rgba(37,99,235,0.3)] transition-[color,box-shadow,scale] duration-150 hover:text-primary hover:shadow-[inset_0_-2px_0_#2563eb] active:scale-[0.96]"
             >
               Vedi tutto il catalogo
             </a>
@@ -96,7 +96,7 @@ export default function FeaturedShows({ shows }: Props) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group flex flex-col h-full relative bg-[#09090b] border border-white/10 rounded-4xl overflow-hidden hover:border-primary/50 hover:shadow-[0_0_30px_rgba(37,99,235,0.15)] hover:-translate-y-1 transition-all duration-500"
+              className="group flex flex-col h-full relative bg-[#09090b] rounded-4xl overflow-hidden shadow-[0_0_0_1px_rgba(255,255,255,0.1),0_10px_35px_rgba(0,0,0,0.18)] hover:shadow-[0_0_0_1px_rgba(37,99,235,0.5),0_16px_40px_rgba(37,99,235,0.14)] hover:-translate-y-1 transition-[transform,box-shadow] duration-500 active:scale-[0.96]"
             >
               <div className="aspect-4/3 w-full bg-secondary/20 relative overflow-hidden flex items-center justify-center shrink-0">
                 {show.image ? (

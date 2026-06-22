@@ -25,7 +25,7 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed top-0 w-full z-50 transition-[background-color,box-shadow,padding,backdrop-filter] duration-300 ${
         scrolled
           ? "bg-background/80 backdrop-blur-md shadow-lg shadow-black/20 py-2"
           : "bg-linear-to-b from-black/60 to-transparent py-4"
@@ -62,8 +62,9 @@ export default function Header() {
           <div className="lg:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-foreground hover:text-primary focus:outline-none"
-              aria-label="Toggle menu"
+              className="grid size-11 place-items-center rounded-full text-foreground transition-[color,background-color,scale] duration-150 ease-out hover:bg-white/5 hover:text-primary active:scale-[0.96]"
+              aria-label={isOpen ? "Chiudi menu" : "Apri menu"}
+              aria-expanded={isOpen}
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -72,7 +73,7 @@ export default function Header() {
       </div>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}

@@ -47,7 +47,7 @@ export default function HeroSection() {
           {/* Primary Action: Contattami */}
           <a
             href="#contatti"
-            className="group relative overflow-hidden inline-flex items-center justify-center px-10 py-5 rounded-full bg-primary text-primary-foreground font-bold text-xl transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(37,99,235,0.4)] active:scale-95 hover:no-underline focus:outline-none"
+            className="group relative overflow-hidden inline-flex min-h-14 items-center justify-center rounded-full bg-primary px-10 py-4 text-xl font-bold text-primary-foreground shadow-[0_8px_30px_rgba(37,99,235,0.22)] transition-[scale,box-shadow] duration-200 ease-out hover:shadow-[0_10px_40px_rgba(37,99,235,0.38)] active:scale-[0.96] hover:no-underline"
           >
             <span className="relative z-10">Mettiamoci in Contatto</span>
             <div className="absolute inset-0 rounded-full bg-linear-to-tr from-blue-700 to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
@@ -56,7 +56,7 @@ export default function HeroSection() {
           {/* Secondary Action: Scopri gli Spettacoli */}
           <a
             href="#spettacoli"
-            className="inline-flex items-center justify-center px-10 py-5 rounded-full border border-white/10 text-muted-foreground font-semibold text-lg hover:text-foreground hover:bg-white/5 transition-all active:scale-95"
+            className="inline-flex min-h-14 items-center justify-center rounded-full px-10 py-4 text-lg font-semibold text-muted-foreground shadow-[0_0_0_1px_rgba(255,255,255,0.1)] transition-[scale,color,background-color,box-shadow] duration-200 ease-out hover:bg-white/5 hover:text-foreground hover:shadow-[0_0_0_1px_rgba(255,255,255,0.16)] active:scale-[0.96]"
           >
             Scopri gli Spettacoli
           </a>
