@@ -24,6 +24,22 @@ export default function ShowGallery({ mainImageSrc, mainImageOriginalSrc, images
   const [isImageLoading, setIsImageLoading] = useState(true);
   const thumbnailsRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    window.dispatchEvent(
+      new CustomEvent("gallery-lightbox-change", {
+        detail: { isOpen: activeIndex !== null },
+      }),
+    );
+
+    return () => {
+      if (activeIndex !== null) {
+        window.dispatchEvent(
+          new CustomEvent("gallery-lightbox-change", { detail: { isOpen: false } }),
+        );
+      }
+    };
+  }, [activeIndex]);
+
   // Find index of the main image inside the show images array to start the lightbox there.
   // We match against the original unresolved asset source string for bulletproof accuracy!
   const mainImageIndex = images.findIndex((img) => img.originalSrc === mainImageOriginalSrc);
@@ -162,7 +178,7 @@ export default function ShowGallery({ mainImageSrc, mainImageOriginalSrc, images
           >
             {/* Top Section - Show Title / Description & Close Button */}
             <div
-              className="w-full pt-16 md:pt-24 pb-2 md:pb-4 px-16 md:px-20 text-center select-none relative z-50 shrink-0"
+              className="w-full pt-3 md:pt-4 pb-2 px-16 md:px-20 text-center select-none relative z-50 shrink-0"
               onClick={(e) => e.stopPropagation()}
             >
               <h2 className="text-lg sm:text-2xl md:text-4xl font-serif font-bold text-white tracking-wide drop-shadow-md truncate">
@@ -172,10 +188,10 @@ export default function ShowGallery({ mainImageSrc, mainImageOriginalSrc, images
                 {currentImage.subtitle}
               </p>
 
-              {/* Close Button: Explicit X at top right under sticky navbar */}
+              {/* Close Button */}
               <button
                 onClick={() => setActiveIndex(null)}
-                className="absolute top-16 md:top-24 right-4 md:right-8 bg-white/5 hover:bg-primary/20 border border-white/10 hover:border-primary/50 text-white p-2.5 rounded-full backdrop-blur-md transition-all duration-300 shadow-lg cursor-pointer flex items-center justify-center focus:outline-none"
+                className="absolute top-3 md:top-4 right-4 md:right-8 bg-white/5 hover:bg-primary/20 border border-white/10 hover:border-primary/50 text-white p-2.5 rounded-full backdrop-blur-md transition-[background-color,border-color,scale] duration-300 shadow-lg cursor-pointer flex items-center justify-center focus:outline-none active:scale-[0.96]"
                 aria-label="Chiudi galleria"
               >
                 <X size={20} />

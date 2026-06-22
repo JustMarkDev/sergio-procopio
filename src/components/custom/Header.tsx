@@ -13,6 +13,7 @@ const navLinks = [
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
 
   useEffect(() => {
@@ -22,8 +23,25 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    const handleGalleryState = (event: Event) => {
+      const { isOpen } = (event as CustomEvent<{ isOpen: boolean }>).detail;
+      setIsGalleryOpen(isOpen);
+      if (isOpen) setIsOpen(false);
+    };
+
+    window.addEventListener("gallery-lightbox-change", handleGalleryState);
+    return () => window.removeEventListener("gallery-lightbox-change", handleGalleryState);
+  }, []);
+
   return (
-    <header className="fixed inset-x-0 top-0 z-50 pt-4 sm:pt-5">
+    <motion.header
+      initial={false}
+      animate={{ y: isGalleryOpen ? "-120%" : "0%", opacity: isGalleryOpen ? 0 : 1 }}
+      transition={{ type: "spring", duration: 0.4, bounce: 0 }}
+      className="fixed inset-x-0 top-0 z-50 pt-4 sm:pt-5"
+      aria-hidden={isGalleryOpen}
+    >
       <div className="container mx-auto px-4 md:px-8 lg:px-12">
         <div
           className={`relative w-full rounded-[28px] bg-zinc-950/45 p-2 shadow-[0_14px_45px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.18),inset_0_-1px_0_rgba(255,255,255,0.04)] backdrop-blur-2xl backdrop-saturate-150 transition-[background-color,box-shadow] duration-300 ${
@@ -119,6 +137,6 @@ export default function Header() {
         </AnimatePresence>
         </div>
       </div>
-    </header>
+    </motion.header>
   );
 }
