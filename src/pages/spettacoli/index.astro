@@ -130,21 +130,29 @@ const spettacoli = (await getCollection("spettacoli")).filter(
         image.closest(".show-card-image-shell")?.classList.add("is-loaded");
     };
 
-    document
-        .querySelectorAll<HTMLImageElement>("[data-show-card-image]")
-        .forEach((image) => {
-            if (image.complete && image.naturalWidth > 0) {
-                markShowImageAsLoaded(image);
-                return;
-            }
+    const initializeShowImages = () => {
+        document
+            .querySelectorAll<HTMLImageElement>("[data-show-card-image]")
+            .forEach((image) => {
+                if (image.complete) {
+                    markShowImageAsLoaded(image);
+                    return;
+                }
 
-            image.addEventListener("load", () => markShowImageAsLoaded(image), {
-                once: true,
+                image.addEventListener(
+                    "load",
+                    () => markShowImageAsLoaded(image),
+                    { once: true },
+                );
+                image.addEventListener(
+                    "error",
+                    () => markShowImageAsLoaded(image),
+                    { once: true },
+                );
             });
-            image.addEventListener("error", () => markShowImageAsLoaded(image), {
-                once: true,
-            });
-        });
+    };
+
+    document.addEventListener("astro:page-load", initializeShowImages);
 </script>
 
 <style>
