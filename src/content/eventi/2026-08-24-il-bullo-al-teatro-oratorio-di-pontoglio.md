@@ -1,6 +1,6 @@
 ---
 spettacolo: Il Bullo
-date: 24-08-2026
+date: 24-09-2026
 time: 20:30
 venue: teatro oratorio di Pontoglio
 city: Pontoglio
