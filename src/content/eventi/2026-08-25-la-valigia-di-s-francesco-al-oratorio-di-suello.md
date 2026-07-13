@@ -1,6 +1,6 @@
 ---
 spettacolo: La Valigia di S. Francesco
-date: 25-08-2026
+date: 25-09-2026
 time: 20:30
 venue: oratorio di Suello
 city: Suello prov di LC
