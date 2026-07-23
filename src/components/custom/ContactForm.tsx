@@ -176,6 +176,20 @@ export default function ContactForm() {
                 className="space-y-6"
                 onSubmit={handleSubmit}
               >
+                <div
+                  className="absolute -left-[9999px] h-px w-px overflow-hidden"
+                  aria-hidden="true"
+                >
+                  <label htmlFor="website">Non compilare questo campo</label>
+                  <input
+                    id="website"
+                    name="website"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
+
                 {status === "error" && (
                   <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-sm">
                     {errorMessage}

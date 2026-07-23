@@ -56,6 +56,19 @@ describe("contactFormSchema", () => {
     expect(result.oggetto).toBeUndefined();
   });
 
+  it("accepts an empty or populated honeypot for server-side filtering", () => {
+    const baseInput = {
+      nome: "Sergio",
+      email: "sergio@example.com",
+      messaggio: "Ciao",
+    };
+
+    expect(contactFormSchema.safeParse({ ...baseInput, website: "" }).success).toBe(true);
+    expect(
+      contactFormSchema.safeParse({ ...baseInput, website: "https://spam.example" }).success,
+    ).toBe(true);
+  });
+
   it("rejects a name over 120 characters", () => {
     const result = contactFormSchema.safeParse({
       nome: "a".repeat(CONTACT_NAME_MAX_LENGTH + 1),

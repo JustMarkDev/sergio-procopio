@@ -1,6 +1,7 @@
 import { defineAction } from "astro:actions";
 import { Resend } from "resend";
 import { contactFormSchema } from "./contact-schema";
+import { isHoneypotSubmission, sanitizeEmailHeader } from "./contact-security";
 
 function escapeHtml(value: string) {
   return value.replace(/[&<>"']/g, (char) => {
@@ -26,6 +27,11 @@ export const server = {
     accept: "form",
     input: contactFormSchema,
     handler: async (input) => {
+      // Return a normal success response so bots cannot learn that the trap fired.
+      if (isHoneypotSubmission(input.website)) {
+        return { success: true, data: null };
+      }
+
       // L'integrazione di Vercel espone la chiave come RESEND_API_KEY.
       // Cerchiamo in import.meta.env (Astro) e process.env (Node/Vercel runtime)
       const apiKey =
@@ -38,6 +44,7 @@ export const server = {
       }
 
       const safeNome = escapeHtml(input.nome);
+      const safeSubjectName = sanitizeEmailHeader(input.nome) || "contatto";
       const safeEmail = escapeHtml(input.email);
       const safeOggetto = escapeHtml(input.oggetto || "Nessun oggetto");
       const safeMessaggio = escapeHtml(input.messaggio);
@@ -47,7 +54,7 @@ export const server = {
         from: "Sito Web <sito@contatti.sergioprocopio.it>",
         to: "info@sergioprocopio.it",
         replyTo: input.email,
-        subject: `Nuovo contatto dal sito web da ${input.nome}`,
+        subject: `Nuovo contatto dal sito web da ${safeSubjectName}`,
         html: `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
             <h2 style="color: #2563eb; border-bottom: 2px solid #2563eb; padding-bottom: 10px;">Nuovo contatto dal sito web</h2>
