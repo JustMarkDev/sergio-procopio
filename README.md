@@ -126,15 +126,13 @@ date: 2026-10-12
 time: "21:00"
 venue: "Nome teatro"
 city: "Città"
-address: "Via di esempio 1"
-googleMapsUrl: "https://maps.google.com/?q=..."
-description: "Descrizione opzionale."
+address: "Via di esempio, 1"
 isPublic: true
 draft: false
 ---
 ```
 
-Il calendario mostra solo eventi con `isPublic: true` e `draft: false`. Gli eventi futuri e passati vengono separati automaticamente in pagina.
+Il calendario mostra solo eventi con `isPublic: true` e `draft: false`. Gli eventi futuri e passati vengono separati automaticamente in pagina. Il link Google Maps viene generato da `address` e `city`.
 
 ### Biografia e Pagine Editoriali
 

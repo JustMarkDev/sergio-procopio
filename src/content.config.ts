@@ -1,11 +1,11 @@
 import { defineCollection } from "astro:content";
 import { z } from "astro/zod";
 import { glob } from "astro/loaders";
-
-const optionalUrl = z.preprocess(
-  (value) => (value === "" ? undefined : value),
-  z.url().optional(),
-);
+import { createGoogleMapsSearchUrl } from "./lib/google-maps";
+import {
+  normalizeEventAddress,
+  normalizeEventLabel,
+} from "./lib/text-normalization";
 
 const parseEventDateTime = (dateValue: unknown, timeValue?: string) => {
   if (timeValue && !/^([01]\d|2[0-3]):[0-5]\d$/.test(timeValue)) {
@@ -77,6 +77,9 @@ const eventTimeSchema = z
   .regex(/^([01]\d|2[0-3]):[0-5]\d$/)
   .optional();
 
+const eventLabelSchema = z.string().transform(normalizeEventLabel);
+const eventAddressSchema = z.string().transform(normalizeEventAddress);
+
 const spettacoliCollection = defineCollection({
   loader: glob({
     pattern: "*.md",
@@ -108,11 +111,9 @@ const eventiCollection = defineCollection({
       spettacolo: z.string(),
       date: z.union([z.string(), z.date()]),
       time: eventTimeSchema,
-      venue: z.string(),
-      city: z.string(),
-      address: z.string(),
-      description: z.string().optional(),
-      googleMapsUrl: optionalUrl,
+      venue: eventLabelSchema,
+      city: eventLabelSchema,
+      address: eventAddressSchema,
       isPublic: z.boolean().optional().default(true),
       draft: z.boolean().optional().default(false),
     })
@@ -134,6 +135,7 @@ const eventiCollection = defineCollection({
         date: dateTime.date,
         time: dateTime.time,
         title: `${event.spettacolo} al ${event.venue}`,
+        googleMapsUrl: createGoogleMapsSearchUrl(event.address, event.city),
       };
     }),
 });

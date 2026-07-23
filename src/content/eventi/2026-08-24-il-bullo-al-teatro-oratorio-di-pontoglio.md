@@ -2,10 +2,9 @@
 spettacolo: Il Bullo
 date: 24-09-2026
 time: 20:30
-venue: teatro oratorio di Pontoglio
+venue: Teatro oratorio di Pontoglio
 city: Pontoglio
-address: via Roma ,21
-description: spettacolo per tutte le età sul tema del Bullismo
+address: Via Roma, 21
 isPublic: true
 draft: false
 ---

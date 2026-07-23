@@ -193,15 +193,21 @@ content:
         label: Teatro o luogo
         type: string
         required: true
-        description: "Esempio: Teatro Sociale"
+        description: "Inizia con la lettera maiuscola. Esempio: Teatro Sociale"
+        pattern:
+          regex: "^[A-ZÀ-ÖØ-Þ]"
+          message: "Inizia il teatro o luogo con una lettera maiuscola"
         options:
           maxlength: 160
 
       - name: city
-        label: Citta
+        label: Città
         type: string
         required: true
-        description: "Esempio: Milano"
+        description: "Inizia con la lettera maiuscola. Esempio: Milano"
+        pattern:
+          regex: "^[A-ZÀ-ÖØ-Þ]"
+          message: "Inizia la città con una lettera maiuscola"
         options:
           maxlength: 100
 
@@ -209,21 +215,12 @@ content:
         label: Indirizzo
         type: string
         required: true
-        description: "Esempio: Via Roma 1"
+        description: "Usa la maiuscola e separa il civico con una virgola. Esempio: Via Roma, 1"
+        pattern:
+          regex: "^[A-ZÀ-ÖØ-Þ]"
+          message: "Inizia l'indirizzo con una lettera maiuscola"
         options:
           maxlength: 180
-
-      - name: googleMapsUrl
-        label: Link Google Maps
-        type: string
-        description: "Incolla qui il link di Google Maps"
-
-      - name: description
-        label: Descrizione breve
-        type: text
-        description: "Testo breve mostrato nella scheda evento"
-        options:
-          maxlength: 280
 
       - name: isPublic
         label: Pubblico sul sito
