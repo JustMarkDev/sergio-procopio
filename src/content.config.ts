@@ -95,7 +95,7 @@ const spettacoliCollection = defineCollection({
       durata: z.string().optional(),
       regia: z.string().optional(),
       eta: z.string().optional(),
-      produzione: z.string().optional(),
+      produzione: z.string().optional().default("Teatro Procopio"),
       tecnico: z.string().optional(),
       requisiti: z.string().optional(),
       highlight: z.boolean().optional().default(false),

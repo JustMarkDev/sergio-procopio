@@ -25,9 +25,7 @@ content:
     path: src/content/spettacoli
     format: yaml-frontmatter
     subfolders: false
-    filename:
-      template: "{slug}.md"
-      field: create
+    filename: "{title}.md"
     operations:
       create: true
       rename: true
@@ -48,17 +46,6 @@ content:
         options:
           maxlength: 120
 
-      - name: slug
-        label: Slug URL
-        type: string
-        required: true
-        description: "Solo per nuovi spettacoli. Esempio: la-grande-guerra"
-        options:
-          maxlength: 120
-        pattern:
-          regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
-          message: "Usa solo lettere minuscole, numeri e trattini"
-
       - name: description
         label: Descrizione breve
         type: text
@@ -78,6 +65,7 @@ content:
       - name: image
         label: Immagine principale
         type: image
+        required: true
         description: "Scegli un'immagine in spettacoli/nome-spettacolo"
         options:
           media: assets
@@ -96,6 +84,7 @@ content:
       - name: durata
         label: Durata
         type: string
+        required: true
         description: "Esempio: 1h 15m"
         options:
           maxlength: 40
@@ -103,31 +92,29 @@ content:
       - name: regia
         label: Regia
         type: string
+        required: true
         options:
           maxlength: 120
 
       - name: eta
         label: Eta consigliata
         type: string
+        required: true
         description: "Esempio: 7+"
         options:
           maxlength: 40
 
-      - name: produzione
-        label: Produzione
-        type: string
-        options:
-          maxlength: 120
-
       - name: tecnico
         label: Tecnico
         type: string
+        required: true
         options:
           maxlength: 120
 
       - name: requisiti
         label: Requisiti
         type: string
+        required: true
         options:
           maxlength: 180
 
