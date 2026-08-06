@@ -18,6 +18,8 @@ This repository is an Astro 6 site with React islands. Core application code liv
 - `bun run preview`: serve the built site locally for a final check
 - `bunx astro check`: run Astro's project checks when validating routes, content, and typings
 
+For the contribution workflow, content locations, and Pull Request expectations, see [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
 ## Coding Style & Naming Conventions
 Use TypeScript, Astro components, and functional React components. Follow the existing file naming pattern: PascalCase for components (`HeroSection.tsx`, `Layout.astro`), lowercase or slug-style names for routes and content files (`privacy-policy.astro`, `la-grande-guerra.md`).
 
