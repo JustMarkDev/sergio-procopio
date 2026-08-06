@@ -2,7 +2,7 @@
 title: "Biografia"
 description: "La storia di Sergio Procopio: una vita dedicata all'arte del comico senza parole, trionfi televisivi e impegno educativo."
 quote: "L'arte ti sconvolge e ti scatena conflitti nell'anima, se non ti fa questo hai perso tempo."
-image: "../../assets/biografia/biografia.jpg"
+image: "../../assets/biografia/biografia.webp"
 ---
 
 ## Una vita dedicata all'arte del comico senza parole
