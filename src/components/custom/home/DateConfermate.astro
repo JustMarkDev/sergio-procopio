@@ -1,0 +1,261 @@
+---
+import Reveal from "./Reveal";
+
+/**
+ * DATE CONFERMATE — sezione 7 della home, «Venite a vedere prima di decidere».
+ *
+ * Zero JavaScript proprio: markup Astro statico + transizioni CSS.
+ * L'unica isola è <Reveal client:visible>, che fa entrare il blocco come pezzo
+ * unico (fadeUp, EASE, whileInView once). Nessuna variante locale, nessun
+ * @keyframes nuovo, nessun listener da ripulire.
+ *
+ * Zero conteggi, date, città e nomi di committenti cablati nel copy: tutto
+ * arriva già risolto da index.astro (getCollection + splitEventsByDate).
+ */
+
+export interface DataConfermata {
+    spettacolo: string;
+    venue: string;
+    city: string;
+    /** Da formatDataLunga(): «domenica 27 settembre 2026». */
+    dataLunga: string;
+    /** Da formatOrario(): «20:30» oppure null (assente o 00:00). */
+    orario: string | null;
+    /** Da getTipoEnte(): «Teatro d'oratorio» | «Oratorio» | «Parrocchia» | «Comune» | «Teatro». */
+    tipoEnte: string;
+    /**
+     * Data ISO «2026-09-27» per l'attributo datetime di <time>, generata dalla
+     * Date della collection. Facoltativa: se non arriva viene dedotta da
+     * dataLunga, che ha formato fisso e noto.
+     */
+    iso?: string | null;
+}
+
+export interface Props {
+    /** upcomingEvents.slice(0, 4) mappato. Se è vuoto si renderizza il fallback. */
+    date: DataConfermata[];
+    /** Set dei tipi di ente di TUTTI gli eventi pubblici, anche passati. */
+    tipiEnte: string[];
+}
+
+const { date, tipiEnte } = Astro.props;
+
+const MESI_ISO: Record<string, string> = {
+    gennaio: "01",
+    febbraio: "02",
+    marzo: "03",
+    aprile: "04",
+    maggio: "05",
+    giugno: "06",
+    luglio: "07",
+    agosto: "08",
+    settembre: "09",
+    ottobre: "10",
+    novembre: "11",
+    dicembre: "12",
+};
+
+/** Confronto tollerante alla forma dell'apostrofo e alle maiuscole. */
+const normalizza = (valore: string) =>
+    valore.trim().toLowerCase().replace(/’/g, "'");
+
+/** «domenica 27 settembre 2026» → «2026-09-27». */
+function isoDaDataLunga(dataLunga: string): string | undefined {
+    const parti = normalizza(dataLunga).match(/(\d{1,2})\s+([a-zàèéìòù]+)\s+(\d{4})/);
+    if (!parti) return undefined;
+
+    const mese = MESI_ISO[parti[2]];
+    if (!mese) return undefined;
+
+    return `${parti[3]}-${mese}-${parti[1].padStart(2, "0")}`;
+}
+
+/** Separa l'anno dal resto: giorno e mese vanno in oro, l'anno in muted. */
+function separaAnno(dataLunga: string): { giornoMese: string; anno: string } {
+    const parti = dataLunga.trim().match(/^(.*?)[\s,]*(\d{4})$/);
+    if (!parti) return { giornoMese: dataLunga.trim(), anno: "" };
+
+    return { giornoMese: parti[1].trim(), anno: parti[2] };
+}
+
+const righe = date.map((evento) => ({
+    ...evento,
+    ...separaAnno(evento.dataLunga),
+    iso: evento.iso ?? isoDaDataLunga(evento.dataLunga),
+}));
+
+/** Plurali della riga di chiusura. Chiavi normalizzate, valori editoriali. */
+const PLURALE_ENTE: Record<string, string> = {
+    "teatro d'oratorio": "teatri d'oratorio",
+    oratorio: "oratori",
+    parrocchia: "parrocchie",
+    comune: "Comuni",
+    teatro: "teatri",
+};
+
+const entiPlurale = [...new Set(tipiEnte.map((tipo) => tipo.trim()).filter(Boolean))].map(
+    (tipo) => PLURALE_ENTE[normalizza(tipo)] ?? tipo.toLowerCase(),
+);
+
+const elencoEnti =
+    entiPlurale.length > 1
+        ? `${entiPlurale.slice(0, -1).join(", ")} e ${entiPlurale[entiPlurale.length - 1]}`
+        : (entiPlurale[0] ?? "");
+
+const haDate = righe.length > 0;
+
+const CTA_PRIMARIA =
+    "inline-flex min-h-14 items-center justify-center rounded-full bg-primary px-9 py-4 font-bold text-primary-foreground shadow-[0_8px_30px_rgba(212,162,76,0.22)] transition-[scale,box-shadow] duration-200 ease-out hover:shadow-[0_10px_40px_rgba(212,162,76,0.38)] active:scale-[0.96] hover:no-underline";
+
+const CTA_SECONDARIA =
+    "inline-flex min-h-14 items-center justify-center rounded-full px-9 py-4 font-semibold text-muted-foreground shadow-[0_0_0_1px_rgba(255,255,255,0.1)] transition-[scale,color,background-color,box-shadow] duration-200 ease-out hover:bg-white/5 hover:text-foreground hover:shadow-[0_0_0_1px_rgba(255,255,255,0.16)] active:scale-[0.96]";
+---
+
+<Reveal client:visible>
+    <section
+        id="date"
+        aria-labelledby="date-title"
+        class="relative scroll-mt-28 overflow-hidden bg-background py-24 md:py-32"
+    >
+        <div
+            aria-hidden="true"
+            class="pointer-events-none absolute inset-x-0 bottom-0 h-[70%] bg-[radial-gradient(ellipse_at_bottom,rgba(212,162,76,0.04)_0%,transparent_70%)]"
+        >
+        </div>
+
+        <div class="relative z-10 container mx-auto px-4 md:px-8 lg:px-12">
+            <div class="mb-6 flex items-center gap-4">
+                <span class="h-px w-10 bg-primary/40"></span>
+                <p
+                    class="text-[11px] font-bold tracking-[0.25em] text-primary uppercase md:text-xs"
+                >
+                    Date pubbliche
+                </p>
+            </div>
+
+            <h2
+                id="date-title"
+                class="max-w-3xl font-serif text-[clamp(2rem,4.2vw,3.5rem)] leading-[1.03] font-bold tracking-tight"
+            >
+                Venite a vedere <span class="text-primary italic"
+                    >prima di decidere</span
+                >.
+            </h2>
+
+            {
+                haDate && (
+                    <p class="mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl">
+                        Il modo più rapido per valutarmi è sedersi in sala. Queste sono le
+                        prossime date già confermate e aperte al pubblico: se una vi è
+                        comoda, scrivetemi e vi aspetto.
+                    </p>
+                )
+            }
+
+            {
+                haDate ? (
+                    <ul class="mt-12 border-t border-border md:-mx-4 md:mt-16">
+                        {righe.map((riga) => (
+                            <li>
+                                <a
+                                    href="/calendario"
+                                    class="group block border-b border-border py-7 transition-colors duration-[250ms] hover:border-primary/40 hover:bg-white/[0.03] md:px-4"
+                                >
+                                    <div class="flex items-start gap-4 md:items-center">
+                                        <div class="grid flex-1 gap-3 md:grid-cols-12 md:items-center md:gap-6">
+                                            <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 md:contents">
+                                                <time
+                                                    datetime={riga.iso}
+                                                    class="font-serif text-lg font-bold text-primary first-letter:uppercase md:col-span-4 md:text-xl"
+                                                >
+                                                    {riga.giornoMese}
+                                                    {riga.anno && (
+                                                        <span class="text-muted-foreground tabular-nums">
+                                                            {riga.anno}
+                                                        </span>
+                                                    )}
+                                                </time>
+
+                                                {riga.orario ? (
+                                                    <span class="text-sm text-foreground/85 tabular-nums md:col-span-2">
+                                                        ore {riga.orario}
+                                                    </span>
+                                                ) : (
+                                                    <span class="text-[11px] tracking-[0.18em] text-muted-foreground uppercase md:col-span-2">
+                                                        orario da definire
+                                                    </span>
+                                                )}
+                                            </div>
+
+                                            <p class="text-lg font-semibold text-foreground md:col-span-3">
+                                                {riga.spettacolo}
+                                            </p>
+
+                                            <div class="flex flex-wrap items-center gap-x-3 gap-y-2 md:col-span-3">
+                                                <p class="text-sm leading-relaxed text-muted-foreground">
+                                                    <span class="text-foreground/85">{riga.venue}</span>, {riga.city}
+                                                </p>
+                                                <span class="inline-flex items-center rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-[10px] font-bold tracking-[0.18em] text-primary uppercase">
+                                                    {riga.tipoEnte}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="18"
+                                            height="18"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            aria-hidden="true"
+                                            class="mt-1 shrink-0 text-muted-foreground transition-[color,transform] duration-[250ms] group-hover:translate-x-1 group-hover:text-primary md:mt-0"
+                                        >
+                                            <path d="M7 7h10v10" />
+                                            <path d="M7 17 17 7" />
+                                        </svg>
+                                    </div>
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <div class="mt-8 max-w-2xl rounded-3xl border border-border bg-[var(--card)] p-8 md:p-10">
+                        <p class="text-base leading-relaxed text-muted-foreground">
+                            Le prossime date sono in via di conferma. Scrivetemi per la
+                            disponibilità nel periodo che vi interessa.
+                        </p>
+                        <a href="#contatti" class={`mt-8 ${CTA_PRIMARIA}`}>
+                            Chiedi una data
+                        </a>
+                    </div>
+                )
+            }
+
+            {
+                haDate && elencoEnti && (
+                    <p class="mt-10 max-w-[68ch] text-base leading-relaxed text-muted-foreground">
+                        Mi hanno ospitato {elencoEnti}. Le trasferte fuori regione sono la
+                        prassi, non l'eccezione.
+                    </p>
+                )
+            }
+
+            {
+                haDate && (
+                    <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
+                        <a href="/calendario" class={CTA_SECONDARIA}>
+                            Calendario completo
+                        </a>
+                        <a href="#contatti" class={CTA_PRIMARIA}>
+                            Chiedi una data libera
+                        </a>
+                    </div>
+                )
+            }
+        </div>
+    </section>
+</Reveal>

@@ -11,6 +11,16 @@ export interface SpecGroup {
   items: SpecItem[];
 }
 
+/**
+ * I requisiti nel frontmatter sono scritti in ottica scolastica («Minimo di 120
+ * alunni»), formula sbagliata per una parrocchia, una sagra o una sezione alpini.
+ * Fuori dalle schede spettacolo va usata questa versione neutra.
+ */
+export function normalizeRequisiti(requisiti?: string): string | undefined {
+  if (!requisiti) return undefined;
+  return requisiti.replace(/\balunni\b/gi, "spettatori");
+}
+
 export function getShowSpecs(show: CollectionEntry<"spettacoli">): SpecGroup[] {
   const { data } = show;
   const groups: SpecGroup[] = [];

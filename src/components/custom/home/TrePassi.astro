@@ -1,0 +1,141 @@
+---
+/**
+ * TrePassi — sezione 8 della home, id="prenotare".
+ *
+ * Diaframma fra la home e la ContactForm esistente: dice esattamente cosa
+ * mandare e cosa succede dopo, senza duplicare titolo e contenuti del modulo
+ * che la segue.
+ *
+ * ZERO JAVASCRIPT PROPRIO. L'unica isola è <Reveal client:visible>, la
+ * micro-isola condivisa che anima il blocco come un pezzo solo (fadeUp, EASE,
+ * VIEWPORT, reduced motion gestito da useMotionSafe). Dentro, solo transizioni
+ * CSS: hover sui recapiti e active:scale-[0.96].
+ *
+ * NOTA DI COPY (dallo spec, da non «migliorare» in autonomia): qui NON va
+ * scritto alcun impegno sul tempo di risposta né alcuna fascia di prezzo,
+ * perché non esistono nel materiale verificato. Se Sergio li conferma, il posto
+ * è la riga immediatamente sotto il passo 02.
+ */
+import Reveal from "./Reveal";
+
+/** Nessuna prop: il contenuto è interamente statico. */
+export type Props = Record<string, never>;
+
+interface Passo {
+  /** Cifra decorativa, aria-hidden: l'ordine lo porta la <ol>. */
+  numero: string;
+  /** Reso in maiuscolo via CSS (`uppercase`), non scritto in maiuscolo nel dato. */
+  titolo: string;
+  testo: string;
+}
+
+const passi: Passo[] = [
+  {
+    numero: "01",
+    titolo: "Scrivetemi",
+    testo:
+      "Bastano tre righe: una data indicativa, che spazio avete e che pubblico vi aspettate.",
+  },
+  {
+    numero: "02",
+    titolo: "Vi rispondo io",
+    testo:
+      "Vi propongo il titolo giusto per quella sala e per quell'età, con disponibilità, preventivo e scheda tecnica. Rispondo personalmente.",
+  },
+  {
+    numero: "03",
+    titolo: "Confermate",
+    testo:
+      "Alla produzione, all'audio e alle luci penso io. Voi aprite le porte e riempite la sala.",
+  },
+];
+
+/** Stilema «underline oro» già in uso in FeaturedShows.tsx: la home deve sembrare la stessa mano. */
+const linkRecapito =
+  "inline-flex min-h-11 items-center text-primary shadow-[inset_0_-2px_0_rgba(212,162,76,0.3)] transition-[color,box-shadow,scale] duration-150 hover:shadow-[inset_0_-2px_0_#d4a24c] active:scale-[0.96]";
+---
+
+<section
+  id="prenotare"
+  aria-labelledby="prenotare-title"
+  class="scroll-mt-28 bg-background py-16 md:py-24"
+>
+  <div class="container mx-auto px-4 md:px-8 lg:px-12">
+    <Reveal client:visible>
+      <h2
+        id="prenotare-title"
+        class="mx-auto max-w-3xl text-center font-serif text-[clamp(2rem,4.2vw,3.5rem)] leading-[1.03] font-bold tracking-tight text-foreground"
+      >
+        Tre passi, e la data è vostra.
+      </h2>
+
+      <ol
+        role="list"
+        class="relative mt-12 grid gap-10 pl-8 md:mt-16 md:grid-cols-3 md:pl-0"
+        style="--passo-num: clamp(3rem, 6vw, 4.5rem);"
+      >
+        {/*
+          Filo oro tratteggiato: verticale a sinistra su mobile, orizzontale
+          all'altezza dei tre numeri su md. Sta prima nel DOM e non ha z-index,
+          così i numeri (in <li> position:relative) gli passano sopra.
+        */}
+        <span
+          aria-hidden="true"
+          class="pointer-events-none absolute inset-y-0 left-0 border-l border-dashed border-primary/30 md:inset-y-auto md:top-[calc(var(--passo-num)*0.5)] md:right-0 md:border-t md:border-l-0"
+        ></span>
+
+        {
+          passi.map((passo) => (
+            <li class="relative">
+              <span
+                aria-hidden="true"
+                class="block font-serif text-[length:var(--passo-num)] leading-none font-bold tabular-nums text-primary/20"
+              >
+                {passo.numero}
+              </span>
+              <h3 class="mt-4 font-sans text-sm font-bold tracking-[0.22em] text-primary uppercase">
+                {passo.titolo}
+              </h3>
+              <p class="mt-3 text-base leading-relaxed text-muted-foreground">
+                {passo.testo}
+              </p>
+            </li>
+          ))
+        }
+      </ol>
+
+      <div class="mt-16 text-center md:mt-20">
+        <p
+          class="mx-auto max-w-2xl font-serif text-xl leading-snug text-foreground md:text-2xl"
+        >
+          Il modulo qui sotto arriva direttamente a me. Se preferite la voce: 380
+          5252684.
+        </p>
+
+        <div
+          class="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2"
+        >
+          <a href="mailto:info@sergioprocopio.it" class={linkRecapito}>
+            info@sergioprocopio.it
+          </a>
+          {/* Rombo rosso sipario: superficie decorativa 6px, nessuna informazione. */}
+          <span
+            aria-hidden="true"
+            class="size-1.5 shrink-0 rotate-45 bg-[#c2273d]"></span>
+          <a href="tel:+393805252684" class={linkRecapito}>+39 380 5252684</a>
+        </div>
+      </div>
+
+      {/*
+        DIAFRAMMA VERSO I CONTATTI — ultimo elemento della sezione.
+        Sta qui dentro e non come contenitore attorno a ContactForm, che ha
+        sfondi in position:absolute e un glow radiale che verrebbero ritagliati.
+      */}
+      <div
+        aria-hidden="true"
+        class="mx-auto mt-16 h-px w-16 bg-linear-to-r from-transparent via-primary/50 to-transparent md:mt-20"
+      >
+      </div>
+    </Reveal>
+  </div>
+</section>

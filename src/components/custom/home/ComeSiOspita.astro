@@ -1,0 +1,424 @@
+---
+/**
+ * ComeSiOspita — sezione 3 della home, «scheda tecnica e organizzazione».
+ *
+ * Zero JavaScript proprio: il markup è statico, le uniche isole sono le
+ * istanze di <Reveal client:visible>, che animano i blocchi come pezzi unici.
+ * Tutto il resto è CSS (hover cella, hover riga, hover link).
+ */
+import {
+    Building2,
+    Clock,
+    Handshake,
+    Languages,
+    SlidersHorizontal,
+    Users,
+} from "lucide-react";
+import Reveal from "./Reveal";
+import { ENTI, NUMERI_IT } from "../../../lib/home-catalogo";
+
+interface Show {
+    id: string;
+    title: string;
+    eta: string | null;
+    durata: string | null;
+    regia: string | null;
+    tema: string;
+    problema: string;
+    perche: string;
+    enti: string[];
+    img: { src: string; srcset: string; width: number; height: number } | null;
+}
+
+interface Props {
+    shows: Show[];
+    showCountLabel: string;
+}
+
+const { shows, showCountLabel } = Astro.props;
+
+/* «Per chi»: gli slug di CATALOGO_HOME diventano le etichette editoriali di ENTI.
+   La category del frontmatter non viene mai stampata grezza. */
+const etichettaEnte = new Map(ENTI.map((ente) => [ente.slug, ente.label]));
+
+function perChi(slugs: string[]): string {
+    const etichette = slugs
+        .map((slug) => etichettaEnte.get(slug))
+        .filter((label): label is string => Boolean(label));
+
+    return etichette.length > 0 ? etichette.join(" · ") : "—";
+}
+
+/* Numeri in lettere: nessun conteggio scritto a mano nel copy.
+   Il totale arriva già formattato da index.astro (NUMERI_IT[shows.length]). */
+const numeriInLettere = NUMERI_IT as Record<number, string>;
+
+function inLettere(n: number): string {
+    return (numeriInLettere[n] ?? String(n)).toLocaleLowerCase("it-IT");
+}
+
+const totaleInLettere = showCountLabel.toLocaleLowerCase("it-IT");
+
+/* L'unico titolo da due ore è quello che comprende l'incontro finale:
+   il dato viene dalla durata del frontmatter, non dal copy. */
+const titoliConIncontro = shows.filter((show) =>
+    /\b2\s*ore\b/i.test(show.durata ?? ""),
+);
+const titoloLungo =
+    titoliConIncontro.length === 1 ? titoliConIncontro[0] : null;
+const titoliBrevi = shows.length - titoliConIncontro.length;
+
+/* I registi si leggono dal frontmatter, ordinati come li leggerebbe un italiano. */
+const registi = [
+    ...new Set(
+        shows
+            .map((show) => show.regia)
+            .filter((regia): regia is string => Boolean(regia)),
+    ),
+].sort((a, b) => a.localeCompare(b, "it-IT"));
+const registiInRiga = new Intl.ListFormat("it-IT", {
+    type: "disjunction",
+}).format(registi);
+---
+
+<section
+    id="come-si-ospita"
+    aria-labelledby="come-si-ospita-title"
+    class="scroll-mt-28 bg-background py-24 md:py-32"
+>
+    <div class="container mx-auto px-4 md:px-8 lg:px-12">
+        <Reveal client:visible>
+            <div class="mb-6 flex items-center gap-4">
+                <span class="h-px w-10 bg-primary/40"></span>
+                <span
+                    class="text-[11px] font-bold uppercase tracking-[0.25em] text-primary md:text-xs"
+                >
+                    Scheda tecnica e organizzazione
+                </span>
+            </div>
+            <h2
+                id="come-si-ospita-title"
+                class="mb-5 font-serif text-[clamp(2rem,4.2vw,3.5rem)] font-bold leading-[1.03] tracking-tight text-foreground"
+            >
+                Voi mettete la sala e il pubblico. Il resto <span
+                    class="italic text-primary">arriva con me</span
+                >.
+            </h2>
+            <p
+                class="mb-12 max-w-2xl text-lg leading-relaxed text-muted-foreground md:mb-16 md:text-xl"
+            >
+                Condizioni valide per tutti i titoli. Nessuna sorpresa in fase
+                di accordo.
+            </p>
+        </Reveal>
+
+        {/* Le hairline nascono dal gap: il blocco legge come un documento, non come sei box. */}
+        <Reveal client:visible>
+            <div
+                class="overflow-hidden rounded-3xl border border-border bg-[var(--card)]"
+            >
+                <div
+                    class="grid grid-cols-1 gap-px bg-border md:grid-cols-2 lg:grid-cols-3"
+                >
+                    <div
+                        class="bg-[var(--card)] p-6 transition-colors duration-200 hover:bg-secondary md:p-8"
+                    >
+                        <span
+                            class="flex size-11 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 text-primary"
+                        >
+                            <Clock size={20} aria-hidden="true" />
+                        </span>
+                        <h3
+                            class="mt-5 font-sans text-[12px] font-semibold uppercase tracking-[0.28em] text-muted-foreground"
+                        >
+                            Durata
+                        </h3>
+                        <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
+                            {
+                                titoloLungo ? (
+                                    <Fragment>
+                                        Da 1 ora a 1h 15m per {inLettere(titoliBrevi)} titoli su {totaleInLettere}. Solo <span class="text-foreground">«{titoloLungo.title}»</span> dura {titoloLungo.durata}, perché comprende l'incontro finale con l'autore.
+                                    </Fragment>
+                                ) : (
+                                    <Fragment>
+                                        Da 1 ora a 1h 15m per tutti i titoli.
+                                    </Fragment>
+                                )
+                            } Sta dentro una mattinata scolastica o dentro una serata.
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-[var(--card)] p-6 transition-colors duration-200 hover:bg-secondary md:p-8"
+                    >
+                        <span
+                            class="flex size-11 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 text-primary"
+                        >
+                            <Users size={20} aria-hidden="true" />
+                        </span>
+                        <h3
+                            class="mt-5 font-sans text-[12px] font-semibold uppercase tracking-[0.28em] text-muted-foreground"
+                        >
+                            Pubblico minimo
+                        </h3>
+                        <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
+                            <span class="text-foreground">120 spettatori</span>,
+                            dichiarati nella scheda di ogni spettacolo: sapete
+                            in partenza qual è il bacino da coprire.
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-[var(--card)] p-6 transition-colors duration-200 hover:bg-secondary md:p-8"
+                    >
+                        <span
+                            class="flex size-11 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 text-primary"
+                        >
+                            <SlidersHorizontal size={20} aria-hidden="true" />
+                        </span>
+                        <h3
+                            class="mt-5 font-sans text-[12px] font-semibold uppercase tracking-[0.28em] text-muted-foreground"
+                        >
+                            Audio e luci
+                        </h3>
+                        <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
+                            A cura di <span class="text-foreground"
+                                >Giorgio Albini</span
+                            >, tecnico di tutti gli spettacoli. Arriva con la
+                            produzione: non dovete ingaggiare un service né
+                            coordinare fornitori.
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-[var(--card)] p-6 transition-colors duration-200 hover:bg-secondary md:p-8"
+                    >
+                        <span
+                            class="flex size-11 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 text-primary"
+                        >
+                            <Handshake size={20} aria-hidden="true" />
+                        </span>
+                        <h3
+                            class="mt-5 font-sans text-[12px] font-semibold uppercase tracking-[0.28em] text-muted-foreground"
+                        >
+                            Un solo interlocutore
+                        </h3>
+                        <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
+                            Tutti i titoli sono prodotti dal <span
+                                class="text-foreground">Teatro Procopio</span
+                            >: artistico, tecnica e organizzazione rispondono a
+                            una sola persona.{
+                                registi.length > 0 && (
+                                    <Fragment>
+                                        {" "}La regia è di <span class="text-foreground">{registiInRiga}</span> a seconda del titolo.
+                                    </Fragment>
+                                )
+                            }
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-[var(--card)] p-6 transition-colors duration-200 hover:bg-secondary md:p-8"
+                    >
+                        <span
+                            class="flex size-11 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 text-primary"
+                        >
+                            <Languages size={20} aria-hidden="true" />
+                        </span>
+                        <h3
+                            class="mt-5 font-sans text-[12px] font-semibold uppercase tracking-[0.28em] text-muted-foreground"
+                        >
+                            Nessuna barriera di lingua
+                        </h3>
+                        <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
+                            Spettacolo senza parole: funziona con platee miste
+                            per età e per provenienza. Collaudato in <span
+                                class="text-foreground"
+                                >Belgio, Francia, Germania, Spagna, Svizzera,
+                                Madagascar, Brasile e Perù</span
+                            >.
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-[var(--card)] p-6 transition-colors duration-200 hover:bg-secondary md:p-8"
+                    >
+                        <span
+                            class="flex size-11 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 text-primary"
+                        >
+                            <Building2 size={20} aria-hidden="true" />
+                        </span>
+                        <h3
+                            class="mt-5 font-sans text-[12px] font-semibold uppercase tracking-[0.28em] text-muted-foreground"
+                        >
+                            Spazi e orari
+                        </h3>
+                        <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
+                            Teatri d'oratorio, oratori, chiese parrocchiali e
+                            spazi comunali: nel 2026 sono tutti in calendario.
+                            Le repliche serali iniziano alle <span
+                                class="text-foreground">20:30</span
+                            > o alle <span class="text-foreground">21:00</span>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </Reveal>
+
+        <Reveal client:visible>
+            <div class="mt-8 grid gap-6 lg:grid-cols-2">
+                {/* Rosso sipario: solo superficie e bordo, mai testo. */}
+                <div
+                    class="rounded-2xl border border-[#c2273d]/25 bg-[#c2273d]/8 p-6"
+                >
+                    <h3
+                        class="font-serif text-xl font-bold leading-tight text-primary md:text-2xl"
+                    >
+                        Spettacolo + incontro, già compreso
+                    </h3>
+                    <p class="mt-3 max-w-[68ch] text-sm leading-relaxed text-foreground">
+                        Al termine de «Il Bullo» esco dal personaggio e racconto
+                        i miei dieci anni di collegio e le volte in cui ho
+                        dovuto scegliere la strada giusta. «L'uomo e il mare di
+                        plastica» comprende il dibattito con l'artista. Non
+                        portate solo uno spettacolo: portate un'ora di
+                        confronto.
+                    </p>
+                </div>
+
+                <div
+                    class="rounded-r-2xl border-l-2 border-primary/40 bg-white/[0.03] p-6"
+                >
+                    <h3
+                        class="font-serif text-xl font-bold leading-tight text-foreground md:text-2xl"
+                    >
+                        Non arrivate a 120 persone?
+                    </h3>
+                    <p class="mt-3 max-w-[68ch] text-sm leading-relaxed text-foreground">
+                        È la strada già battuta: oratorio, parrocchia e Comune
+                        fanno la serata insieme e il bacino si somma.
+                        Scrivetemi e ragioniamo sul vostro caso.
+                    </p>
+                </div>
+            </div>
+
+            <p class="mt-6 max-w-[68ch] text-sm leading-relaxed text-muted-foreground">
+                Materiali per la locandina: oltre cento foto di scena
+                professionali già pronte per volantini, manifesti e comunicati
+                stampa. La vostra segreteria non deve organizzare nessuno
+                shooting.{" "}
+                <a
+                    href="/galleria"
+                    class="inline-flex min-h-11 items-center font-semibold text-primary shadow-[inset_0_-2px_0_rgba(212,162,76,0.3)] transition-[color,box-shadow,scale] duration-150 hover:shadow-[inset_0_-2px_0_#d4a24c] active:scale-[0.96]"
+                >
+                    Vai alla galleria
+                </a>
+            </p>
+        </Reveal>
+
+        <Reveal client:visible>
+            <div class="mt-16 md:mt-20">
+                <h3
+                    class="font-serif text-2xl font-bold leading-tight text-foreground md:text-[1.75rem]"
+                >
+                    Gli {totaleInLettere} titoli a confronto
+                </h3>
+                <p class="mt-3 max-w-[68ch] text-base leading-relaxed text-muted-foreground">
+                    Se dovete portare la proposta in consiglio, questa è la
+                    pagina da stampare.
+                </p>
+
+                {/* Il wrapper scrolla, il body no. tabindex per raggiungerlo da tastiera. */}
+                <div
+                    role="region"
+                    aria-label="Tabella comparativa dei titoli in repertorio"
+                    tabindex="0"
+                    class="mt-6 overflow-x-auto rounded-3xl border border-border"
+                >
+                    <table class="w-full min-w-[720px] text-left text-sm">
+                        <caption class="sr-only">
+                            Confronto dei titoli in repertorio: destinatari, età
+                            consigliata, durata, tema e regia.
+                        </caption>
+                        <thead
+                            class="bg-white/[0.03] text-[11px] uppercase tracking-[0.2em] text-muted-foreground"
+                        >
+                            <tr>
+                                <th
+                                    scope="col"
+                                    class="px-5 py-4 text-left font-semibold"
+                                    >Titolo</th
+                                >
+                                <th
+                                    scope="col"
+                                    class="px-5 py-4 text-left font-semibold"
+                                    >Per chi</th
+                                >
+                                <th
+                                    scope="col"
+                                    class="px-5 py-4 text-left font-semibold"
+                                    >Età</th
+                                >
+                                <th
+                                    scope="col"
+                                    class="px-5 py-4 text-left font-semibold"
+                                    >Durata</th
+                                >
+                                <th
+                                    scope="col"
+                                    class="px-5 py-4 text-left font-semibold"
+                                    >Tema</th
+                                >
+                                <th
+                                    scope="col"
+                                    class="px-5 py-4 text-left font-semibold"
+                                    >Regia</th
+                                >
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                shows.map((show) => (
+                                    <tr class="border-t border-border transition-colors duration-200 odd:bg-white/[0.015] hover:bg-white/[0.03]">
+                                        <th
+                                            scope="row"
+                                            class="px-5 py-4 text-left align-top font-serif text-base font-bold text-foreground"
+                                        >
+                                            <a
+                                                href={`/spettacoli/${show.id}`}
+                                                class="inline-flex min-h-11 items-center transition-colors duration-150 hover:text-primary active:scale-[0.96]"
+                                            >
+                                                {show.title}
+                                            </a>
+                                        </th>
+                                        <td class="px-5 py-4 align-top text-muted-foreground">
+                                            {perChi(show.enti)}
+                                        </td>
+                                        <td class="whitespace-nowrap px-5 py-4 align-top text-muted-foreground">
+                                            {show.eta ?? "—"}
+                                        </td>
+                                        <td class="whitespace-nowrap px-5 py-4 align-top text-muted-foreground">
+                                            {show.durata ?? "—"}
+                                        </td>
+                                        <td class="px-5 py-4 align-top text-muted-foreground">
+                                            {show.tema}
+                                        </td>
+                                        <td class="px-5 py-4 align-top text-muted-foreground">
+                                            {show.regia ?? "—"}
+                                        </td>
+                                    </tr>
+                                ))
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <p class="mt-4 text-sm leading-relaxed text-muted-foreground">
+                    Pubblico minimo: 120 spettatori per tutti i titoli.
+                    Produzione Teatro Procopio, tecnico audio e luci Giorgio
+                    Albini.
+                </p>
+            </div>
+        </Reveal>
+    </div>
+</section>
