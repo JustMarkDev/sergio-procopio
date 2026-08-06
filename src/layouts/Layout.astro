@@ -25,6 +25,18 @@ const { title, description, canonicalPath } = Astro.props;
 		<SEO title={title} description={description} canonicalPath={canonicalPath} />
 		<Schema />
 		<ClientRouter />
+		{/* Le isole animate sono servite con opacity:0 e vengono rivelate
+		    dall'animazione d'entrata. Senza JavaScript resterebbero invisibili
+		    e la pagina apparirebbe vuota: qui le si forza visibili. */}
+		<noscript>
+			<style>
+				[style*="opacity:0"],
+				[style*="opacity: 0"] {
+					opacity: 1 !important;
+					transform: none !important;
+				}
+			</style>
+		</noscript>
 	</head>
 	<body>
 		<Header client:load transition:persist />
