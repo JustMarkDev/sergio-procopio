@@ -145,7 +145,7 @@ export default function ShowGallery({ mainImageSrc, mainImageOriginalSrc, images
       {/* Clickable Main Image Trigger */}
       <div
         onClick={() => setActiveIndex(activeIndexToUse)}
-        className="relative group overflow-hidden rounded-[2.5rem] border border-white/5 shadow-2xl bg-[#09090b] cursor-pointer w-full h-auto block"
+        className="relative group overflow-hidden rounded-[2.5rem] border border-white/5 shadow-2xl bg-[#0b0a09] cursor-pointer w-full h-auto block"
       >
         <img
           src={mainImageSrc}

@@ -30,10 +30,10 @@ export default function FeaturedShows({ shows }: Props) {
   return (
     <section
       id="spettacoli"
-      className="relative py-32 overflow-hidden bg-[#09090b]"
+      className="relative py-32 overflow-hidden bg-[#0b0a09]"
     >
       {/* Decorative Background */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(37,99,235,0.05)_0%,transparent_70%)] pointer-events-none"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(212,162,76,0.05)_0%,transparent_70%)] pointer-events-none"></div>
 
       <div className="container relative z-10 mx-auto px-4 md:px-8 lg:px-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
@@ -51,7 +51,7 @@ export default function FeaturedShows({ shows }: Props) {
           >
             <a
               href="/spettacoli"
-              className="inline-flex min-h-11 items-center text-sm font-bold uppercase tracking-wider shadow-[inset_0_-2px_0_rgba(37,99,235,0.3)] transition-[color,box-shadow,scale] duration-150 hover:text-primary hover:shadow-[inset_0_-2px_0_#2563eb] active:scale-[0.96]"
+              className="inline-flex min-h-11 items-center text-sm font-bold uppercase tracking-wider shadow-[inset_0_-2px_0_rgba(212,162,76,0.3)] transition-[color,box-shadow,scale] duration-150 hover:text-primary hover:shadow-[inset_0_-2px_0_#d4a24c] active:scale-[0.96]"
             >
               Vedi tutto il catalogo
             </a>
@@ -63,7 +63,7 @@ export default function FeaturedShows({ shows }: Props) {
             <a
               href={`/spettacoli/${show.id}`}
               key={show.id}
-              className="group flex flex-col h-full relative bg-[#09090b] border border-white/10 rounded-4xl overflow-hidden transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_0_30px_rgba(37,99,235,0.15)] active:scale-[0.96]"
+              className="group flex flex-col h-full relative bg-[#0b0a09] border border-white/10 rounded-4xl overflow-hidden transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_0_30px_rgba(212,162,76,0.15)] active:scale-[0.96]"
             >
               <div className="aspect-4/3 w-full bg-secondary/20 relative overflow-hidden flex items-center justify-center shrink-0">
                 {show.image ? (
@@ -77,7 +77,7 @@ export default function FeaturedShows({ shows }: Props) {
                     </h3>
                   </>
                 )}
-                <div className="absolute inset-0 bg-linear-to-t from-[#09090b] to-transparent z-10" />
+                <div className="absolute inset-0 bg-linear-to-t from-[#0b0a09] to-transparent z-10" />
                 <div className="absolute top-4 left-4 right-4 z-20 flex flex-wrap items-start justify-between gap-2 sm:top-6 sm:left-6 sm:right-6">
                   <span className="max-w-full py-1 px-3 bg-black/40 backdrop-blur-md border border-white/10 rounded-full text-[10px] font-bold text-primary uppercase tracking-[0.16em] break-words sm:tracking-[0.2em]">
                     {show.category}
@@ -105,7 +105,7 @@ export default function FeaturedShows({ shows }: Props) {
                 </div>
               </div>
 
-              <div className="p-6 relative z-20 bg-[#09090b] flex flex-col grow justify-center">
+              <div className="p-6 relative z-20 bg-[#0b0a09] flex flex-col grow justify-center">
                 <h3 className="text-3xl font-bold font-serif text-foreground group-hover:text-primary transition-colors duration-300 leading-tight mb-4">
                   {show.title}
                 </h3>

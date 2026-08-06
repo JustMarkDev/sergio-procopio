@@ -44,10 +44,10 @@ export default function ContactForm() {
   return (
     <section
       id="contatti"
-      className="relative py-32 overflow-hidden bg-[#09090b]"
+      className="relative py-32 overflow-hidden bg-[#0b0a09]"
     >
       {/* Background Glow */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_100%,rgba(37,99,235,0.08)_0%,transparent_50%)] pointer-events-none"></div>
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_100%,rgba(212,162,76,0.08)_0%,transparent_50%)] pointer-events-none"></div>
 
       <div className="container relative z-10 mx-auto px-4 md:px-8 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">

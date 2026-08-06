@@ -85,7 +85,7 @@ export default function Header() {
 
           <a
             href="/#contatti"
-            className="ml-auto hidden min-h-11 shrink-0 items-center rounded-full bg-primary px-5 text-sm font-bold text-primary-foreground shadow-[0_6px_18px_rgba(37,99,235,0.34)] transition-[background-color,scale,box-shadow] duration-200 hover:bg-blue-500 hover:shadow-[0_8px_24px_rgba(37,99,235,0.45)] active:scale-[0.96] lg:flex"
+            className="ml-auto hidden min-h-11 shrink-0 items-center rounded-full bg-primary px-5 text-sm font-bold text-primary-foreground shadow-[0_6px_18px_rgba(212,162,76,0.34)] transition-[background-color,scale,box-shadow] duration-200 hover:bg-[#e8b44a] hover:shadow-[0_8px_24px_rgba(212,162,76,0.45)] active:scale-[0.96] lg:flex"
           >
             Contatti
           </a>
@@ -126,7 +126,7 @@ export default function Header() {
                   <a
                     href="/#contatti"
                     onClick={() => setIsOpen(false)}
-                    className="flex min-h-12 items-center justify-center rounded-2xl bg-primary px-4 font-bold text-primary-foreground transition-[background-color,scale] duration-200 hover:bg-blue-500 active:scale-[0.96]"
+                    className="flex min-h-12 items-center justify-center rounded-2xl bg-primary px-4 font-bold text-primary-foreground transition-[background-color,scale] duration-200 hover:bg-[#e8b44a] active:scale-[0.96]"
                   >
                     Contatti
                   </a>

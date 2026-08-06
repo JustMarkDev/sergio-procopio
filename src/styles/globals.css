@@ -50,33 +50,33 @@
 
 @layer base {
     :root {
-        --background: #09090b; /* Zinc 950 */
-        --foreground: #fafafa; /* Zinc 50 */
+        --background: #0b0a09; /* nero caldo */
+        --foreground: #f5f1ea; /* bianco caldo — 17.6:1 */
 
-        --card: #09090b;
-        --card-foreground: #fafafa;
+        --card: #161412;
+        --card-foreground: #f5f1ea;
 
-        --popover: #09090b;
-        --popover-foreground: #fafafa;
+        --popover: #161412;
+        --popover-foreground: #f5f1ea;
 
-        --primary: #2563eb; /* Blue 600 */
-        --primary-foreground: #f8fafc;
+        --primary: #d4a24c; /* oro — 8.6:1 */
+        --primary-foreground: #0b0a09;
 
-        --secondary: #27272a; /* Zinc 800 */
-        --secondary-foreground: #fafafa;
+        --secondary: #1c1a18;
+        --secondary-foreground: #f5f1ea;
 
-        --muted: #27272a;
-        --muted-foreground: #a1a1aa; /* Zinc 400 */
+        --muted: #1c1a18;
+        --muted-foreground: #b5afa4; /* 9.1:1 */
 
-        --accent: #27272a;
-        --accent-foreground: #fafafa;
+        --accent: #c2273d; /* rosso sipario — solo superfici, mai testo */
+        --accent-foreground: #f5f1ea;
 
-        --destructive: #7f1d1d; /* Red 900 */
-        --destructive-foreground: #fafafa;
+        --destructive: #7f1d1d;
+        --destructive-foreground: #f5f1ea;
 
-        --border: #27272a;
-        --input: #27272a;
-        --ring: #2563eb;
+        --border: #2a2622;
+        --input: #736555; /* 3.5:1 — bordi campi form */
+        --ring: #d4a24c;
 
         --radius: 0.5rem;
     }
