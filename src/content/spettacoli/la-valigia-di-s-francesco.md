@@ -3,25 +3,25 @@ title: La Valigia di S. Francesco
 description: Uno spettacolo comico e poetico per riscoprire il messaggio di pace
   e semplicità di San Francesco attraverso un viaggio interiore ed esilarante.
 category: parrocchie
-image: ../../assets/spettacoli/la-valigia-di-s-francesco/la ricerca.jpg
+image: ../../assets/spettacoli/la-valigia-di-s-francesco/la ricerca.webp
 galleryImages:
-  - ../../assets/spettacoli/la-valigia-di-s-francesco/capire.jpg
-  - ../../assets/spettacoli/la-valigia-di-s-francesco/cercare.jpg
-  - ../../assets/spettacoli/la-valigia-di-s-francesco/il Lupo.jpg
-  - ../../assets/spettacoli/la-valigia-di-s-francesco/il riposo.jpg
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/capire.webp
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/cercare.webp
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/il Lupo.webp
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/il riposo.webp
   - ../../assets/spettacoli/la-valigia-di-s-francesco/in coro con gli
-    uccellini.jpg
-  - ../../assets/spettacoli/la-valigia-di-s-francesco/ingresso.jpg
-  - ../../assets/spettacoli/la-valigia-di-s-francesco/la bomba.jpg
-  - ../../assets/spettacoli/la-valigia-di-s-francesco/la carità.jpg
-  - ../../assets/spettacoli/la-valigia-di-s-francesco/la castita.jpg
-  - ../../assets/spettacoli/la-valigia-di-s-francesco/la fuga del passero.jpg
-  - ../../assets/spettacoli/la-valigia-di-s-francesco/la porta d'ingresso.jpg
-  - ../../assets/spettacoli/la-valigia-di-s-francesco/la ricerca.jpg
-  - ../../assets/spettacoli/la-valigia-di-s-francesco/la scoperta.jpg
-  - ../../assets/spettacoli/la-valigia-di-s-francesco/la vestizione.jpg
-  - ../../assets/spettacoli/la-valigia-di-s-francesco/obbedienza.jpg
-  - ../../assets/spettacoli/la-valigia-di-s-francesco/temporale.jpg
+    uccellini.webp
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/ingresso.webp
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/la bomba.webp
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/la carità.webp
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/la castita.webp
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/la fuga del passero.webp
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/la porta d'ingresso.webp
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/la ricerca.webp
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/la scoperta.webp
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/la vestizione.webp
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/obbedienza.webp
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/temporale.webp
 durata: 1 ora
 regia: Carlo Rossi
 eta: Per tutte le età
