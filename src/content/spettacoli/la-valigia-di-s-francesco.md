@@ -1,35 +1,37 @@
 ---
-title: "La Valigia di S. Francesco"
-description: "Uno spettacolo comico e poetico per riscoprire il messaggio di pace e semplicità di San Francesco attraverso un viaggio interiore ed esilarante."
-category: "parrocchie"
-image: "../../assets/spettacoli/la-valigia-di-s-francesco/la ricerca.jpg"
+title: La Valigia di S. Francesco
+description: Uno spettacolo comico e poetico per riscoprire il messaggio di pace
+  e semplicità di San Francesco attraverso un viaggio interiore ed esilarante.
+category: parrocchie
+image: ../../assets/spettacoli/la-valigia-di-s-francesco/la ricerca.jpg
 galleryImages:
-  - "../../assets/spettacoli/la-valigia-di-s-francesco/capire.jpg"
-  - "../../assets/spettacoli/la-valigia-di-s-francesco/cercare.jpg"
-  - "../../assets/spettacoli/la-valigia-di-s-francesco/il Lupo.jpg"
-  - "../../assets/spettacoli/la-valigia-di-s-francesco/il riposo.jpg"
-  - "../../assets/spettacoli/la-valigia-di-s-francesco/in coro con gli uccellini.jpg"
-  - "../../assets/spettacoli/la-valigia-di-s-francesco/ingresso.jpg"
-  - "../../assets/spettacoli/la-valigia-di-s-francesco/la bomba.jpg"
-  - "../../assets/spettacoli/la-valigia-di-s-francesco/la carità.jpg"
-  - "../../assets/spettacoli/la-valigia-di-s-francesco/la castita.jpg"
-  - "../../assets/spettacoli/la-valigia-di-s-francesco/la fuga del passero.jpg"
-  - "../../assets/spettacoli/la-valigia-di-s-francesco/la porta d'ingresso.jpg"
-  - "../../assets/spettacoli/la-valigia-di-s-francesco/la ricerca.jpg"
-  - "../../assets/spettacoli/la-valigia-di-s-francesco/la scoperta.jpg"
-  - "../../assets/spettacoli/la-valigia-di-s-francesco/la vestizione.jpg"
-  - "../../assets/spettacoli/la-valigia-di-s-francesco/obbedienza.jpg"
-  - "../../assets/spettacoli/la-valigia-di-s-francesco/temporale.jpg"
-
-durata: "1 ora"
-regia: "Daniele Broggini"
-eta: "Per tutte le età"
-produzione: "Teatro Procopio"
-tecnico: "Giorgio Albini"
-requisiti: "Minimo di 120 alunni"
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/capire.jpg
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/cercare.jpg
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/il Lupo.jpg
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/il riposo.jpg
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/in coro con gli
+    uccellini.jpg
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/ingresso.jpg
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/la bomba.jpg
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/la carità.jpg
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/la castita.jpg
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/la fuga del passero.jpg
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/la porta d'ingresso.jpg
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/la ricerca.jpg
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/la scoperta.jpg
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/la vestizione.jpg
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/obbedienza.jpg
+  - ../../assets/spettacoli/la-valigia-di-s-francesco/temporale.jpg
+durata: 1 ora
+regia: Carlo Rossi
+eta: Per tutte le età
+produzione: Teatro Procopio
+tecnico: Giorgio Albini
+requisiti: Minimo di 120 alunni
 highlight: true
+slug: la-valigia-di-san-francesco
+draft: false
 ---
-
 ## Proposta
 
 Nel 2026, con il ritorno ufficiale di San Francesco come Patrono d’Italia e la giornata nazionale a lui dedicata, cresce il desiderio di riscoprire il suo messaggio di pace, semplicità e fraternità.
