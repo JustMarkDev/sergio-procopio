@@ -50,7 +50,7 @@ const passi: Passo[] = [
   },
 ];
 
-/** Stilema «underline oro» già in uso in FeaturedShows.tsx: la home deve sembrare la stessa mano. */
+/** Stilema «underline oro» condiviso con il resto del sito: la home deve sembrare la stessa mano. */
 const linkRecapito =
   "inline-flex min-h-11 items-center text-primary shadow-[inset_0_-2px_0_rgba(212,162,76,0.3)] transition-[color,box-shadow,scale] duration-150 hover:shadow-[inset_0_-2px_0_#d4a24c] active:scale-[0.96]";
 ---
@@ -71,19 +71,9 @@ const linkRecapito =
 
       <ol
         role="list"
-        class="relative mt-12 grid gap-10 pl-8 md:mt-16 md:grid-cols-3 md:pl-0"
+        class="mt-12 grid gap-10 md:mt-16 md:grid-cols-3"
         style="--passo-num: clamp(3rem, 6vw, 4.5rem);"
       >
-        {/*
-          Filo oro tratteggiato: verticale a sinistra su mobile, orizzontale
-          all'altezza dei tre numeri su md. Sta prima nel DOM e non ha z-index,
-          così i numeri (in <li> position:relative) gli passano sopra.
-        */}
-        <span
-          aria-hidden="true"
-          class="pointer-events-none absolute inset-y-0 left-0 border-l border-dashed border-primary/30 md:inset-y-auto md:top-[calc(var(--passo-num)*0.5)] md:right-0 md:border-t md:border-l-0"
-        ></span>
-
         {
           passi.map((passo) => (
             <li class="relative">

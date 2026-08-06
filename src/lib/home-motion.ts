@@ -221,7 +221,7 @@ export function stagger(each = 0.07, delay = 0.05): Variants {
 }
 
 /* ------------------------------------------------------------------------- *
- * MICRO-INTERAZIONI (identiche a Header.tsx e FeaturedShows.tsx)
+ * MICRO-INTERAZIONI (identiche a Header.tsx)
  * ------------------------------------------------------------------------- */
 
 /** `whileHover` dei bottoni e dei link a pillola. */

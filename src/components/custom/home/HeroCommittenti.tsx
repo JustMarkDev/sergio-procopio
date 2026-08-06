@@ -25,7 +25,7 @@ import {
  * HERO PER I COMMITTENTI — prima sezione della home, `client:load`.
  *
  * Nei primi tre secondi dice COSA si compra e A CHI parla il sito: enti che
- * programmano, non spettatori. Sostituisce HeroSection.tsx, che metteva il nome
+ * programmano, non spettatori. Sostituisce il vecchio hero, che metteva il nome
  * dell'artista in 9rem davanti a un pubblico che non lo conosce.
  *
  * È l'UNICA sezione della home che anima al mount (`animate`): tutto il resto
