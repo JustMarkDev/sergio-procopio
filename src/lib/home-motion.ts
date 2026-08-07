@@ -13,7 +13,7 @@ import type {
 /**
  * FONTE UNICA DEL MOVIMENTO DELLA HOME.
  *
- * Importato da HeroCommittenti, RepertorioCommittenti, ChiSono, PercheFidarsi,
+ * Importato da HeroCommittenti, RepertorioCommittenti, PercheFidarsi,
  * DomandeCommittenti, BarraCtaMobile e dalla micro-isola Reveal.
  * Nessun componente ridefinisce easing, durate o varianti in locale.
  *

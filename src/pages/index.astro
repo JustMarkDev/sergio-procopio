@@ -1,23 +1,20 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { getCollection, getEntry } from "astro:content";
+import { getCollection } from "astro:content";
 import { getImage } from "astro:assets";
+import heroFusa from "../assets/home/hero-comico-fuso.webp";
 
 import HeroCommittenti from "../components/custom/home/HeroCommittenti";
 import RepertorioCommittenti from "../components/custom/home/RepertorioCommittenti";
 import ComeSiOspita from "../components/custom/home/ComeSiOspita.astro";
-import ChiSono from "../components/custom/home/ChiSono";
 import PercheFidarsi from "../components/custom/home/PercheFidarsi";
 import DomandeCommittenti from "../components/custom/home/DomandeCommittenti";
-import DateConfermate from "../components/custom/home/DateConfermate.astro";
 import TrePassi from "../components/custom/home/TrePassi.astro";
 import ContactForm from "../components/custom/ContactForm";
 import BarraCtaMobile from "../components/custom/home/BarraCtaMobile";
 
-import { CATALOGO_HOME, ENTI, NUMERI_IT, ordinaPerHome } from "../lib/home-catalogo";
+import { CATALOGO_HOME, NUMERI_IT, ordinaPerHome } from "../lib/home-catalogo";
 import { FAQ_COMMITTENTI } from "../lib/home-faq";
-import { formatDataLunga, formatOrario, getTipoEnte } from "../lib/home-events";
-import { splitEventsByDate } from "../lib/calendar-dates";
 
 // --- Repertorio ------------------------------------------------------------
 const pubblicati = (await getCollection("spettacoli")).filter(
@@ -61,75 +58,20 @@ const spettacoli = await Promise.all(
 const showCountLabel = NUMERI_IT[spettacoli.length] ?? String(spettacoli.length);
 
 // --- Immagine dell'hero ----------------------------------------------------
-// «Comico» è la fotografia più riconoscibile del repertorio: figura intera in
-// piena luce di scena. Se un giorno sparisse, si ripiega sul primo titolo.
-const showHero =
-    pubblicati.find((show) => show.id === "comico") ?? pubblicati[0];
-
-let hero = null;
-if (showHero?.data.image) {
-    const ottimizzata = await getImage({
-        src: showHero.data.image,
-        widths: [900, 1400, 1920],
-        format: "webp",
-    });
-    hero = {
-        src: ottimizzata.src,
-        srcset: ottimizzata.srcSet.attribute,
-        width: showHero.data.image.width,
-        height: showHero.data.image.height,
-    };
-}
-
-// --- Ritratto e citazione per «Chi sono» -----------------------------------
-const bio = await getEntry("pages", "biografia");
-
-let ritratto = null;
-if (bio?.data.image) {
-    const ottimizzata = await getImage({
-        src: bio.data.image,
-        widths: [480, 720, 960],
-        format: "webp",
-        quality: 75,
-    });
-    ritratto = {
-        src: ottimizzata.src,
-        srcset: ottimizzata.srcSet.attribute,
-        width: bio.data.image.width,
-        height: bio.data.image.height,
-    };
-}
-
-const citazione = bio?.data.quote ?? null;
-
-// --- Date confermate -------------------------------------------------------
-const eventiPubblici = (await getCollection("eventi"))
-    .filter((evento) => !evento.data.draft && evento.data.isPublic)
-    .sort((a, b) => a.data.date.getTime() - b.data.date.getTime());
-
-const { upcomingEvents } = splitEventsByDate(eventiPubblici);
-
-const prossimeDate = upcomingEvents.slice(0, 4).map((evento) => ({
-    spettacolo: evento.data.spettacolo,
-    venue: evento.data.venue,
-    city: evento.data.city,
-    dataLunga: formatDataLunga(evento.data.date),
-    orario: formatOrario(evento.data.time),
-    tipoEnte: getTipoEnte(evento.data.venue, evento.data.city),
-    iso: evento.data.date.toISOString().slice(0, 10),
-}));
-
-// Il tipo di ente si calcola su TUTTI gli eventi pubblici, anche passati:
-// serve a dire quali enti lo ospitano, non quali lo ospiteranno.
-const tipiEnteStorici = [
-    ...new Set(
-        eventiPubblici.map((evento) =>
-            getTipoEnte(evento.data.venue, evento.data.city),
-        ),
-    ),
-];
-
-const prossimaData = prossimeDate[0] ?? null;
+// Copia della foto di «Comico» con i bordi già sfumati nel colore di sfondo
+// (generata con sharp: vedi src/assets/home/hero-comico-fuso.webp), così la
+// figura si fonde con la sezione senza spigoli visibili.
+const ottimizzataHero = await getImage({
+    src: heroFusa,
+    widths: [900, 1400, 1920],
+    format: "webp",
+});
+const hero = {
+    src: ottimizzataHero.src,
+    srcset: ottimizzataHero.srcSet.attribute,
+    width: heroFusa.width,
+    height: heroFusa.height,
+};
 
 // --- Dati strutturati ------------------------------------------------------
 // Stessa fonte della sezione in pagina, così markup e contenuto non divergono.
@@ -148,27 +90,26 @@ const faqJsonLd = {
     <HeroCommittenti
         client:load
         showCountLabel={showCountLabel}
-        enti={ENTI}
-        prossimaData={prossimaData}
         hero={hero}
     />
 
     <RepertorioCommittenti
         client:visible
-        shows={spettacoli}
-        enti={ENTI}
+        shows={spettacoli.slice(0, 3)}
         showCountLabel={showCountLabel}
     />
 
     <ComeSiOspita shows={spettacoli} showCountLabel={showCountLabel} />
 
-    <ChiSono client:visible ritratto={ritratto} citazione={citazione} />
-
-    <PercheFidarsi client:visible />
+    <PercheFidarsi
+        client:visible
+        foto={spettacoli
+            .filter((show) => show.img !== null)
+            .slice(0, 6)
+            .map((show) => ({ ...show.img!, titolo: show.title, id: show.id }))}
+    />
 
     <DomandeCommittenti client:visible faq={FAQ_COMMITTENTI} />
-
-    <DateConfermate date={prossimeDate} tipiEnte={tipiEnteStorici} />
 
     <TrePassi />
 

@@ -5,6 +5,8 @@
     --font-serif: "Playfair Display", "serif";
 
     --color-background: var(--background);
+    --color-background-alt: var(--background-alt);
+    --color-bar: var(--bar);
     --color-foreground: var(--foreground);
 
     --color-primary: var(--primary);
@@ -51,6 +53,8 @@
 @layer base {
     :root {
         --background: #0b0a09; /* nero caldo */
+        --background-alt: #1a1613; /* più chiaro del fondo: sfondo delle sezioni alternate */
+        --bar: #0b0a09; /* header e footer */
         --foreground: #f5f1ea; /* bianco caldo — 17.6:1 */
 
         --card: #161412;

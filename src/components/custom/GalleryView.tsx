@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -71,7 +71,7 @@ function GalleryCard({ image, index, onOpen }: GalleryCardProps) {
         <h3 className="text-white font-serif font-bold text-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
           {image.title}
         </h3>
-        <p className="text-white/70 text-sm italic capitalize transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75 font-serif">
+        <p className="text-white/70 text-sm capitalize transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
           {image.subtitle}
         </p>
       </div>
@@ -79,10 +79,36 @@ function GalleryCard({ image, index, onOpen }: GalleryCardProps) {
   );
 }
 
+const FILTRO_TUTTE = "tutti";
+
 export default function GalleryView({ images }: GalleryViewProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [isImageLoading, setIsImageLoading] = useState(true);
+  const [filtro, setFiltro] = useState<string>(FILTRO_TUTTE);
   const thumbnailsRef = useRef<HTMLDivElement>(null);
+
+  // Un filtro per ogni spettacolo presente in galleria, nell'ordine delle foto.
+  const shows = useMemo(() => {
+    const visti = new Map<string, string>();
+    for (const img of images) {
+      if (!visti.has(img.showId)) visti.set(img.showId, img.title);
+    }
+    return Array.from(visti, ([id, title]) => ({ id, title }));
+  }, [images]);
+
+  const visibili = useMemo(
+    () =>
+      filtro === FILTRO_TUTTE
+        ? images
+        : images.filter((img) => img.showId === filtro),
+    [images, filtro],
+  );
+
+  // Cambiare filtro chiude il lightbox: gli indici si riferiscono alla lista filtrata.
+  const applicaFiltro = (id: string) => {
+    setFiltro(id);
+    setActiveIndex(null);
+  };
 
   useEffect(() => {
     window.dispatchEvent(
@@ -109,18 +135,18 @@ export default function GalleryView({ images }: GalleryViewProps) {
 
   // Proactive Background Preloading: caches adjacent images (next/prev) in background memory
   useEffect(() => {
-    if (activeIndex === null || images.length <= 1) return;
+    if (activeIndex === null || visibili.length <= 1) return;
 
     // Preload next image
-    const nextIdx = (activeIndex + 1) % images.length;
+    const nextIdx = (activeIndex + 1) % visibili.length;
     const nextImg = new Image();
-    nextImg.src = images[nextIdx].src;
+    nextImg.src = visibili[nextIdx].src;
 
     // Preload previous image
-    const prevIdx = (activeIndex - 1 + images.length) % images.length;
+    const prevIdx = (activeIndex - 1 + visibili.length) % visibili.length;
     const prevImg = new Image();
-    prevImg.src = images[prevIdx].src;
-  }, [activeIndex, images]);
+    prevImg.src = visibili[prevIdx].src;
+  }, [activeIndex, visibili]);
 
   // Prevent parent page scrolling while image is maximized
   useEffect(() => {
@@ -141,9 +167,9 @@ export default function GalleryView({ images }: GalleryViewProps) {
       if (e.key === "Escape") {
         setActiveIndex(null);
       } else if (e.key === "ArrowRight") {
-        setActiveIndex((prev) => (prev === null ? 0 : (prev + 1) % images.length));
+        setActiveIndex((prev) => (prev === null ? 0 : (prev + 1) % visibili.length));
       } else if (e.key === "ArrowLeft") {
-        setActiveIndex((prev) => (prev === null ? 0 : (prev - 1 + images.length) % images.length));
+        setActiveIndex((prev) => (prev === null ? 0 : (prev - 1 + visibili.length) % visibili.length));
       }
     };
 
@@ -151,7 +177,7 @@ export default function GalleryView({ images }: GalleryViewProps) {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [activeIndex, images.length]);
+  }, [activeIndex, visibili.length]);
 
   // Auto-scroll the active thumbnail into view and keep it centered without impacting parent viewport.
   // Optimizes switching: executes instantly if the modal is already open (offsetWidth > 0) to prevent jank on fast clicks,
@@ -186,20 +212,57 @@ export default function GalleryView({ images }: GalleryViewProps) {
   }, [activeIndex]);
 
   const showNext = () => {
-    setActiveIndex((prev) => (prev === null ? 0 : (prev + 1) % images.length));
+    setActiveIndex((prev) => (prev === null ? 0 : (prev + 1) % visibili.length));
   };
 
   const showPrev = () => {
-    setActiveIndex((prev) => (prev === null ? 0 : (prev - 1 + images.length) % images.length));
+    setActiveIndex((prev) => (prev === null ? 0 : (prev - 1 + visibili.length) % visibili.length));
   };
 
-  const currentImage = activeIndex !== null ? images[activeIndex] : null;
+  const currentImage = activeIndex !== null ? visibili[activeIndex] : null;
 
   return (
     <>
+      {/* Filtro per spettacolo */}
+      {shows.length > 1 && (
+        <div
+          role="group"
+          aria-label="Filtra le foto per spettacolo"
+          className="mb-12 flex flex-wrap justify-center gap-2"
+        >
+          <button
+            type="button"
+            aria-pressed={filtro === FILTRO_TUTTE}
+            onClick={() => applicaFiltro(FILTRO_TUTTE)}
+            className={`inline-flex min-h-11 items-center rounded-full border px-4 text-sm font-semibold transition-[color,border-color,background-color,scale] duration-200 active:scale-[0.96] ${
+              filtro === FILTRO_TUTTE
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
+            }`}
+          >
+            Tutte
+          </button>
+          {shows.map((show) => (
+            <button
+              key={show.id}
+              type="button"
+              aria-pressed={filtro === show.id}
+              onClick={() => applicaFiltro(show.id)}
+              className={`inline-flex min-h-11 items-center rounded-full border px-4 text-sm font-semibold transition-[color,border-color,background-color,scale] duration-200 active:scale-[0.96] ${
+                filtro === show.id
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
+              }`}
+            >
+              {show.title}
+            </button>
+          ))}
+        </div>
+      )}
+
       {/* Masonry Columns Gallery */}
       <div className="columns-1 md:columns-2 lg:columns-3 gap-6 md:gap-8 space-y-6 md:space-y-8 max-w-[1200px] mx-auto">
-        {images.map((image, index) => (
+        {visibili.map((image, index) => (
           <GalleryCard
             key={`${image.showId}-${image.originalSrc}`}
             image={image}
@@ -228,7 +291,7 @@ export default function GalleryView({ images }: GalleryViewProps) {
               <h2 className="text-lg sm:text-2xl md:text-4xl font-serif font-bold text-white tracking-wide drop-shadow-md truncate">
                 {currentImage.title}
               </h2>
-              <p className="text-[10px] md:text-sm text-primary uppercase tracking-[0.18em] font-bold mt-1 md:mt-2 italic font-serif capitalize truncate">
+              <p className="text-[10px] md:text-sm text-primary uppercase tracking-[0.18em] font-bold mt-1 md:mt-2 truncate">
                 {currentImage.subtitle}
               </p>
 
@@ -304,7 +367,7 @@ export default function GalleryView({ images }: GalleryViewProps) {
                 className="flex gap-2 md:gap-3 overflow-x-auto justify-start items-center px-3 py-2 w-full max-w-[95vw] md:max-w-5xl scrollbar-none relative"
                 style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
               >
-                {images.map((img, idx) => {
+                {visibili.map((img, idx) => {
                   const isActive = idx === activeIndex;
                   return (
                     <button

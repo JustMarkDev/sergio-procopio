@@ -1,5 +1,6 @@
 import { useEffect, useState, useTransition } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { Mail, MapPin, Phone, ReceiptText } from "lucide-react";
 import { actions } from "astro:actions";
 
 // Keep in sync with src/actions/contact-schema.ts.
@@ -44,15 +45,13 @@ export default function ContactForm() {
   return (
     <section
       id="contatti"
-      className="relative py-32 overflow-hidden bg-[#0b0a09]"
+      className="relative pt-32 pb-20 overflow-hidden bg-background"
     >
-      {/* Background Glow */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_100%,rgba(212,162,76,0.08)_0%,transparent_50%)] pointer-events-none"></div>
 
       <div className="container relative z-10 mx-auto px-4 md:px-8 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-stretch">
           <motion.div
-            className="lg:col-span-5"
+            className="lg:col-span-5 flex flex-col"
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -84,69 +83,40 @@ export default function ContactForm() {
               diretti per richiedere un preventivo o una data.
             </p>
 
-            <div className="space-y-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                  </svg>
-                </div>
-                <div>
-                  <div className="text-[10px] uppercase tracking-wider font-bold text-primary mb-1">
-                    Telefono
-                  </div>
-                  <div className="text-lg font-medium">
-                    <a
-                      href="tel:+393805252684"
-                      className="md:hidden hover:text-primary transition-colors"
-                    >
-                      +39 3805252684
-                    </a>
-                    <span className="hidden md:inline">+39 3805252684</span>
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                  </svg>
-                </div>
-                <div>
-                  <div className="text-[10px] uppercase tracking-wider font-bold text-primary mb-1">
-                    Email
-                  </div>
-                  <div>
-                    <a
-                      href="mailto:info@sergioprocopio.it"
-                      className="text-lg font-medium hover:text-primary transition-colors"
-                    >
-                      info@sergioprocopio.it
-                    </a>
-                  </div>
-                </div>
-              </div>
+            <a
+              href="tel:+393805252684"
+              className="flex min-h-14 w-full items-center justify-center gap-2.5 rounded-full bg-primary px-8 text-base font-bold text-primary-foreground shadow-[0_8px_30px_rgba(212,162,76,0.22)] transition-[background-color,box-shadow,scale] duration-200 hover:bg-[#e8b44a] hover:shadow-[0_10px_40px_rgba(212,162,76,0.38)] active:scale-[0.96]"
+            >
+              <Phone size={18} aria-hidden="true" />
+              Chiama ora
+            </a>
+
+            {/* Card riepilogo: recapiti e dati fiscali in un colpo d'occhio.
+                `flex-1` la fa arrivare al fondo della colonna, così il suo bordo
+                inferiore coincide sempre con quello del form a destra. */}
+            <div className="mt-8 flex-1 space-y-1 rounded-3xl border border-white/10 bg-white/3 p-6">
+              <a
+                href="tel:+393805252684"
+                className="flex min-h-10 items-center gap-3 text-muted-foreground transition-colors hover:text-primary"
+              >
+                <Phone size={16} aria-hidden="true" className="shrink-0 text-primary/70" />
+                +39 380 5252684
+              </a>
+              <a
+                href="mailto:info@sergioprocopio.it"
+                className="flex min-h-10 items-center gap-3 text-muted-foreground transition-colors hover:text-primary"
+              >
+                <Mail size={16} aria-hidden="true" className="shrink-0 text-primary/70" />
+                info@sergioprocopio.it
+              </a>
+              <p className="flex min-h-10 items-center gap-3 text-muted-foreground">
+                <ReceiptText size={16} aria-hidden="true" className="shrink-0 text-primary/70" />
+                P.IVA 02470860137
+              </p>
+              <p className="flex min-h-10 items-center gap-3 text-muted-foreground">
+                <MapPin size={16} aria-hidden="true" className="shrink-0 text-primary/70" />
+                Via Genico, 2
+              </p>
             </div>
           </motion.div>
 
@@ -155,10 +125,10 @@ export default function ContactForm() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="lg:col-span-7 relative p-10 bg-white/2 border border-white/5 rounded-[2.5rem] backdrop-blur-sm"
+            className="lg:col-span-7 relative flex flex-col p-10 bg-white/2 border border-white/10 rounded-[2.5rem] backdrop-blur-sm"
           >
             {status === "success" ? (
-              <div className="flex flex-col items-center justify-center h-full space-y-4 py-12 text-center">
+              <div className="flex flex-1 flex-col items-center justify-center space-y-4 py-12 text-center">
                 <div className="w-16 h-16 rounded-full bg-primary/20 text-primary flex items-center justify-center mb-4">
                   <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
                 </div>
@@ -173,7 +143,7 @@ export default function ContactForm() {
               </div>
             ) : (
               <form
-                className="space-y-6"
+                className="flex flex-1 flex-col gap-6"
                 onSubmit={handleSubmit}
               >
                 <div
@@ -248,7 +218,10 @@ export default function ContactForm() {
                   />
                 </div>
 
-                <div className="space-y-2">
+                {/* La textarea assorbe la differenza di altezza tra le colonne:
+                    è lei ad allungarsi finché il form chiude alla stessa quota
+                    della card di sinistra. */}
+                <div className="flex flex-1 flex-col space-y-2">
                   <label
                     htmlFor="messaggio"
                     className="text-xs font-bold uppercase tracking-widest opacity-60 ml-1"
@@ -260,7 +233,7 @@ export default function ContactForm() {
                     name="messaggio"
                     required
                     maxLength={CONTACT_MESSAGE_MAX_LENGTH}
-                    className="flex min-h-35 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-3 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none resize-none"
+                    className="flex min-h-40 flex-1 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-3 text-sm transition-all focus:border-primary/50 focus:bg-white/10 outline-none resize-none"
                     placeholder="Scrivi qui..."
                   ></textarea>
                 </div>

@@ -11,8 +11,8 @@ export interface RevealProps {
 }
 
 /**
- * Wrapper d'entrata usato dalle sezioni .astro (TrePassi, DateConfermate,
- * ComeSiOspita), che non possono usare Framer Motion direttamente.
+ * Wrapper d'entrata usato dalle sezioni .astro (TrePassi, ComeSiOspita),
+ * che non possono usare Framer Motion direttamente.
  * Con prefers-reduced-motion l'entrata collassa a una dissolvenza breve.
  */
 export default function Reveal({

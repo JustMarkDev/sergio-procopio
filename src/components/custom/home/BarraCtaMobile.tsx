@@ -136,11 +136,11 @@ export default function BarraCtaMobile(_props: BarraCtaMobileProps) {
           visibile ? "" : "pointer-events-none"
         }`}
       >
-        <div className="flex min-h-14 items-center gap-2 rounded-[22px] bg-zinc-950/80 p-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] shadow-[0_14px_45px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.18)] backdrop-blur-2xl backdrop-saturate-150">
+        <div className="flex min-h-14 items-center gap-2 rounded-[22px] bg-bar/80 p-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] shadow-[0_14px_45px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.18)] backdrop-blur-2xl backdrop-saturate-150">
           <motion.a
             href="tel:+393805252684"
             whileTap={TAP}
-            className={`${AZIONE_BASE} gap-1.5 border border-border bg-white/[0.04] text-foreground transition-colors duration-200 hover:border-primary/50 hover:text-primary`}
+            className={`${AZIONE_BASE} gap-1.5 border border-white/10 bg-white/[0.04] text-foreground transition-colors duration-200 hover:border-primary/50 hover:text-primary`}
           >
             <Phone size={15} aria-hidden="true" className="shrink-0" />
             <span>Chiama 380 5252684</span>

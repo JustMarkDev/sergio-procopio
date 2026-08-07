@@ -6,8 +6,8 @@ export interface Ente {
 
 /**
  * Tipi di committente. Gli slug compaiono negli href delle chip dell'hero
- * (`/?ente={slug}#repertorio`) e nel filtro del repertorio: non vanno rinominati
- * senza aggiornare entrambi.
+ * (`/spettacoli?ente={slug}`) e nel filtro della pagina spettacoli: non vanno
+ * rinominati senza aggiornare entrambi.
  */
 export const ENTI: Ente[] = [
   {

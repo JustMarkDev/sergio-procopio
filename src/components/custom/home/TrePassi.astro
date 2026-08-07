@@ -50,15 +50,12 @@ const passi: Passo[] = [
   },
 ];
 
-/** Stilema «underline oro» condiviso con il resto del sito: la home deve sembrare la stessa mano. */
-const linkRecapito =
-  "inline-flex min-h-11 items-center text-primary shadow-[inset_0_-2px_0_rgba(212,162,76,0.3)] transition-[color,box-shadow,scale] duration-150 hover:shadow-[inset_0_-2px_0_#d4a24c] active:scale-[0.96]";
 ---
 
 <section
   id="prenotare"
   aria-labelledby="prenotare-title"
-  class="scroll-mt-28 bg-background py-16 md:py-24"
+  class="scroll-mt-28 bg-background-alt py-16 md:py-24"
 >
   <div class="container mx-auto px-4 md:px-8 lg:px-12">
     <Reveal client:visible>
@@ -94,28 +91,6 @@ const linkRecapito =
         }
       </ol>
 
-      <div class="mt-16 text-center md:mt-20">
-        <p
-          class="mx-auto max-w-2xl font-serif text-xl leading-snug text-foreground md:text-2xl"
-        >
-          Il modulo qui sotto arriva direttamente a me. Se preferite la voce: 380
-          5252684.
-        </p>
-
-        <div
-          class="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2"
-        >
-          <a href="mailto:info@sergioprocopio.it" class={linkRecapito}>
-            info@sergioprocopio.it
-          </a>
-          {/* Rombo rosso sipario: superficie decorativa 6px, nessuna informazione. */}
-          <span
-            aria-hidden="true"
-            class="size-1.5 shrink-0 rotate-45 bg-[#c2273d]"></span>
-          <a href="tel:+393805252684" class={linkRecapito}>+39 380 5252684</a>
-        </div>
-      </div>
-
       {/*
         DIAFRAMMA VERSO I CONTATTI — ultimo elemento della sezione.
         Sta qui dentro e non come contenitore attorno a ContactForm, che ha
@@ -123,7 +98,7 @@ const linkRecapito =
       */}
       <div
         aria-hidden="true"
-        class="mx-auto mt-16 h-px w-16 bg-linear-to-r from-transparent via-primary/50 to-transparent md:mt-20"
+        class="mx-auto mt-16 h-0.5 w-48 rounded-full bg-linear-to-r from-transparent via-primary to-transparent shadow-[0_0_18px_rgba(212,162,76,0.45)] md:mt-20 md:w-64"
       >
       </div>
     </Reveal>

@@ -142,15 +142,17 @@ export default function ShowGallery({ mainImageSrc, mainImageOriginalSrc, images
 
   return (
     <>
-      {/* Clickable Main Image Trigger */}
+      {/* Clickable Main Image Trigger. Altezza SEMPRE limitata: le foto di
+          scena possono essere enormi o verticali, qui fanno da anteprima
+          ritagliata (object-cover) — l'immagine intera si vede nel lightbox. */}
       <div
         onClick={() => setActiveIndex(activeIndexToUse)}
-        className="relative group overflow-hidden rounded-[2.5rem] border border-white/5 shadow-2xl bg-[#0b0a09] cursor-pointer w-full h-auto block"
+        className="relative group overflow-hidden rounded-[2.5rem] border border-white/10 shadow-2xl bg-background cursor-pointer w-full block"
       >
         <img
           src={mainImageSrc}
           alt={alt}
-          className="w-full h-auto block transition-all duration-700 group-hover:scale-102 group-hover:opacity-85"
+          className="block h-auto max-h-[400px] w-full object-cover object-[50%_25%] md:max-h-[520px] transition-all duration-700 group-hover:scale-102 group-hover:opacity-85"
           loading="lazy"
           decoding="async"
         />
@@ -184,7 +186,7 @@ export default function ShowGallery({ mainImageSrc, mainImageOriginalSrc, images
               <h2 className="text-lg sm:text-2xl md:text-4xl font-serif font-bold text-white tracking-wide drop-shadow-md truncate">
                 {currentImage.title}
               </h2>
-              <p className="text-[10px] md:text-sm text-primary uppercase tracking-[0.18em] font-bold mt-1 md:mt-2 italic font-serif capitalize truncate">
+              <p className="text-[10px] md:text-sm text-primary uppercase tracking-[0.18em] font-bold mt-1 md:mt-2 truncate">
                 {currentImage.subtitle}
               </p>
 

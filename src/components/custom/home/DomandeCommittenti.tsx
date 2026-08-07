@@ -261,19 +261,20 @@ export default function DomandeCommittenti({ faq }: DomandeCommittentiProps) {
               })}
             </motion.ul>
 
-            <motion.p
+            <motion.div
               variants={safe.v(fadeUp)}
-              className="mt-10 text-center text-sm text-muted-foreground"
+              className="mt-10 flex flex-col items-center gap-5 text-center"
             >
-              Non c'è la vostra domanda? Chiedetemela al telefono,{" "}
+              <p className="text-lg text-foreground">
+                Non c'è la vostra domanda?
+              </p>
               <a
-                href="tel:+393805252684"
-                className="inline-flex min-h-11 items-center align-middle font-semibold whitespace-nowrap text-primary underline decoration-primary/40 underline-offset-4 transition-[text-decoration-color,scale] duration-200 hover:decoration-primary active:scale-[0.96]"
+                href="#contatti"
+                className="inline-flex min-h-12 items-center rounded-full bg-primary px-8 text-sm font-bold text-primary-foreground shadow-[0_8px_30px_rgba(212,162,76,0.22)] transition-[background-color,box-shadow,scale] duration-200 hover:bg-[#e8b44a] hover:shadow-[0_10px_40px_rgba(212,162,76,0.38)] active:scale-[0.96]"
               >
-                380 5252684
+                Contattatemi
               </a>
-              , oppure scrivetela nel modulo qui sotto.
-            </motion.p>
+            </motion.div>
           </motion.div>
         </div>
       </section>

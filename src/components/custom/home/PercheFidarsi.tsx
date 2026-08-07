@@ -1,79 +1,49 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
+  AnimatePresence,
   MotionConfig,
-  animate,
   motion,
-  useInView,
   useMotionValue,
-  useScroll,
-  useSpring,
   useTransform,
 } from "framer-motion";
+import type { PanInfo } from "framer-motion";
 
 import {
-  DUR_COUNT,
+  DUR,
+  DUR_REDUCED,
   EASE,
-  SCROLL_SPRING,
   VIEWPORT,
   fadeUp,
-  inViewOnce,
   lineX,
-  lineY,
   stagger,
   useMotionSafe,
 } from "../../../lib/home-motion";
 
 /**
- * PERCHÉ FIDARSI — tre numeri, sei credenziali, una testimonianza.
+ * PERCHÉ FIDARSI — recensioni a rotazione con foto, sei credenziali.
  *
  * Serve al committente per convincere qualcun altro: il consiglio pastorale,
  * il collegio docenti, il direttivo della sezione alpini.
  *
- * VINCOLO DI CONTENUTO: 1.800+ e 2.000+ restano separati e non si sommano mai
- * in «3.800+», perché quel valore non esiste in nessuna fonte del repository.
- * Nessun conteggio derivato, nessun logo istituzionale, nessuna attribuzione
- * inventata sulla testimonianza (la fonte è anonima: «Un dirigente scolastico»).
+ * ⚠ SEGNAPOSTO: i testi in RECENSIONI sono finti, scritti solo per vedere il
+ * carosello in funzione. Vanno sostituiti con recensioni vere (testo, fonte,
+ * contesto) prima di pubblicare. Le foto arrivano da index.astro, già
+ * ottimizzate con getImage.
  */
 
 /* ------------------------------------------------------------------------- *
- * CONTENUTO — copy editoriale verificato, hardcoded (vedi props nello spec)
+ * CONTENUTO
  * ------------------------------------------------------------------------- */
 
-// useGrouping:"always" è necessario: il default it-IT NON separa le migliaia
-// a quattro cifre, quindi 1800 uscirebbe «1800» invece di «1.800».
-const FORMATO_IT = new Intl.NumberFormat("it-IT", { useGrouping: "always" });
-
-interface Numero {
-  /** Valore finale del count-up. */
-  readonly valore: number;
-  /** Suffisso statico, mai animato. */
-  readonly suffisso: string;
-  /** Letto dagli screen reader al posto della cifra che cambia. */
-  readonly etichettaSr: string;
-  /** Riga di spiegazione sotto la cifra. */
-  readonly testo: string;
-}
-
-const NUMERI: readonly Numero[] = [
-  {
-    valore: 1800,
-    suffisso: "+",
-    etichettaSr: "1.800 e oltre",
-    testo: "rappresentazioni con I Barabba's Clown, dal 1977 al 1989",
-  },
-  {
-    valore: 2000,
-    suffisso: "+",
-    etichettaSr: "2.000 e oltre",
-    testo: "repliche con la Compagnia Teatrale Sergio Procopio, dal 1990",
-  },
-  {
-    valore: 8,
-    suffisso: "",
-    etichettaSr: "8",
-    testo:
-      "paesi esteri: Belgio, Francia, Germania, Spagna, Svizzera, Madagascar, Brasile, Perù",
-  },
+/** Testi SEGNAPOSTO (vedi avviso in testa al file). La firma della card è il
+ *  titolo dello spettacolo da cui viene la foto abbinata, per indice. */
+const RECENSIONI: readonly string[] = [
+  "Bellissimo spettacolo, un'ora volata senza mai guardare l'orologio: ridevano i bambini in prima fila e ridevano i nonni in fondo alla sala. Alla fine nessuno voleva tornare a casa.",
+  "Un'emozione dall'inizio alla fine, senza bisogno di una sola parola: solo gesti, musica e silenzi che arrivano dritti al cuore. Il pubblico è rimasto incantato dal primo minuto all'ultimo.",
+  "I ragazzi ne hanno parlato per giorni: è arrivato dove le lezioni non arrivano. Un modo intelligente e delicato di toccare temi difficili, riuscendo persino a far sorridere.",
+  "Organizzazione impeccabile: è arrivato, ha montato luci e audio in autonomia e la serata è filata liscia dall'inizio alla fine. Per noi organizzatori non c'è stato un solo pensiero.",
+  "Poesia e risate insieme, come non capita spesso di vedere: il pubblico è uscito con il sorriso e con una domanda su cui riflettere. Uno spettacolo che resta addosso.",
+  "La serata più riuscita della nostra festa: sala piena, applausi lunghi e tante famiglie a ringraziare all'uscita. Lo riprenderemmo anche domani, a occhi chiusi.",
 ];
 
 interface Credenziale {
@@ -118,168 +88,209 @@ const CREDENZIALI: readonly Credenziale[] = [
  * ------------------------------------------------------------------------- */
 
 const STAGGER_TESTA = stagger(0.07);
-const STAGGER_NUMERI = stagger(0.07);
 const STAGGER_CREDENZIALI = stagger(0.07);
 
-/* ------------------------------------------------------------------------- *
- * CIFRA — count-up con progressive enhancement
- * ------------------------------------------------------------------------- */
+/** Quanto resta in scena ogni recensione prima di passare alla successiva. */
+const INTERVALLO_ROTAZIONE_MS = 6000;
 
-interface CifraProps {
-  readonly valore: number;
-  /**
-   * true solo dopo l'idratazione, quando il blocco è in vista e l'utente non
-   * ha chiesto meno movimento. Finché è false si stampa il valore finale:
-   * così a JS spento, in SSR e con reduced motion non si legge mai zero.
-   */
-  readonly conta: boolean;
-}
-
-function Cifra({ valore, conta }: CifraProps) {
-  const cifra = useMotionValue(0);
-  const testo = useTransform(cifra, (v) => FORMATO_IT.format(Math.round(v)));
-
-  useEffect(() => {
-    if (!conta) return;
-
-    cifra.set(0);
-    const controlli = animate(cifra, valore, { duration: DUR_COUNT, ease: EASE });
-
-    return () => controlli.stop();
-  }, [cifra, conta, valore]);
-
-  if (!conta) return <>{FORMATO_IT.format(valore)}</>;
-
-  return <motion.span>{testo}</motion.span>;
-}
+/** Oltre questa corsa (o con abbastanza velocità) il trascinamento cambia card. */
+const SOGLIA_SWIPE_PX = 80;
+const SOGLIA_SWIPE_VELOCITA = 400;
 
 /* ------------------------------------------------------------------------- *
- * BLOCCO NUMERI
+ * CAROSELLO RECENSIONI
  * ------------------------------------------------------------------------- */
 
-function BloccoNumeri() {
+export interface FotoRecensione {
+  src: string;
+  srcset: string;
+  width: number;
+  height: number;
+  /** Titolo dello spettacolo da cui viene la foto: firma la card. */
+  titolo: string;
+  /** Slug dello spettacolo: il titolo nella firma porta alla sua scheda. */
+  id: string;
+}
+
+interface CaroselloProps {
+  readonly foto: FotoRecensione[];
+}
+
+function CaroselloRecensioni({ foto }: CaroselloProps) {
   const { reduced, v } = useMotionSafe();
-  const riferimento = useRef<HTMLDivElement>(null);
-  const inVista = useInView(riferimento, inViewOnce(0.4));
+  const [indice, setIndice] = useState(0);
+  const [inPausa, setInPausa] = useState(false);
 
-  // In SSR e alla prima renderizzazione client `inVista` è false: il markup
-  // idratato coincide con quello servito e le cifre partono già complete.
-  const conta = inVista && !reduced;
+  const multiple = RECENSIONI.length > 1;
+
+  // La rotazione si ferma con il mouse sopra (si sta leggendo) e con
+  // reduced motion (si naviga con i trattini).
+  useEffect(() => {
+    if (!multiple || reduced || inPausa) return;
+
+    const timer = window.setInterval(
+      () => setIndice((i) => (i + 1) % RECENSIONI.length),
+      INTERVALLO_ROTAZIONE_MS,
+    );
+
+    return () => window.clearInterval(timer);
+  }, [multiple, reduced, inPausa]);
+
+  const recensione = RECENSIONI[indice];
+  const fotoAttiva = foto.length > 0 ? foto[indice % foto.length] : null;
+
+  const vai = (delta: number) =>
+    setIndice((i) => (i + delta + RECENSIONI.length) % RECENSIONI.length);
+
+  // La corsa del trascinamento pilota anche l'opacità: più tiri, più la card
+  // diventa trasparente. Il MotionValue è condiviso tra card uscente ed
+  // entrante (mode="wait"), quindi entrata e uscita restano coerenti.
+  const x = useMotionValue(0);
+  const opacitaDrag = useTransform(
+    x,
+    [-SOGLIA_SWIPE_PX * 2, 0, SOGLIA_SWIPE_PX * 2],
+    [0.2, 1, 0.2],
+  );
+
+  // La card cambia SOLO al rilascio: finché il tasto resta premuto si può
+  // tirare quanto si vuole e anche ripensarci tornando al centro. Il flag
+  // serve a sopprimere il click sul link della firma a fine trascinamento.
+  const trascinandoRef = useRef(false);
+
+  const fineTrascinamento = (_evento: unknown, info: PanInfo) => {
+    window.setTimeout(() => {
+      trascinandoRef.current = false;
+    }, 0);
+
+    if (!multiple) return;
+
+    if (info.offset.x < -SOGLIA_SWIPE_PX || info.velocity.x < -SOGLIA_SWIPE_VELOCITA) {
+      vai(1);
+    } else if (info.offset.x > SOGLIA_SWIPE_PX || info.velocity.x > SOGLIA_SWIPE_VELOCITA) {
+      vai(-1);
+    }
+  };
 
   return (
     <motion.div
-      ref={riferimento}
-      variants={v(STAGGER_NUMERI)}
-      initial="hidden"
-      whileInView="show"
-      viewport={VIEWPORT}
-    >
-      <div className="grid grid-cols-1 divide-y divide-border rounded-3xl border border-border bg-[var(--card)] sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-        {NUMERI.map((numero, indice) => (
-          <motion.div key={numero.etichettaSr} variants={v(fadeUp)} className="p-8">
-            <motion.span
-              aria-hidden="true"
-              variants={v(lineX)}
-              custom={indice * 0.08}
-              className="mb-5 block h-0.5 w-6 origin-left bg-primary"
-            />
-
-            <p className="font-serif text-[clamp(2.5rem,5vw,4rem)] leading-none font-bold tabular-nums">
-              <span
-                aria-hidden="true"
-                className="inline-block bg-linear-to-b from-[#e8b44a] to-[#c9a227] bg-clip-text text-transparent [-webkit-background-clip:text]"
-              >
-                <Cifra valore={numero.valore} conta={conta} />
-                {numero.suffisso}
-              </span>
-              <span className="sr-only">{numero.etichettaSr}</span>
-            </p>
-
-            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              {numero.testo}
-            </p>
-          </motion.div>
-        ))}
-      </div>
-
-      <motion.p
-        variants={v(fadeUp)}
-        className="mt-6 max-w-[68ch] text-base leading-relaxed text-muted-foreground"
-      >
-        Nella vostra sala non ci sarà un debutto: è un repertorio provato davanti al
-        pubblico migliaia di volte.
-      </motion.p>
-    </motion.div>
-  );
-}
-
-/* ------------------------------------------------------------------------- *
- * TESTIMONIANZA
- * ------------------------------------------------------------------------- */
-
-function Testimonianza() {
-  const { reduced, v } = useMotionSafe();
-  const riferimento = useRef<HTMLElement>(null);
-
-  const { scrollYProgress } = useScroll({
-    target: riferimento,
-    offset: ["start end", "end start"],
-  });
-  // Parallasse contraria del glifo decorativo: 40px di corsa totale.
-  const glifoGrezzo = useTransform(scrollYProgress, [0, 1], [20, -20]);
-  const glifoY = useSpring(glifoGrezzo, SCROLL_SPRING);
-
-  return (
-    <motion.figure
-      ref={riferimento}
       variants={v(fadeUp)}
       initial="hidden"
       whileInView="show"
       viewport={VIEWPORT}
-      className="relative mt-16 max-w-4xl overflow-hidden rounded-3xl border border-border bg-[var(--card)] p-8 md:p-10"
+      onMouseEnter={() => setInPausa(true)}
+      onMouseLeave={() => setInPausa(false)}
+      className="mx-auto max-w-5xl"
     >
-      {/* Barra sinistra: superficie decorativa in rosso sipario, nessuna informazione. */}
-      <motion.span
-        aria-hidden="true"
-        variants={v(lineY)}
-        className="pointer-events-none absolute inset-y-0 left-0 w-[3px] origin-top bg-[#c2273d]"
-      />
-
-      {/* Glifo virgolette: ornamento, non contenuto. */}
-      <motion.span
-        aria-hidden="true"
-        style={reduced ? undefined : { y: glifoY }}
-        className="pointer-events-none absolute top-2 left-4 font-serif text-[8rem] leading-none text-primary/10 select-none"
-      >
-        &ldquo;
-      </motion.span>
-
-      <div className="relative">
-        <p className="mb-6 text-[11px] font-bold tracking-[0.2em] text-primary uppercase">
-          Da chi l&apos;ha visto
-        </p>
-
-        <blockquote className="font-serif text-xl leading-relaxed text-foreground italic md:text-2xl">
-          Come preside che ha assistito a molte repliche dello spettacolo, garantisco che
-          al termine si coglie la crescita di sensibilità verso l&apos;eroismo degli
-          alpini ma contemporaneamente dell&apos;assurdità della guerra.
-        </blockquote>
-      </div>
-
-      {/* figcaption: ultimo figlio diretto di <figure>, come impone il modello di
-          contenuto HTML. L'attribuzione resta quella della fonte, anonima. */}
-      <figcaption className="relative mt-6">
-        <span className="block text-[11px] tracking-[0.2em] text-muted-foreground uppercase">
-          Un dirigente scolastico, su «La Grande Guerra e il piccolo alpino»
-        </span>
-        <a
-          href="/spettacoli/la-grande-guerra"
-          className="mt-5 inline-flex min-h-11 items-center text-sm font-bold tracking-wider uppercase shadow-[inset_0_-2px_0_rgba(212,162,76,0.3)] transition-[color,box-shadow,scale] duration-150 hover:text-primary hover:shadow-[inset_0_-2px_0_#d4a24c] active:scale-[0.96]"
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.figure
+          key={indice}
+          style={reduced ? undefined : { x, opacity: opacitaDrag }}
+          initial={
+            reduced
+              ? { opacity: 0 }
+              : { x: SOGLIA_SWIPE_PX * 2, scale: 0.98 }
+          }
+          animate={reduced ? { opacity: 1 } : { x: 0, scale: 1 }}
+          exit={
+            reduced
+              ? { opacity: 0 }
+              : { x: -SOGLIA_SWIPE_PX * 2, scale: 0.98 }
+          }
+          transition={{
+            duration: reduced ? DUR_REDUCED : DUR.md,
+            ease: EASE,
+          }}
+          drag={multiple ? "x" : false}
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.25}
+          onDragStart={() => {
+            setInPausa(true);
+            trascinandoRef.current = true;
+          }}
+          onDragEnd={fineTrascinamento}
+          className={`relative flex flex-col overflow-hidden rounded-4xl border border-white/10 bg-[var(--card)] transition-[border-color,box-shadow] duration-500 hover:border-primary/50 hover:shadow-[0_0_30px_rgba(212,162,76,0.15)] md:min-h-[26rem] md:flex-row ${
+            multiple ? "cursor-grab active:cursor-grabbing select-none" : ""
+          }`}
         >
-          Vedi lo spettacolo
-        </a>
-      </figcaption>
-    </motion.figure>
+          {fotoAttiva && (
+            <div className="relative aspect-16/9 w-full shrink-0 overflow-hidden bg-secondary/20 md:aspect-auto md:w-2/5">
+              <img
+                src={fotoAttiva.src}
+                srcSet={fotoAttiva.srcset}
+                sizes="(min-width: 768px) 40vw, 100vw"
+                alt=""
+                width={fotoAttiva.width}
+                height={fotoAttiva.height}
+                loading="lazy"
+                decoding="async"
+                draggable={false}
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent md:bg-linear-to-r"
+              />
+            </div>
+          )}
+
+          <div className="relative flex flex-col justify-center p-8 md:p-12">
+            {/* Glifo virgolette: ornamento, non contenuto. */}
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute top-0 left-6 font-serif text-[6rem] leading-none text-primary/10 select-none"
+            >
+              &ldquo;
+            </span>
+
+            <blockquote className="relative font-serif text-xl leading-relaxed text-foreground italic md:text-2xl">
+              {recensione}
+            </blockquote>
+
+            {fotoAttiva && (
+              <figcaption className="relative mt-8">
+                <span className="block text-[11px] tracking-[0.2em] text-muted-foreground uppercase">
+                  Su{" "}
+                  <a
+                    href={`/spettacoli/${fotoAttiva.id}`}
+                    draggable={false}
+                    onClick={(e) => {
+                      // Niente navigazione accidentale a fine trascinamento.
+                      if (trascinandoRef.current) e.preventDefault();
+                    }}
+                    className="text-primary shadow-[inset_0_-1px_0_rgba(212,162,76,0.35)] transition-[color,box-shadow] duration-150 hover:text-[#e8b44a] hover:shadow-[inset_0_-1px_0_#e8b44a]"
+                  >
+                    «{fotoAttiva.titolo}»
+                  </a>
+                </span>
+              </figcaption>
+            )}
+          </div>
+        </motion.figure>
+      </AnimatePresence>
+
+      {multiple && (
+        <div
+          role="group"
+          aria-label="Scegli la recensione da leggere"
+          className="mt-4 flex justify-center gap-2"
+        >
+          {RECENSIONI.map((voce, i) => (
+            <button
+              key={voce.slice(0, 24)}
+              type="button"
+              aria-label={`Recensione ${i + 1} di ${RECENSIONI.length}`}
+              aria-current={i === indice}
+              onClick={() => setIndice(i)}
+              className={`flex h-11 w-8 items-center transition-opacity duration-200 ${
+                i === indice ? "opacity-100" : "opacity-40 hover:opacity-70"
+              }`}
+            >
+              <span className="block h-1 w-full rounded-full bg-primary" />
+            </button>
+          ))}
+        </div>
+      )}
+    </motion.div>
   );
 }
 
@@ -288,14 +299,16 @@ function Testimonianza() {
  * ------------------------------------------------------------------------- */
 
 export interface PercheFidarsiProps {
+  /** Foto di scena già ottimizzate da index.astro, una per recensione (cicliche). */
+  readonly foto?: FotoRecensione[];
   /**
-   * Classi aggiuntive sul <section>. Unica prop, facoltativa: index.astro
-   * monta l'isola senza passare nulla (`<PercheFidarsi client:visible />`).
+   * Classi aggiuntive sul <section>. index.astro monta l'isola con le sole
+   * foto (`<PercheFidarsi client:visible foto={...} />`).
    */
   readonly className?: string;
 }
 
-export default function PercheFidarsi({ className = "" }: PercheFidarsiProps) {
+export default function PercheFidarsi({ foto = [], className = "" }: PercheFidarsiProps) {
   const { v } = useMotionSafe();
 
   return (
@@ -303,7 +316,7 @@ export default function PercheFidarsi({ className = "" }: PercheFidarsiProps) {
       <section
         id="perche-fidarsi"
         aria-labelledby="perche-fidarsi-title"
-        className={`relative scroll-mt-28 overflow-hidden bg-background py-24 md:py-32 ${className}`}
+        className={`relative scroll-mt-28 overflow-hidden bg-background-alt py-24 md:py-32 ${className}`}
       >
         <div
           aria-hidden="true"
@@ -341,7 +354,7 @@ export default function PercheFidarsi({ className = "" }: PercheFidarsiProps) {
             </motion.p>
           </motion.div>
 
-          <BloccoNumeri />
+          <CaroselloRecensioni foto={foto} />
 
           <motion.dl
             variants={v(STAGGER_CREDENZIALI)}
@@ -366,8 +379,6 @@ export default function PercheFidarsi({ className = "" }: PercheFidarsiProps) {
               </motion.div>
             ))}
           </motion.dl>
-
-          <Testimonianza />
         </div>
       </section>
     </MotionConfig>

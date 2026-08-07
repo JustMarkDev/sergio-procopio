@@ -1,7 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { Image } from "astro:assets";
-import { getEntry, render } from "astro:content";
+import { Image, getImage } from "astro:assets";
+import { getCollection, getEntry, render } from "astro:content";
+import { ordinaPerHome } from "../lib/home-catalogo";
 
 const biografia = await getEntry("pages", "biografia");
 
@@ -10,16 +11,117 @@ if (!biografia) {
 }
 
 const { Content } = await render(biografia);
+
+// La striscia di foto va DOPO la sezione «Trionfo sullo schermo»: si spezza
+// l'HTML renderizzato all'apertura della sezione successiva. Se il titolo
+// cambiasse e il marcatore non si trovasse più, tutto il testo resta nella
+// prima metà e le foto scivolano in fondo: niente contenuto perso.
+const htmlBiografia = biografia.rendered?.html ?? "";
+const marcatoreSplit = '<h2 id="presenza-costante';
+const posizioneSplit = htmlBiografia.indexOf(marcatoreSplit);
+const proseParte1 =
+    posizioneSplit === -1 ? htmlBiografia : htmlBiografia.slice(0, posizioneSplit);
+const proseParte2 = posizioneSplit === -1 ? "" : htmlBiografia.slice(posizioneSplit);
+
+const classiProse =
+    "space-y-16 [&_h2]:text-3xl [&_h2]:md:text-4xl [&_h2]:font-serif [&_h2]:font-semibold [&_h2]:text-transparent [&_h2]:bg-clip-text [&_h2]:bg-[linear-gradient(to_bottom,#e8b44a,#c9a227)] [&_h2]:pb-2 [&_h2]:mt-24 [&_h2:first-child]:mt-0 [&_h2]:mb-6 [&_p]:text-lg [&_p]:text-white/80 [&_p]:leading-relaxed [&_p]:max-w-4xl [&_p]:mb-4";
+
+// Tappe principali della carriera (già nella sezione «Chi sono» della home,
+// oggi vive solo qui). Ogni anno resta un <time> a sé anche quando la voce
+// ne raggruppa due.
+interface Tappa {
+    anni: string[];
+    testo: string;
+}
+
+const tappe: Tappa[] = [
+    {
+        anni: ["1975"],
+        testo: "Entra nel collegio dei Salesiani di Arese, a undici anni.",
+    },
+    {
+        anni: ["1977"],
+        testo: "Nasce la compagnia «I Barabba's Clown».",
+    },
+    {
+        anni: ["1989"],
+        testo: "Vaticano, davanti a Giovanni Paolo II.",
+    },
+    {
+        anni: ["1990"],
+        testo: "Nasce la Compagnia Teatrale Sergio Procopio, con la regia di Carlo Rossi.",
+    },
+    {
+        anni: ["1993", "1996"],
+        testo: "Festival Internazionale del Clown di Milano; al Festival Internazionale del Riso di Bordighera è il più applaudito.",
+    },
+    {
+        anni: ["2006"],
+        testo: "Venticinque anni di carriera al Piccolo Teatro Studio di Milano; e il Perù, al teatro Museo della Nazione, davanti al Presidente della Repubblica.",
+    },
+    {
+        anni: ["2020"],
+        testo: "Il traguardo dei quarant'anni di attività.",
+    },
+];
+
+// Numeri di carriera, tutti documentati nel sito: niente cifre inventate.
+// Il conteggio animato parte quando la fascia entra in vista (script in fondo).
+interface Numero {
+    valore: number;
+    suffisso: string;
+    etichetta: string;
+}
+
+const numeri: Numero[] = [
+    { valore: 40, suffisso: "+", etichetta: "anni di palcoscenico" },
+    { valore: 18, suffisso: "", etichetta: "spettacoli scritti e in scena" },
+    { valore: 2000, suffisso: "+", etichetta: "repliche con la compagnia" },
+    { valore: 8, suffisso: "", etichetta: "paesi nel mondo" },
+];
+
+const formatoIt = new Intl.NumberFormat("it-IT", { useGrouping: "always" });
+
+// Foto di scena per spezzare il racconto: le prime del repertorio, già
+// nell'ordine editoriale della home.
+const spettacoliConFoto = ordinaPerHome(
+    (await getCollection("spettacoli")).filter(
+        (show) => !show.data.draft && show.data.image,
+    ),
+);
+
+const fotoStrip = await Promise.all(
+    spettacoliConFoto.slice(0, 3).map(async (show) => {
+        const ottimizzata = await getImage({
+            src: show.data.image!,
+            widths: [480, 720],
+            format: "webp",
+            quality: 75,
+        });
+        return {
+            src: ottimizzata.src,
+            srcset: ottimizzata.srcSet.attribute,
+            width: show.data.image!.width,
+            height: show.data.image!.height,
+            titolo: show.data.title,
+            href: `/spettacoli/${show.id}`,
+        };
+    }),
+);
+
 ---
 
 <Layout
     title={`${biografia.data.title} | Sergio Procopio`}
     description={biografia.data.description}
 >
-    <div class="relative overflow-hidden bg-[#0b0a09] min-h-screen text-white">
+    <div class="relative overflow-hidden bg-background min-h-screen text-white">
         {/* Background Gradients */}
-        <div class="absolute top-0 right-0 w-[60%] h-[60%] bg-primary/5 rounded-full blur-[150px] pointer-events-none"></div>
-        <div class="absolute bottom-0 left-0 w-[50%] h-[50%] bg-[#c2273d]/10 rounded-full blur-[150px] pointer-events-none"></div>
+        <div class="absolute top-0 -right-[10%] w-[50vw] h-[60vh] bg-primary/10 rounded-full blur-[150px] pointer-events-none"></div>
+        {/* Fermo nello sfondo della pagina. Sollevato dal fondo e dimensionato
+            sullo schermo (vw/vh), così il bagliore si spegne prima del footer
+            e non finisce mai tagliato. */}
+        <div class="absolute bottom-32 -left-[10%] w-[50vw] h-[60vh] bg-[#c2273d]/10 rounded-full blur-[150px] pointer-events-none"></div>
 
         <div class="container relative z-10 mx-auto px-4 md:px-8 lg:px-12 py-32">
             {/* Hero Section */}
@@ -55,11 +157,183 @@ const { Content } = await render(biografia);
                 }
             </div>
 
-            <div
-                class="space-y-16 [&_h2]:text-3xl [&_h2]:md:text-4xl [&_h2]:font-serif [&_h2]:font-semibold [&_h2]:text-transparent [&_h2]:bg-clip-text [&_h2]:bg-[linear-gradient(to_bottom,#e8b44a,#c9a227)] [&_h2]:pb-2 [&_h2]:mt-24 [&_h2:first-child]:mt-0 [&_h2]:mb-6 [&_p]:text-lg [&_p]:text-white/80 [&_p]:leading-relaxed [&_p]:max-w-4xl [&_p]:mb-4"
-            >
-                <Content />
+            {/* I numeri — conteggio animato da zero quando entrano in vista */}
+            <div class="mb-24 grid grid-cols-2 gap-6 rounded-4xl border border-white/10 bg-[var(--card)] p-8 md:p-10 lg:grid-cols-4">
+                {
+                    numeri.map((numero) => (
+                        <div>
+                            <p class="font-serif text-[clamp(2.25rem,4.5vw,3.5rem)] font-bold leading-none tabular-nums">
+                                <span
+                                    aria-hidden="true"
+                                    class="inline-block bg-linear-to-b from-[#e8b44a] to-[#c9a227] bg-clip-text text-transparent [-webkit-background-clip:text]"
+                                >
+                                    <span data-contatore={numero.valore}>
+                                        {formatoIt.format(numero.valore)}
+                                    </span>
+                                    {numero.suffisso}
+                                </span>
+                                <span class="sr-only">
+                                    {formatoIt.format(numero.valore)}
+                                    {numero.suffisso}
+                                </span>
+                            </p>
+                            <p class="mt-3 text-sm leading-relaxed text-white/70">
+                                {numero.etichetta}
+                            </p>
+                        </div>
+                    ))
+                }
+            </div>
+
+            {/* Le tappe — linea del tempo, prima parte della sezione «Chi sono» della home */}
+            <section aria-labelledby="tappe-title" class="mb-24">
+                <div class="mb-6 flex items-center gap-4">
+                    <span aria-hidden="true" class="h-px w-10 shrink-0 bg-primary/40"></span>
+                    <span class="text-[11px] font-bold uppercase tracking-[0.25em] text-primary md:text-xs">
+                        Le tappe
+                    </span>
+                </div>
+                <h2
+                    id="tappe-title"
+                    class="mb-12 max-w-3xl font-serif text-3xl font-bold leading-tight tracking-tight md:text-4xl"
+                >
+                    Entrato in collegio a undici anni. Uscito{" "}
+                    <span class="italic text-primary">clown</span>.
+                </h2>
+
+                <ol class="relative border-l border-white/15">
+                    {
+                        tappe.map((tappa) => (
+                            <li class="relative list-none pb-8 pl-8 last:pb-0">
+                                <span
+                                    aria-hidden="true"
+                                    class="absolute left-0 top-[0.6rem] h-[11px] w-[11px] -translate-x-1/2 rounded-full border-2 border-primary bg-primary"
+                                />
+                                <p class="font-serif text-xl text-primary">
+                                    {tappa.anni.map((anno, i) => (
+                                        <Fragment>
+                                            {i > 0 ? " e " : null}
+                                            <time datetime={anno}>{anno}</time>
+                                        </Fragment>
+                                    ))}
+                                </p>
+                                <p class="mt-1 max-w-[68ch] text-sm leading-relaxed text-white/70">
+                                    {tappa.testo}
+                                </p>
+                            </li>
+                        ))
+                    }
+                </ol>
+            </section>
+
+            {
+                htmlBiografia ? (
+                    <Fragment>
+                        <div class={classiProse} set:html={proseParte1} />
+
+                        {/* Foto di scena dopo «Trionfo sullo schermo»:
+                            spezzano il racconto e portano al repertorio */}
+                        <div class="my-16 grid grid-cols-1 gap-6 sm:grid-cols-3 md:my-20 md:gap-8">
+                            {fotoStrip.map((foto) => (
+                                <a
+                                    href={foto.href}
+                                    aria-label={`Scheda di ${foto.titolo}`}
+                                    class="group relative aspect-4/5 overflow-hidden rounded-3xl border border-white/10 bg-white/5"
+                                >
+                                    <img
+                                        src={foto.src}
+                                        srcset={foto.srcset}
+                                        sizes="(min-width: 640px) 33vw, 100vw"
+                                        alt={`Foto di scena di «${foto.titolo}»`}
+                                        width={foto.width}
+                                        height={foto.height}
+                                        loading="lazy"
+                                        decoding="async"
+                                        class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                                    />
+                                    <div
+                                        aria-hidden="true"
+                                        class="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent"
+                                    />
+                                    <p class="absolute inset-x-5 bottom-4 font-serif text-xl font-bold text-white">
+                                        «{foto.titolo}»
+                                    </p>
+                                </a>
+                            ))}
+                        </div>
+
+                        {proseParte2 && (
+                            <div class={classiProse} set:html={proseParte2} />
+                        )}
+                    </Fragment>
+                ) : (
+                    <div class={classiProse}>
+                        <Content />
+                    </div>
+                )
+            }
+
+            {/* Firma */}
+            <div class="mt-24 border-t border-white/10 pt-12">
+                <p class="font-serif text-3xl italic text-primary">Sergio Procopio</p>
+                <p class="mt-2 text-[11px] uppercase tracking-[0.2em] text-white/60">
+                    attore, mimo e clown{" "}
+                    <span aria-hidden="true" class="text-primary">·</span>{" "}
+                    Teatro Procopio
+                </p>
             </div>
         </div>
     </div>
 </Layout>
+
+<script>
+    /* Conteggio da zero dei numeri di carriera: parte quando la fascia entra
+       in vista. In SSR e a JS spento resta stampato il valore finale; con
+       prefers-reduced-motion non si anima nulla. */
+    const inizializzaContatori = () => {
+        const riduci = window.matchMedia(
+            "(prefers-reduced-motion: reduce)",
+        ).matches;
+        const elementi =
+            document.querySelectorAll<HTMLElement>("[data-contatore]");
+        if (elementi.length === 0 || riduci) return;
+
+        const formato = new Intl.NumberFormat("it-IT", {
+            useGrouping: "always",
+        });
+
+        const anima = (elemento: HTMLElement) => {
+            const finale = Number(elemento.dataset.contatore);
+            if (!Number.isFinite(finale)) return;
+
+            const durata = 1400;
+            const inizio = performance.now();
+
+            const passo = (adesso: number) => {
+                const avanzamento = Math.min(1, (adesso - inizio) / durata);
+                const eased = 1 - Math.pow(1 - avanzamento, 3);
+                elemento.textContent = formato.format(
+                    Math.round(finale * eased),
+                );
+                if (avanzamento < 1) requestAnimationFrame(passo);
+            };
+
+            requestAnimationFrame(passo);
+        };
+
+        const osservatore = new IntersectionObserver(
+            (voci) => {
+                for (const voce of voci) {
+                    if (!voce.isIntersecting) continue;
+                    osservatore.unobserve(voce.target);
+                    anima(voce.target as HTMLElement);
+                }
+            },
+            { threshold: 0.5 },
+        );
+
+        elementi.forEach((elemento) => osservatore.observe(elemento));
+    };
+
+    document.addEventListener("astro:page-load", inizializzaContatori);
+</script>
