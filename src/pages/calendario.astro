@@ -73,29 +73,29 @@ for (const show of spettacoli) {
             sipario in basso a sinistra. Fermi nello sfondo, dimensionati sullo
             schermo (vw/vh) e sollevati dal fondo per non toccare il footer. */}
         <div
-            class="absolute top-0 -right-[10%] w-[50vw] h-[60vh] bg-primary/10 rounded-full blur-[150px] pointer-events-none"
+            class="locandina-luce absolute top-0 -right-[10%] w-[50vw] h-[60vh] bg-primary/10 rounded-full blur-[150px] pointer-events-none"
         >
         </div>
         <div
-            class="absolute bottom-32 -left-[10%] w-[50vw] h-[60vh] bg-[#c2273d]/10 rounded-full blur-[150px] pointer-events-none"
+            class="locandina-luce absolute bottom-32 -left-[10%] w-[50vw] h-[60vh] bg-[#c2273d]/10 rounded-full blur-[150px] pointer-events-none"
         >
         </div>
 
         <div class="container relative z-10 mx-auto px-4 md:px-8 lg:px-12 py-32">
             <div class="max-w-4xl mb-16">
                 <h1 class="text-5xl md:text-7xl font-serif font-bold mb-6 tracking-tight">
-                    Calendario <span class="italic text-primary">ufficiale</span>
+                    <span class="inline-block overflow-hidden align-bottom pb-[0.12em] -mb-[0.12em]"><span class="locandina-riga inline-block">Calendario</span></span>{" "}<span class="inline-block overflow-hidden align-bottom pb-[0.12em] -mb-[0.12em]"><span class="locandina-riga locandina-riga-battuta inline-block italic text-primary">ufficiale</span></span>
                 </h1>
-                <p class="text-xl text-muted-foreground max-w-2xl italic opacity-80 leading-relaxed">
+                <p class="locandina-sotto text-xl text-muted-foreground max-w-2xl italic opacity-80 leading-relaxed">
                     Date pubbliche, spettacoli e appuntamenti in programma.
                 </p>
             </div>
 
             <section class="mb-20">
                 <div class="flex items-center gap-4 mb-8">
-                    <span class="h-px w-10 bg-primary/40"></span>
+                    <span class="filo-cartellone h-px w-10 bg-primary/40"></span>
                     <h2 class="text-sm font-bold uppercase tracking-[0.25em] text-primary">
-                        Prossimi eventi
+                        <span class="block overflow-hidden"><span class="cartellone-riga block">Prossimi eventi</span></span>
                     </h2>
                 </div>
 
@@ -108,9 +108,9 @@ for (const show of spettacoli) {
                                 );
 
                                 return (
-                                    <article class="group flex flex-col overflow-hidden rounded-4xl border border-white/10 bg-[var(--card)] transition-[border-color,box-shadow] duration-500 hover:border-primary/50 hover:shadow-[0_0_30px_rgba(212,162,76,0.15)] md:flex-row">
+                                    <article class="locandina-data group relative flex flex-col rounded-4xl border border-white/10 bg-[var(--card)] transition-[border-color] duration-500 hover:border-primary/50 motion-reduce:transition-none md:flex-row">
                                         {/* Foto di scena con la mattonella della data */}
-                                        <div class="relative aspect-16/9 w-full shrink-0 overflow-hidden bg-secondary/20 md:aspect-auto md:w-80">
+                                        <div class="relative aspect-16/9 w-full shrink-0 overflow-hidden rounded-t-4xl bg-secondary/20 md:aspect-auto md:w-80 md:rounded-l-4xl md:rounded-tr-none">
                                             {info ? (
                                                 <img
                                                     src={info.src}
@@ -139,7 +139,7 @@ for (const show of spettacoli) {
                                                 class="absolute inset-0 bg-linear-to-t from-black/50 to-transparent md:bg-linear-to-r"
                                             />
 
-                                            <div class="absolute left-4 top-4 flex flex-col items-center rounded-2xl border border-white/10 bg-black/55 px-4 py-2.5 backdrop-blur-md">
+                                            <div class="insegna-data absolute left-4 top-4 flex flex-col items-center rounded-2xl border border-white/10 bg-black/55 px-4 py-2.5 backdrop-blur-md">
                                                 <span class="font-serif text-3xl font-bold leading-none text-primary">
                                                     {giornoFormatter.format(event.data.date)}
                                                 </span>
@@ -195,12 +195,19 @@ for (const show of spettacoli) {
                                                 )}
                                             </div>
                                         </div>
+
+                                        {/* Glow pre-dipinto: si accende in sola opacity, mai
+                                            animando box-shadow (compositor-friendly). */}
+                                        <span
+                                            aria-hidden="true"
+                                            class="pointer-events-none absolute -inset-px rounded-[inherit] opacity-0 shadow-[0_0_30px_rgba(212,162,76,0.15)] transition-opacity duration-500 group-hover:opacity-100 motion-reduce:transition-none"
+                                        ></span>
                                     </article>
                                 );
                             })}
                         </div>
                     ) : (
-                        <div class="rounded-3xl border border-white/10 bg-white/4 p-8 text-muted-foreground">
+                        <div class="locandina-data rounded-3xl border border-white/10 bg-white/4 p-8 text-muted-foreground">
                             Non ci sono ancora eventi pubblici in calendario.
                         </div>
                     )
@@ -211,9 +218,9 @@ for (const show of spettacoli) {
                 pastEvents.length > 0 && (
                     <section>
                         <div class="flex items-center gap-4 mb-8">
-                            <span class="h-px w-10 bg-white/20"></span>
+                            <span class="filo-cartellone h-px w-10 bg-white/20"></span>
                             <h2 class="text-sm font-bold uppercase tracking-[0.25em] text-muted-foreground">
-                                Archivio
+                                <span class="block overflow-hidden"><span class="cartellone-riga block">Archivio</span></span>
                             </h2>
                         </div>
 
@@ -224,7 +231,7 @@ for (const show of spettacoli) {
                                 );
 
                                 return (
-                                    <article class="flex items-center gap-5 rounded-3xl border border-white/10 bg-white/3 p-4 transition-colors duration-300 hover:border-primary/30 md:p-5">
+                                    <article class="archivio-riga flex items-center gap-5 rounded-3xl border border-white/10 bg-white/3 p-4 transition-colors duration-300 hover:border-primary/30 md:p-5">
                                         {info && (
                                             <div class="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-secondary/20">
                                                 <img
@@ -261,3 +268,173 @@ for (const show of spettacoli) {
         </div>
     </div>
 </Layout>
+
+<style>
+    /* ============================================================
+       SIPARIO — locandina di date (/calendario)
+
+       Apertura hero a tempo (la pagina non ha isole) + numeri in
+       cartellone CSS scroll-driven. Tempi dai token di home-motion:
+       EASE cubic-bezier(0.16, 1, 0.3, 1), DUR.lg 0.9s, DUR.md 0.55s,
+       PAUSA_BATTUTA 0.18s. Solo transform+opacity; ogni stato
+       nascosto vive nei keyframes, dentro le guardie: fuori di lì
+       la pagina appare completa.
+       ============================================================ */
+
+    /* I due proiettori (oro e rosso) si accendono in sola opacity:
+       il glow è già pre-dipinto (bg-*+blur), non si muove mai. */
+    @keyframes locandina-luce-accendi {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    /* Il titolo sale in ribalta dentro la maschera overflow-hidden:
+       mask reveal per segmento, mai fade-up sul protagonista. */
+    @keyframes locandina-riga-su {
+        from {
+            transform: translateY(110%);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    /* Il sottotitolo entra da fadeUp quando il titolo è già montato. */
+    @keyframes locandina-sotto-su {
+        from {
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    /* Il filo del cartellone si disegna da sinistra (solo transform:
+       fuori guardia resta al suo posto, visibile). */
+    @keyframes filo-cartellone-accendi {
+        from {
+            transform: scaleX(0);
+        }
+        to {
+            transform: scaleX(1);
+        }
+    }
+
+    /* Il kicker sale «dalla buca» dentro la sua maschera. */
+    @keyframes cartellone-riga-su {
+        from {
+            transform: translateY(110%);
+        }
+        to {
+            transform: translateY(0);
+        }
+    }
+
+    /* La locandina di data si affigge al muro salendo dalla ribalta. */
+    @keyframes locandina-data-su {
+        from {
+            opacity: 0;
+            transform: translateY(24px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* La mattonella-insegna è la battuta della locandina: stesso
+       gesto, un battito dopo (range sfalsato = PAUSA_BATTUTA scrubbata). */
+    @keyframes insegna-data-su {
+        from {
+            opacity: 0;
+            transform: translateY(14px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Le locandine d'archivio, già staccate dal muro, entrano sommesse. */
+    @keyframes archivio-riga-su {
+        from {
+            opacity: 0;
+            transform: translateY(16px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* ── Apertura hero a tempo: parte al load, sopra la piega.
+       Con reduced motion nessuna regola si applica: tutto acceso. ── */
+    @media (prefers-reduced-motion: no-preference) {
+        .locandina-luce {
+            animation: locandina-luce-accendi 0.9s cubic-bezier(0.16, 1, 0.3, 1)
+                both;
+        }
+        .locandina-riga {
+            animation: locandina-riga-su 0.9s cubic-bezier(0.16, 1, 0.3, 1)
+                0.05s both;
+        }
+        /* La battuta oro entra PAUSA_BATTUTA dopo il setup: 0.05 + 0.18. */
+        .locandina-riga-battuta {
+            animation-delay: 0.23s;
+        }
+        /* DUR.md, parte a metà del reveal del titolo. */
+        .locandina-sotto {
+            animation: locandina-sotto-su 0.55s cubic-bezier(0.16, 1, 0.3, 1)
+                0.35s both;
+        }
+    }
+
+    /* ── Numeri in cartellone scroll-driven: DOPPIA GUARDIA, come i
+       blocchi .cartello-scena/.filo-ribalta di globals.css. ── */
+    @supports (animation-timeline: view()) {
+        @media (prefers-reduced-motion: no-preference) {
+            .filo-cartellone {
+                transform-origin: left;
+                animation: filo-cartellone-accendi
+                    cubic-bezier(0.16, 1, 0.3, 1) both;
+                animation-timeline: view();
+                animation-range: entry 0% entry 40%;
+            }
+            /* Sfalsato di 8% sul filo: prima la luce, poi la scritta. */
+            .cartellone-riga {
+                animation: cartellone-riga-su cubic-bezier(0.16, 1, 0.3, 1)
+                    both;
+                animation-timeline: view();
+                animation-range: entry 8% entry 48%;
+            }
+            /* Impilate in verticale: lo scroll fa da stagger naturale. */
+            .locandina-data {
+                animation: locandina-data-su cubic-bezier(0.16, 1, 0.3, 1) both;
+                animation-timeline: view();
+                animation-range: entry 0% entry 55%;
+            }
+            .insegna-data {
+                animation: insegna-data-su cubic-bezier(0.16, 1, 0.3, 1) both;
+                animation-timeline: view();
+                animation-range: entry 12% entry 67%;
+            }
+            .archivio-riga {
+                animation: archivio-riga-su cubic-bezier(0.16, 1, 0.3, 1) both;
+                animation-timeline: view();
+                animation-range: entry 0% entry 50%;
+            }
+            /* Cadenza per colonna sulla griglia md: innocua a 1 colonna. */
+            .archivio-riga:nth-child(2n) {
+                animation-range: entry 10% entry 60%;
+            }
+        }
+    }
+</style>

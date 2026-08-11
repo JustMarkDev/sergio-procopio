@@ -1,14 +1,17 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import type { MouseEvent as ReactMouseEvent } from "react";
 import { MotionConfig, motion } from "framer-motion";
-import type { Transition } from "framer-motion";
 import { ArrowRight, Clock } from "lucide-react";
 import {
-  DUR,
-  DUR_REDUCED,
-  EASE,
+  CARD_STEP,
   HOVER_CARD,
+  TAP,
   VIEWPORT,
+  cardIn,
   fadeUp,
+  fotoTelaio,
+  lineY,
+  popIn,
   stagger,
   useMotionSafe,
   viewportAmount,
@@ -19,8 +22,7 @@ import {
  *
  * Isola client:visible. Vetrina dei tre titoli di punta: il repertorio
  * completo, con il filtro per tipo di ente, vive in /spettacoli. Ogni card
- * apre con il problema come lo racconta chi telefona e risponde con
- * «Perché funziona da voi».
+ * apre con il problema come lo racconta chi telefona.
  *
  * I dati arrivano tutti da index.astro, già risolti a build time
  * (ORDINE_HOME + CATALOGO_HOME + getImage): qui non si costruisce nessun
@@ -76,10 +78,29 @@ export default function RepertorioCommittenti({
 
   const staggerTesta = useMemo(() => stagger(0.05), []);
 
-  const transizioneCard = (indice: number): Transition =>
-    reduced
-      ? { duration: DUR_REDUCED }
-      : { duration: DUR.sm, ease: EASE, delay: indice * 0.04 };
+  // La griglia è multi-colonna solo da md in su: sotto md lo scroll fa già da
+  // stagger, quindi il delay delle card resta 0.
+  const [colonne, setColonne] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia("(min-width: 768px)");
+    setColonne(media.matches);
+
+    const aggiorna = (evento: MediaQueryListEvent) => setColonne(evento.matches);
+    media.addEventListener("change", aggiorna);
+    return () => media.removeEventListener("change", aggiorna);
+  }, []);
+
+  /**
+   * Luce di ribalta: l'occhio di bue segue il cursore aggiornando le due
+   * custom property direttamente sul DOM della card (niente stato React,
+   * zero re-render). Con reduced motion l'handler non viene proprio attaccato.
+   */
+  const gestisciLuceRibalta = (evento: ReactMouseEvent<HTMLElement>) => {
+    const bordi = evento.currentTarget.getBoundingClientRect();
+    evento.currentTarget.style.setProperty("--mx", `${evento.clientX - bordi.left}px`);
+    evento.currentTarget.style.setProperty("--my", `${evento.clientY - bordi.top}px`);
+  };
 
   return (
     <MotionConfig reducedMotion="user">
@@ -140,30 +161,33 @@ export default function RepertorioCommittenti({
                 return (
                   <motion.article
                     key={show.id}
-                    initial={{ opacity: 0, y: 18, scale: 0.97 }}
-                    whileInView={{
-                      opacity: 1,
-                      y: 0,
-                      scale: 1,
-                      transition: transizioneCard(indice),
-                    }}
+                    variants={v(cardIn)}
+                    initial="hidden"
+                    whileInView="show"
                     viewport={VIEWPORT}
+                    custom={colonne ? indice * CARD_STEP : 0}
                     whileHover={reduced ? undefined : HOVER_CARD}
-                    className="group flex flex-col overflow-hidden rounded-4xl border border-white/10 bg-[var(--card)] transition-[border-color,box-shadow] duration-500 hover:border-primary/50 hover:shadow-[0_0_30px_rgba(212,162,76,0.15)]"
+                    onMouseMove={reduced ? undefined : gestisciLuceRibalta}
+                    className="group relative flex flex-col rounded-4xl border border-white/10 bg-[var(--card)] transition-[border-color] duration-500 hover:border-primary/50"
                   >
-                    <div className="relative aspect-4/3 w-full shrink-0 overflow-hidden bg-secondary/20">
+                    <div className="relative aspect-4/3 w-full shrink-0 overflow-hidden rounded-t-4xl bg-secondary/20">
                       {show.img ? (
-                        <img
-                          src={show.img.src}
-                          srcSet={show.img.srcset}
-                          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-                          alt=""
-                          width={show.img.width}
-                          height={show.img.height}
-                          loading="lazy"
-                          decoding="async"
-                          className="absolute inset-0 h-full w-full object-cover outline-none transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
-                        />
+                        /* La locandina scivola nel telaio: contro-movimento che
+                         * eredita il trigger (e il delay) dalla card. L'hover CSS
+                         * resta sull'img: il suo transform non è posseduto da Framer. */
+                        <motion.div variants={v(fotoTelaio)} className="h-full w-full">
+                          <img
+                            src={show.img.src}
+                            srcSet={show.img.srcset}
+                            sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                            alt=""
+                            width={show.img.width}
+                            height={show.img.height}
+                            loading="lazy"
+                            decoding="async"
+                            className="absolute inset-0 h-full w-full object-cover outline-none transition-transform duration-500 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                          />
+                        </motion.div>
                       ) : (
                         <div
                           aria-hidden="true"
@@ -182,16 +206,25 @@ export default function RepertorioCommittenti({
                       />
 
                       <div className="absolute inset-x-4 top-4 z-20 flex flex-wrap items-start gap-2 sm:inset-x-6 sm:top-6">
+                        {/* Cartellini di scena: si appendono subito dopo la locandina. */}
                         {show.eta && (
-                          <span className="rounded-full border border-white/10 bg-black/40 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-primary backdrop-blur-md">
+                          <motion.span
+                            variants={v(popIn)}
+                            custom={(colonne ? indice * CARD_STEP : 0) + 0.1}
+                            className="rounded-full border border-white/10 bg-black/40 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-primary backdrop-blur-md"
+                          >
                             {show.eta}
-                          </span>
+                          </motion.span>
                         )}
                         {show.durata && (
-                          <span className="ml-auto inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-white/10 bg-black/40 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-white/80 backdrop-blur-md">
+                          <motion.span
+                            variants={v(popIn)}
+                            custom={(colonne ? indice * CARD_STEP : 0) + 0.1}
+                            className="ml-auto inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-white/10 bg-black/40 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-white/80 backdrop-blur-md"
+                          >
                             <Clock aria-hidden="true" className="h-3 w-3 text-primary" />
                             {show.durata}
-                          </span>
+                          </motion.span>
                         )}
                       </div>
                     </div>
@@ -205,16 +238,16 @@ export default function RepertorioCommittenti({
                         {show.tema}
                       </p>
 
-                      {/* Il blocco che converte: sempre visibile, mai in hover. */}
-                      <div className="mt-5 rounded-r-2xl border-l-2 border-primary/40 bg-white/[0.03] p-4">
+                      {/* Il blocco che converte: sempre visibile, mai in hover.
+                        * La barra oro si disegna dall'alto mentre il testo entra. */}
+                      <div className="relative mt-5 rounded-r-2xl bg-white/[0.03] p-4">
+                        <motion.span
+                          aria-hidden="true"
+                          variants={v(lineY)}
+                          className="absolute inset-y-0 left-0 w-0.5 origin-top bg-primary/40"
+                        />
                         <p className="font-serif text-lg italic leading-snug text-foreground/90">
                           «{senzaCaporali(show.problema)}»
-                        </p>
-                        <p className="mt-4 text-[10px] font-bold uppercase tracking-[0.22em] text-primary">
-                          Perché funziona da voi
-                        </p>
-                        <p className="mt-2 text-sm leading-relaxed text-foreground/85">
-                          {show.perche}
                         </p>
                       </div>
 
@@ -224,18 +257,19 @@ export default function RepertorioCommittenti({
                         </p>
 
                         <div className="mt-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
-                          <a
+                          <motion.a
                             href={`/contatti?spettacolo=${encodeURIComponent(show.id)}`}
                             aria-label={`Richiedi questo titolo: ${show.title}`}
-                            className="inline-flex min-h-11 items-center rounded-full bg-primary px-5 text-sm font-bold text-primary-foreground shadow-[0_6px_18px_rgba(212,162,76,0.3)] transition-[background-color,box-shadow,scale] duration-200 hover:bg-[#e8b44a] hover:shadow-[0_8px_24px_rgba(212,162,76,0.42)] active:scale-[0.96]"
+                            whileTap={TAP}
+                            className="inline-flex min-h-11 items-center rounded-full bg-primary px-5 text-sm font-bold text-primary-foreground shadow-[0_6px_18px_rgba(212,162,76,0.3)] transition-[background-color,box-shadow] duration-200 hover:bg-[#e8b44a] hover:shadow-[0_8px_24px_rgba(212,162,76,0.42)]"
                           >
                             Richiedi questo titolo
-                          </a>
+                          </motion.a>
 
                           <a
                             href={`/spettacoli/${show.id}`}
                             aria-label={`Dettagli di ${show.title}`}
-                            className="group/link inline-flex min-h-11 items-center gap-2 text-sm font-bold uppercase tracking-wider text-foreground shadow-[inset_0_-2px_0_rgba(212,162,76,0.3)] transition-[color,box-shadow,scale] duration-150 hover:text-primary hover:shadow-[inset_0_-2px_0_#d4a24c] active:scale-[0.96]"
+                            className="group/link inline-flex min-h-11 items-center gap-2 text-sm font-bold uppercase tracking-wider text-foreground shadow-[inset_0_-2px_0_rgba(212,162,76,0.3)] transition-[color,box-shadow] duration-150 hover:text-primary hover:shadow-[inset_0_-2px_0_#d4a24c]"
                           >
                             Dettagli
                             <ArrowRight
@@ -246,6 +280,24 @@ export default function RepertorioCommittenti({
                         </div>
                       </div>
                     </div>
+
+                    {/* Luce di ribalta: occhio di bue che segue il cursore
+                      * (solo puntatori fini, coordinate via --mx/--my). */}
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-0 transition-opacity duration-200 pointer-fine:group-hover:opacity-100 motion-reduce:transition-none"
+                      style={{
+                        background:
+                          "radial-gradient(240px circle at var(--mx,50%) var(--my,50%), rgba(212,162,76,0.10), transparent 70%)",
+                      }}
+                    />
+
+                    {/* Glow pre-dipinto: si accende in sola opacity, mai
+                      * animando box-shadow (compositor-friendly). */}
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute -inset-px rounded-[inherit] shadow-[0_0_30px_rgba(212,162,76,0.15)] opacity-0 transition-opacity duration-500 group-hover:opacity-100 motion-reduce:transition-none"
+                    />
                   </motion.article>
                 );
               })}
@@ -261,16 +313,17 @@ export default function RepertorioCommittenti({
             viewport={VIEWPORT}
             className="mt-16 flex justify-center md:mt-20"
           >
-            <a
+            <motion.a
               href="/spettacoli"
-              className="group/tutti inline-flex min-h-14 shrink-0 items-center gap-3 rounded-full bg-primary px-10 text-base font-bold text-primary-foreground shadow-[0_8px_30px_rgba(212,162,76,0.22)] transition-[background-color,box-shadow,scale] duration-200 hover:bg-[#e8b44a] hover:shadow-[0_10px_40px_rgba(212,162,76,0.38)] active:scale-[0.96] md:min-h-16 md:px-12 md:text-lg"
+              whileTap={TAP}
+              className="group/tutti inline-flex min-h-14 shrink-0 items-center gap-3 rounded-full bg-primary px-10 text-base font-bold text-primary-foreground shadow-[0_8px_30px_rgba(212,162,76,0.22)] transition-[background-color,box-shadow] duration-200 hover:bg-[#e8b44a] hover:shadow-[0_10px_40px_rgba(212,162,76,0.38)] md:min-h-16 md:px-12 md:text-lg"
             >
               Vedi tutti gli spettacoli
               <ArrowRight
                 aria-hidden="true"
                 className="h-5 w-5 transition-transform duration-200 group-hover/tutti:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover/tutti:translate-x-0"
               />
-            </a>
+            </motion.a>
           </motion.div>
         </div>
       </section>

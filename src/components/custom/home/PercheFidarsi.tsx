@@ -1,20 +1,21 @@
 import { useEffect, useRef, useState } from "react";
+import type { Ref } from "react";
 import {
   AnimatePresence,
   MotionConfig,
   motion,
+  useInView,
   useMotionValue,
   useTransform,
 } from "framer-motion";
 import type { PanInfo } from "framer-motion";
 
 import {
-  DUR,
-  DUR_REDUCED,
-  EASE,
   VIEWPORT,
   fadeUp,
   lineX,
+  luceScena,
+  quinta,
   stagger,
   useMotionSafe,
 } from "../../../lib/home-motion";
@@ -116,41 +117,196 @@ interface CaroselloProps {
   readonly foto: FotoRecensione[];
 }
 
-function CaroselloRecensioni({ foto }: CaroselloProps) {
+interface CardRecensioneProps {
+  readonly recensione: string;
+  readonly fotoAttiva: FotoRecensione | null;
+  readonly multiple: boolean;
+  /** Verso del cambio di quinta: +1 avanti, −1 indietro. */
+  readonly direzione: number;
+  /** Flag condiviso col padre: sopprime il click sulla firma a fine drag. */
+  readonly trascinandoRef: { current: boolean };
+  readonly onDragStart: () => void;
+  readonly onDragEnd: (evento: unknown, info: PanInfo) => void;
+  /** Inoltrato alla figure: mode="popLayout" misura la card uscente per metterla in absolute. */
+  readonly ref?: Ref<HTMLElement>;
+}
+
+/**
+ * Card singola del carosello. La corsa del trascinamento pilota anche
+ * l'opacità: più tiri, più la card diventa trasparente. Con mode="popLayout"
+ * la card uscente e quella entrante convivono nel DOM, quindi ogni card ha il
+ * PROPRIO MotionValue: un valore condiviso le farebbe scorrere all'unisono
+ * invece di incrociarsi come quinte.
+ */
+function CardRecensione({
+  recensione,
+  fotoAttiva,
+  multiple,
+  direzione,
+  trascinandoRef,
+  onDragStart,
+  onDragEnd,
+  ref,
+}: CardRecensioneProps) {
   const { reduced, v } = useMotionSafe();
-  const [indice, setIndice] = useState(0);
-  const [inPausa, setInPausa] = useState(false);
 
-  const multiple = RECENSIONI.length > 1;
-
-  // La rotazione si ferma con il mouse sopra (si sta leggendo) e con
-  // reduced motion (si naviga con i trattini).
-  useEffect(() => {
-    if (!multiple || reduced || inPausa) return;
-
-    const timer = window.setInterval(
-      () => setIndice((i) => (i + 1) % RECENSIONI.length),
-      INTERVALLO_ROTAZIONE_MS,
-    );
-
-    return () => window.clearInterval(timer);
-  }, [multiple, reduced, inPausa]);
-
-  const recensione = RECENSIONI[indice];
-  const fotoAttiva = foto.length > 0 ? foto[indice % foto.length] : null;
-
-  const vai = (delta: number) =>
-    setIndice((i) => (i + delta + RECENSIONI.length) % RECENSIONI.length);
-
-  // La corsa del trascinamento pilota anche l'opacità: più tiri, più la card
-  // diventa trasparente. Il MotionValue è condiviso tra card uscente ed
-  // entrante (mode="wait"), quindi entrata e uscita restano coerenti.
   const x = useMotionValue(0);
   const opacitaDrag = useTransform(
     x,
     [-SOGLIA_SWIPE_PX * 2, 0, SOGLIA_SWIPE_PX * 2],
     [0.2, 1, 0.2],
   );
+
+  return (
+    <motion.figure
+      ref={ref}
+      style={reduced ? undefined : { x, opacity: opacitaDrag }}
+      variants={v(quinta)}
+      custom={direzione}
+      initial="initial"
+      animate="show"
+      exit="exit"
+      drag={multiple ? "x" : false}
+      dragConstraints={{ left: 0, right: 0 }}
+      dragElastic={0.25}
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
+      className={`group relative flex flex-col rounded-4xl border border-white/10 bg-[var(--card)] transition-[border-color] duration-500 hover:border-primary/50 md:min-h-[26rem] md:flex-row ${
+        multiple ? "cursor-grab active:cursor-grabbing select-none" : ""
+      }`}
+    >
+      {/* Niente overflow-hidden sulla figure: taglierebbe il glow pre-dipinto.
+        * Il ritaglio serve solo alla foto, che si arrotonda da sola sui lati
+        * che toccano il bordo della card (sopra su mobile, sinistra su md). */}
+      {fotoAttiva && (
+        <div className="relative aspect-16/9 w-full shrink-0 overflow-hidden rounded-t-4xl bg-secondary/20 md:aspect-auto md:w-2/5 md:rounded-tr-none md:rounded-bl-4xl">
+          <img
+            src={fotoAttiva.src}
+            srcSet={fotoAttiva.srcset}
+            sizes="(min-width: 768px) 40vw, 100vw"
+            alt=""
+            width={fotoAttiva.width}
+            height={fotoAttiva.height}
+            loading="lazy"
+            decoding="async"
+            draggable={false}
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent md:bg-linear-to-r"
+          />
+        </div>
+      )}
+
+      <div className="relative flex flex-col justify-center p-8 md:p-12">
+        {/* Glifo virgolette: ornamento, non contenuto. */}
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute top-0 left-6 font-serif text-[6rem] leading-none text-primary/10 select-none"
+        >
+          &ldquo;
+        </span>
+
+        <blockquote className="relative font-serif text-xl leading-relaxed text-foreground italic md:text-2xl">
+          {recensione}
+        </blockquote>
+
+        {fotoAttiva && (
+          <figcaption className="relative mt-8">
+            <span className="block text-[11px] tracking-[0.2em] text-muted-foreground uppercase">
+              Su{" "}
+              <a
+                href={`/spettacoli/${fotoAttiva.id}`}
+                draggable={false}
+                onClick={(e) => {
+                  // Niente navigazione accidentale a fine trascinamento.
+                  if (trascinandoRef.current) e.preventDefault();
+                }}
+                className="group/firma relative text-primary shadow-[inset_0_-1px_0_rgba(212,162,76,0.35)] transition-colors duration-150 hover:text-[#e8b44a]"
+              >
+                «{fotoAttiva.titolo}»
+                {/* Filo hover pre-dipinto: si accende in sola opacity sopra
+                  * il filo statico, mai animando box-shadow. */}
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-[#e8b44a] opacity-0 transition-opacity duration-150 group-hover/firma:opacity-100 motion-reduce:transition-none"
+                />
+              </a>
+            </span>
+          </figcaption>
+        )}
+      </div>
+
+      {/* Glow pre-dipinto: si accende in sola opacity, mai
+        * animando box-shadow (compositor-friendly). */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute -inset-px rounded-[inherit] shadow-[0_0_30px_rgba(212,162,76,0.15)] opacity-0 transition-opacity duration-500 group-hover:opacity-100 motion-reduce:transition-none"
+      />
+    </motion.figure>
+  );
+}
+
+function CaroselloRecensioni({ foto }: CaroselloProps) {
+  const { reduced, v } = useMotionSafe();
+  const [indice, setIndice] = useState(0);
+  // Verso del cambio di quinta (+1 avanti, −1 indietro): impostato SEMPRE
+  // prima di cambiare indice, così AnimatePresence legge il verso aggiornato
+  // sia per la card che esce sia per quella che entra.
+  const [direzione, setDirezione] = useState(1);
+  const [inPausa, setInPausa] = useState(false);
+
+  const multiple = RECENSIONI.length > 1;
+
+  // Fuori viewport la rotazione non ha pubblico: useInView SENZA once, deve
+  // rilevare anche l'uscita dalla scena.
+  const sezioneRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(sezioneRef, { amount: 0.2 });
+
+  // La rotazione si ferma con reduced motion (si naviga con i trattini), in
+  // pausa (mouse sopra, focus da tastiera, drag: si sta leggendo — WCAG 2.2.2),
+  // fuori viewport e con la scheda del browser in secondo piano.
+  useEffect(() => {
+    if (!multiple || reduced || inPausa || !inView) return;
+
+    let timer: number | undefined;
+
+    const ferma = () => {
+      if (timer !== undefined) {
+        window.clearInterval(timer);
+        timer = undefined;
+      }
+    };
+
+    const avvia = () => {
+      if (timer === undefined && !document.hidden) {
+        timer = window.setInterval(() => {
+          // La rotazione automatica va sempre avanti: quinta verso sinistra.
+          setDirezione(1);
+          setIndice((i) => (i + 1) % RECENSIONI.length);
+        }, INTERVALLO_ROTAZIONE_MS);
+      }
+    };
+
+    const allaVisibilita = () => (document.hidden ? ferma() : avvia());
+
+    document.addEventListener("visibilitychange", allaVisibilita);
+    avvia();
+
+    return () => {
+      document.removeEventListener("visibilitychange", allaVisibilita);
+      ferma();
+    };
+  }, [multiple, reduced, inPausa, inView]);
+
+  const recensione = RECENSIONI[indice];
+  const fotoAttiva = foto.length > 0 ? foto[indice % foto.length] : null;
+
+  const vai = (delta: number) => {
+    setDirezione(delta > 0 ? 1 : -1);
+    setIndice((i) => (i + delta + RECENSIONI.length) % RECENSIONI.length);
+  };
 
   // La card cambia SOLO al rilascio: finché il tasto resta premuto si può
   // tirare quanto si vuole e anche ripensarci tornando al centro. Il flag
@@ -173,99 +329,31 @@ function CaroselloRecensioni({ foto }: CaroselloProps) {
 
   return (
     <motion.div
+      ref={sezioneRef}
       variants={v(fadeUp)}
       initial="hidden"
       whileInView="show"
       viewport={VIEWPORT}
       onMouseEnter={() => setInPausa(true)}
       onMouseLeave={() => setInPausa(false)}
-      className="mx-auto max-w-5xl"
+      onFocus={() => setInPausa(true)}
+      onBlur={() => setInPausa(false)}
+      className="relative mx-auto max-w-5xl md:min-h-[26rem]"
     >
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.figure
+      <AnimatePresence mode="popLayout" custom={direzione} initial={false}>
+        <CardRecensione
           key={indice}
-          style={reduced ? undefined : { x, opacity: opacitaDrag }}
-          initial={
-            reduced
-              ? { opacity: 0 }
-              : { x: SOGLIA_SWIPE_PX * 2, scale: 0.98 }
-          }
-          animate={reduced ? { opacity: 1 } : { x: 0, scale: 1 }}
-          exit={
-            reduced
-              ? { opacity: 0 }
-              : { x: -SOGLIA_SWIPE_PX * 2, scale: 0.98 }
-          }
-          transition={{
-            duration: reduced ? DUR_REDUCED : DUR.md,
-            ease: EASE,
-          }}
-          drag={multiple ? "x" : false}
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.25}
+          recensione={recensione}
+          fotoAttiva={fotoAttiva}
+          multiple={multiple}
+          direzione={direzione}
+          trascinandoRef={trascinandoRef}
           onDragStart={() => {
             setInPausa(true);
             trascinandoRef.current = true;
           }}
           onDragEnd={fineTrascinamento}
-          className={`relative flex flex-col overflow-hidden rounded-4xl border border-white/10 bg-[var(--card)] transition-[border-color,box-shadow] duration-500 hover:border-primary/50 hover:shadow-[0_0_30px_rgba(212,162,76,0.15)] md:min-h-[26rem] md:flex-row ${
-            multiple ? "cursor-grab active:cursor-grabbing select-none" : ""
-          }`}
-        >
-          {fotoAttiva && (
-            <div className="relative aspect-16/9 w-full shrink-0 overflow-hidden bg-secondary/20 md:aspect-auto md:w-2/5">
-              <img
-                src={fotoAttiva.src}
-                srcSet={fotoAttiva.srcset}
-                sizes="(min-width: 768px) 40vw, 100vw"
-                alt=""
-                width={fotoAttiva.width}
-                height={fotoAttiva.height}
-                loading="lazy"
-                decoding="async"
-                draggable={false}
-                className="absolute inset-0 h-full w-full object-cover"
-              />
-              <div
-                aria-hidden="true"
-                className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent md:bg-linear-to-r"
-              />
-            </div>
-          )}
-
-          <div className="relative flex flex-col justify-center p-8 md:p-12">
-            {/* Glifo virgolette: ornamento, non contenuto. */}
-            <span
-              aria-hidden="true"
-              className="pointer-events-none absolute top-0 left-6 font-serif text-[6rem] leading-none text-primary/10 select-none"
-            >
-              &ldquo;
-            </span>
-
-            <blockquote className="relative font-serif text-xl leading-relaxed text-foreground italic md:text-2xl">
-              {recensione}
-            </blockquote>
-
-            {fotoAttiva && (
-              <figcaption className="relative mt-8">
-                <span className="block text-[11px] tracking-[0.2em] text-muted-foreground uppercase">
-                  Su{" "}
-                  <a
-                    href={`/spettacoli/${fotoAttiva.id}`}
-                    draggable={false}
-                    onClick={(e) => {
-                      // Niente navigazione accidentale a fine trascinamento.
-                      if (trascinandoRef.current) e.preventDefault();
-                    }}
-                    className="text-primary shadow-[inset_0_-1px_0_rgba(212,162,76,0.35)] transition-[color,box-shadow] duration-150 hover:text-[#e8b44a] hover:shadow-[inset_0_-1px_0_#e8b44a]"
-                  >
-                    «{fotoAttiva.titolo}»
-                  </a>
-                </span>
-              </figcaption>
-            )}
-          </div>
-        </motion.figure>
+        />
       </AnimatePresence>
 
       {multiple && (
@@ -274,13 +362,16 @@ function CaroselloRecensioni({ foto }: CaroselloProps) {
           aria-label="Scegli la recensione da leggere"
           className="mt-4 flex justify-center gap-2"
         >
-          {RECENSIONI.map((voce, i) => (
+          {RECENSIONI.map((_, i) => (
             <button
-              key={voce.slice(0, 24)}
+              key={i}
               type="button"
               aria-label={`Recensione ${i + 1} di ${RECENSIONI.length}`}
               aria-current={i === indice}
-              onClick={() => setIndice(i)}
+              onClick={() => {
+                setDirezione(i > indice ? 1 : -1);
+                setIndice(i);
+              }}
               className={`flex h-11 w-8 items-center transition-opacity duration-200 ${
                 i === indice ? "opacity-100" : "opacity-40 hover:opacity-70"
               }`}
@@ -318,8 +409,15 @@ export default function PercheFidarsi({ foto = [], className = "" }: PercheFidar
         aria-labelledby="perche-fidarsi-title"
         className={`relative scroll-mt-28 overflow-hidden bg-background-alt py-24 md:py-32 ${className}`}
       >
-        <div
+        {/* La sala si illumina PRIMA che titolo e recensioni finiscano di
+            entrare (luceScena, DUR.lg). hidden ha opacity:0 inline: il
+            noscript lo riaccende senza danni, è solo un gradiente. */}
+        <motion.div
           aria-hidden="true"
+          variants={v(luceScena)}
+          initial="hidden"
+          whileInView="show"
+          viewport={VIEWPORT}
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,162,76,0.05)_0%,transparent_70%)]"
         />
 
@@ -361,19 +459,27 @@ export default function PercheFidarsi({ foto = [], className = "" }: PercheFidar
             initial="hidden"
             whileInView="show"
             viewport={VIEWPORT}
-            className="mt-16 grid gap-x-10 gap-y-8 md:grid-cols-2 lg:grid-cols-3"
+            className="mt-16 grid grid-cols-2 gap-x-4 gap-y-6 sm:gap-x-10 sm:gap-y-8 lg:grid-cols-3"
           >
             {CREDENZIALI.map((credenziale) => (
               <motion.div key={credenziale.chiave} variants={v(fadeUp)} className="group">
-                <dt className="font-serif text-xl text-primary transition-colors duration-[250ms] group-hover:text-[#e8b44a]">
+                <dt className="font-serif text-lg text-primary transition-colors duration-[250ms] group-hover:text-[#e8b44a] sm:text-xl">
                   {credenziale.chiave}
                 </dt>
                 <dd className="text-sm leading-relaxed text-muted-foreground">
-                  <motion.span
-                    aria-hidden="true"
-                    variants={v(lineX)}
-                    className="my-3 block h-px w-12 origin-left bg-primary/60 transition-[width] duration-[350ms] group-hover:w-full"
-                  />
+                  {/* Filo a doppio strato, tutto su scaleX (niente width sul
+                      layout): la base si disegna all'entrata (lineX), lo
+                      strato hover completa il filo a tutta larghezza. */}
+                  <span aria-hidden="true" className="relative my-3 block h-px w-full">
+                    <motion.span
+                      variants={v(lineX)}
+                      className="absolute inset-y-0 left-0 w-12 origin-left bg-primary/60"
+                    />
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-0 origin-left scale-x-0 bg-primary/60 transition-transform duration-[350ms] group-hover:scale-x-100 motion-reduce:transition-none"
+                    />
+                  </span>
                   {credenziale.dettaglio}
                 </dd>
               </motion.div>

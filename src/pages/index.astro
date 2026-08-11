@@ -8,13 +8,11 @@ import HeroCommittenti from "../components/custom/home/HeroCommittenti";
 import RepertorioCommittenti from "../components/custom/home/RepertorioCommittenti";
 import ComeSiOspita from "../components/custom/home/ComeSiOspita.astro";
 import PercheFidarsi from "../components/custom/home/PercheFidarsi";
-import DomandeCommittenti from "../components/custom/home/DomandeCommittenti";
 import TrePassi from "../components/custom/home/TrePassi.astro";
 import ContactForm from "../components/custom/ContactForm";
 import BarraCtaMobile from "../components/custom/home/BarraCtaMobile";
 
 import { CATALOGO_HOME, NUMERI_IT, ordinaPerHome } from "../lib/home-catalogo";
-import { FAQ_COMMITTENTI } from "../lib/home-faq";
 
 // --- Repertorio ------------------------------------------------------------
 const pubblicati = (await getCollection("spettacoli")).filter(
@@ -72,18 +70,6 @@ const hero = {
     width: heroFusa.width,
     height: heroFusa.height,
 };
-
-// --- Dati strutturati ------------------------------------------------------
-// Stessa fonte della sezione in pagina, così markup e contenuto non divergono.
-const faqJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: FAQ_COMMITTENTI.map((voce) => ({
-        "@type": "Question",
-        name: voce.q,
-        acceptedAnswer: { "@type": "Answer", text: voce.a },
-    })),
-};
 ---
 
 <Layout>
@@ -109,17 +95,9 @@ const faqJsonLd = {
             .map((show) => ({ ...show.img!, titolo: show.title, id: show.id }))}
     />
 
-    <DomandeCommittenti client:visible faq={FAQ_COMMITTENTI} />
-
     <TrePassi />
 
-    <ContactForm client:load />
+    <ContactForm client:load sfondoAlt />
 
     <BarraCtaMobile client:idle />
-
-    <script
-        type="application/ld+json"
-        is:inline
-        set:html={JSON.stringify(faqJsonLd)}
-    />
 </Layout>

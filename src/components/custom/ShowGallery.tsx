@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, MotionConfig } from "framer-motion";
+import { cardIn, TAP, VIEWPORT, DUR, EASE_SOFT, useMotionSafe } from "../../lib/home-motion";
 
 export interface GalleryImage {
   src: string;         // 1200px optimized WebP
@@ -20,6 +21,8 @@ interface ShowGalleryProps {
 }
 
 export default function ShowGallery({ mainImageSrc, mainImageOriginalSrc, images, alt }: ShowGalleryProps) {
+  // Con reduced motion le varianti collassano a dissolvenza (DUR_REDUCED).
+  const mv = useMotionSafe();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [isImageLoading, setIsImageLoading] = useState(true);
   const thumbnailsRef = useRef<HTMLDivElement>(null);
@@ -141,18 +144,27 @@ export default function ShowGallery({ mainImageSrc, mainImageOriginalSrc, images
   const currentImage = activeIndex !== null ? images[activeIndex] : null;
 
   return (
+    <MotionConfig reducedMotion="user">
     <>
       {/* Clickable Main Image Trigger. Altezza SEMPRE limitata: le foto di
           scena possono essere enormi o verticali, qui fanno da anteprima
-          ritagliata (object-cover) — l'immagine intera si vede nel lightbox. */}
-      <div
+          ritagliata (object-cover) — l'immagine intera si vede nel lightbox.
+          La locandina si posa con cardIn: Framer possiede il transform del
+          frame (tap via whileTap, niente active:scale CSS), mentre il
+          group-hover:scale dell'img resta di proprietà CSS — owner distinti. */}
+      <motion.div
+        variants={mv.v(cardIn)}
+        initial="hidden"
+        whileInView="show"
+        viewport={VIEWPORT}
+        whileTap={TAP}
         onClick={() => setActiveIndex(activeIndexToUse)}
         className="relative group overflow-hidden rounded-[2.5rem] border border-white/10 shadow-2xl bg-background cursor-pointer w-full block"
       >
         <img
           src={mainImageSrc}
           alt={alt}
-          className="block h-auto max-h-[400px] w-full object-cover object-[50%_25%] md:max-h-[520px] transition-all duration-700 group-hover:scale-102 group-hover:opacity-85"
+          className="block h-auto max-h-[400px] w-full object-cover object-[50%_25%] md:max-h-[520px] transition-all duration-700 group-hover:scale-102 group-hover:opacity-85 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
           loading="lazy"
           decoding="async"
         />
@@ -160,12 +172,12 @@ export default function ShowGallery({ mainImageSrc, mainImageOriginalSrc, images
         {/* Premium Overlay indicator */}
         {images.length > 0 && (
           <div className="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
-            <span className="py-2.5 px-6 bg-black/60 backdrop-blur-md border border-white/10 rounded-full text-xs font-bold text-white uppercase tracking-wider scale-95 group-hover:scale-100 transition-all duration-300 flex items-center gap-2">
+            <span className="py-2.5 px-6 bg-black/60 backdrop-blur-md border border-white/10 rounded-full text-xs font-bold text-white uppercase tracking-wider scale-95 group-hover:scale-100 transition-all duration-300 motion-reduce:transition-none motion-reduce:scale-100 flex items-center gap-2">
               Visualizza Galleria ({images.length})
             </span>
           </div>
         )}
-      </div>
+      </motion.div>
 
       {/* Premium Lightbox Modal overlay */}
       <AnimatePresence>
@@ -174,7 +186,7 @@ export default function ShowGallery({ mainImageSrc, mainImageOriginalSrc, images
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={mv.t({ duration: DUR.sm, ease: EASE_SOFT })}
             className="fixed inset-0 h-[100dvh] bg-black/90 backdrop-blur-xl z-40 flex flex-col overflow-hidden"
             onClick={() => setActiveIndex(null)}
           >
@@ -233,7 +245,7 @@ export default function ShowGallery({ mainImageSrc, mainImageOriginalSrc, images
                   onLoad={() => setIsImageLoading(false)}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: isImageLoading ? 0 : 1 }}
-                  transition={{ duration: 0.25 }}
+                  transition={mv.t({ duration: DUR.xs, ease: EASE_SOFT })}
                   className="max-h-full max-w-full w-auto h-auto object-contain rounded-xl md:rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] border border-white/10 select-none"
                   onClick={(e) => e.stopPropagation()}
                 />
@@ -289,5 +301,6 @@ export default function ShowGallery({ mainImageSrc, mainImageOriginalSrc, images
         )}
       </AnimatePresence>
     </>
+    </MotionConfig>
   );
 }

@@ -8,12 +8,19 @@ import {
   useTransform,
 } from "framer-motion";
 import {
+  DUR,
   DUR_REDUCED,
   EASE,
   HOVER_BUTTON,
   PARALLAX_MAX,
+  PAUSA_BATTUTA,
   SCROLL_SPRING,
+  TAP,
+  anteSipario,
   fadeUp,
+  lineX,
+  maskRiga,
+  popIn,
   stagger,
   useMotionSafe,
 } from "../../../lib/home-motion";
@@ -63,7 +70,8 @@ const RIGA_TECNICA = [
 /* ------------------------------------------------------------------------- *
  * TEMPI E MISURE DELLA SEZIONE
  * Easing, durate standard, spring e varianti stanno TUTTI in home-motion.ts:
- * qui restano solo i ritardi editoriali di questa sezione, passati via `custom`.
+ * qui restano solo i ritardi editoriali di questa sezione, passati via `custom`
+ * o come parametri dei sotto-container di stagger().
  * ------------------------------------------------------------------------- */
 
 const STAGGER_COLONNA = 0.08;
@@ -71,8 +79,14 @@ const DELAY_COLONNA = 0.15;
 
 const DELAY_RIGA_TECNICA = 0.7;
 
-/** Entrata della foto: valore prescritto per questa sola immagine, non un token. */
-const DUR_FOTO = 1.4;
+/** L'H1 orchestra le due righe in ribalta: la battuta corsiva oro segue il
+ *  setup esattamente di una PAUSA_BATTUTA — il tempo comico come firma.
+ *  A livello modulo per identità referenziale stabile (cache di mv.v). */
+const STAGGER_RIGHE = stagger(PAUSA_BATTUTA, 0);
+
+/** La riga tecnica scagliona voci e punti oro a passo di locandina; lo stacco
+ *  voluto di DELAY_RIGA_TECNICA dal treno di colonna vive nel delayChildren. */
+const STAGGER_TECNICA = stagger(0.05, DELAY_RIGA_TECNICA);
 
 /** Corsa della parallasse del testo (verso l'alto) e opacità di fondo corsa. */
 const PARALLAX_TESTO = -40;
@@ -156,14 +170,16 @@ export default function HeroCommittenti({
             className="pointer-events-none absolute inset-y-0 right-0 z-0 w-full overflow-hidden lg:w-[55%]"
           >
             {/* Sborda di 96px sopra e sotto: più della corsa della parallasse
-                (PARALLAX_MAX = 80px), così traslando non scopre mai il fondo. */}
+                (PARALLAX_MAX = 80px), così traslando non scopre mai il fondo.
+                Entrata in DUR.lg, la stessa durata delle ante: foto e sipario
+                si rivelano nello stesso respiro. */}
             <motion.div
               className="absolute inset-x-0 -inset-y-24"
               style={stileFoto}
               initial={mv.reduced ? { opacity: 0 } : { opacity: 0, scale: 1.08 }}
               animate={mv.reduced ? { opacity: 1 } : { opacity: 1, scale: 1 }}
               transition={
-                mv.reduced ? { duration: DUR_REDUCED } : { duration: DUR_FOTO, ease: EASE }
+                mv.reduced ? { duration: DUR_REDUCED } : { duration: DUR.lg, ease: EASE }
               }
             >
               <img
@@ -179,6 +195,39 @@ export default function HeroCommittenti({
                 className="h-full w-full object-cover object-[50%_30%] opacity-40 outline-none lg:opacity-100"
               />
             </motion.div>
+
+            {/* ANTE DEL SIPARIO — decorative, montate solo con motion pieno.
+                In SSR nascono già fuori scena (hidden = solo x ±112%, eccezione
+                noscript documentata in home-motion.ts): senza JS restano
+                innocue oltre il bordo, ritagliate dal parent overflow-hidden.
+                Con JS il primo keyframe le riporta chiuse all'istante e in
+                DUR.lg scorrono via con dissolvenza in coda (times [0,0.8,1]),
+                mentre sotto la foto fa il suo scale 1.08→1: la scena si rivela. */}
+            {!mv.reduced && (
+              <>
+                <motion.div
+                  aria-hidden="true"
+                  variants={anteSipario}
+                  custom={-1}
+                  initial="hidden"
+                  animate="show"
+                  className="pointer-events-none absolute inset-y-0 left-0 w-[52%] bg-linear-to-r from-[#0b0a09] via-[#0b0a09]/95 to-transparent"
+                >
+                  {/* Orlo oro dell'anta: superficie di 1px, non testo. */}
+                  <div className="absolute inset-y-0 right-0 w-px bg-primary/40" />
+                </motion.div>
+                <motion.div
+                  aria-hidden="true"
+                  variants={anteSipario}
+                  custom={1}
+                  initial="hidden"
+                  animate="show"
+                  className="pointer-events-none absolute inset-y-0 right-0 w-[52%] bg-linear-to-l from-[#0b0a09] via-[#0b0a09]/95 to-transparent"
+                >
+                  <div className="absolute inset-y-0 left-0 w-px bg-primary/40" />
+                </motion.div>
+              </>
+            )}
           </div>
         )}
 
@@ -217,26 +266,46 @@ export default function HeroCommittenti({
               animate="show"
               className="flex flex-col items-start"
             >
-              {/* OCCHIELLO con filetto oro */}
+              {/* OCCHIELLO con filetto oro. Il filo si disegna (lineX) mentre
+                  il testo entra: la prima luce che si accende. Niente custom,
+                  eredita la propagazione dal container di colonna. */}
               <motion.p
                 variants={mv.v(fadeUp)}
                 className="flex items-center gap-4 text-[11px] font-bold tracking-[0.25em] text-primary uppercase md:text-xs"
               >
-                <span aria-hidden="true" className="h-px w-10 shrink-0 bg-primary/40" />
+                <motion.span
+                  aria-hidden="true"
+                  variants={mv.v(lineX)}
+                  className="h-px w-10 shrink-0 origin-left bg-primary/40"
+                />
                 <span>{OCCHIELLO}</span>
               </motion.p>
 
-              {/* H1 — unico h1 della pagina. Testo normale che va a capo da sé:
-                  niente maschera per parola, che tagliava i corsivi e spezzava
-                  le righe in modo innaturale. */}
+              {/* H1 — unico h1 della pagina, in ribalta PER RIGA (maskRiga):
+                  niente split per parola, il testo resta contiguo per gli
+                  screen reader (due span block, il padding della maschera
+                  salva i discendenti dei corsivi). L'h1 è un container di
+                  orchestrazione: conserva il suo slot nel treno di colonna e
+                  il suo delayChildren fa entrare la battuta corsiva oro
+                  esattamente una PAUSA_BATTUTA dopo la riga di setup.
+                  I figli di uno stagger non ricevono mai custom. */}
               <motion.h1
                 id="home-hero-title"
-                variants={mv.v(fadeUp)}
+                variants={mv.v(STAGGER_RIGHE)}
                 className="mt-6 w-full font-serif text-[clamp(2.5rem,5.5vw,5.5rem)] leading-[1.02] font-bold tracking-[-0.02em] text-foreground"
               >
-                {showCountLabel} {TITOLO_CODA.join(" ")}{" "}
-                <span className="text-primary italic">
-                  {TITOLO_ACCENTO.join(" ")}
+                <span className="block overflow-hidden pb-[0.12em] -mb-[0.12em]">
+                  <motion.span className="block" variants={mv.v(maskRiga)}>
+                    {showCountLabel} {TITOLO_CODA.join(" ")}
+                  </motion.span>
+                </span>
+                <span className="block overflow-hidden pb-[0.12em] -mb-[0.12em]">
+                  <motion.span
+                    className="block text-primary italic"
+                    variants={mv.v(maskRiga)}
+                  >
+                    {TITOLO_ACCENTO.join(" ")}
+                  </motion.span>
                 </span>
               </motion.h1>
 
@@ -253,10 +322,13 @@ export default function HeroCommittenti({
                 variants={mv.v(fadeUp)}
                 className="mt-8 flex w-full flex-col gap-4 sm:flex-row sm:items-center"
               >
+                {/* whileTap al posto di active:scale: Framer possiede tutto il
+                    transform e il press funziona anche durante l'hover. */}
                 <motion.a
                   href="#contatti"
                   whileHover={HOVER_BUTTON}
-                  className="group/cta inline-flex min-h-14 items-center justify-center gap-3 rounded-full bg-primary px-14 text-base font-bold text-primary-foreground shadow-[0_8px_30px_rgba(212,162,76,0.22)] transition-[background-color,box-shadow,scale] duration-200 hover:bg-[#e8b44a] hover:shadow-[0_10px_40px_rgba(212,162,76,0.38)] active:scale-[0.96] md:px-16"
+                  whileTap={TAP}
+                  className="group/cta inline-flex min-h-14 items-center justify-center gap-3 rounded-full bg-primary px-14 text-base font-bold text-primary-foreground shadow-[0_8px_30px_rgba(212,162,76,0.22)] transition-[background-color,box-shadow] duration-200 hover:bg-[#e8b44a] hover:shadow-[0_10px_40px_rgba(212,162,76,0.38)] md:px-16"
                 >
                   Richiedi una data
                   <ArrowRight
@@ -267,26 +339,32 @@ export default function HeroCommittenti({
                 <motion.a
                   href="#repertorio"
                   whileHover={HOVER_BUTTON}
-                  className="inline-flex min-h-14 items-center justify-center rounded-full px-9 text-base font-semibold text-muted-foreground shadow-[0_0_0_1px_rgba(255,255,255,0.1)] transition-[color,background-color,box-shadow,scale] duration-200 hover:bg-white/5 hover:text-foreground hover:shadow-[0_0_0_1px_rgba(255,255,255,0.16)] active:scale-[0.96]"
+                  whileTap={TAP}
+                  className="inline-flex min-h-14 items-center justify-center rounded-full px-9 text-base font-semibold text-muted-foreground shadow-[0_0_0_1px_rgba(255,255,255,0.1)] transition-[color,background-color,box-shadow] duration-200 hover:bg-white/5 hover:text-foreground hover:shadow-[0_0_0_1px_rgba(255,255,255,0.16)]"
                 >
                   Vedi il repertorio
                 </motion.a>
               </motion.div>
 
-              {/* RIGA TECNICA */}
+              {/* RIGA TECNICA a micro-ritmo di locandina: sotto-container che
+                  pianta voci e punti oro uno alla volta a passo 0.05s (popIn,
+                  niente custom sui figli). */}
               <motion.p
-                variants={mv.v(fadeUp)}
-                custom={DELAY_RIGA_TECNICA}
+                variants={mv.v(STAGGER_TECNICA)}
                 className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground"
               >
                 {RIGA_TECNICA.map((voce, i) => (
                   <Fragment key={voce}>
                     {i > 0 && (
-                      <span aria-hidden="true" className="text-primary">
+                      <motion.span
+                        aria-hidden="true"
+                        variants={mv.v(popIn)}
+                        className="text-primary"
+                      >
                         ·
-                      </span>
+                      </motion.span>
                     )}
-                    <span>{voce}</span>
+                    <motion.span variants={mv.v(popIn)}>{voce}</motion.span>
                   </Fragment>
                 ))}
               </motion.p>

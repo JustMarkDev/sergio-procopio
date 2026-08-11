@@ -81,7 +81,7 @@ const galleryImages = await Promise.all(
             sipario in basso a sinistra. Fermi nello sfondo, dimensionati sullo
             schermo (vw/vh) e sollevati dal fondo per non toccare il footer. */}
         <div
-            class="absolute top-0 -right-[10%] w-[50vw] h-[60vh] bg-primary/10 rounded-full blur-[150px] pointer-events-none"
+            class="velo-proiettore absolute top-0 -right-[10%] w-[50vw] h-[60vh] bg-primary/10 rounded-full blur-[150px] pointer-events-none"
         >
         </div>
         <div
@@ -91,16 +91,25 @@ const galleryImages = await Promise.all(
 
         <div class="container relative z-10 mx-auto px-4 md:px-8 lg:px-12 py-32">
             <div class="max-w-4xl mx-auto text-center mb-20">
-                <div class="animate-fade-in">
+                <div>
                     <h1
                         class="text-5xl md:text-7xl font-serif font-bold mb-6 tracking-tight"
                     >
-                        Galleria <span class="italic text-primary"
-                            >Emozionale</span
+                        <span
+                            class="inline-block align-bottom overflow-hidden pb-[0.12em] -mb-[0.12em]"
+                            ><span class="riga-ribalta inline-block"
+                                >Galleria</span
+                            ></span
+                        >{" "}<span
+                            class="inline-block align-bottom overflow-hidden pb-[0.12em] -mb-[0.12em]"
+                            ><span
+                                class="riga-ribalta riga-ribalta--battuta inline-block italic text-primary"
+                                >Emozionale</span
+                            ></span
                         >
                     </h1>
                     <p
-                        class="text-xl text-muted-foreground italic max-w-2xl mx-auto opacity-80"
+                        class="citazione-scena text-xl text-muted-foreground italic max-w-2xl mx-auto opacity-80"
                     >
                         "Un'immagine vale più di mille parole, specialmente
                         quando il silenzio è il protagonista sul palcoscenico."
@@ -128,3 +137,57 @@ const galleryImages = await Promise.all(
         </div>
     </div>
 </Layout>
+
+<style>
+    /* GALLERIA — il foyer: velo del proiettore, titolo in ribalta con la
+       pausa della battuta, citazione che si posa. Time-based (hero above the
+       fold), solo transform+opacity, EASE del sistema duplicato in CSS.
+       Guardia reduced-motion: fuori dalla guardia nessuno stato nascosto. */
+    @keyframes velo-accendi {
+        from {
+            opacity: 0;
+            transform: scale(1.06);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+    @keyframes ribalta-sale {
+        from {
+            opacity: 0;
+            transform: translateY(110%);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    @keyframes citazione-posa {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+        .velo-proiettore {
+            animation: velo-accendi 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        .riga-ribalta {
+            animation: ribalta-sale 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.05s
+                both;
+        }
+        /* La battuta corsiva oro entra UNA PAUSA_BATTUTA (0.18s) dopo il setup. */
+        .riga-ribalta--battuta {
+            animation-delay: 0.23s;
+        }
+        .citazione-scena {
+            animation: citazione-posa 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.35s
+                both;
+        }
+    }
+</style>

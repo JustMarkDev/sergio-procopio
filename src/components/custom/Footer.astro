@@ -19,9 +19,9 @@ const pagine = [
 >
 
     <div class="container mx-auto px-4 md:px-8 lg:px-12 py-16">
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-8">
+        <div class="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-12 md:gap-12 lg:gap-8">
             {/* Brand & Description (Col span 5) */}
-            <div class="md:col-span-12 lg:col-span-5 space-y-6">
+            <div class="col-span-2 md:col-span-12 lg:col-span-5 space-y-6">
                 <div>
                     <h3
                         class="font-serif text-3xl font-bold text-foreground tracking-tight mb-3"
@@ -44,7 +44,7 @@ const pagine = [
                         href={SOCIAL_LINKS.instagram}
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="group flex size-10 items-center justify-center rounded-full bg-white/5 text-muted-foreground shadow-[0_0_0_1px_rgba(255,255,255,0.1)] transition-[scale,color,background-color,box-shadow] duration-150 hover:bg-primary/20 hover:text-primary hover:shadow-[0_0_0_1px_rgba(212,162,76,0.35)] active:scale-[0.96]"
+                        class="group relative flex size-10 items-center justify-center rounded-full bg-white/5 text-muted-foreground shadow-[0_0_0_1px_rgba(255,255,255,0.1)] transition-[scale,color,background-color,box-shadow] duration-150 before:absolute before:inset-0 before:rounded-full before:shadow-[0_0_18px_rgba(212,162,76,0.35)] before:opacity-0 before:transition-opacity before:duration-150 hover:bg-primary/20 hover:text-primary hover:shadow-[0_0_0_1px_rgba(212,162,76,0.35)] hover:before:opacity-100 active:scale-[0.96] motion-reduce:before:transition-none"
                         aria-label="Instagram"
                     >
                         <svg
@@ -74,7 +74,7 @@ const pagine = [
                         href={SOCIAL_LINKS.facebook}
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="group flex size-10 items-center justify-center rounded-full bg-white/5 text-muted-foreground shadow-[0_0_0_1px_rgba(255,255,255,0.1)] transition-[scale,color,background-color,box-shadow] duration-150 hover:bg-primary/20 hover:text-primary hover:shadow-[0_0_0_1px_rgba(212,162,76,0.35)] active:scale-[0.96]"
+                        class="group relative flex size-10 items-center justify-center rounded-full bg-white/5 text-muted-foreground shadow-[0_0_0_1px_rgba(255,255,255,0.1)] transition-[scale,color,background-color,box-shadow] duration-150 before:absolute before:inset-0 before:rounded-full before:shadow-[0_0_18px_rgba(212,162,76,0.35)] before:opacity-0 before:transition-opacity before:duration-150 hover:bg-primary/20 hover:text-primary hover:shadow-[0_0_0_1px_rgba(212,162,76,0.35)] hover:before:opacity-100 active:scale-[0.96] motion-reduce:before:transition-none"
                         aria-label="Facebook"
                     >
                         <svg
@@ -97,7 +97,7 @@ const pagine = [
                         href={SOCIAL_LINKS.youtube}
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="group flex size-10 items-center justify-center rounded-full bg-white/5 text-muted-foreground shadow-[0_0_0_1px_rgba(255,255,255,0.1)] transition-[scale,color,background-color,box-shadow] duration-150 hover:bg-primary/20 hover:text-primary hover:shadow-[0_0_0_1px_rgba(212,162,76,0.35)] active:scale-[0.96]"
+                        class="group relative flex size-10 items-center justify-center rounded-full bg-white/5 text-muted-foreground shadow-[0_0_0_1px_rgba(255,255,255,0.1)] transition-[scale,color,background-color,box-shadow] duration-150 before:absolute before:inset-0 before:rounded-full before:shadow-[0_0_18px_rgba(212,162,76,0.35)] before:opacity-0 before:transition-opacity before:duration-150 hover:bg-primary/20 hover:text-primary hover:shadow-[0_0_0_1px_rgba(212,162,76,0.35)] hover:before:opacity-100 active:scale-[0.96] motion-reduce:before:transition-none"
                         aria-label="YouTube"
                     >
                         <svg
@@ -126,7 +126,7 @@ const pagine = [
                 >
                     Pagine
                 </h4>
-                <ul class="space-y-2 text-base text-muted-foreground">
+                <ul class="space-y-2 text-sm text-muted-foreground sm:text-base">
                     {
                         pagine.map((pagina) => (
                             <li>
@@ -149,10 +149,10 @@ const pagine = [
                 >
                     Contatti
                 </h4>
-                <div class="space-y-2 text-base text-muted-foreground">
+                <div class="min-w-0 space-y-2 text-sm text-muted-foreground sm:text-base">
                     <a
                         href="mailto:info@sergioprocopio.it"
-                        class="flex min-h-10 items-center gap-3 transition-colors hover:text-primary"
+                        class="flex min-h-10 items-center gap-3 break-all transition-colors hover:text-primary"
                     >
                         <Mail
                             size={18}

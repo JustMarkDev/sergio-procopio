@@ -2,9 +2,13 @@
 /**
  * ComeSiOspita — sezione 3 della home, «scheda tecnica e organizzazione».
  *
- * Zero JavaScript proprio: il markup è statico, le uniche isole sono le
- * istanze di <Reveal client:visible>, che animano i blocchi come pezzi unici.
- * Tutto il resto è CSS (hover cella, hover riga, hover link).
+ * Zero JavaScript proprio: l'unica isola è il <Reveal client:visible> della
+ * testata (kicker + titolo + sottotitolo). La griglia delle sei card è markup
+ * statico: entrano come cartelli di scena con animazioni CSS scroll-driven
+ * (.cartello-scena, globals.css) e il trattino del kicker si accende con
+ * .filo-ribalta — entrambe dietro doppia guardia @supports + reduced-motion,
+ * base sempre visibile senza JS. Hover in solo CSS: lift della card,
+ * glow pre-dipinto acceso in sola opacity e luce di scena sull'icona.
  */
 import {
     Building2,
@@ -15,7 +19,7 @@ import {
     Users,
 } from "lucide-react";
 import Reveal from "./Reveal";
-import { ENTI, NUMERI_IT } from "../../../lib/home-catalogo";
+import { NUMERI_IT } from "../../../lib/home-catalogo";
 
 interface Show {
     id: string;
@@ -36,18 +40,6 @@ interface Props {
 }
 
 const { shows, showCountLabel } = Astro.props;
-
-/* «Per chi»: gli slug di CATALOGO_HOME diventano le etichette editoriali di ENTI.
-   La category del frontmatter non viene mai stampata grezza. */
-const etichettaEnte = new Map(ENTI.map((ente) => [ente.slug, ente.label]));
-
-function perChi(slugs: string[]): string {
-    const etichette = slugs
-        .map((slug) => etichettaEnte.get(slug))
-        .filter((label): label is string => Boolean(label));
-
-    return etichette.length > 0 ? etichette.join(" · ") : "—";
-}
 
 /* Numeri in lettere: nessun conteggio scritto a mano nel copy.
    Il totale arriva già formattato da index.astro (NUMERI_IT[shows.length]). */
@@ -89,7 +81,7 @@ const registiInRiga = new Intl.ListFormat("it-IT", {
     <div class="container mx-auto px-4 md:px-8 lg:px-12">
         <Reveal client:visible>
             <div class="mb-6 flex items-center gap-4">
-                <span class="h-px w-10 bg-primary/40"></span>
+                <span class="filo-ribalta h-px w-10 bg-primary/40"></span>
                 <span
                     class="text-[11px] font-bold uppercase tracking-[0.25em] text-primary md:text-xs"
                 >
@@ -112,243 +104,206 @@ const registiInRiga = new Intl.ListFormat("it-IT", {
             </p>
         </Reveal>
 
-        {/* Sei card separate, 3 colonne × 2 righe: stesso stile delle card del repertorio. */}
-        <Reveal client:visible>
-            <div>
-                <div
-                    class="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 lg:grid-cols-3"
-                >
-                    <div
-                        class="rounded-4xl border border-white/10 bg-[var(--card)] p-6 transition-[border-color,box-shadow] duration-500 hover:border-primary/50 hover:shadow-[0_0_30px_rgba(212,162,76,0.15)] md:p-8"
-                    >
-                        <span class="inline-flex text-primary">
-                            <Clock size={20} aria-hidden="true" />
-                        </span>
-                        <h3
-                            class="mt-5 font-sans text-[12px] font-semibold uppercase tracking-[0.28em] text-muted-foreground"
-                        >
-                            Durata
-                        </h3>
-                        <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
-                            {
-                                titoloLungo ? (
-                                    <Fragment>
-                                        Da 1 ora a 1h 15m per {inLettere(titoliBrevi)} titoli su {totaleInLettere}. Solo <span class="text-foreground">«{titoloLungo.title}»</span> dura {titoloLungo.durata}, perché comprende l'incontro finale con l'autore.
-                                    </Fragment>
-                                ) : (
-                                    <Fragment>
-                                        Da 1 ora a 1h 15m per tutti i titoli.
-                                    </Fragment>
-                                )
-                            } Sta dentro una mattinata scolastica o dentro una serata.
-                        </p>
-                    </div>
-
-                    <div
-                        class="rounded-4xl border border-white/10 bg-[var(--card)] p-6 transition-[border-color,box-shadow] duration-500 hover:border-primary/50 hover:shadow-[0_0_30px_rgba(212,162,76,0.15)] md:p-8"
-                    >
-                        <span class="inline-flex text-primary">
-                            <Users size={20} aria-hidden="true" />
-                        </span>
-                        <h3
-                            class="mt-5 font-sans text-[12px] font-semibold uppercase tracking-[0.28em] text-muted-foreground"
-                        >
-                            Pubblico minimo
-                        </h3>
-                        <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
-                            <span class="text-foreground">120 spettatori</span>,
-                            dichiarati nella scheda di ogni spettacolo: sapete
-                            in partenza qual è il bacino da coprire.
-                        </p>
-                    </div>
-
-                    <div
-                        class="rounded-4xl border border-white/10 bg-[var(--card)] p-6 transition-[border-color,box-shadow] duration-500 hover:border-primary/50 hover:shadow-[0_0_30px_rgba(212,162,76,0.15)] md:p-8"
-                    >
-                        <span class="inline-flex text-primary">
-                            <SlidersHorizontal size={20} aria-hidden="true" />
-                        </span>
-                        <h3
-                            class="mt-5 font-sans text-[12px] font-semibold uppercase tracking-[0.28em] text-muted-foreground"
-                        >
-                            Audio e luci
-                        </h3>
-                        <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
-                            A cura di <span class="text-foreground"
-                                >Giorgio Albini</span
-                            >, tecnico di tutti gli spettacoli. Arriva con la
-                            produzione: non dovete ingaggiare un service né
-                            coordinare fornitori.
-                        </p>
-                    </div>
-
-                    <div
-                        class="rounded-4xl border border-white/10 bg-[var(--card)] p-6 transition-[border-color,box-shadow] duration-500 hover:border-primary/50 hover:shadow-[0_0_30px_rgba(212,162,76,0.15)] md:p-8"
-                    >
-                        <span class="inline-flex text-primary">
-                            <Handshake size={20} aria-hidden="true" />
-                        </span>
-                        <h3
-                            class="mt-5 font-sans text-[12px] font-semibold uppercase tracking-[0.28em] text-muted-foreground"
-                        >
-                            Un solo interlocutore
-                        </h3>
-                        <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
-                            Tutti i titoli sono prodotti dal <span
-                                class="text-foreground">Teatro Procopio</span
-                            >: artistico, tecnica e organizzazione rispondono a
-                            una sola persona.{
-                                registi.length > 0 && (
-                                    <Fragment>
-                                        {" "}La regia è di <span class="text-foreground">{registiInRiga}</span> a seconda del titolo.
-                                    </Fragment>
-                                )
-                            }
-                        </p>
-                    </div>
-
-                    <div
-                        class="rounded-4xl border border-white/10 bg-[var(--card)] p-6 transition-[border-color,box-shadow] duration-500 hover:border-primary/50 hover:shadow-[0_0_30px_rgba(212,162,76,0.15)] md:p-8"
-                    >
-                        <span class="inline-flex text-primary">
-                            <Languages size={20} aria-hidden="true" />
-                        </span>
-                        <h3
-                            class="mt-5 font-sans text-[12px] font-semibold uppercase tracking-[0.28em] text-muted-foreground"
-                        >
-                            Nessuna barriera di lingua
-                        </h3>
-                        <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
-                            Spettacolo senza parole: funziona con platee miste
-                            per età e per provenienza. Collaudato in <span
-                                class="text-foreground"
-                                >Belgio, Francia, Germania, Spagna, Svizzera,
-                                Madagascar, Brasile e Perù</span
-                            >.
-                        </p>
-                    </div>
-
-                    <div
-                        class="rounded-4xl border border-white/10 bg-[var(--card)] p-6 transition-[border-color,box-shadow] duration-500 hover:border-primary/50 hover:shadow-[0_0_30px_rgba(212,162,76,0.15)] md:p-8"
-                    >
-                        <span class="inline-flex text-primary">
-                            <Building2 size={20} aria-hidden="true" />
-                        </span>
-                        <h3
-                            class="mt-5 font-sans text-[12px] font-semibold uppercase tracking-[0.28em] text-muted-foreground"
-                        >
-                            Spazi e orari
-                        </h3>
-                        <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
-                            Teatri d'oratorio, oratori, chiese parrocchiali e
-                            spazi comunali: nel 2026 sono tutti in calendario.
-                            Le repliche serali iniziano alle <span
-                                class="text-foreground">20:30</span
-                            > o alle <span class="text-foreground">21:00</span>.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </Reveal>
-
-        <Reveal client:visible>
-            <div class="mt-16 md:mt-20">
+        {/* Sei card separate, 3 colonne × 2 righe: stesso stile delle card del
+            repertorio. Griglia statica, niente isola: l'entrata scrubbata dallo
+            scroll è tutta in .cartello-scena (globals.css). */}
+        <div class="grid grid-cols-2 gap-3 sm:gap-6 md:gap-8 lg:grid-cols-3">
+            <div
+                class="group cartello-scena relative rounded-4xl border border-white/10 bg-[var(--card)] p-4 transition-[border-color,translate] sm:p-6 duration-300 hover:-translate-y-1.5 hover:border-primary/50 motion-reduce:transition-none motion-reduce:hover:translate-y-0 md:p-8"
+            >
+                <span class="inline-flex text-primary">
+                    <Clock
+                        size={20}
+                        aria-hidden="true"
+                        className="transition-[scale,color] duration-200 group-hover:scale-110 group-hover:text-[#e8b44a] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                    />
+                </span>
                 <h3
-                    class="font-serif text-2xl font-bold leading-tight text-foreground md:text-[1.75rem]"
+                    class="mt-5 font-sans text-[12px] font-semibold uppercase tracking-[0.28em] text-muted-foreground"
                 >
-                    Gli {totaleInLettere} titoli a confronto
+                    Durata
                 </h3>
-                <p class="mt-3 max-w-[68ch] text-base leading-relaxed text-muted-foreground">
-                    Se dovete portare la proposta in consiglio, questa è la
-                    pagina da stampare.
+                <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    {
+                        titoloLungo ? (
+                            <Fragment>
+                                Da 1 ora a 1h 15m per {inLettere(titoliBrevi)} titoli su {totaleInLettere}. Solo <span class="text-foreground">«{titoloLungo.title}»</span> dura {titoloLungo.durata}, perché comprende l'incontro finale con l'autore.
+                            </Fragment>
+                        ) : (
+                            <Fragment>
+                                Da 1 ora a 1h 15m per tutti i titoli.
+                            </Fragment>
+                        )
+                    } Sta dentro una mattinata scolastica o dentro una serata.
                 </p>
 
-                {/* Il wrapper scrolla, il body no. tabindex per raggiungerlo da tastiera. */}
-                <div
-                    role="region"
-                    aria-label="Tabella comparativa dei titoli in repertorio"
-                    tabindex="0"
-                    class="mt-6 overflow-x-auto rounded-3xl border border-white/10"
-                >
-                    <table class="w-full min-w-[720px] text-left text-sm">
-                        <caption class="sr-only">
-                            Confronto dei titoli in repertorio: destinatari, età
-                            consigliata, durata, tema e regia.
-                        </caption>
-                        <thead
-                            class="bg-white/[0.03] text-[11px] uppercase tracking-[0.2em] text-muted-foreground"
-                        >
-                            <tr>
-                                <th
-                                    scope="col"
-                                    class="px-5 py-4 text-left font-semibold"
-                                    >Titolo</th
-                                >
-                                <th
-                                    scope="col"
-                                    class="px-5 py-4 text-left font-semibold"
-                                    >Per chi</th
-                                >
-                                <th
-                                    scope="col"
-                                    class="px-5 py-4 text-left font-semibold"
-                                    >Età</th
-                                >
-                                <th
-                                    scope="col"
-                                    class="px-5 py-4 text-left font-semibold"
-                                    >Durata</th
-                                >
-                                <th
-                                    scope="col"
-                                    class="px-5 py-4 text-left font-semibold"
-                                    >Tema</th
-                                >
-                                <th
-                                    scope="col"
-                                    class="px-5 py-4 text-left font-semibold"
-                                    >Regia</th
-                                >
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                shows.map((show) => (
-                                    <tr class="border-t border-border transition-colors duration-200 odd:bg-white/[0.05] hover:bg-white/[0.08]">
-                                        <th
-                                            scope="row"
-                                            class="px-5 py-4 text-left align-top font-serif text-base font-bold text-foreground"
-                                        >
-                                            <a
-                                                href={`/spettacoli/${show.id}`}
-                                                class="inline-flex min-h-11 items-center transition-colors duration-150 hover:text-primary active:scale-[0.96]"
-                                            >
-                                                {show.title}
-                                            </a>
-                                        </th>
-                                        <td class="px-5 py-4 align-top text-muted-foreground">
-                                            {perChi(show.enti)}
-                                        </td>
-                                        <td class="whitespace-nowrap px-5 py-4 align-top text-muted-foreground">
-                                            {show.eta ?? "—"}
-                                        </td>
-                                        <td class="whitespace-nowrap px-5 py-4 align-top text-muted-foreground">
-                                            {show.durata ?? "—"}
-                                        </td>
-                                        <td class="px-5 py-4 align-top text-muted-foreground">
-                                            {show.tema}
-                                        </td>
-                                        <td class="px-5 py-4 align-top text-muted-foreground">
-                                            {show.regia ?? "—"}
-                                        </td>
-                                    </tr>
-                                ))
-                            }
-                        </tbody>
-                    </table>
-                </div>
-
+                {/* Glow pre-dipinto: si accende in sola opacity, mai
+                    animando box-shadow (compositor-friendly). */}
+                <span
+                    aria-hidden="true"
+                    class="pointer-events-none absolute -inset-px rounded-[inherit] opacity-0 shadow-[0_0_30px_rgba(212,162,76,0.15)] transition-opacity duration-300 group-hover:opacity-100 motion-reduce:transition-none"
+                ></span>
             </div>
-        </Reveal>
+
+            <div
+                class="group cartello-scena relative rounded-4xl border border-white/10 bg-[var(--card)] p-4 transition-[border-color,translate] sm:p-6 duration-300 hover:-translate-y-1.5 hover:border-primary/50 motion-reduce:transition-none motion-reduce:hover:translate-y-0 md:p-8"
+            >
+                <span class="inline-flex text-primary">
+                    <Users
+                        size={20}
+                        aria-hidden="true"
+                        className="transition-[scale,color] duration-200 group-hover:scale-110 group-hover:text-[#e8b44a] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                    />
+                </span>
+                <h3
+                    class="mt-5 font-sans text-[12px] font-semibold uppercase tracking-[0.28em] text-muted-foreground"
+                >
+                    Pubblico minimo
+                </h3>
+                <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    <span class="text-foreground">120 spettatori</span>,
+                    dichiarati nella scheda di ogni spettacolo: sapete
+                    in partenza qual è il bacino da coprire.
+                </p>
+
+                {/* Glow pre-dipinto: si accende in sola opacity, mai
+                    animando box-shadow (compositor-friendly). */}
+                <span
+                    aria-hidden="true"
+                    class="pointer-events-none absolute -inset-px rounded-[inherit] opacity-0 shadow-[0_0_30px_rgba(212,162,76,0.15)] transition-opacity duration-300 group-hover:opacity-100 motion-reduce:transition-none"
+                ></span>
+            </div>
+
+            <div
+                class="group cartello-scena relative rounded-4xl border border-white/10 bg-[var(--card)] p-4 transition-[border-color,translate] sm:p-6 duration-300 hover:-translate-y-1.5 hover:border-primary/50 motion-reduce:transition-none motion-reduce:hover:translate-y-0 md:p-8"
+            >
+                <span class="inline-flex text-primary">
+                    <SlidersHorizontal
+                        size={20}
+                        aria-hidden="true"
+                        className="transition-[scale,color] duration-200 group-hover:scale-110 group-hover:text-[#e8b44a] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                    />
+                </span>
+                <h3
+                    class="mt-5 font-sans text-[12px] font-semibold uppercase tracking-[0.28em] text-muted-foreground"
+                >
+                    Audio e luci
+                </h3>
+                <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    A cura di <span class="text-foreground"
+                        >Giorgio Albini</span
+                    >, tecnico di tutti gli spettacoli. Arriva con la
+                    produzione: non dovete ingaggiare un service né
+                    coordinare fornitori.
+                </p>
+
+                {/* Glow pre-dipinto: si accende in sola opacity, mai
+                    animando box-shadow (compositor-friendly). */}
+                <span
+                    aria-hidden="true"
+                    class="pointer-events-none absolute -inset-px rounded-[inherit] opacity-0 shadow-[0_0_30px_rgba(212,162,76,0.15)] transition-opacity duration-300 group-hover:opacity-100 motion-reduce:transition-none"
+                ></span>
+            </div>
+
+            <div
+                class="group cartello-scena relative rounded-4xl border border-white/10 bg-[var(--card)] p-4 transition-[border-color,translate] sm:p-6 duration-300 hover:-translate-y-1.5 hover:border-primary/50 motion-reduce:transition-none motion-reduce:hover:translate-y-0 md:p-8"
+            >
+                <span class="inline-flex text-primary">
+                    <Handshake
+                        size={20}
+                        aria-hidden="true"
+                        className="transition-[scale,color] duration-200 group-hover:scale-110 group-hover:text-[#e8b44a] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                    />
+                </span>
+                <h3
+                    class="mt-5 font-sans text-[12px] font-semibold uppercase tracking-[0.28em] text-muted-foreground"
+                >
+                    Un solo interlocutore
+                </h3>
+                <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    Tutti i titoli sono prodotti dal <span
+                        class="text-foreground">Teatro Procopio</span
+                    >: artistico, tecnica e organizzazione rispondono a
+                    una sola persona.{
+                        registi.length > 0 && (
+                            <Fragment>
+                                {" "}La regia è di <span class="text-foreground">{registiInRiga}</span> a seconda del titolo.
+                            </Fragment>
+                        )
+                    }
+                </p>
+
+                {/* Glow pre-dipinto: si accende in sola opacity, mai
+                    animando box-shadow (compositor-friendly). */}
+                <span
+                    aria-hidden="true"
+                    class="pointer-events-none absolute -inset-px rounded-[inherit] opacity-0 shadow-[0_0_30px_rgba(212,162,76,0.15)] transition-opacity duration-300 group-hover:opacity-100 motion-reduce:transition-none"
+                ></span>
+            </div>
+
+            <div
+                class="group cartello-scena relative rounded-4xl border border-white/10 bg-[var(--card)] p-4 transition-[border-color,translate] sm:p-6 duration-300 hover:-translate-y-1.5 hover:border-primary/50 motion-reduce:transition-none motion-reduce:hover:translate-y-0 md:p-8"
+            >
+                <span class="inline-flex text-primary">
+                    <Languages
+                        size={20}
+                        aria-hidden="true"
+                        className="transition-[scale,color] duration-200 group-hover:scale-110 group-hover:text-[#e8b44a] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                    />
+                </span>
+                <h3
+                    class="mt-5 font-sans text-[12px] font-semibold uppercase tracking-[0.28em] text-muted-foreground"
+                >
+                    Nessuna barriera di lingua
+                </h3>
+                <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    Spettacolo senza parole: funziona con platee miste
+                    per età e per provenienza. Collaudato in <span
+                        class="text-foreground"
+                        >Belgio, Francia, Germania, Spagna, Svizzera,
+                        Madagascar, Brasile e Perù</span
+                    >.
+                </p>
+
+                {/* Glow pre-dipinto: si accende in sola opacity, mai
+                    animando box-shadow (compositor-friendly). */}
+                <span
+                    aria-hidden="true"
+                    class="pointer-events-none absolute -inset-px rounded-[inherit] opacity-0 shadow-[0_0_30px_rgba(212,162,76,0.15)] transition-opacity duration-300 group-hover:opacity-100 motion-reduce:transition-none"
+                ></span>
+            </div>
+
+            <div
+                class="group cartello-scena relative rounded-4xl border border-white/10 bg-[var(--card)] p-4 transition-[border-color,translate] sm:p-6 duration-300 hover:-translate-y-1.5 hover:border-primary/50 motion-reduce:transition-none motion-reduce:hover:translate-y-0 md:p-8"
+            >
+                <span class="inline-flex text-primary">
+                    <Building2
+                        size={20}
+                        aria-hidden="true"
+                        className="transition-[scale,color] duration-200 group-hover:scale-110 group-hover:text-[#e8b44a] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                    />
+                </span>
+                <h3
+                    class="mt-5 font-sans text-[12px] font-semibold uppercase tracking-[0.28em] text-muted-foreground"
+                >
+                    Spazi e orari
+                </h3>
+                <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    Teatri d'oratorio, oratori, chiese parrocchiali e
+                    spazi comunali: nel 2026 sono tutti in calendario.
+                    Le repliche serali iniziano alle <span
+                        class="text-foreground">20:30</span
+                    > o alle <span class="text-foreground">21:00</span>.
+                </p>
+
+                {/* Glow pre-dipinto: si accende in sola opacity, mai
+                    animando box-shadow (compositor-friendly). */}
+                <span
+                    aria-hidden="true"
+                    class="pointer-events-none absolute -inset-px rounded-[inherit] opacity-0 shadow-[0_0_30px_rgba(212,162,76,0.15)] transition-opacity duration-300 group-hover:opacity-100 motion-reduce:transition-none"
+                ></span>
+            </div>
+        </div>
+
     </div>
 </section>

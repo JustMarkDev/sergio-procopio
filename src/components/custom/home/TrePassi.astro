@@ -7,9 +7,16 @@
  * che la segue.
  *
  * ZERO JAVASCRIPT PROPRIO. L'unica isola è <Reveal client:visible>, la
- * micro-isola condivisa che anima il blocco come un pezzo solo (fadeUp, EASE,
- * VIEWPORT, reduced motion gestito da useMotionSafe). Dentro, solo transizioni
- * CSS: hover sui recapiti e active:scale-[0.96].
+ * micro-isola condivisa che resta come entrata di sicurezza per i browser
+ * senza scroll-timeline (fadeUp, EASE, VIEWPORT, reduced motion gestito da
+ * useMotionSafe). Sopra, per chi le supporta, si aggiungono le animazioni CSS
+ * scroll-driven del blocco «SIPARIO — passi di scena (TrePassi)» in
+ * globals.css: .passo-scena (i tre <li> si sollevano scrubbati dallo scroll
+ * con offset crescente), .cifra-scena (la cifra sale «dalla buca» dentro la
+ * maschera overflow-hidden, solo transform), .ribalta-divisore (il divisore
+ * si accende dal centro verso i lati come una ribalta). Doppia guardia
+ * @supports (animation-timeline: view()) + prefers-reduced-motion:
+ * no-preference: fuori dalla guardia nessuno stato nascosto.
  *
  * NOTA DI COPY (dallo spec, da non «migliorare» in autonomia): qui NON va
  * scritto alcun impegno sul tempo di risposta né alcuna fascia di prezzo,
@@ -55,7 +62,7 @@ const passi: Passo[] = [
 <section
   id="prenotare"
   aria-labelledby="prenotare-title"
-  class="scroll-mt-28 bg-background-alt py-16 md:py-24"
+  class="scroll-mt-28 bg-background py-16 md:py-24"
 >
   <div class="container mx-auto px-4 md:px-8 lg:px-12">
     <Reveal client:visible>
@@ -73,12 +80,12 @@ const passi: Passo[] = [
       >
         {
           passi.map((passo) => (
-            <li class="relative">
+            <li class="passo-scena relative">
               <span
                 aria-hidden="true"
-                class="block font-serif text-[length:var(--passo-num)] leading-none font-bold tabular-nums text-primary/20"
+                class="block overflow-hidden font-serif text-[length:var(--passo-num)] leading-none font-bold tabular-nums text-primary/20"
               >
-                {passo.numero}
+                <span class="cifra-scena block">{passo.numero}</span>
               </span>
               <h3 class="mt-4 font-sans text-sm font-bold tracking-[0.22em] text-primary uppercase">
                 {passo.titolo}
@@ -98,7 +105,7 @@ const passi: Passo[] = [
       */}
       <div
         aria-hidden="true"
-        class="mx-auto mt-16 h-0.5 w-48 rounded-full bg-linear-to-r from-transparent via-primary to-transparent shadow-[0_0_18px_rgba(212,162,76,0.45)] md:mt-20 md:w-64"
+        class="ribalta-divisore mx-auto mt-16 h-0.5 w-48 rounded-full bg-linear-to-r from-transparent via-primary to-transparent shadow-[0_0_18px_rgba(212,162,76,0.45)] md:mt-20 md:w-64"
       >
       </div>
     </Reveal>

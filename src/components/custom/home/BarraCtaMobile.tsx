@@ -95,7 +95,13 @@ export default function BarraCtaMobile(_props: BarraCtaMobileProps) {
               entry.isIntersecting || entry.boundingClientRect.top < 0,
             );
         },
-        { threshold: SOGLIA_CONTATTI },
+        {
+          threshold: SOGLIA_CONTATTI,
+          // Estende il root di 96px SOTTO il viewport: l'observer scatta un
+          // attimo prima che la sezione entri e la barra si ritira senza mai
+          // coprire il form (un margine negativo farebbe l'opposto).
+          rootMargin: "0px 0px 96px 0px",
+        },
       );
 
       observer.observe(bersaglio);
@@ -113,6 +119,12 @@ export default function BarraCtaMobile(_props: BarraCtaMobileProps) {
 
   /* --------------------------------------------------------------------- *
    * MOVIMENTO
+   * `initial` è SOLO-TRANSFORM, come le ante del sipario: è lo stato servito
+   * in SSR e senza JS il fallback noscript di Layout.astro riporterebbe in
+   * scena qualunque `opacity:0` inline — qui resusciterebbe un overlay fisso
+   * ma inerte (aria-hidden + inert) sopra il fondo pagina. Niente opacity:0
+   * nello initial = il selettore non la matcha e la barra resta fuori scena;
+   * l'opacità entra solo negli stati animati lato client.
    * Con reduced motion la barra entra ed esce in sola dissolvenza: `y` resta
    * inchiodato a "0%" così l'inline style renderizzato lato server viene
    * comunque azzerato all'idratazione e la barra non resta fuori schermo.
@@ -129,7 +141,7 @@ export default function BarraCtaMobile(_props: BarraCtaMobileProps) {
         aria-label="Azioni rapide"
         aria-hidden={!visibile}
         inert={!visibile}
-        initial={{ opacity: 0, y: "140%" }}
+        initial={{ y: "140%" }}
         animate={visibile ? statoVisibile : statoNascosto}
         transition={transizione}
         className={`fixed inset-x-3 bottom-3 z-40 lg:hidden ${

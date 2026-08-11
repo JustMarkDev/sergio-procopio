@@ -42,11 +42,6 @@
             transform: translateY(0);
         }
     }
-    @keyframes shimmer {
-        100% {
-            transform: translateX(100%);
-        }
-    }
     --animate-fade-in: fade-in 0.8s ease-out;
 }
 
@@ -130,6 +125,128 @@
             animation-iteration-count: 1 !important;
             scroll-behavior: auto !important;
             transition-duration: 0.01ms !important;
+        }
+    }
+}
+
+/* ============================================================
+   SIPARIO — cartelli di scena (ComeSiOspita)
+
+   Entrate CSS scroll-driven della sezione «Come si ospita»:
+   le sei card si sollevano dalla ribalta scrubbate dallo scroll
+   (.cartello-scena) e il trattino del kicker si accende come un
+   filo di luce (.filo-ribalta). Solo transform+opacity; l'EASE
+   del sistema è duplicato come cubic-bezier(0.16, 1, 0.3, 1),
+   stesso pattern di --animate-fade-in.
+
+   DOPPIA GUARDIA obbligatoria: il blocco reduced globale azzera
+   solo le durate, che con animation-timeline non contano. Fuori
+   dalla guardia nessuno stato nascosto: senza @supports o senza
+   JS le card restano semplicemente visibili (base opacity 1).
+   ============================================================ */
+@keyframes cartello-scena-su {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes filo-ribalta-accendi {
+    from {
+        transform: scaleX(0);
+    }
+    to {
+        transform: scaleX(1);
+    }
+}
+@supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+        .cartello-scena {
+            animation: cartello-scena-su cubic-bezier(0.16, 1, 0.3, 1) both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 60%;
+        }
+        /* cadenza per colonna: innocua anche a 1-2 colonne */
+        .cartello-scena:nth-child(3n + 2) {
+            animation-range: entry 8% entry 68%;
+        }
+        .cartello-scena:nth-child(3n) {
+            animation-range: entry 16% entry 76%;
+        }
+        .filo-ribalta {
+            transform-origin: left;
+            animation: filo-ribalta-accendi cubic-bezier(0.16, 1, 0.3, 1) both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 40%;
+        }
+    }
+}
+
+/* ==========================================================================
+   SIPARIO — passi di scena (TrePassi)
+   Animazioni CSS scroll-driven della sezione #prenotare, sopra il Reveal di
+   sicurezza: i tre passi si sollevano scrubbati dallo scroll con offset
+   crescente (la cadenza «uno, due, tre» che il copy stesso racconta); la
+   cifra serif oro sale «dalla buca» dentro la sua maschera overflow-hidden
+   un filo dopo la card (solo transform: senza supporto resta al suo posto,
+   visibile); il divisore si accende dal CENTRO verso i lati come una ribalta
+   (gradiente simmetrico: origin center, non left). Il glow box-shadow del
+   divisore NON si anima: resta dipinto, si muove solo il transform.
+   Doppia guardia obbligatoria: fuori da @supports + no-preference nessuna
+   regola nasconde nulla — la sezione appare completa.
+   ========================================================================== */
+@keyframes passo-scena-su {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes cifra-scena-su {
+    from {
+        transform: translateY(32px);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+@keyframes ribalta-accendi {
+    from {
+        transform: scaleX(0);
+    }
+    to {
+        transform: scaleX(1);
+    }
+}
+@supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+        .passo-scena {
+            animation: passo-scena-su cubic-bezier(0.16, 1, 0.3, 1) both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 50%;
+        }
+        .passo-scena:nth-child(2) {
+            animation-range: entry 10% entry 60%;
+        }
+        .passo-scena:nth-child(3) {
+            animation-range: entry 20% entry 70%;
+        }
+        .cifra-scena {
+            animation: cifra-scena-su cubic-bezier(0.16, 1, 0.3, 1) both;
+            animation-timeline: view();
+            animation-range: entry 5% entry 55%;
+        }
+        .ribalta-divisore {
+            transform-origin: center;
+            animation: ribalta-accendi cubic-bezier(0.16, 1, 0.3, 1) both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 60%;
         }
     }
 }

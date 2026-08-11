@@ -1,6 +1,21 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, MotionConfig } from "framer-motion";
+import {
+  DUR,
+  EASE_SOFT,
+  HOVER_CARD,
+  TAP,
+  VIEWPORT,
+  cardIn,
+  popIn,
+  stagger,
+  useMotionSafe,
+} from "../../lib/home-motion";
+
+/* I cartelli dei filtri prendono il palco scaglionati: costante a livello
+   modulo per dare a mv.v un'identità referenziale stabile. */
+const VARIANTI_FILTRI = stagger(0.05, 0.05);
 
 export interface GalleryImage {
   src: string;         // 1200px optimized WebP
@@ -29,6 +44,7 @@ function GalleryCard({ image, index, onOpen }: GalleryCardProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const imageRef = useRef<HTMLImageElement>(null);
   const imageKey = `${image.showId}-${image.originalSrc}`;
+  const mv = useMotionSafe();
 
   useEffect(() => {
     const element = imageRef.current;
@@ -37,10 +53,18 @@ function GalleryCard({ image, index, onOpen }: GalleryCardProps) {
     }
   }, [imageKey]);
 
+  // Le locandine prendono il palco quando arrivano in vista: con la masonry
+  // le altezze diverse fanno da stagger naturale, niente delay per indice.
   return (
-    <div
+    <motion.div
+      variants={mv.v(cardIn)}
+      initial="hidden"
+      whileInView="show"
+      viewport={VIEWPORT}
+      whileHover={HOVER_CARD}
+      whileTap={TAP}
       onClick={onOpen}
-      className="relative group mb-6 md:mb-8 overflow-hidden rounded-2xl bg-zinc-900 break-inside-avoid cursor-pointer transition-all duration-300 ring-1 ring-white/6 hover:ring-primary/40"
+      className="relative group mb-3 sm:mb-6 md:mb-8 overflow-hidden rounded-2xl bg-zinc-900 break-inside-avoid cursor-pointer ring-1 ring-white/6"
       style={{ aspectRatio: `${image.width} / ${image.height}` }}
     >
       <div
@@ -60,7 +84,7 @@ function GalleryCard({ image, index, onOpen }: GalleryCardProps) {
         decoding="async"
         width={image.width}
         height={image.height}
-        className={`absolute inset-0 h-full w-full object-cover transition-all duration-500 group-hover:scale-105 ${
+        className={`absolute inset-0 h-full w-full object-cover transition-all duration-500 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100 ${
           isLoaded ? "opacity-100 group-hover:opacity-60" : "opacity-0"
         }`}
         onLoad={() => setIsLoaded(true)}
@@ -68,14 +92,21 @@ function GalleryCard({ image, index, onOpen }: GalleryCardProps) {
       />
 
       <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col justify-end p-6">
-        <h3 className="text-white font-serif font-bold text-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+        <h3 className="text-white font-serif font-bold text-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 motion-reduce:transition-none motion-reduce:translate-y-0">
           {image.title}
         </h3>
-        <p className="text-white/70 text-sm capitalize transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
+        <p className="text-white/70 text-sm capitalize transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75 motion-reduce:transition-none motion-reduce:translate-y-0">
           {image.subtitle}
         </p>
       </div>
-    </div>
+
+      {/* Glow oro migrato su strato pre-dipinto acceso in sola opacity
+          (contratto: vietato animare box-shadow). */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-primary/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+      />
+    </motion.div>
   );
 }
 
@@ -86,6 +117,7 @@ export default function GalleryView({ images }: GalleryViewProps) {
   const [isImageLoading, setIsImageLoading] = useState(true);
   const [filtro, setFiltro] = useState<string>(FILTRO_TUTTE);
   const thumbnailsRef = useRef<HTMLDivElement>(null);
+  const mv = useMotionSafe();
 
   // Un filtro per ogni spettacolo presente in galleria, nell'ordine delle foto.
   const shows = useMemo(() => {
@@ -222,46 +254,61 @@ export default function GalleryView({ images }: GalleryViewProps) {
   const currentImage = activeIndex !== null ? visibili[activeIndex] : null;
 
   return (
-    <>
-      {/* Filtro per spettacolo */}
+    <MotionConfig reducedMotion="user">
+      {/* Filtro per spettacolo — i cartelli prendono il palco scaglionati */}
       {shows.length > 1 && (
-        <div
+        <motion.div
+          variants={mv.v(VARIANTI_FILTRI)}
+          initial="hidden"
+          whileInView="show"
+          viewport={VIEWPORT}
           role="group"
           aria-label="Filtra le foto per spettacolo"
-          className="mb-12 flex flex-wrap justify-center gap-2"
+          className="mb-12 grid grid-flow-col grid-rows-2 justify-start gap-2 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] sm:flex sm:flex-wrap sm:justify-center sm:overflow-visible sm:pb-0"
         >
-          <button
+          <motion.button
+            variants={mv.v(popIn)}
+            whileTap={TAP}
             type="button"
             aria-pressed={filtro === FILTRO_TUTTE}
             onClick={() => applicaFiltro(FILTRO_TUTTE)}
-            className={`inline-flex min-h-11 items-center rounded-full border px-4 text-sm font-semibold transition-[color,border-color,background-color,scale] duration-200 active:scale-[0.96] ${
+            className={`inline-flex min-h-11 items-center whitespace-nowrap rounded-full border px-4 text-sm font-semibold transition-[color,border-color,background-color] duration-200 ${
               filtro === FILTRO_TUTTE
                 ? "border-primary bg-primary text-primary-foreground"
                 : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
             }`}
           >
             Tutte
-          </button>
+          </motion.button>
           {shows.map((show) => (
-            <button
+            <motion.button
               key={show.id}
+              variants={mv.v(popIn)}
+              whileTap={TAP}
               type="button"
               aria-pressed={filtro === show.id}
               onClick={() => applicaFiltro(show.id)}
-              className={`inline-flex min-h-11 items-center rounded-full border px-4 text-sm font-semibold transition-[color,border-color,background-color,scale] duration-200 active:scale-[0.96] ${
+              className={`inline-flex min-h-11 items-center whitespace-nowrap rounded-full border px-4 text-sm font-semibold transition-[color,border-color,background-color] duration-200 ${
                 filtro === show.id
                   ? "border-primary bg-primary text-primary-foreground"
                   : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
               }`}
             >
               {show.title}
-            </button>
+            </motion.button>
           ))}
-        </div>
+        </motion.div>
       )}
 
-      {/* Masonry Columns Gallery */}
-      <div className="columns-1 md:columns-2 lg:columns-3 gap-6 md:gap-8 space-y-6 md:space-y-8 max-w-[1200px] mx-auto">
+      {/* Masonry Columns Gallery — al cambio filtro il palco si riapparecchia:
+          crossfade di stato EASE_SOFT e rientro delle card via cardIn */}
+      <motion.div
+        key={filtro}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={mv.t({ duration: DUR.sm, ease: EASE_SOFT })}
+        className="columns-2 lg:columns-3 gap-3 sm:gap-6 md:gap-8 space-y-3 sm:space-y-6 md:space-y-8 max-w-[1200px] mx-auto"
+      >
         {visibili.map((image, index) => (
           <GalleryCard
             key={`${image.showId}-${image.originalSrc}`}
@@ -270,7 +317,7 @@ export default function GalleryView({ images }: GalleryViewProps) {
             onOpen={() => setActiveIndex(index)}
           />
         ))}
-      </div>
+      </motion.div>
 
       {/* Premium Lightbox Modal overlay */}
       <AnimatePresence>
@@ -279,7 +326,7 @@ export default function GalleryView({ images }: GalleryViewProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={mv.t({ duration: DUR.sm, ease: EASE_SOFT })}
             className="fixed inset-0 h-[100dvh] bg-black/90 backdrop-blur-xl z-40 flex flex-col overflow-hidden"
             onClick={() => setActiveIndex(null)}
           >
@@ -338,7 +385,7 @@ export default function GalleryView({ images }: GalleryViewProps) {
                   onLoad={() => setIsImageLoading(false)}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: isImageLoading ? 0 : 1 }}
-                  transition={{ duration: 0.25 }}
+                  transition={mv.t({ duration: DUR.xs, ease: EASE_SOFT })}
                   className="max-h-full max-w-full w-auto h-auto object-contain rounded-xl md:rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] border border-white/10 select-none"
                   onClick={(e) => e.stopPropagation()}
                 />
@@ -393,6 +440,6 @@ export default function GalleryView({ images }: GalleryViewProps) {
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </MotionConfig>
   );
 }

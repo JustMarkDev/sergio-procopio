@@ -39,7 +39,7 @@ const { title, description, canonicalPath } = Astro.props;
 		</noscript>
 	</head>
 	<body>
-		<Header client:load transition:persist />
+		<Header pathname={Astro.url.pathname} client:load transition:persist />
 		<main>
 			<slot />
 		</main>

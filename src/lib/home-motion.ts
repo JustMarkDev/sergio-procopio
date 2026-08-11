@@ -5,7 +5,6 @@ import type {
   SpringOptions,
   TargetAndTransition,
   Transition,
-  UseInViewOptions,
   Variants,
   ViewportOptions,
 } from "framer-motion";
@@ -14,7 +13,7 @@ import type {
  * FONTE UNICA DEL MOVIMENTO DELLA HOME.
  *
  * Importato da HeroCommittenti, RepertorioCommittenti, PercheFidarsi,
- * DomandeCommittenti, BarraCtaMobile e dalla micro-isola Reveal.
+ * BarraCtaMobile, Header, ContactForm e dalla micro-isola Reveal.
  * Nessun componente ridefinisce easing, durate o varianti in locale.
  *
  * CONVENZIONE DEGLI STATI: tutte le varianti esportate usano le chiavi
@@ -23,7 +22,7 @@ import type {
  *
  * DELAY PER SINGOLO ELEMENTO: si passa via prop `custom`, non riscrivendo la transition.
  *   <motion.p variants={fadeUp} custom={0.7} />          // delay 0.7s
- *   <motion.span variants={maskWord} custom={i} />       // delay i * MASK_WORD_STEP
+ *   <motion.span variants={maskRiga} custom={0.18} />    // delay 0.18s
  */
 
 /* ------------------------------------------------------------------------- *
@@ -53,9 +52,6 @@ export const DUR = {
 
 export type DurKey = keyof typeof DUR;
 
-/** Count-up dei numeri di «Perché fidarsi». Fuori dalla scala perché è l'unica eccezione. */
-export const DUR_COUNT = 1.4;
-
 /** Unica durata ammessa con prefers-reduced-motion: la dissolvenza secca. */
 export const DUR_REDUCED = 0.2;
 
@@ -69,13 +65,6 @@ export const SPRING: Transition = {
   stiffness: 300,
   damping: 24,
   bounce: 0,
-};
-
-/** Unica eccezione con rimbalzo: i nodi della timeline di «Chi sono». */
-export const SPRING_NODE: Transition = {
-  type: "spring",
-  duration: 0.5,
-  bounce: 0.4,
 };
 
 /** Pillola oro del filtro del repertorio (layoutId). */
@@ -118,11 +107,6 @@ export function viewportAmount(amount: ViewportOptions["amount"]): ViewportOptio
   return { ...VIEWPORT, amount };
 }
 
-/** Opzioni per `useInView(ref, ...)` quando serve la soglia e non le varianti. */
-export function inViewOnce(amount: UseInViewOptions["amount"] = 0.4): UseInViewOptions {
-  return { once: true, amount };
-}
-
 /* ------------------------------------------------------------------------- *
  * VARIANTI CONDIVISE
  * ------------------------------------------------------------------------- */
@@ -151,44 +135,31 @@ export const fadeUp: Variants = {
 };
 
 /**
- * Entrata di un blocco intero. È fadeUp sotto un nome parlante: la usa
- * Reveal.tsx per le tre sezioni Astro statiche, che entrano come un pezzo solo.
+ * Filo o regola orizzontale che si disegna. Richiede la classe `origin-left`.
+ * opacity nello hidden: così il fallback noscript di Layout.astro copre anche
+ * i fili usati fuori da un parent opaco; il filo sfuma mentre si disegna,
+ * differenza invisibile.
  */
-export const reveal: Variants = fadeUp;
-
-/** Passo del mask reveal dell'H1 dell'hero, per parola. */
-export const MASK_WORD_STEP = 0.055;
-
-/**
- * Mask reveal per parola o per riga. Va dentro un `<span class="block overflow-hidden">`.
- * `custom` = indice della parola (il delay è indice × MASK_WORD_STEP).
- * Unico stagger per parola ammesso in tutta la home.
- */
-export const maskWord: Variants = {
-  hidden: { y: "110%" },
-  show: (index?: number) => ({
-    y: 0,
-    transition: withDelay(
-      { duration: DUR.lg, ease: EASE },
-      typeof index === "number" ? index * MASK_WORD_STEP : undefined,
-    ),
-  }),
-};
-
-/** Filo o regola orizzontale che si disegna. Richiede la classe `origin-left`. */
 export const lineX: Variants = {
-  hidden: { scaleX: 0 },
+  hidden: { scaleX: 0, opacity: 0 },
   show: (delay?: number) => ({
     scaleX: 1,
+    opacity: 1,
     transition: withDelay({ duration: DUR.md, ease: EASE }, delay),
   }),
 };
 
-/** Barra verticale che si disegna dall'alto. Richiede la classe `origin-top`. */
+/**
+ * Barra verticale che si disegna dall'alto. Richiede la classe `origin-top`.
+ * opacity nello hidden: così il fallback noscript di Layout.astro copre anche
+ * i fili usati fuori da un parent opaco; il filo sfuma mentre si disegna,
+ * differenza invisibile.
+ */
 export const lineY: Variants = {
-  hidden: { scaleY: 0 },
+  hidden: { scaleY: 0, opacity: 0 },
   show: (delay?: number) => ({
     scaleY: 1,
+    opacity: 1,
     transition: withDelay({ duration: DUR.sm, ease: EASE }, delay),
   }),
 };
@@ -219,6 +190,129 @@ export function stagger(each = 0.07, delay = 0.05): Variants {
     },
   };
 }
+
+/**
+ * La pausa della battuta: il tempo comico come firma. Ovunque un titolo abbia
+ * una parte corsiva/oro, quella entra un battito dopo il setup. Si compone via
+ * `custom` o come passo di stagger(PAUSA_BATTUTA, 0).
+ */
+export const PAUSA_BATTUTA = 0.18;
+
+/**
+ * Passo dello stagger delle card del repertorio: delay = indice × CARD_STEP,
+ * solo da md in su (sotto md lo scroll fa già da stagger).
+ */
+export const CARD_STEP = 0.04;
+
+/**
+ * Mask reveal PER RIGA dei titoli. Va dentro
+ * `<span class="block overflow-hidden pb-[0.12em] -mb-[0.12em]">`
+ * (il padding salva i discendenti dei corsivi).
+ * `custom` = delay in SECONDI (non indice). Lo hidden include opacity:0:
+ * così il fallback noscript di Layout.astro copre anche le righe dei titoli.
+ */
+export const maskRiga: Variants = {
+  hidden: { y: "110%", opacity: 0 },
+  show: (delay?: number) => ({
+    y: 0,
+    opacity: 1,
+    transition: withDelay({ duration: DUR.lg, ease: EASE }, delay),
+  }),
+};
+
+/**
+ * Le due ante del sipario dell'hero (decorative, aria-hidden, dentro un parent
+ * overflow-hidden). `custom` = direzione ±1 (−1 anta sinistra, +1 anta destra).
+ * UNICA variante con hidden solo-transform, DELIBERATA: in SSR le ante nascono
+ * già fuori scena e senza JS il noscript non deve riportarle sul palco
+ * (niente opacity:0 nello hidden = il selettore non le matcha). Con JS, il
+ * primo keyframe le riporta chiuse istantaneamente, poi scorrono via e sfumano
+ * in coda.
+ */
+export const anteSipario: Variants = {
+  hidden: (dir: number = 1) => ({ x: `${dir * 112}%` }),
+  show: (dir: number = 1) => ({
+    opacity: [1, 1, 0],
+    x: ["0%", `${dir * 112}%`, `${dir * 112}%`],
+    transition: { duration: DUR.lg, ease: EASE, times: [0, 0.8, 1] },
+  }),
+};
+
+/**
+ * Entrata delle card del repertorio, nella convenzione a varianti (via i
+ * target inline e il fallback reduced duplicato).
+ * `custom` = delay in secondi (tipicamente indice × CARD_STEP).
+ */
+export const cardIn: Variants = {
+  hidden: { opacity: 0, y: 18, scale: 0.97 },
+  show: (delay?: number) => ({
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: withDelay({ duration: DUR.sm, ease: EASE }, delay),
+  }),
+};
+
+/**
+ * Contro-movimento dell'immagine dentro una cornice overflow-hidden: la
+ * locandina scivola nel telaio mentre la card si posa. Eredita il trigger dal
+ * motion parent (niente initial/whileInView propri).
+ */
+export const fotoTelaio: Variants = {
+  hidden: { opacity: 0, y: "8%", scale: 1.06 },
+  show: (delay?: number) => ({
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: withDelay({ duration: DUR.md, ease: EASE }, delay),
+  }),
+};
+
+/**
+ * Cambio di quinta direction-aware per il carosello. `custom` = direzione
+ * (+1 avanti, −1 indietro), da passare SIA ad AnimatePresence SIA all'elemento.
+ * 160 = SOGLIA_SWIPE_PX × 2 del carosello. Chiavi initial/show/exit per
+ * AnimatePresence.
+ */
+export const quinta: Variants = {
+  initial: (dir: number = 1) => ({ x: dir * 160, opacity: 0, scale: 0.98 }),
+  show: {
+    x: 0,
+    opacity: 1,
+    scale: 1,
+    transition: { duration: DUR.md, ease: EASE },
+  },
+  exit: (dir: number = 1) => ({
+    x: dir * -160,
+    opacity: 0,
+    scale: 0.98,
+    transition: { duration: DUR.md, ease: EASE },
+  }),
+};
+
+/**
+ * Velo/gradiente decorativo che si accende PRIMA che entrino titolo ed
+ * elementi: la sala si illumina. Per motion.div aria-hidden di sfondo.
+ */
+export const luceScena: Variants = {
+  hidden: { opacity: 0, scale: 1.06 },
+  show: (delay?: number) => ({
+    opacity: 1,
+    scale: 1,
+    transition: withDelay({ duration: DUR.lg, ease: EASE }, delay),
+  }),
+};
+
+/**
+ * La battuta che sale in graticcia: parola/titolo rotante dentro
+ * `<span class="block overflow-hidden">`. La parola vecchia esce salendo, la
+ * nuova monta dalla ribalta. Chiavi initial/show/exit per AnimatePresence.
+ */
+export const battuta: Variants = {
+  initial: { y: "110%", opacity: 0 },
+  show: { y: 0, opacity: 1, transition: { duration: DUR.sm, ease: EASE } },
+  exit: { y: "-110%", opacity: 0, transition: { duration: DUR.sm, ease: EASE } },
+};
 
 /* ------------------------------------------------------------------------- *
  * MICRO-INTERAZIONI (identiche a Header.tsx)

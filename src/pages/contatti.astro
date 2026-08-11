@@ -30,7 +30,7 @@ if (bio?.data.image) {
 >
     <div class="relative overflow-hidden bg-background min-h-screen">
         <div
-            class="absolute top-0 left-0 w-full h-[50vh] bg-[radial-gradient(ellipse_at_top,rgba(212,162,76,0.06)_0%,transparent_70%)] pointer-events-none"
+            class="velo-contatti absolute top-0 left-0 w-full h-[50vh] bg-[radial-gradient(ellipse_at_top,rgba(212,162,76,0.06)_0%,transparent_70%)] pointer-events-none"
         >
         </div>
 
@@ -40,12 +40,21 @@ if (bio?.data.image) {
                     <h1
                         class="text-5xl md:text-7xl font-serif font-bold mb-6 tracking-tight"
                     >
-                        Organizziamo la <span class="italic text-primary"
-                            >vostra serata</span
+                        <span
+                            class="inline-block overflow-hidden pb-[0.12em] -mb-[0.12em] align-bottom"
+                            ><span class="riga-ribalta block"
+                                >Organizziamo la</span
+                            ></span
+                        >{" "}<span
+                            class="inline-block overflow-hidden pb-[0.12em] -mb-[0.12em] align-bottom"
+                            ><span
+                                class="italic text-primary riga-ribalta riga-battuta block"
+                                >vostra serata</span
+                            ></span
                         >
                     </h1>
                     <p
-                        class="text-xl text-muted-foreground max-w-2xl opacity-80 leading-relaxed"
+                        class="sottotitolo-contatti text-xl text-muted-foreground max-w-2xl opacity-80 leading-relaxed"
                     >
                         Ogni spettacolo viene concordato su misura per lo spazio
                         che lo ospita. Scrivete indicando il tipo di ente, il
@@ -57,7 +66,9 @@ if (bio?.data.image) {
                 {
                     foto && (
                         <div class="lg:col-span-5">
-                            <div class="relative mx-auto aspect-4/3 max-w-md overflow-hidden rounded-4xl border border-white/10 bg-white/5 lg:ml-auto">
+                            {/* Rapporto nativo del ritratto (2:3): la foto si vede
+                                intera, niente ritaglio. max-w-sm tiene bassa l'altezza. */}
+                            <div class="locandina-contatti relative mx-auto aspect-2/3 max-w-sm overflow-hidden rounded-4xl border border-white/10 bg-white/5 lg:ml-auto">
                                 <img
                                     src={foto.src}
                                     srcset={foto.srcset}
@@ -67,7 +78,7 @@ if (bio?.data.image) {
                                     height={foto.height}
                                     loading="eager"
                                     decoding="async"
-                                    class="absolute inset-0 h-full w-full object-cover object-top"
+                                    class="foto-telaio-contatti absolute inset-0 h-full w-full object-cover"
                                 />
                                 <div
                                     aria-hidden="true"
@@ -83,3 +94,121 @@ if (bio?.data.image) {
         <ContactForm client:load />
     </div>
 </Layout>
+
+<style>
+    /* ======================================================================
+       SIPARIO — si apre l'ufficio di scena (/contatti)
+
+       Entrate CSS A TEMPO (load) della testata: è tutta sopra la piega,
+       quindi animation-timeline: view() risulterebbe già consumata al
+       caricamento. Tre tempi: il velo radiale si accende (luceScena), le
+       due righe del titolo salgono in ribalta dentro maschere
+       overflow-hidden (maskRiga) con la battuta oro un battito dopo il
+       setup (PAUSA_BATTUTA 0.18s), poi sottotitolo e ritratto-locandina
+       prendono il palco (fadeUp, cardIn + fotoTelaio). Solo
+       transform+opacity; l'EASE del sistema è duplicato come
+       cubic-bezier(0.16, 1, 0.3, 1); tetto 1.6s rispettato (ultimo
+       elemento finisce a 1.0s, la battuta a 1.13s).
+
+       GUARDIA: tutte le regole `animation` vivono dentro
+       @media (prefers-reduced-motion: no-preference); fuori dalla media
+       query nessuna regola scrive opacity o transform, quindi con reduced
+       motion (o comunque senza animazioni) la pagina resta statica e
+       completa, nulla nascosto. Niente JavaScript coinvolto: gira anche
+       senza il fallback noscript di Layout. ContactForm si gestisce da sé
+       (MotionConfig reducedMotion="user" + useMotionSafe).
+       ====================================================================== */
+    @keyframes velo-contatti-accendi {
+        from {
+            opacity: 0;
+            transform: scale(1.06);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    @keyframes riga-ribalta-su {
+        from {
+            opacity: 0;
+            transform: translateY(110%);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes sottotitolo-contatti-su {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes locandina-contatti-posa {
+        from {
+            opacity: 0;
+            transform: translateY(18px) scale(0.97);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    /* Contro-movimento SOLO transform: l'opacità la porta la cornice, così
+       senza la media query l'immagine resta al suo posto, visibile. */
+    @keyframes foto-telaio-contatti-scivola {
+        from {
+            transform: translateY(8%) scale(1.06);
+        }
+        to {
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        /* 1) LA LUCE SI ACCENDE — il velo radiale sale (luceScena, DUR.lg). */
+        .velo-contatti {
+            animation: velo-contatti-accendi 0.9s cubic-bezier(0.16, 1, 0.3, 1)
+                0s both;
+        }
+
+        /* 2) IL TITOLO SALE IN RIBALTA — mask reveal per riga (maskRiga, DUR.lg). */
+        .riga-ribalta {
+            animation: riga-ribalta-su 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.05s
+                both;
+        }
+
+        /* La firma: la battuta oro entra un battito dopo il setup
+           (0.05s + PAUSA_BATTUTA 0.18s). */
+        .riga-battuta {
+            animation-delay: 0.23s;
+        }
+
+        /* 3) GLI ELEMENTI PRENDONO IL PALCO — sottotitolo (fadeUp, DUR.md)... */
+        .sottotitolo-contatti {
+            animation: sottotitolo-contatti-su 0.55s
+                cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
+        }
+
+        /* ...e ritratto come locandina: la cornice si posa (cardIn, DUR.md)
+           mentre la foto scivola nel telaio (fotoTelaio). Un solo
+           transform-owner ciascuno. */
+        .locandina-contatti {
+            animation: locandina-contatti-posa 0.55s
+                cubic-bezier(0.16, 1, 0.3, 1) 0.45s both;
+        }
+
+        .foto-telaio-contatti {
+            animation: foto-telaio-contatti-scivola 0.55s
+                cubic-bezier(0.16, 1, 0.3, 1) 0.45s both;
+        }
+    }
+</style>
