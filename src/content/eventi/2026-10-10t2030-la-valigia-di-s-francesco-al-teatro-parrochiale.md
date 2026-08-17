@@ -1,9 +1,9 @@
 ---
 spettacolo: La Valigia di S. Francesco
-date: 10-10-2026 20:30
-venue: Teatro Parrochiale
-city: Gianco . BS
-address: Via Fontana
+date: 09-12-2026 20:45
+venue: Teatro S. Giulia
+city: Brescia
+address: Via Quinta, 4 - Villaggio Prealpino
 isPublic: true
 draft: false
 ---
