@@ -24,4 +24,10 @@ astro-dev.err.log
 # macOS-specific files
 .DS_Store
 
+# tooling
+.claude/
+
 .vercel
+
+# backup palette (locale, non versionato)
+PALETTE-ORO-BACKUP.md

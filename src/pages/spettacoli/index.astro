@@ -2,6 +2,7 @@
 import Layout from "../../layouts/Layout.astro";
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
+import { CATALOGO_HOME, ENTI } from "../../lib/home-catalogo";
 
 const spettacoli = (await getCollection("spettacoli")).filter(
     (show) => !show.data.draft,
@@ -9,23 +10,20 @@ const spettacoli = (await getCollection("spettacoli")).filter(
 ---
 
 <Layout title="Tutti gli Spettacoli | Sergio Procopio">
-    <div class="relative overflow-hidden bg-[#09090b]">
-        <div
-            class="absolute top-0 left-0 w-full h-[50vh] bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.05)_0%,transparent_70%)] pointer-events-none"
-        >
-        </div>
-
-        <div class="container relative z-10 mx-auto px-4 md:px-8 lg:px-12 py-32 min-h-screen">
+    <div class="relative overflow-hidden bg-background">
+        <div class="container relative z-10 mx-auto px-4 md:px-8 lg:px-12 pt-32 pb-12 min-h-screen">
             <div class="text-center mb-16">
                 <h1
                     class="text-5xl md:text-7xl font-serif font-bold mb-6 tracking-tight"
                 >
-                    L'Arte della <span class="italic text-primary"
-                        >Pantomima</span
+                    <span class="inline-block overflow-hidden align-bottom pb-[0.12em] -mb-[0.12em]"
+                        ><span class="riga-cartellone inline-block">L'Arte della</span></span
+                    > <span class="inline-block overflow-hidden align-bottom pb-[0.12em] -mb-[0.12em]"
+                        ><span class="battuta-cartellone inline-block italic text-primary">Pantomima</span></span
                     >
                 </h1>
                 <p
-                    class="text-xl text-muted-foreground max-w-2xl mx-auto italic opacity-80 leading-relaxed"
+                    class="sottotitolo-cartellone text-xl text-muted-foreground max-w-2xl mx-auto italic opacity-80 leading-relaxed"
                 >
                     Ogni spettacolo è un viaggio unico fatto di emozioni, <br
                         class="hidden md:block"
@@ -33,24 +31,67 @@ const spettacoli = (await getCollection("spettacoli")).filter(
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Filtro per tipo di ente: stato in querystring (?ente=slug),
+                stessa tassonomia delle chip dell'hero in home. */}
+            {/* Su mobile: due righe che scorrono in orizzontale (come i
+                filtri della galleria); da sm tornano centrate a capo. */}
+            <div
+                role="group"
+                aria-label="Filtra per tipo di ente"
+                class="mb-12 grid grid-flow-col grid-rows-2 justify-start gap-2 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] sm:flex sm:flex-wrap sm:justify-center sm:overflow-visible sm:pb-0"
+            >
+                {
+                    ENTI.map((ente, indice) => (
+                        <button
+                            type="button"
+                            data-filtro-ente={ente.slug}
+                            aria-pressed={ente.slug === "tutti" ? "true" : "false"}
+                            style={`--chip-i: ${indice}`}
+                            class="chip-cartellone inline-flex min-h-11 items-center whitespace-nowrap rounded-full border border-border px-4 text-sm font-semibold text-muted-foreground transition-[color,border-color,background-color,scale] duration-200 hover:border-primary/50 hover:text-foreground active:scale-[0.96] aria-pressed:border-primary aria-pressed:bg-primary-deep aria-pressed:text-primary-foreground"
+                        >
+                            {ente.label}
+                        </button>
+                    ))
+                }
+            </div>
+
+            {/* Senza JavaScript il velo dei placeholder non verrebbe mai
+                dissolto (is-loaded arriva dallo script): qui lo si elimina
+                del tutto, così le foto del cartellone restano visibili. */}
+            <noscript>
+                <style is:inline>
+                    .show-card-placeholder {
+                        display: none;
+                    }
+                </style>
+            </noscript>
+
+            <div
+                data-griglia-spettacoli
+                class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 md:gap-8 lg:grid-cols-3"
+            >
                 {
                     spettacoli.map((show, index) => (
                         <a
                             href={`/spettacoli/${show.id}`}
-                            class="group flex flex-col h-full relative bg-[#09090b] border border-white/10 rounded-4xl overflow-hidden hover:border-primary/50 hover:shadow-[0_0_30px_rgba(37,99,235,0.15)] hover:-translate-y-1 transition-all duration-500"
+                            data-spettacolo-card
+                            data-enti={(CATALOGO_HOME[show.id]?.enti ?? []).join(" ")}
+                            class="locandina-cartellone group flex flex-col h-full relative bg-background border border-border rounded-4xl hover:border-primary/50 hover:-translate-y-1 transition-[border-color,translate] duration-500 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
                         >
                             {/* Abstract Image Area */}
-                            <div class="show-card-image-shell aspect-4/3 w-full bg-secondary/20 relative overflow-hidden flex items-center justify-center shrink-0">
+                            <div class="show-card-image-shell aspect-4/3 w-full bg-secondary/20 relative overflow-hidden rounded-t-4xl flex items-center justify-center shrink-0">
                                 {show.data.image ? (
                                     <>
                                         <div
-                                            class="show-card-placeholder absolute inset-0 overflow-hidden bg-zinc-900 transition-opacity duration-500"
+                                            class="show-card-placeholder absolute inset-0 z-[1] overflow-hidden bg-zinc-900 transition-opacity duration-500"
                                             aria-hidden="true"
                                         >
+                                            {/* Placeholder statico sopra l'immagine (z-[1]): niente
+                                                shimmer in loop, il velo si dissolve al caricamento
+                                                (is-loaded). L'immagine sotto è sempre opaca, così
+                                                nessuno stato nascosto dipende dallo script. */}
                                             <div class="absolute inset-0 bg-linear-to-br from-zinc-800 via-zinc-700 to-zinc-900" />
-                                            <div class="absolute inset-0 -translate-x-full animate-[shimmer_1.8s_ease-in-out_infinite] bg-linear-to-r from-transparent via-white/10 to-transparent" />
-                                            <div class="absolute inset-0 shadow-[0_0_36px_rgba(37,99,235,0.18)]" />
+                                            <div class="absolute inset-0 shadow-[0_0_36px_rgba(232,72,63,0.18)]" />
                                         </div>
                                         <Image
                                             src={show.data.image}
@@ -59,7 +100,7 @@ const spettacoli = (await getCollection("spettacoli")).filter(
                                             fetchpriority={index === 0 ? "high" : undefined}
                                             decoding="async"
                                             data-show-card-image
-                                            class="show-card-image absolute inset-0 w-full h-full object-cover opacity-0 blur-sm transition-all duration-700 group-hover:scale-105"
+                                            class="show-card-image absolute inset-0 w-full h-full object-cover transition-[scale] duration-700 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                                         />
                                     </>
                                 ) : (
@@ -76,9 +117,9 @@ const spettacoli = (await getCollection("spettacoli")).filter(
                                     </>
                                 )}
 
-                                <div class="absolute inset-0 bg-linear-to-t from-[#09090b] to-transparent z-10" />
+                                <div class="absolute inset-0 bg-linear-to-t from-background to-transparent z-10" />
 
-                                <div class="absolute top-4 left-4 right-4 z-20 flex flex-wrap items-start justify-between gap-2 sm:top-6 sm:left-6 sm:right-6">
+                                <div class="cartellino-cartellone absolute top-4 left-4 right-4 z-20 flex flex-wrap items-start justify-between gap-2 sm:top-6 sm:left-6 sm:right-6">
                                     <span class="max-w-full py-1 px-3 bg-black/40 backdrop-blur-md border border-white/10 rounded-full text-[10px] font-bold text-primary uppercase tracking-[0.16em] break-words sm:tracking-[0.2em]">
                                         {show.data.category}
                                     </span>
@@ -109,14 +150,21 @@ const spettacoli = (await getCollection("spettacoli")).filter(
                                 </div>
                             </div>
 
-                            <div class="p-6 relative z-20 bg-[#09090b] flex flex-col grow justify-center">
-                                <h2 class="text-3xl font-bold font-serif text-foreground group-hover:text-primary transition-colors duration-300 leading-tight mb-4">
+                            <div class="p-4 sm:p-6 relative z-20 bg-background rounded-b-4xl flex flex-col grow justify-center">
+                                <h2 class="text-xl sm:text-3xl font-bold font-serif text-foreground group-hover:text-primary transition-colors duration-300 leading-tight mb-2 sm:mb-4">
                                     {show.data.title}
                                 </h2>
                                 <p class="text-sm text-muted-foreground leading-relaxed opacity-80 line-clamp-3">
                                     {show.data.description}
                                 </p>
                             </div>
+
+                            {/* Glow pre-dipinto: si accende in sola opacity, mai
+                                animando box-shadow (compositor-friendly). */}
+                            <span
+                                aria-hidden="true"
+                                class="pointer-events-none absolute -inset-px rounded-[inherit] opacity-0 shadow-[0_0_30px_rgba(232,72,63,0.15)] transition-opacity duration-500 group-hover:opacity-100 motion-reduce:transition-none"
+                            ></span>
                         </a>
                     ))
                 }
@@ -153,15 +201,153 @@ const spettacoli = (await getCollection("spettacoli")).filter(
     };
 
     document.addEventListener("astro:page-load", initializeShowImages);
+
+    /* --- Filtro per tipo di ente ------------------------------------------ */
+
+    const SLUG_TUTTI = "tutti";
+
+    const applicaFiltro = (slug: string, aggiornaUrl: boolean) => {
+        // Dopo il primo filtro reale il cartellone resta acceso: le entrate
+        // scroll-driven non devono lasciare card semitrasparenti a metà corsa.
+        if (aggiornaUrl || slug !== SLUG_TUTTI) {
+            document
+                .querySelector("[data-griglia-spettacoli]")
+                ?.classList.add("cartellone-filtrato");
+        }
+
+        document
+            .querySelectorAll<HTMLButtonElement>("[data-filtro-ente]")
+            .forEach((bottone) => {
+                bottone.setAttribute(
+                    "aria-pressed",
+                    String(bottone.dataset.filtroEnte === slug),
+                );
+            });
+
+        document
+            .querySelectorAll<HTMLElement>("[data-spettacolo-card]")
+            .forEach((card) => {
+                const enti = (card.dataset.enti ?? "")
+                    .split(" ")
+                    .filter(Boolean);
+                card.classList.toggle(
+                    "hidden",
+                    slug !== SLUG_TUTTI && !enti.includes(slug),
+                );
+            });
+
+        if (aggiornaUrl) {
+            const url = new URL(window.location.href);
+            if (slug === SLUG_TUTTI) url.searchParams.delete("ente");
+            else url.searchParams.set("ente", slug);
+            window.history.replaceState(
+                null,
+                "",
+                `${url.pathname}${url.search}${url.hash}`,
+            );
+        }
+    };
+
+    const initializeFiltro = () => {
+        const bottoni = document.querySelectorAll<HTMLButtonElement>(
+            "[data-filtro-ente]",
+        );
+        if (bottoni.length === 0) return;
+
+        bottoni.forEach((bottone) => {
+            bottone.addEventListener("click", () =>
+                applicaFiltro(bottone.dataset.filtroEnte ?? SLUG_TUTTI, true),
+            );
+        });
+
+        // Deep link dalle chip dell'hero in home: /spettacoli?ente=slug.
+        const slugValidi = new Set(
+            Array.from(bottoni, (bottone) => bottone.dataset.filtroEnte),
+        );
+        const valore = new URLSearchParams(window.location.search).get("ente");
+        applicaFiltro(
+            valore && slugValidi.has(valore) ? valore : SLUG_TUTTI,
+            false,
+        );
+    };
+
+    document.addEventListener("astro:page-load", initializeFiltro);
 </script>
 
 <style>
+    /* Crossfade di caricamento: l'immagine sotto è sempre opaca, il velo
+       (placeholder sopra) si dissolve su is-loaded; il <noscript> nella
+       pagina lo rimuove quando lo script non gira. */
     .show-card-image-shell.is-loaded .show-card-placeholder {
         opacity: 0;
     }
 
-    .show-card-image-shell.is-loaded .show-card-image {
-        opacity: 1;
-        filter: blur(0);
+    /* ==========================================================
+       SIPARIO — il cartellone (/spettacoli)
+       Tempo 1: la luce di sala (velo oro) si accende; tempo 2: il
+       titolo sale in ribalta e «Pantomima» entra una PAUSA_BATTUTA
+       (0.18s) dopo; tempo 3: le chip scaglionate al load, le
+       locandine e i cartellini scrubbati dallo scroll. Solo
+       transform+opacity; EASE duplicato come cubic-bezier(0.16,1,0.3,1);
+       durate = DUR di home-motion.ts. Sopra la piega keyframes
+       time-based (guardia: solo no-preference — girano anche senza
+       JS); griglia con animation-timeline: view() sotto DOPPIA
+       guardia. Fuori dalle guardie nessuno stato nascosto.
+       ========================================================== */
+    @keyframes cartellone-riga-su {
+        from { opacity: 0; transform: translateY(110%); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes cartellone-fade-su {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes cartellone-chip-su {
+        from { opacity: 0; transform: translateY(12px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes cartellone-locandina-su {
+        from { opacity: 0; transform: translateY(24px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes cartellone-cartellino-su {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+        .riga-cartellone {
+            animation: cartellone-riga-su 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+        }
+        /* La pausa della battuta: 0.15s + PAUSA_BATTUTA (0.18s) = 0.33s */
+        .battuta-cartellone {
+            animation: cartellone-riga-su 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.33s both;
+        }
+        .sottotitolo-cartellone {
+            animation: cartellone-fade-su 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.45s both;
+        }
+        .chip-cartellone {
+            animation: cartellone-chip-su 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+            animation-delay: calc(0.55s + var(--chip-i, 0) * 0.06s);
+        }
+    }
+    @supports (animation-timeline: view()) {
+        @media (prefers-reduced-motion: no-preference) {
+            .locandina-cartellone {
+                animation: cartellone-locandina-su cubic-bezier(0.16, 1, 0.3, 1) both;
+                animation-timeline: view();
+                animation-range: entry 0% entry 60%;
+            }
+            /* cadenza per colonna, innocua a 1-2 colonne (pattern .cartello-scena) */
+            .locandina-cartellone:nth-child(3n + 2) { animation-range: entry 8% entry 68%; }
+            .locandina-cartellone:nth-child(3n) { animation-range: entry 16% entry 76%; }
+            .cartellino-cartellone {
+                animation: cartellone-cartellino-su cubic-bezier(0.16, 1, 0.3, 1) both;
+                animation-timeline: view();
+                animation-range: entry 10% entry 70%;
+            }
+            /* Guinzaglio del filtro: dopo un filtro reale niente card a metà corsa */
+            .cartellone-filtrato .locandina-cartellone,
+            .cartellone-filtrato .cartellino-cartellone { animation: none; }
+        }
     }
 </style>

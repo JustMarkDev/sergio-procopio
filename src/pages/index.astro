@@ -1,29 +1,103 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import HeroSection from "../components/custom/HeroSection";
-import FeaturedShows from "../components/custom/FeaturedShows";
-import ContactForm from "../components/custom/ContactForm";
 import { getCollection } from "astro:content";
+import { getImage } from "astro:assets";
+import heroFusa from "../assets/home/hero-comico-fuso.webp";
 
-const allShows = (await getCollection("spettacoli")).filter(
+import HeroCommittenti from "../components/custom/home/HeroCommittenti";
+import RepertorioCommittenti from "../components/custom/home/RepertorioCommittenti";
+import ComeSiOspita from "../components/custom/home/ComeSiOspita.astro";
+import PercheFidarsi from "../components/custom/home/PercheFidarsi";
+import TrePassi from "../components/custom/home/TrePassi.astro";
+import ChiusuraContatti from "../components/custom/home/ChiusuraContatti.astro";
+import BarraCtaMobile from "../components/custom/home/BarraCtaMobile";
+
+import { CATALOGO_HOME, NUMERI_IT, ordinaPerHome } from "../lib/home-catalogo";
+
+// --- Repertorio ------------------------------------------------------------
+const pubblicati = (await getCollection("spettacoli")).filter(
     (show) => !show.data.draft,
 );
-// Prefer highlighted shows or first 3
-const featuredShows = allShows
-    .sort((a, b) => (b.data.highlight ? 1 : 0) - (a.data.highlight ? 1 : 0))
-    .slice(0, 3)
-    .map((show) => ({
-        id: show.id,
-        title: show.data.title,
-        category: show.data.category,
-        description: show.data.description,
-        durata: show.data.durata,
-        image: show.data.image?.src, // Pass the resolved src URL to the React component
-    }));
+
+const spettacoli = await Promise.all(
+    ordinaPerHome(pubblicati).map(async (show) => {
+        const voce = CATALOGO_HOME[show.id];
+        let img = null;
+
+        if (show.data.image) {
+            const ottimizzata = await getImage({
+                src: show.data.image,
+                widths: [400, 640, 900],
+                format: "webp",
+            });
+            img = {
+                src: ottimizzata.src,
+                srcset: ottimizzata.srcSet.attribute,
+                width: show.data.image.width,
+                height: show.data.image.height,
+            };
+        }
+
+        return {
+            id: show.id,
+            title: show.data.title,
+            eta: show.data.eta ?? null,
+            durata: show.data.durata ?? null,
+            regia: show.data.regia ?? null,
+            tema: voce?.tema ?? show.data.description,
+            problema: voce?.problema ?? "",
+            perche: voce?.perche ?? show.data.description,
+            enti: voce?.enti ?? [],
+            img,
+        };
+    }),
+);
+
+const showCountLabel = NUMERI_IT[spettacoli.length] ?? String(spettacoli.length);
+
+// --- Immagine dell'hero ----------------------------------------------------
+// Copia della foto di «Comico» con i bordi già sfumati nel colore di sfondo
+// (generata con sharp: vedi src/assets/home/hero-comico-fuso.webp), così la
+// figura si fonde con la sezione senza spigoli visibili.
+const ottimizzataHero = await getImage({
+    src: heroFusa,
+    widths: [900, 1400, 1920],
+    format: "webp",
+});
+const hero = {
+    src: ottimizzataHero.src,
+    srcset: ottimizzataHero.srcSet.attribute,
+    width: heroFusa.width,
+    height: heroFusa.height,
+};
 ---
 
 <Layout>
-    <HeroSection client:load />
-    <FeaturedShows client:load shows={featuredShows} />
-    <ContactForm client:load />
+    <HeroCommittenti
+        client:load
+        showCountLabel={showCountLabel}
+        hero={hero}
+    />
+
+    <RepertorioCommittenti
+        client:visible
+        shows={spettacoli.slice(0, 3)}
+        showCountLabel={showCountLabel}
+    />
+
+    <ComeSiOspita shows={spettacoli} showCountLabel={showCountLabel} />
+
+    <PercheFidarsi
+        client:visible
+        foto={spettacoli
+            .filter((show) => show.img !== null)
+            .slice(0, 6)
+            .map((show) => ({ ...show.img!, titolo: show.title, id: show.id }))}
+    />
+
+    <TrePassi />
+
+    <ChiusuraContatti />
+
+    <BarraCtaMobile client:idle />
 </Layout>

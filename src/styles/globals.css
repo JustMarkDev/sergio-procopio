@@ -5,9 +5,14 @@
     --font-serif: "Playfair Display", "serif";
 
     --color-background: var(--background);
+    --color-background-alt: var(--background-alt);
+    --color-bar: var(--bar);
     --color-foreground: var(--foreground);
 
     --color-primary: var(--primary);
+    --color-primary-hover: var(--primary-hover);
+    --color-primary-deep: var(--primary-deep);
+    --color-primary-deep-hover: var(--primary-deep-hover);
     --color-primary-foreground: var(--primary-foreground);
 
     --color-secondary: var(--secondary);
@@ -40,45 +45,85 @@
             transform: translateY(0);
         }
     }
-    @keyframes shimmer {
-        100% {
-            transform: translateX(100%);
-        }
-    }
     --animate-fade-in: fade-in 0.8s ease-out;
 }
 
 @layer base {
     :root {
-        --background: #09090b; /* Zinc 950 */
-        --foreground: #fafafa; /* Zinc 50 */
+        --background: #0c0908; /* nero caldo, virato rosso */
+        --background-alt: #1b1513; /* più chiaro del fondo: sfondo delle sezioni alternate */
+        --bar: #0c0908; /* header e footer */
+        --foreground: #f5f0ee; /* bianco caldo — 17.5:1 */
 
-        --card: #09090b;
-        --card-foreground: #fafafa;
+        --card: #171312;
+        --card-foreground: #f5f0ee;
 
-        --popover: #09090b;
-        --popover-foreground: #fafafa;
+        --popover: #171312;
+        --popover-foreground: #f5f0ee;
 
-        --primary: #2563eb; /* Blue 600 */
-        --primary-foreground: #f8fafc;
+        /* DUE ROSSI, DUE MESTIERI.
+           --primary è il rosso che può fare il TESTO: è il più scuro che
+           tiene 4.5:1 su tutti e tre i fondi (0c0908, 1b1513, 171312), quindi
+           text-primary resta leggibile anche nei kicker piccoli.
+           --primary-deep è il rosso scuro delle SUPERFICI piene (bottoni,
+           chip): troppo scuro per essere testo, perfetto per reggere sopra
+           di sé il --primary-foreground chiaro. Non scambiarli di ruolo. */
+        --primary: #e8483f; /* rosso ribalta — 5.1:1 su background */
+        --primary-hover: #f2776a; /* schiarita dell'hover su testi e link */
+        --primary-deep: #9c2318; /* rosso scuro — superfici piene */
+        --primary-deep-hover: #bf3120; /* schiarita dell'hover sui bottoni */
+        --primary-foreground: #f5f0ee; /* testo sui bottoni — 7.0:1 su deep */
 
-        --secondary: #27272a; /* Zinc 800 */
-        --secondary-foreground: #fafafa;
+        --secondary: #1d1917;
+        --secondary-foreground: #f5f0ee;
 
-        --muted: #27272a;
-        --muted-foreground: #a1a1aa; /* Zinc 400 */
+        --muted: #1d1917;
+        --muted-foreground: #b7ada9; /* 9.0:1 */
 
-        --accent: #27272a;
-        --accent-foreground: #fafafa;
+        --accent: #9c2318; /* rosso scuro — solo superfici, mai testo */
+        --accent-foreground: #f5f0ee;
 
-        --destructive: #7f1d1d; /* Red 900 */
-        --destructive-foreground: #fafafa;
+        --destructive: #7d5410; /* ambra: con la marca rossa, l'errore non può essere rosso */
+        --destructive-foreground: #f5f0ee;
 
-        --border: #27272a;
-        --input: #27272a;
-        --ring: #2563eb;
+        /* Bordo unico di tutte le card. Alto contrasto voluto: il vecchio
+           #2b2422 stava a 1.25:1 sul fondo, cioè invisibile. Questo tiene
+           3.4:1 come minimo sui tre fondi (background, card, background-alt),
+           sopra la soglia AA per i componenti non testuali. È IL colore dei
+           bordi: le card non devono usare border-white/NN, che cambia resa a
+           seconda di cosa hanno sotto. */
+        --border: #756965;
+        --input: #7a625f; /* 3.5:1 — bordi campi form */
+        --ring: #e8483f;
 
         --radius: 0.5rem;
+
+        /* Larghezza massima del contenuto (vedi @utility container). */
+        --wrap: 76rem; /* 1216px — ~1120px di testo dentro lg:px-12 */
+    }
+}
+
+/* ============================================================
+   LARGHEZZA DI PAGINA — un solo posto per l'aria ai lati.
+
+   Il `container` di Tailwind sale di gradino a ogni breakpoint e arriva
+   a 1536px: su un monitor largo il contenuto va quasi a filo dei bordi.
+   Qui i due gradini più alti vengono ricondotti a --wrap, così da 1280px
+   in su il contenuto si ferma e il resto diventa margine.
+
+   L'override è dentro una media query di proposito: sotto i 1280px i
+   gradini originali restano intatti, altrimenti il container tornerebbe
+   fluido e su schermi medi il testo si allargherebbe invece di stringersi.
+
+   Per regolare i margini laterali di tutto il sito basta --wrap: non
+   toccare i px-* dei singoli contenitori.
+   ============================================================ */
+@utility container {
+    width: 100%;
+    margin-inline: auto;
+
+    @media (width >= 80rem) {
+        max-width: var(--wrap);
     }
 }
 
@@ -126,6 +171,128 @@
             animation-iteration-count: 1 !important;
             scroll-behavior: auto !important;
             transition-duration: 0.01ms !important;
+        }
+    }
+}
+
+/* ============================================================
+   SIPARIO — cartelli di scena (ComeSiOspita)
+
+   Entrate CSS scroll-driven della sezione «Come si ospita»:
+   le sei card si sollevano dalla ribalta scrubbate dallo scroll
+   (.cartello-scena) e il trattino del kicker si accende come un
+   filo di luce (.filo-ribalta). Solo transform+opacity; l'EASE
+   del sistema è duplicato come cubic-bezier(0.16, 1, 0.3, 1),
+   stesso pattern di --animate-fade-in.
+
+   DOPPIA GUARDIA obbligatoria: il blocco reduced globale azzera
+   solo le durate, che con animation-timeline non contano. Fuori
+   dalla guardia nessuno stato nascosto: senza @supports o senza
+   JS le card restano semplicemente visibili (base opacity 1).
+   ============================================================ */
+@keyframes cartello-scena-su {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes filo-ribalta-accendi {
+    from {
+        transform: scaleX(0);
+    }
+    to {
+        transform: scaleX(1);
+    }
+}
+@supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+        .cartello-scena {
+            animation: cartello-scena-su cubic-bezier(0.16, 1, 0.3, 1) both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 60%;
+        }
+        /* cadenza per colonna: innocua anche a 1-2 colonne */
+        .cartello-scena:nth-child(3n + 2) {
+            animation-range: entry 8% entry 68%;
+        }
+        .cartello-scena:nth-child(3n) {
+            animation-range: entry 16% entry 76%;
+        }
+        .filo-ribalta {
+            transform-origin: left;
+            animation: filo-ribalta-accendi cubic-bezier(0.16, 1, 0.3, 1) both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 40%;
+        }
+    }
+}
+
+/* ==========================================================================
+   SIPARIO — passi di scena (TrePassi)
+   Animazioni CSS scroll-driven della sezione #prenotare, sopra il Reveal di
+   sicurezza: i tre passi si sollevano scrubbati dallo scroll con offset
+   crescente (la cadenza «uno, due, tre» che il copy stesso racconta); la
+   cifra serif oro sale «dalla buca» dentro la sua maschera overflow-hidden
+   un filo dopo la card (solo transform: senza supporto resta al suo posto,
+   visibile); il divisore si accende dal CENTRO verso i lati come una ribalta
+   (gradiente simmetrico: origin center, non left). Il glow box-shadow del
+   divisore NON si anima: resta dipinto, si muove solo il transform.
+   Doppia guardia obbligatoria: fuori da @supports + no-preference nessuna
+   regola nasconde nulla — la sezione appare completa.
+   ========================================================================== */
+@keyframes passo-scena-su {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes cifra-scena-su {
+    from {
+        transform: translateY(32px);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+@keyframes ribalta-accendi {
+    from {
+        transform: scaleX(0);
+    }
+    to {
+        transform: scaleX(1);
+    }
+}
+@supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+        .passo-scena {
+            animation: passo-scena-su cubic-bezier(0.16, 1, 0.3, 1) both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 50%;
+        }
+        .passo-scena:nth-child(2) {
+            animation-range: entry 10% entry 60%;
+        }
+        .passo-scena:nth-child(3) {
+            animation-range: entry 20% entry 70%;
+        }
+        .cifra-scena {
+            animation: cifra-scena-su cubic-bezier(0.16, 1, 0.3, 1) both;
+            animation-timeline: view();
+            animation-range: entry 5% entry 55%;
+        }
+        .ribalta-divisore {
+            transform-origin: center;
+            animation: ribalta-accendi cubic-bezier(0.16, 1, 0.3, 1) both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 60%;
         }
     }
 }

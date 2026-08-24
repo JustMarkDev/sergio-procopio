@@ -18,7 +18,10 @@ export async function getStaticPaths() {
 
 const { show } = Astro.props;
 const { Content } = await render(show);
-const specGroups = getShowSpecs(show);
+
+// Sei voci al massimo (produzione, regia, età, durata, tecnico, requisiti):
+// la griglia le presenta come card su 3 colonne × 2 righe.
+const specItems = getShowSpecs(show).flatMap((group) => group.items);
 
 const explicitShowImages = show.data.galleryImages.map((image, index) => ({
     src: image,
@@ -111,93 +114,287 @@ const showSchema = {
     canonicalPath={`/spettacoli/${show.id}`}
 >
     <script type="application/ld+json" is:inline set:html={JSON.stringify(showSchema)} />
-    <div class="relative overflow-hidden bg-[#09090b]">
-        <div
-            class="absolute top-0 right-0 w-[60%] h-[60%] bg-primary/5 rounded-full blur-[140px] pointer-events-none"
-        >
-        </div>
-
+    <div class="relative overflow-hidden bg-background">
         <article class="container relative z-10 mx-auto px-4 md:px-8 lg:px-12 py-32 min-h-screen">
-            <div class="mb-20">
+            <div class="mb-16">
                 <h1
-                    class="text-6xl md:text-8xl font-serif font-bold mb-8 tracking-tight leading-[0.9]"
+                    class="mb-6 font-serif text-[clamp(2.75rem,6vw,4.5rem)] font-bold tracking-tight leading-[0.95]"
                 >
-                    {show.data.title}
+                    {/* maskRiga in CSS: il titolo sale in ribalta dentro la
+                        maschera overflow-hidden (il pb/-mb salva i discendenti). */}
+                    <span class="block overflow-hidden pb-[0.12em] -mb-[0.12em]"
+                        ><span class="riga-prima block">{show.data.title}</span></span
+                    >
                 </h1>
                 <p
-                    class="text-2xl text-muted-foreground italic leading-relaxed max-w-3xl opacity-90"
+                    class="battuta-prima text-xl md:text-2xl text-muted-foreground italic leading-relaxed max-w-3xl opacity-90"
                 >
                     {show.data.description}
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-                <div class="lg:col-span-8 space-y-16">
-                    {
-                        show.data.image ? (
-                            <ShowGallery
-                                client:load
-                                mainImageSrc={optimizedMainImage}
-                                mainImageOriginalSrc={show.data.image.src}
-                                images={showImages}
-                                alt={show.data.title}
-                            />
-                        ) : (
-                            <div class="rounded-[2.5rem] overflow-hidden border border-white/5 shadow-2xl bg-[#09090b]">
-                                <div class="aspect-video w-full bg-zinc-900/50 flex items-center justify-center text-muted-foreground font-serif text-3xl opacity-10">
-                                    {show.data.title}
+            <div class="space-y-16">
+                {/* Immagine a sinistra, scheda tecnica in un'UNICA card a destra.
+                    Senza specifiche l'immagine riprende tutta la larghezza. */}
+                <div
+                    class={`grid grid-cols-1 gap-6 md:gap-8 ${
+                        specItems.length > 0 ? "lg:grid-cols-12 lg:items-start" : ""
+                    }`}
+                >
+                    <div class={specItems.length > 0 ? "lg:col-span-7 xl:col-span-8" : ""}>
+                        {
+                            show.data.image ? (
+                                <ShowGallery
+                                    client:load
+                                    mainImageSrc={optimizedMainImage}
+                                    mainImageOriginalSrc={show.data.image.src}
+                                    images={showImages}
+                                    alt={show.data.title}
+                                />
+                            ) : (
+                                <div class="rounded-[2.5rem] overflow-hidden border border-border shadow-2xl bg-background">
+                                    <div class="aspect-video max-h-[520px] w-full bg-zinc-900/50 flex items-center justify-center text-muted-foreground font-serif text-3xl opacity-10">
+                                        {show.data.title}
+                                    </div>
                                 </div>
-                            </div>
+                            )
+                        }
+                    </div>
+
+                    {
+                        specItems.length > 0 && (
+                            <section
+                                aria-labelledby="scheda-tecnica-title"
+                                class="cartello-scheda lg:col-span-5 xl:col-span-4 rounded-4xl border border-border bg-[var(--card)] p-7 md:p-8"
+                            >
+                                <h2
+                                    id="scheda-tecnica-title"
+                                    class="mb-6 flex items-center gap-4 text-xs font-bold uppercase tracking-[0.3em] text-primary"
+                                >
+                                    <span aria-hidden="true" class="filo-scheda w-8 h-px bg-primary/30" /> Dettagli
+                                </h2>
+
+                                <dl class="divide-y divide-white/10">
+                                    {specItems.map((item) => (
+                                        <div class="voce-scheda py-4 first:pt-0 last:pb-0">
+                                            <dt class="text-[10px] font-bold uppercase tracking-[0.22em] text-primary">
+                                                {item.label}
+                                            </dt>
+                                            <dd class="mt-1.5 font-serif text-xl font-bold leading-snug text-foreground">
+                                                {item.value}
+                                            </dd>
+                                        </div>
+                                    ))}
+                                </dl>
+                            </section>
                         )
                     }
-
-                    <div
-                        class="pt-16 [&_h2]:font-serif [&_h2]:text-4xl [&_h2]:font-medium [&_h2]:text-foreground [&_h2]:tracking-tight [&_h2]:mt-24 [&_h2]:mb-10 [&_h2]:pb-6 [&_h2]:border-b [&_h2]:border-white/10 [&_h2:first-child]:mt-0 [&_p]:text-lg [&_p]:leading-[1.9] [&_p]:text-muted-foreground/90 [&_p]:font-light [&_p]:mb-8 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-8 [&_li]:text-muted-foreground/90 [&_li]:font-light [&_li]:mb-2 [&_strong]:text-foreground [&_strong]:font-medium"
-                    >
-                        <Content />
-                    </div>
                 </div>
 
-                <div class="lg:col-span-4 space-y-8">
-                    <div
-                        class="p-8 bg-white/2 border border-white/10 rounded-[2.5rem] sticky top-32 backdrop-blur-sm"
-                    >
-                        <h3
-                            class="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-8 flex items-center gap-4"
-                        >
-                            <span class="w-8 h-px bg-primary/30"></span> Dati Tecnici
-                        </h3>
-
-                        <div class="space-y-6">
-                            {
-                                specGroups.map((group) => (
-                                    <div>
-                                        {group.items.map((item) => (
-                                            <div class="mb-6 last:mb-0">
-                                                <div class="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
-                                                    {item.label}
-                                                </div>
-                                                <div class="text-lg font-bold font-serif">
-                                                    {item.value}
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                ))
-                            }
-                        </div>
-
-                        <div class="mt-12 pt-10 border-t border-white/5">
-                            <a
-                                href="/#contatti"
-                                class="flex w-full h-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground font-bold uppercase tracking-widest hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 active:scale-[0.98]"
-                            >
-                                Prenota Ora
-                            </a>
-                        </div>
-                    </div>
+                <div
+                    class="prosa-scena pt-8 max-w-4xl [&_h2]:font-serif [&_h2]:text-3xl [&_h2]:md:text-4xl [&_h2]:font-medium [&_h2]:text-foreground [&_h2]:tracking-tight [&_h2]:mt-16 [&_h2]:mb-8 [&_h2]:pb-5 [&_h2]:border-b [&_h2]:border-white/10 [&_h2:first-child]:mt-0 [&_p]:text-lg [&_p]:leading-[1.9] [&_p]:text-muted-foreground/90 [&_p]:font-light [&_p]:mb-8 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-8 [&_li]:text-muted-foreground/90 [&_li]:font-light [&_li]:mb-2 [&_strong]:text-foreground [&_strong]:font-medium"
+                >
+                    <Content />
                 </div>
+            </div>
+
+            {/* CTA di chiusura: solo il pulsante, grande e a tutta larghezza.
+                L'entrata scroll-driven sta sul wrapper neutro (il transform
+                dell'<a> resta all'active:scale); il glow forte dell'hover è
+                pre-dipinto su uno span e si accende in sola opacity. */}
+            <div class="cta-scena mt-24">
+                <a
+                    href={`/contatti?spettacolo=${encodeURIComponent(show.id)}`}
+                    class="group relative flex min-h-20 w-full items-center justify-center rounded-3xl bg-primary-deep px-10 text-lg md:text-xl text-primary-foreground font-bold uppercase tracking-widest hover:bg-primary-deep-hover transition-[background-color,scale] duration-200 shadow-[0_8px_30px_rgba(232,72,63,0.22)] active:scale-[0.98]"
+                >
+                    <span
+                        aria-hidden="true"
+                        class="pointer-events-none absolute inset-0 rounded-3xl shadow-[0_10px_40px_rgba(232,72,63,0.38)] opacity-0 transition-opacity duration-[250ms] group-hover:opacity-100"
+                    ></span>
+                    Prenota Ora
+                </a>
             </div>
         </article>
     </div>
 </Layout>
+
+<style>
+    /* «LA PRIMA» — il numero di questa pagina: la sala si illumina, il titolo
+       sale in ribalta, la battuta arriva un battito dopo; poi cartelli e
+       programma di sala prendono il palco allo scroll. EASE della home
+       duplicato in CSS: cubic-bezier(0.16, 1, 0.3, 1). */
+
+    /* ------------------------------------------------------------------ *
+     * A) INTESTAZIONE — animazioni A TEMPO (sopra la piega, girano anche
+     *    senza JS). Solo dietro la guardia reduced-motion: fuori da qui
+     *    nessuna regola, quindi con reduced motion tutto è fermo e visibile.
+     * ------------------------------------------------------------------ */
+    @media (prefers-reduced-motion: no-preference) {
+        /* TEMPO 1 — la luce si accende (luceScena in CSS: DUR.lg, EASE). */
+        /* TEMPO 2 — il titolo sale in ribalta (maskRiga in CSS: DUR.lg, EASE,
+           0.1s dopo la luce). */
+        @keyframes prima-riga {
+            from {
+                transform: translateY(110%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .riga-prima {
+            animation: prima-riga 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+        }
+
+        /* FIRMA — la pausa della battuta: DUR.md, delay 0.28s = 0.1s del
+           titolo + PAUSA_BATTUTA 0.18s. */
+        @keyframes prima-battuta {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .battuta-prima {
+            animation: prima-battuta 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.28s both;
+        }
+    }
+
+    /* ------------------------------------------------------------------ *
+     * B/C/D) SCROLL-DRIVEN — doppia guardia identica a globals.css: fuori
+     *    da qui nessuna regola nasconde nulla (senza supporto, senza JS o
+     *    con reduced motion la base resta sempre visibile).
+     * ------------------------------------------------------------------ */
+    @supports (animation-timeline: view()) {
+        @media (prefers-reduced-motion: no-preference) {
+            /* B) La card «Dettagli» entra come cartello di scena. */
+            @keyframes cartello-scheda-su {
+                from {
+                    opacity: 0;
+                    transform: translateY(24px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            .cartello-scheda {
+                animation: cartello-scheda-su cubic-bezier(0.16, 1, 0.3, 1) both;
+                animation-timeline: view();
+                animation-range: entry 0% entry 50%;
+            }
+
+            /* TEMPO 1 della sezione — il filo oro del kicker si disegna.
+               Solo transform: senza supporto resta dipinto e visibile. */
+            @keyframes filo-scheda-accendi {
+                from {
+                    transform: scaleX(0);
+                }
+                to {
+                    transform: scaleX(1);
+                }
+            }
+            .filo-scheda {
+                transform-origin: left;
+                animation: filo-scheda-accendi cubic-bezier(0.16, 1, 0.3, 1) both;
+                animation-timeline: view();
+                animation-range: entry 0% entry 35%;
+            }
+
+            /* TEMPO 3 — le voci della scheda come cartelli scaglionati:
+               l'offset del range è lo stagger tradotto in scrub. */
+            @keyframes voce-scheda-su {
+                from {
+                    opacity: 0;
+                    transform: translateY(14px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            .voce-scheda {
+                animation: voce-scheda-su cubic-bezier(0.16, 1, 0.3, 1) both;
+                animation-timeline: view();
+                animation-range: entry 5% entry 55%;
+            }
+            .voce-scheda:nth-child(2) {
+                animation-range: entry 12% entry 62%;
+            }
+            .voce-scheda:nth-child(3) {
+                animation-range: entry 19% entry 69%;
+            }
+            .voce-scheda:nth-child(4) {
+                animation-range: entry 26% entry 76%;
+            }
+            .voce-scheda:nth-child(5) {
+                animation-range: entry 33% entry 83%;
+            }
+            .voce-scheda:nth-child(6) {
+                animation-range: entry 40% entry 90%;
+            }
+
+            /* C) Il programma di sala: gli h2 salgono come cartelli (il
+               protagonista con la mask resta l'h1). */
+            .prosa-scena :global(h2) {
+                position: relative;
+                animation: voce-scheda-su cubic-bezier(0.16, 1, 0.3, 1) both;
+                animation-timeline: view();
+                animation-range: entry 0% entry 45%;
+            }
+
+            /* TEMPO 1 per ogni sezione — un filo oro pre-dipinto che si
+               disegna SOPRA il border-b esistente (che resta statico ed è
+               il fallback fuori dalla guardia, dove questo ::after non
+               esiste proprio). */
+            .prosa-scena :global(h2)::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                bottom: -1px;
+                height: 1px;
+                width: 100%;
+                background: linear-gradient(
+                    to right,
+                    rgba(232, 72, 63, 0.55),
+                    transparent
+                );
+                transform-origin: left;
+                animation: filo-scheda-accendi cubic-bezier(0.16, 1, 0.3, 1) both;
+                animation-timeline: view();
+                animation-range: entry 0% entry 40%;
+            }
+
+            /* Paragrafi e liste, salita lieve: ogni blocco ha la propria
+               timeline, quindi lo scaglionamento è naturale. */
+            .prosa-scena :global(p),
+            .prosa-scena :global(ul) {
+                animation: voce-scheda-su cubic-bezier(0.16, 1, 0.3, 1) both;
+                animation-timeline: view();
+                animation-range: entry 0% entry 40%;
+            }
+
+            /* D) CTA — chiusura di sipario: l'entrata sta sul wrapper neutro,
+               così l'active:scale dell'<a> resta l'unico transform-owner. */
+            @keyframes cta-scena-su {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            .cta-scena {
+                animation: cta-scena-su cubic-bezier(0.16, 1, 0.3, 1) both;
+                animation-timeline: view();
+                animation-range: entry 0% entry 50%;
+            }
+        }
+    }
+</style>

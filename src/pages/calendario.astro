@@ -1,6 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
+import { getImage } from "astro:assets";
+import { MapPin } from "lucide-react";
 import { splitEventsByDate } from "../lib/calendar-dates";
 
 const eventi = (await getCollection("eventi"))
@@ -15,85 +17,185 @@ const dateFormatter = new Intl.DateTimeFormat("it-IT", {
     month: "long",
     year: "numeric",
 });
+const giornoFormatter = new Intl.DateTimeFormat("it-IT", { day: "2-digit" });
+const meseFormatter = new Intl.DateTimeFormat("it-IT", { month: "short" });
 
 const formatDate = (date: Date) => dateFormatter.format(date);
+
+/* Gli eventi citano lo spettacolo per titolo: da lì si risale a foto e scheda.
+   Le immagini vengono ottimizzate solo per gli spettacoli davvero in calendario. */
+const normalizza = (titolo: string) => titolo.trim().toLowerCase();
+
+const spettacoli = (await getCollection("spettacoli")).filter(
+    (show) => !show.data.draft,
+);
+
+const titoliInCalendario = new Set(
+    eventi.map((event) => normalizza(event.data.spettacolo)),
+);
+
+interface InfoSpettacolo {
+    showId: string;
+    src: string;
+    srcset: string;
+    width: number;
+    height: number;
+}
+
+const infoPerTitolo = new Map<string, InfoSpettacolo>();
+for (const show of spettacoli) {
+    const chiave = normalizza(show.data.title);
+    if (!titoliInCalendario.has(chiave) || !show.data.image) continue;
+
+    const ottimizzata = await getImage({
+        src: show.data.image,
+        widths: [400, 640],
+        format: "webp",
+        quality: 75,
+    });
+
+    infoPerTitolo.set(chiave, {
+        showId: show.id,
+        src: ottimizzata.src,
+        srcset: ottimizzata.srcSet.attribute,
+        width: show.data.image.width,
+        height: show.data.image.height,
+    });
+}
 ---
 
 <Layout
     title="Calendario | Sergio Procopio"
     description="Calendario ufficiale degli spettacoli e degli eventi di Sergio Procopio."
 >
-    <div class="relative overflow-hidden bg-[#09090b] min-h-screen">
-        <div
-            class="absolute top-0 left-0 w-full h-[50vh] bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.06)_0%,transparent_70%)] pointer-events-none"
-        >
-        </div>
-
+    <div class="relative overflow-hidden bg-background min-h-screen">
         <div class="container relative z-10 mx-auto px-4 md:px-8 lg:px-12 py-32">
             <div class="max-w-4xl mb-16">
                 <h1 class="text-5xl md:text-7xl font-serif font-bold mb-6 tracking-tight">
-                    Calendario <span class="italic text-primary">ufficiale</span>
+                    <span class="inline-block overflow-hidden align-bottom pb-[0.12em] -mb-[0.12em]"><span class="locandina-riga inline-block">Calendario</span></span>{" "}<span class="inline-block overflow-hidden align-bottom pb-[0.12em] -mb-[0.12em]"><span class="locandina-riga locandina-riga-battuta inline-block italic text-primary">ufficiale</span></span>
                 </h1>
-                <p class="text-xl text-muted-foreground max-w-2xl italic opacity-80 leading-relaxed">
+                <p class="locandina-sotto text-xl text-muted-foreground max-w-2xl italic opacity-80 leading-relaxed">
                     Date pubbliche, spettacoli e appuntamenti in programma.
                 </p>
             </div>
 
             <section class="mb-20">
                 <div class="flex items-center gap-4 mb-8">
-                    <span class="h-px w-10 bg-primary/40"></span>
+                    <span class="filo-cartellone h-px w-10 bg-primary/40"></span>
                     <h2 class="text-sm font-bold uppercase tracking-[0.25em] text-primary">
-                        Prossimi eventi
+                        <span class="block overflow-hidden"><span class="cartellone-riga block">Prossimi eventi</span></span>
                     </h2>
                 </div>
 
                 {
                     upcomingEvents.length > 0 ? (
-                        <div class="space-y-5">
-                            {upcomingEvents.map((event) => (
-                                <article class="grid grid-cols-1 lg:grid-cols-12 gap-6 rounded-3xl border border-white/10 bg-white/4 p-6 md:p-8 hover:border-primary/40 transition-colors">
-                                    <div class="lg:col-span-3">
-                                        <div class="text-sm font-bold uppercase tracking-widest text-primary mb-2">
-                                            {formatDate(event.data.date)}
-                                        </div>
-                                        {event.data.time && (
-                                            <div class="text-3xl font-serif font-bold">
-                                                {event.data.time}
-                                            </div>
-                                        )}
-                                    </div>
+                        <div class="space-y-6 md:space-y-8">
+                            {upcomingEvents.map((event) => {
+                                const info = infoPerTitolo.get(
+                                    normalizza(event.data.spettacolo),
+                                );
 
-                                    <div class="lg:col-span-6">
-                                        <h3 class="text-2xl md:text-3xl font-serif font-bold">
-                                            {event.data.title}
-                                        </h3>
-                                    </div>
+                                return (
+                                    <article class="locandina-data group relative flex flex-col rounded-4xl border border-border bg-[var(--card)] transition-[border-color] duration-500 hover:border-primary/50 motion-reduce:transition-none md:flex-row">
+                                        {/* Foto di scena con la mattonella della data */}
+                                        <div class="relative aspect-16/9 w-full shrink-0 overflow-hidden rounded-t-4xl bg-secondary/20 md:aspect-auto md:w-80 md:rounded-l-4xl md:rounded-tr-none">
+                                            {info ? (
+                                                <img
+                                                    src={info.src}
+                                                    srcset={info.srcset}
+                                                    sizes="(min-width: 768px) 320px, 100vw"
+                                                    alt={event.data.spettacolo}
+                                                    width={info.width}
+                                                    height={info.height}
+                                                    loading="lazy"
+                                                    decoding="async"
+                                                    class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                                                />
+                                            ) : (
+                                                <div
+                                                    aria-hidden="true"
+                                                    class="absolute inset-0 flex items-center justify-center"
+                                                >
+                                                    <span class="px-6 text-center font-serif text-3xl font-bold leading-tight tracking-tighter text-white/5">
+                                                        {event.data.spettacolo}
+                                                    </span>
+                                                </div>
+                                            )}
 
-                                    <div class="lg:col-span-3 flex flex-col items-start lg:items-end gap-3 lg:text-right">
-                                        <div class="text-xl font-serif font-bold leading-tight text-foreground">
-                                            {event.data.city}
-                                        </div>
-                                        {event.data.address && (
-                                            <div class="max-w-xs text-sm text-muted-foreground leading-relaxed">
-                                                {event.data.address}
+                                            <div
+                                                aria-hidden="true"
+                                                class="absolute inset-0 bg-linear-to-t from-black/50 to-transparent md:bg-linear-to-r"
+                                            />
+
+                                            <div class="insegna-data absolute left-4 top-4 flex flex-col items-center rounded-2xl border border-white/10 bg-black/55 px-4 py-2.5 backdrop-blur-md">
+                                                <span class="font-serif text-3xl font-bold leading-none text-primary">
+                                                    {giornoFormatter.format(event.data.date)}
+                                                </span>
+                                                <span class="mt-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white/85">
+                                                    {meseFormatter.format(event.data.date)}{" "}
+                                                    {event.data.date.getFullYear()}
+                                                </span>
                                             </div>
-                                        )}
-                                        {event.data.googleMapsUrl && (
-                                            <a
-                                                href={event.data.googleMapsUrl}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                class="mt-1 inline-flex rounded-2xl border border-white/15 px-5 py-3 text-xs font-bold uppercase tracking-widest text-white/85 hover:border-primary/50 hover:text-primary transition-colors"
-                                            >
-                                                Mappa
-                                            </a>
-                                        )}
-                                    </div>
-                                </article>
-                            ))}
+                                        </div>
+
+                                        {/* Contenuto */}
+                                        <div class="flex grow flex-col justify-center gap-3 p-6 md:p-8">
+                                            <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-primary">
+                                                {formatDate(event.data.date)}
+                                                {event.data.time && ` · ore ${event.data.time}`}
+                                            </p>
+
+                                            <h3 class="font-serif text-2xl font-bold leading-tight md:text-3xl">
+                                                {event.data.spettacolo}
+                                            </h3>
+
+                                            <p class="flex items-start gap-2 text-muted-foreground">
+                                                <MapPin
+                                                    size={16}
+                                                    aria-hidden="true"
+                                                    className="mt-1 shrink-0 text-primary/70"
+                                                />
+                                                <span>
+                                                    {event.data.venue}, {event.data.city}
+                                                    {event.data.address &&
+                                                        ` — ${event.data.address}`}
+                                                </span>
+                                            </p>
+
+                                            <div class="mt-3 flex flex-wrap items-center gap-3">
+                                                {info && (
+                                                    <a
+                                                        href={`/spettacoli/${info.showId}`}
+                                                        class="inline-flex min-h-11 items-center rounded-full bg-primary-deep px-5 text-sm font-bold text-primary-foreground shadow-[0_6px_18px_rgba(232,72,63,0.3)] transition-[background-color,box-shadow,scale] duration-200 hover:bg-primary-deep-hover hover:shadow-[0_8px_24px_rgba(232,72,63,0.42)] active:scale-[0.96]"
+                                                    >
+                                                        Scopri lo spettacolo
+                                                    </a>
+                                                )}
+                                                {event.data.googleMapsUrl && (
+                                                    <a
+                                                        href={event.data.googleMapsUrl}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        class="inline-flex min-h-11 items-center rounded-full border border-white/15 px-5 text-sm font-semibold text-foreground transition-[color,border-color,scale] duration-200 hover:border-primary/50 hover:text-primary active:scale-[0.96]"
+                                                    >
+                                                        Mappa
+                                                    </a>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        {/* Glow pre-dipinto: si accende in sola opacity, mai
+                                            animando box-shadow (compositor-friendly). */}
+                                        <span
+                                            aria-hidden="true"
+                                            class="pointer-events-none absolute -inset-px rounded-[inherit] opacity-0 shadow-[0_0_30px_rgba(232,72,63,0.15)] transition-opacity duration-500 group-hover:opacity-100 motion-reduce:transition-none"
+                                        ></span>
+                                    </article>
+                                );
+                            })}
                         </div>
                     ) : (
-                        <div class="rounded-3xl border border-white/10 bg-white/4 p-8 text-muted-foreground">
+                        <div class="locandina-data rounded-3xl border border-border bg-white/4 p-8 text-muted-foreground">
                             Non ci sono ancora eventi pubblici in calendario.
                         </div>
                     )
@@ -104,24 +206,49 @@ const formatDate = (date: Date) => dateFormatter.format(date);
                 pastEvents.length > 0 && (
                     <section>
                         <div class="flex items-center gap-4 mb-8">
-                            <span class="h-px w-10 bg-white/20"></span>
+                            <span class="filo-cartellone h-px w-10 bg-white/20"></span>
                             <h2 class="text-sm font-bold uppercase tracking-[0.25em] text-muted-foreground">
-                                Archivio
+                                <span class="block overflow-hidden"><span class="cartellone-riga block">Archivio</span></span>
                             </h2>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            {pastEvents.slice(0, 8).map((event) => (
-                                <article class="rounded-2xl border border-white/10 bg-white/3 p-5">
-                                    <div class="text-xs font-bold uppercase tracking-widest text-primary mb-2">
-                                        {formatDate(event.data.date)}
-                                    </div>
-                                    <h3 class="text-xl font-serif font-bold">{event.data.title}</h3>
-                                    <p class="text-sm text-muted-foreground mt-2">
-                                        {event.data.city}
-                                    </p>
-                                </article>
-                            ))}
+                            {pastEvents.slice(0, 8).map((event) => {
+                                const info = infoPerTitolo.get(
+                                    normalizza(event.data.spettacolo),
+                                );
+
+                                return (
+                                    <article class="archivio-riga flex items-center gap-5 rounded-3xl border border-border bg-white/3 p-4 transition-colors duration-300 hover:border-primary/30 md:p-5">
+                                        {info && (
+                                            <div class="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border border-border bg-secondary/20">
+                                                <img
+                                                    src={info.src}
+                                                    srcset={info.srcset}
+                                                    sizes="80px"
+                                                    alt=""
+                                                    width={info.width}
+                                                    height={info.height}
+                                                    loading="lazy"
+                                                    decoding="async"
+                                                    class="absolute inset-0 h-full w-full object-cover opacity-70"
+                                                />
+                                            </div>
+                                        )}
+                                        <div class="min-w-0">
+                                            <div class="text-xs font-bold uppercase tracking-widest text-primary mb-1">
+                                                {formatDate(event.data.date)}
+                                            </div>
+                                            <h3 class="truncate text-xl font-serif font-bold">
+                                                {event.data.spettacolo}
+                                            </h3>
+                                            <p class="truncate text-sm text-muted-foreground mt-1">
+                                                {event.data.venue}, {event.data.city}
+                                            </p>
+                                        </div>
+                                    </article>
+                                );
+                            })}
                         </div>
                     </section>
                 )
@@ -129,3 +256,158 @@ const formatDate = (date: Date) => dateFormatter.format(date);
         </div>
     </div>
 </Layout>
+
+<style>
+    /* ============================================================
+       SIPARIO — locandina di date (/calendario)
+
+       Apertura hero a tempo (la pagina non ha isole) + numeri in
+       cartellone CSS scroll-driven. Tempi dai token di home-motion:
+       EASE cubic-bezier(0.16, 1, 0.3, 1), DUR.lg 0.9s, DUR.md 0.55s,
+       PAUSA_BATTUTA 0.18s. Solo transform+opacity; ogni stato
+       nascosto vive nei keyframes, dentro le guardie: fuori di lì
+       la pagina appare completa.
+       ============================================================ */
+
+    /* Il titolo sale in ribalta dentro la maschera overflow-hidden:
+       mask reveal per segmento, mai fade-up sul protagonista. */
+    @keyframes locandina-riga-su {
+        from {
+            transform: translateY(110%);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    /* Il sottotitolo entra da fadeUp quando il titolo è già montato. */
+    @keyframes locandina-sotto-su {
+        from {
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    /* Il filo del cartellone si disegna da sinistra (solo transform:
+       fuori guardia resta al suo posto, visibile). */
+    @keyframes filo-cartellone-accendi {
+        from {
+            transform: scaleX(0);
+        }
+        to {
+            transform: scaleX(1);
+        }
+    }
+
+    /* Il kicker sale «dalla buca» dentro la sua maschera. */
+    @keyframes cartellone-riga-su {
+        from {
+            transform: translateY(110%);
+        }
+        to {
+            transform: translateY(0);
+        }
+    }
+
+    /* La locandina di data si affigge al muro salendo dalla ribalta. */
+    @keyframes locandina-data-su {
+        from {
+            opacity: 0;
+            transform: translateY(24px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* La mattonella-insegna è la battuta della locandina: stesso
+       gesto, un battito dopo (range sfalsato = PAUSA_BATTUTA scrubbata). */
+    @keyframes insegna-data-su {
+        from {
+            opacity: 0;
+            transform: translateY(14px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Le locandine d'archivio, già staccate dal muro, entrano sommesse. */
+    @keyframes archivio-riga-su {
+        from {
+            opacity: 0;
+            transform: translateY(16px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* ── Apertura hero a tempo: parte al load, sopra la piega.
+       Con reduced motion nessuna regola si applica: tutto acceso. ── */
+    @media (prefers-reduced-motion: no-preference) {
+        .locandina-riga {
+            animation: locandina-riga-su 0.9s cubic-bezier(0.16, 1, 0.3, 1)
+                0.05s both;
+        }
+        /* La battuta oro entra PAUSA_BATTUTA dopo il setup: 0.05 + 0.18. */
+        .locandina-riga-battuta {
+            animation-delay: 0.23s;
+        }
+        /* DUR.md, parte a metà del reveal del titolo. */
+        .locandina-sotto {
+            animation: locandina-sotto-su 0.55s cubic-bezier(0.16, 1, 0.3, 1)
+                0.35s both;
+        }
+    }
+
+    /* ── Numeri in cartellone scroll-driven: DOPPIA GUARDIA, come i
+       blocchi .cartello-scena/.filo-ribalta di globals.css. ── */
+    @supports (animation-timeline: view()) {
+        @media (prefers-reduced-motion: no-preference) {
+            .filo-cartellone {
+                transform-origin: left;
+                animation: filo-cartellone-accendi
+                    cubic-bezier(0.16, 1, 0.3, 1) both;
+                animation-timeline: view();
+                animation-range: entry 0% entry 40%;
+            }
+            /* Sfalsato di 8% sul filo: prima la luce, poi la scritta. */
+            .cartellone-riga {
+                animation: cartellone-riga-su cubic-bezier(0.16, 1, 0.3, 1)
+                    both;
+                animation-timeline: view();
+                animation-range: entry 8% entry 48%;
+            }
+            /* Impilate in verticale: lo scroll fa da stagger naturale. */
+            .locandina-data {
+                animation: locandina-data-su cubic-bezier(0.16, 1, 0.3, 1) both;
+                animation-timeline: view();
+                animation-range: entry 0% entry 55%;
+            }
+            .insegna-data {
+                animation: insegna-data-su cubic-bezier(0.16, 1, 0.3, 1) both;
+                animation-timeline: view();
+                animation-range: entry 12% entry 67%;
+            }
+            .archivio-riga {
+                animation: archivio-riga-su cubic-bezier(0.16, 1, 0.3, 1) both;
+                animation-timeline: view();
+                animation-range: entry 0% entry 50%;
+            }
+            /* Cadenza per colonna sulla griglia md: innocua a 1 colonna. */
+            .archivio-riga:nth-child(2n) {
+                animation-range: entry 10% entry 60%;
+            }
+        }
+    }
+</style>

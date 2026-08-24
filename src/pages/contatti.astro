@@ -1,0 +1,25 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ContactForm from "../components/custom/ContactForm";
+import TrePassi from "../components/custom/home/TrePassi.astro";
+---
+
+<Layout
+    title="Contatti | Sergio Procopio"
+    description="Richiedi un preventivo o una data per uno spettacolo di Sergio Procopio: teatri, oratori, parrocchie, scuole e associazioni."
+>
+    {/* pt-16 al posto della testata rimossa: la prima sezione deve comunque
+        scendere sotto l'header, che è fixed. Sommato al py-16 di TrePassi
+        ricrea lo stacco che dava il pt-32 del contenitore che c'era qui. */}
+    <div class="relative overflow-hidden bg-background min-h-screen pt-16">
+        {/* La pagina non ha più un titolo visibile: questo <h1> lo dà solo a
+            screen reader e motori di ricerca, che altrimenti troverebbero un
+            documento senza intestazione di primo livello (restano solo gli
+            <h2> di TrePassi e del modulo). Non occupa spazio. */}
+        <h1 class="sr-only">Contatti</h1>
+
+        <TrePassi />
+
+        <ContactForm client:load />
+    </div>
+</Layout>

@@ -57,7 +57,7 @@ export const server = {
         subject: `Nuovo contatto dal sito web da ${safeSubjectName}`,
         html: `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
-            <h2 style="color: #2563eb; border-bottom: 2px solid #2563eb; padding-bottom: 10px;">Nuovo contatto dal sito web</h2>
+            <h2 style="color: #9c2318; border-bottom: 2px solid #9c2318; padding-bottom: 10px;">Nuovo contatto dal sito web</h2>
             <p><strong>Nome:</strong> ${safeNome}</p>
             <p><strong>Email:</strong> ${safeEmail}</p>
             <p><strong>Oggetto:</strong> ${safeOggetto}</p>
