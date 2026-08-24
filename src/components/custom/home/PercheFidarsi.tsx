@@ -171,7 +171,7 @@ function CardRecensione({
       dragElastic={0.25}
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
-      className={`group relative flex flex-col rounded-4xl border border-white/10 bg-[var(--card)] transition-[border-color] duration-500 hover:border-primary/50 md:min-h-[26rem] md:flex-row ${
+      className={`group relative flex flex-col rounded-4xl border border-border bg-[var(--card)] transition-[border-color] duration-500 hover:border-primary/50 md:min-h-[26rem] md:flex-row ${
         multiple ? "cursor-grab active:cursor-grabbing select-none" : ""
       }`}
     >
@@ -223,14 +223,14 @@ function CardRecensione({
                   // Niente navigazione accidentale a fine trascinamento.
                   if (trascinandoRef.current) e.preventDefault();
                 }}
-                className="group/firma relative text-primary shadow-[inset_0_-1px_0_rgba(212,162,76,0.35)] transition-colors duration-150 hover:text-[#e8b44a]"
+                className="group/firma relative text-primary shadow-[inset_0_-1px_0_rgba(232,72,63,0.35)] transition-colors duration-150 hover:text-primary-hover"
               >
                 «{fotoAttiva.titolo}»
                 {/* Filo hover pre-dipinto: si accende in sola opacity sopra
                   * il filo statico, mai animando box-shadow. */}
                 <span
                   aria-hidden="true"
-                  className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-[#e8b44a] opacity-0 transition-opacity duration-150 group-hover/firma:opacity-100 motion-reduce:transition-none"
+                  className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-[#e8483f] opacity-0 transition-opacity duration-150 group-hover/firma:opacity-100 motion-reduce:transition-none"
                 />
               </a>
             </span>
@@ -242,7 +242,7 @@ function CardRecensione({
         * animando box-shadow (compositor-friendly). */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute -inset-px rounded-[inherit] shadow-[0_0_30px_rgba(212,162,76,0.15)] opacity-0 transition-opacity duration-500 group-hover:opacity-100 motion-reduce:transition-none"
+        className="pointer-events-none absolute -inset-px rounded-[inherit] shadow-[0_0_30px_rgba(232,72,63,0.15)] opacity-0 transition-opacity duration-500 group-hover:opacity-100 motion-reduce:transition-none"
       />
     </motion.figure>
   );
@@ -418,7 +418,7 @@ export default function PercheFidarsi({ foto = [], className = "" }: PercheFidar
           initial="hidden"
           whileInView="show"
           viewport={VIEWPORT}
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,162,76,0.05)_0%,transparent_70%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(232,72,63,0.05)_0%,transparent_70%)]"
         />
 
         <div className="relative z-10 container mx-auto px-4 md:px-8 lg:px-12">
@@ -440,7 +440,7 @@ export default function PercheFidarsi({ foto = [], className = "" }: PercheFidar
               variants={v(fadeUp)}
               className="mb-5 font-serif text-[clamp(2rem,4.2vw,3.5rem)] leading-[1.03] font-bold tracking-tight text-foreground"
             >
-              Un curriculum che potete verificare prima di firmare.
+              Un curriculum che potete verificare prima di firmare
             </motion.h2>
 
             <motion.p
@@ -463,7 +463,7 @@ export default function PercheFidarsi({ foto = [], className = "" }: PercheFidar
           >
             {CREDENZIALI.map((credenziale) => (
               <motion.div key={credenziale.chiave} variants={v(fadeUp)} className="group">
-                <dt className="font-serif text-lg text-primary transition-colors duration-[250ms] group-hover:text-[#e8b44a] sm:text-xl">
+                <dt className="font-serif text-lg text-primary transition-colors duration-[250ms] group-hover:text-primary-hover sm:text-xl">
                   {credenziale.chiave}
                 </dt>
                 <dd className="text-sm leading-relaxed text-muted-foreground">

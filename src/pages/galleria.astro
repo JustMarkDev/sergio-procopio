@@ -77,18 +77,6 @@ const galleryImages = await Promise.all(
     description="Scopri le immagini dei momenti più emozionanti degli spettacoli teatrali di Sergio Procopio."
 >
     <div class="relative overflow-hidden bg-background min-h-screen">
-        {/* Proiettori di scena come in biografia: oro in alto a destra, rosso
-            sipario in basso a sinistra. Fermi nello sfondo, dimensionati sullo
-            schermo (vw/vh) e sollevati dal fondo per non toccare il footer. */}
-        <div
-            class="velo-proiettore absolute top-0 -right-[10%] w-[50vw] h-[60vh] bg-primary/10 rounded-full blur-[150px] pointer-events-none"
-        >
-        </div>
-        <div
-            class="absolute bottom-32 -left-[10%] w-[50vw] h-[60vh] bg-[#c2273d]/10 rounded-full blur-[150px] pointer-events-none"
-        >
-        </div>
-
         <div class="container relative z-10 mx-auto px-4 md:px-8 lg:px-12 py-32">
             <div class="max-w-4xl mx-auto text-center mb-20">
                 <div>
@@ -122,7 +110,7 @@ const galleryImages = await Promise.all(
                 galleryImages.length > 0 ? (
                     <GalleryView client:visible images={galleryImages} />
                 ) : (
-                    <div class="text-center py-20 bg-white/5 border border-white/10 rounded-3xl max-w-4xl mx-auto">
+                    <div class="text-center py-20 bg-white/5 border border-border rounded-3xl max-w-4xl mx-auto">
                         <p class="text-xl text-muted-foreground">
                             La galleria è momentaneamente vuota.
                         </p>
@@ -143,16 +131,6 @@ const galleryImages = await Promise.all(
        pausa della battuta, citazione che si posa. Time-based (hero above the
        fold), solo transform+opacity, EASE del sistema duplicato in CSS.
        Guardia reduced-motion: fuori dalla guardia nessuno stato nascosto. */
-    @keyframes velo-accendi {
-        from {
-            opacity: 0;
-            transform: scale(1.06);
-        }
-        to {
-            opacity: 1;
-            transform: scale(1);
-        }
-    }
     @keyframes ribalta-sale {
         from {
             opacity: 0;
@@ -174,9 +152,6 @@ const galleryImages = await Promise.all(
         }
     }
     @media (prefers-reduced-motion: no-preference) {
-        .velo-proiettore {
-            animation: velo-accendi 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
-        }
         .riga-ribalta {
             animation: ribalta-sale 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.05s
                 both;

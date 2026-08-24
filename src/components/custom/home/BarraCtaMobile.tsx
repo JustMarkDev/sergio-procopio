@@ -7,17 +7,19 @@ import { DUR_REDUCED, SPRING, TAP, useMotionSafe } from "../../../lib/home-motio
  * BARRA CTA PERSISTENTE — overlay fisso, solo sotto lg.
  *
  * Non è una sezione nel flusso: si monta in index.astro come ULTIMO elemento,
- * dopo ContactForm, con `client:idle`. MAI dentro Header.tsx, che ha
+ * dopo ChiusuraContatti, con `client:idle`. MAI dentro Header.tsx, che ha
  * `transition:persist` e la duplicherebbe a ogni navigazione.
  *
  * Compare oltre l'80% dell'altezza del viewport (proxy dell'hero) e si ritira
- * quando `#contatti` entra in viewport, così non copre mai il modulo né il footer.
+ * quando `#contatti` entra in viewport, così non raddoppia mai il CTA della
+ * chiusura né copre il footer.
  */
 
 /** Proxy dell'altezza dell'hero: oltre questa quota di viewport la barra entra. */
 const SOGLIA_HERO = 0.8;
 
-/** Ancora della sezione contatti (id emesso da ContactForm.tsx, che non si tocca). */
+/** Ancora della chiusura della home (id emesso da ChiusuraContatti.astro).
+ *  Serve solo all'observer: il bottone qui sotto porta alla pagina /contatti. */
 const ID_CONTATTI = "contatti";
 
 /** Quota di `#contatti` visibile che fa ritirare la barra. */
@@ -159,9 +161,9 @@ export default function BarraCtaMobile(_props: BarraCtaMobileProps) {
           </motion.a>
 
           <motion.a
-            href="#contatti"
+            href="/contatti"
             whileTap={TAP}
-            className={`${AZIONE_BASE} bg-primary text-primary-foreground shadow-[0_8px_30px_rgba(212,162,76,0.22)] transition-[background-color,box-shadow] duration-200 hover:bg-[#e8b44a] hover:shadow-[0_10px_40px_rgba(212,162,76,0.38)]`}
+            className={`${AZIONE_BASE} bg-primary-deep text-primary-foreground shadow-[0_8px_30px_rgba(232,72,63,0.22)] transition-[background-color,box-shadow] duration-200 hover:bg-primary-deep-hover hover:shadow-[0_10px_40px_rgba(232,72,63,0.38)]`}
           >
             Richiedi una data
           </motion.a>

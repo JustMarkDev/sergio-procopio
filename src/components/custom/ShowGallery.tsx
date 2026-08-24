@@ -159,7 +159,7 @@ export default function ShowGallery({ mainImageSrc, mainImageOriginalSrc, images
         viewport={VIEWPORT}
         whileTap={TAP}
         onClick={() => setActiveIndex(activeIndexToUse)}
-        className="relative group overflow-hidden rounded-[2.5rem] border border-white/10 shadow-2xl bg-background cursor-pointer w-full block"
+        className="relative group overflow-hidden rounded-[2.5rem] border border-border shadow-2xl bg-background cursor-pointer w-full block"
       >
         <img
           src={mainImageSrc}

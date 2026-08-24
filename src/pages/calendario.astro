@@ -69,18 +69,6 @@ for (const show of spettacoli) {
     description="Calendario ufficiale degli spettacoli e degli eventi di Sergio Procopio."
 >
     <div class="relative overflow-hidden bg-background min-h-screen">
-        {/* Proiettori di scena come in biografia: oro in alto a destra, rosso
-            sipario in basso a sinistra. Fermi nello sfondo, dimensionati sullo
-            schermo (vw/vh) e sollevati dal fondo per non toccare il footer. */}
-        <div
-            class="locandina-luce absolute top-0 -right-[10%] w-[50vw] h-[60vh] bg-primary/10 rounded-full blur-[150px] pointer-events-none"
-        >
-        </div>
-        <div
-            class="locandina-luce absolute bottom-32 -left-[10%] w-[50vw] h-[60vh] bg-[#c2273d]/10 rounded-full blur-[150px] pointer-events-none"
-        >
-        </div>
-
         <div class="container relative z-10 mx-auto px-4 md:px-8 lg:px-12 py-32">
             <div class="max-w-4xl mb-16">
                 <h1 class="text-5xl md:text-7xl font-serif font-bold mb-6 tracking-tight">
@@ -108,7 +96,7 @@ for (const show of spettacoli) {
                                 );
 
                                 return (
-                                    <article class="locandina-data group relative flex flex-col rounded-4xl border border-white/10 bg-[var(--card)] transition-[border-color] duration-500 hover:border-primary/50 motion-reduce:transition-none md:flex-row">
+                                    <article class="locandina-data group relative flex flex-col rounded-4xl border border-border bg-[var(--card)] transition-[border-color] duration-500 hover:border-primary/50 motion-reduce:transition-none md:flex-row">
                                         {/* Foto di scena con la mattonella della data */}
                                         <div class="relative aspect-16/9 w-full shrink-0 overflow-hidden rounded-t-4xl bg-secondary/20 md:aspect-auto md:w-80 md:rounded-l-4xl md:rounded-tr-none">
                                             {info ? (
@@ -178,7 +166,7 @@ for (const show of spettacoli) {
                                                 {info && (
                                                     <a
                                                         href={`/spettacoli/${info.showId}`}
-                                                        class="inline-flex min-h-11 items-center rounded-full bg-primary px-5 text-sm font-bold text-primary-foreground shadow-[0_6px_18px_rgba(212,162,76,0.3)] transition-[background-color,box-shadow,scale] duration-200 hover:bg-[#e8b44a] hover:shadow-[0_8px_24px_rgba(212,162,76,0.42)] active:scale-[0.96]"
+                                                        class="inline-flex min-h-11 items-center rounded-full bg-primary-deep px-5 text-sm font-bold text-primary-foreground shadow-[0_6px_18px_rgba(232,72,63,0.3)] transition-[background-color,box-shadow,scale] duration-200 hover:bg-primary-deep-hover hover:shadow-[0_8px_24px_rgba(232,72,63,0.42)] active:scale-[0.96]"
                                                     >
                                                         Scopri lo spettacolo
                                                     </a>
@@ -200,14 +188,14 @@ for (const show of spettacoli) {
                                             animando box-shadow (compositor-friendly). */}
                                         <span
                                             aria-hidden="true"
-                                            class="pointer-events-none absolute -inset-px rounded-[inherit] opacity-0 shadow-[0_0_30px_rgba(212,162,76,0.15)] transition-opacity duration-500 group-hover:opacity-100 motion-reduce:transition-none"
+                                            class="pointer-events-none absolute -inset-px rounded-[inherit] opacity-0 shadow-[0_0_30px_rgba(232,72,63,0.15)] transition-opacity duration-500 group-hover:opacity-100 motion-reduce:transition-none"
                                         ></span>
                                     </article>
                                 );
                             })}
                         </div>
                     ) : (
-                        <div class="locandina-data rounded-3xl border border-white/10 bg-white/4 p-8 text-muted-foreground">
+                        <div class="locandina-data rounded-3xl border border-border bg-white/4 p-8 text-muted-foreground">
                             Non ci sono ancora eventi pubblici in calendario.
                         </div>
                     )
@@ -231,9 +219,9 @@ for (const show of spettacoli) {
                                 );
 
                                 return (
-                                    <article class="archivio-riga flex items-center gap-5 rounded-3xl border border-white/10 bg-white/3 p-4 transition-colors duration-300 hover:border-primary/30 md:p-5">
+                                    <article class="archivio-riga flex items-center gap-5 rounded-3xl border border-border bg-white/3 p-4 transition-colors duration-300 hover:border-primary/30 md:p-5">
                                         {info && (
-                                            <div class="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-secondary/20">
+                                            <div class="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border border-border bg-secondary/20">
                                                 <img
                                                     src={info.src}
                                                     srcset={info.srcset}
@@ -280,17 +268,6 @@ for (const show of spettacoli) {
        nascosto vive nei keyframes, dentro le guardie: fuori di lì
        la pagina appare completa.
        ============================================================ */
-
-    /* I due proiettori (oro e rosso) si accendono in sola opacity:
-       il glow è già pre-dipinto (bg-*+blur), non si muove mai. */
-    @keyframes locandina-luce-accendi {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
-    }
 
     /* Il titolo sale in ribalta dentro la maschera overflow-hidden:
        mask reveal per segmento, mai fade-up sul protagonista. */
@@ -378,10 +355,6 @@ for (const show of spettacoli) {
     /* ── Apertura hero a tempo: parte al load, sopra la piega.
        Con reduced motion nessuna regola si applica: tutto acceso. ── */
     @media (prefers-reduced-motion: no-preference) {
-        .locandina-luce {
-            animation: locandina-luce-accendi 0.9s cubic-bezier(0.16, 1, 0.3, 1)
-                both;
-        }
         .locandina-riga {
             animation: locandina-riga-su 0.9s cubic-bezier(0.16, 1, 0.3, 1)
                 0.05s both;

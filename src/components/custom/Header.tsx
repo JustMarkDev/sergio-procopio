@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { DUR, DUR_REDUCED, EASE, SPRING_PILL } from "../../lib/home-motion";
+import { DUR, DUR_REDUCED, EASE } from "../../lib/home-motion";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -15,7 +15,7 @@ const navLinks = [
 interface Props {
   /**
    * Percorso della pagina servita in SSR (Astro.url.pathname da Layout.astro):
-   * underline e aria-current esistono già nell'HTML servito, prima dell'idratazione.
+   * colore attivo e aria-current esistono già nell'HTML servito, prima dell'idratazione.
    */
   pathname?: string;
 }
@@ -135,7 +135,7 @@ export default function Header({ pathname: pathnameIniziale }: Props) {
                       onMouseEnter={() => setHoveredLink(link.name)}
                       onFocus={() => setHoveredLink(link.name)}
                       onBlur={() => setHoveredLink(null)}
-                      className={`relative flex min-h-10 items-center px-4 text-[15px] font-bold transition-colors duration-200 ${
+                      className={`flex min-h-10 items-center px-4 text-[15px] font-bold transition-colors duration-200 ${
                         attivo
                           ? "text-primary"
                           : hoveredLink === null || hoveredLink === link.name
@@ -144,23 +144,6 @@ export default function Header({ pathname: pathnameIniziale }: Props) {
                       }`}
                     >
                       {link.name}
-                      {/* L'occhio di bue segue l'attore: l'header persiste tra le
-                          navigazioni, quindi la lineetta oro scivola davvero dalla
-                          voce vecchia alla nuova. Con reduced: salto secco, da policy. */}
-                      {attivo &&
-                        (reduced ? (
-                          <span
-                            aria-hidden="true"
-                            className="absolute inset-x-4 bottom-1 h-0.5 rounded-full bg-primary"
-                          />
-                        ) : (
-                          <motion.span
-                            aria-hidden="true"
-                            layoutId="occhio-di-bue"
-                            transition={SPRING_PILL}
-                            className="absolute inset-x-4 bottom-1 h-0.5 rounded-full bg-primary"
-                          />
-                        ))}
                     </a>
                   </li>
                 );
@@ -170,7 +153,7 @@ export default function Header({ pathname: pathnameIniziale }: Props) {
 
           <a
             href="/contatti"
-            className="ml-auto hidden min-h-11 shrink-0 items-center rounded-full bg-primary px-5 text-sm font-bold text-primary-foreground shadow-[0_6px_18px_rgba(212,162,76,0.34)] transition-[background-color,scale,box-shadow] duration-200 hover:bg-[#e8b44a] hover:shadow-[0_8px_24px_rgba(212,162,76,0.45)] active:scale-[0.96] lg:flex"
+            className="ml-auto hidden min-h-11 shrink-0 items-center rounded-full bg-primary-deep px-5 text-sm font-bold text-primary-foreground shadow-[0_6px_18px_rgba(232,72,63,0.34)] transition-[background-color,scale,box-shadow] duration-200 hover:bg-primary-deep-hover hover:shadow-[0_8px_24px_rgba(232,72,63,0.45)] active:scale-[0.96] lg:flex"
           >
             Richiedi una data
           </a>
@@ -235,7 +218,7 @@ export default function Header({ pathname: pathnameIniziale }: Props) {
                   <a
                     href="/contatti"
                     onClick={() => setIsOpen(false)}
-                    className="flex min-h-12 items-center justify-center rounded-2xl bg-primary px-4 font-bold text-primary-foreground transition-[background-color,scale] duration-200 hover:bg-[#e8b44a] active:scale-[0.96]"
+                    className="flex min-h-12 items-center justify-center rounded-2xl bg-primary-deep px-4 font-bold text-primary-foreground transition-[background-color,scale] duration-200 hover:bg-primary-deep-hover active:scale-[0.96]"
                   >
                     Richiedi una data
                   </a>

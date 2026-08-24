@@ -9,7 +9,7 @@ import RepertorioCommittenti from "../components/custom/home/RepertorioCommitten
 import ComeSiOspita from "../components/custom/home/ComeSiOspita.astro";
 import PercheFidarsi from "../components/custom/home/PercheFidarsi";
 import TrePassi from "../components/custom/home/TrePassi.astro";
-import ContactForm from "../components/custom/ContactForm";
+import ChiusuraContatti from "../components/custom/home/ChiusuraContatti.astro";
 import BarraCtaMobile from "../components/custom/home/BarraCtaMobile";
 
 import { CATALOGO_HOME, NUMERI_IT, ordinaPerHome } from "../lib/home-catalogo";
@@ -97,7 +97,7 @@ const hero = {
 
     <TrePassi />
 
-    <ContactForm client:load sfondoAlt />
+    <ChiusuraContatti />
 
     <BarraCtaMobile client:idle />
 </Layout>

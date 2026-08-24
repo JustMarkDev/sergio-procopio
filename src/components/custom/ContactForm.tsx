@@ -22,8 +22,12 @@ const CONTACT_EMAIL_MAX_LENGTH = 254;
 const CONTACT_SUBJECT_MAX_LENGTH = 160;
 const CONTACT_MESSAGE_MAX_LENGTH = 4000;
 
-/** Parole del titolo rotante: a livello modulo, così l'effetto del loop non le rivede a ogni render. */
-const rotatingTitles = ["scuola", "parrocchia", "associazione"];
+/** Parole del titolo rotante: a livello modulo, così l'effetto del loop non le rivede a ogni render.
+ *  VINCOLO: femminili (la riga è «nella tua …») e al massimo 6 caratteri.
+ *  La riga è whitespace-nowrap e in 2xl arriva a text-6xl: con parole lunghe
+ *  come «parrocchia» o «associazione» sfonda la colonna e finisce sotto il
+ *  form. Se ne aggiungi una più lunga, alza anche il min-w qui sotto. */
+const rotatingTitles = ["scuola", "chiesa", "sede"];
 
 /* Istanze a livello modulo: la cache WeakMap di mv.v() lavora per identità
    referenziale, quindi i container di stagger devono essere stabili. */
@@ -142,11 +146,22 @@ export default function ContactForm({ sfondoAlt = false }: ContactFormProps) {
                 Porta l'emozione <br />
                 <span className="whitespace-nowrap">
                   nella tua{" "}
-                  <span className="inline-block min-w-[12ch] align-baseline">
+                  {/* align-bottom, non align-baseline: la culla contiene un blocco
+                      overflow-hidden, e un inline-block con overflow nascosto
+                      espone come baseline il proprio bordo inferiore, non
+                      quella del testo. Allineandola alla baseline di «nella
+                      tua» la parola saliva di tutto il discendente. Con
+                      align-bottom si allineano i fondi: le altezze sono
+                      identiche (pb/-mb si annullano), quindi le baseline
+                      coincidono. È il pattern delle maschere di tutto il sito. */}
+                  <span className="inline-block w-max min-w-[7ch] align-bottom">
                     {/* Graticcia: il telaio overflow-hidden fa uscire la parola
                         vecchia verso l'alto e monta la nuova dalla ribalta.
-                        Il padding salva i discendenti dei corsivi (come maskRiga). */}
-                    <span className="block overflow-hidden pb-[0.12em] -mb-[0.12em]">
+                        pb salva i discendenti dei corsivi (come maskRiga), pr lo
+                        sbalzo laterale: il corsivo sborda dalla larghezza
+                        d'avanzamento dell'ultimo glifo e senza quel margine la
+                        maschera gli rifila la coda. */}
+                    <span className="block overflow-hidden pb-[0.12em] -mb-[0.12em] pr-[0.12em]">
                       <AnimatePresence mode="wait" initial={false}>
                         <motion.span
                           key={rotatingTitles[titleIndex]}
@@ -172,7 +187,7 @@ export default function ContactForm({ sfondoAlt = false }: ContactFormProps) {
               <motion.a
                 href="tel:+393805252684"
                 whileTap={TAP}
-                className="flex min-h-14 w-full items-center justify-center gap-2.5 rounded-full bg-primary px-8 text-base font-bold text-primary-foreground shadow-[0_8px_30px_rgba(212,162,76,0.22)] transition-[background-color,box-shadow] duration-200 hover:bg-[#e8b44a] hover:shadow-[0_10px_40px_rgba(212,162,76,0.38)]"
+                className="flex min-h-14 w-full items-center justify-center gap-2.5 rounded-full bg-primary-deep px-8 text-base font-bold text-primary-foreground shadow-[0_8px_30px_rgba(232,72,63,0.22)] transition-[background-color,box-shadow] duration-200 hover:bg-primary-deep-hover hover:shadow-[0_10px_40px_rgba(232,72,63,0.38)]"
               >
                 <Phone size={18} aria-hidden="true" />
                 Chiama ora
@@ -181,7 +196,7 @@ export default function ContactForm({ sfondoAlt = false }: ContactFormProps) {
 
             <motion.div
               variants={mv.v(fadeUp)}
-              className="lg:col-span-7 lg:col-start-6 lg:row-span-2 lg:row-start-1 relative flex flex-col p-10 bg-white/2 border border-white/10 rounded-[2.5rem] backdrop-blur-sm"
+              className="lg:col-span-7 lg:col-start-6 lg:row-span-2 lg:row-start-1 relative flex flex-col p-10 bg-white/2 border border-border rounded-[2.5rem] backdrop-blur-sm"
             >
               <AnimatePresence mode="wait" initial={false}>
                 {status === "success" ? (
@@ -343,7 +358,7 @@ export default function ContactForm({ sfondoAlt = false }: ContactFormProps) {
                       type="submit"
                       disabled={isPending}
                       whileTap={TAP}
-                      className="w-full rounded-2xl bg-primary px-10 py-6 text-primary-foreground font-bold uppercase tracking-widest hover:bg-primary/90 transition-[background-color,box-shadow] shadow-lg shadow-primary/20 disabled:opacity-50 disabled:pointer-events-none flex justify-center items-center gap-2"
+                      className="w-full rounded-2xl bg-primary-deep px-10 py-6 text-primary-foreground font-bold uppercase tracking-widest hover:bg-primary-deep/90 transition-[background-color,box-shadow] shadow-lg shadow-primary/20 disabled:opacity-50 disabled:pointer-events-none flex justify-center items-center gap-2"
                     >
                       {isPending ? (
                         <>
@@ -367,7 +382,7 @@ export default function ContactForm({ sfondoAlt = false }: ContactFormProps) {
                 (riga 2) e si stira fino al bordo inferiore del form. */}
             <motion.div
               variants={mv.v(fadeUp)}
-              className="rounded-3xl border border-white/10 bg-white/3 p-6 lg:col-span-5 lg:col-start-1 lg:row-start-2"
+              className="rounded-3xl border border-border bg-white/3 p-6 lg:col-span-5 lg:col-start-1 lg:row-start-2"
             >
               {/* I quattro recapiti si presentano in scaletta, uno alla volta. */}
               <motion.div variants={mv.v(STAGGER_RECAPITI)} className="space-y-1">

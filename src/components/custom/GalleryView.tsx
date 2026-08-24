@@ -274,7 +274,7 @@ export default function GalleryView({ images }: GalleryViewProps) {
             onClick={() => applicaFiltro(FILTRO_TUTTE)}
             className={`inline-flex min-h-11 items-center whitespace-nowrap rounded-full border px-4 text-sm font-semibold transition-[color,border-color,background-color] duration-200 ${
               filtro === FILTRO_TUTTE
-                ? "border-primary bg-primary text-primary-foreground"
+                ? "border-primary-deep bg-primary-deep text-primary-foreground"
                 : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
             }`}
           >
@@ -290,7 +290,7 @@ export default function GalleryView({ images }: GalleryViewProps) {
               onClick={() => applicaFiltro(show.id)}
               className={`inline-flex min-h-11 items-center whitespace-nowrap rounded-full border px-4 text-sm font-semibold transition-[color,border-color,background-color] duration-200 ${
                 filtro === show.id
-                  ? "border-primary bg-primary text-primary-foreground"
+                  ? "border-primary-deep bg-primary-deep text-primary-foreground"
                   : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
               }`}
             >

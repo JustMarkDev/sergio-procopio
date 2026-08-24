@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import type { MouseEvent as ReactMouseEvent } from "react";
 import { MotionConfig, motion } from "framer-motion";
 import { ArrowRight, Clock } from "lucide-react";
 import {
@@ -91,17 +90,6 @@ export default function RepertorioCommittenti({
     return () => media.removeEventListener("change", aggiorna);
   }, []);
 
-  /**
-   * Luce di ribalta: l'occhio di bue segue il cursore aggiornando le due
-   * custom property direttamente sul DOM della card (niente stato React,
-   * zero re-render). Con reduced motion l'handler non viene proprio attaccato.
-   */
-  const gestisciLuceRibalta = (evento: ReactMouseEvent<HTMLElement>) => {
-    const bordi = evento.currentTarget.getBoundingClientRect();
-    evento.currentTarget.style.setProperty("--mx", `${evento.clientX - bordi.left}px`);
-    evento.currentTarget.style.setProperty("--my", `${evento.clientY - bordi.top}px`);
-  };
-
   return (
     <MotionConfig reducedMotion="user">
       <section
@@ -114,7 +102,7 @@ export default function RepertorioCommittenti({
 
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,162,76,0.05)_0%,transparent_70%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(232,72,63,0.05)_0%,transparent_70%)]"
         />
 
         <div className="container relative z-10 mx-auto px-4 md:px-8 lg:px-12">
@@ -140,7 +128,7 @@ export default function RepertorioCommittenti({
               className="mt-6 font-serif text-[clamp(2rem,4.2vw,3.5rem)] font-bold leading-[1.03] tracking-tight text-foreground"
             >
               Cosa posso portare nella{" "}
-              <span className="italic text-primary">vostra sala</span>.
+              <span className="italic text-primary">vostra sala</span>
             </motion.h2>
 
             <motion.p
@@ -167,8 +155,7 @@ export default function RepertorioCommittenti({
                     viewport={VIEWPORT}
                     custom={colonne ? indice * CARD_STEP : 0}
                     whileHover={reduced ? undefined : HOVER_CARD}
-                    onMouseMove={reduced ? undefined : gestisciLuceRibalta}
-                    className="group relative flex flex-col rounded-4xl border border-white/10 bg-[var(--card)] transition-[border-color] duration-500 hover:border-primary/50"
+                    className="group relative flex flex-col rounded-4xl border border-border bg-[var(--card)] transition-[border-color] duration-500 hover:border-primary/50"
                   >
                     <div className="relative aspect-4/3 w-full shrink-0 overflow-hidden rounded-t-4xl bg-secondary/20">
                       {show.img ? (
@@ -261,7 +248,7 @@ export default function RepertorioCommittenti({
                             href={`/contatti?spettacolo=${encodeURIComponent(show.id)}`}
                             aria-label={`Richiedi questo titolo: ${show.title}`}
                             whileTap={TAP}
-                            className="inline-flex min-h-11 items-center rounded-full bg-primary px-5 text-sm font-bold text-primary-foreground shadow-[0_6px_18px_rgba(212,162,76,0.3)] transition-[background-color,box-shadow] duration-200 hover:bg-[#e8b44a] hover:shadow-[0_8px_24px_rgba(212,162,76,0.42)]"
+                            className="inline-flex min-h-11 items-center rounded-full bg-primary-deep px-5 text-sm font-bold text-primary-foreground shadow-[0_6px_18px_rgba(232,72,63,0.3)] transition-[background-color,box-shadow] duration-200 hover:bg-primary-deep-hover hover:shadow-[0_8px_24px_rgba(232,72,63,0.42)]"
                           >
                             Richiedi questo titolo
                           </motion.a>
@@ -269,7 +256,7 @@ export default function RepertorioCommittenti({
                           <a
                             href={`/spettacoli/${show.id}`}
                             aria-label={`Dettagli di ${show.title}`}
-                            className="group/link inline-flex min-h-11 items-center gap-2 text-sm font-bold uppercase tracking-wider text-foreground shadow-[inset_0_-2px_0_rgba(212,162,76,0.3)] transition-[color,box-shadow] duration-150 hover:text-primary hover:shadow-[inset_0_-2px_0_#d4a24c]"
+                            className="group/link inline-flex min-h-11 items-center gap-2 text-sm font-bold uppercase tracking-wider text-foreground shadow-[inset_0_-2px_0_rgba(232,72,63,0.3)] transition-[color,box-shadow] duration-150 hover:text-primary hover:shadow-[inset_0_-2px_0_#e8483f]"
                           >
                             Dettagli
                             <ArrowRight
@@ -281,22 +268,11 @@ export default function RepertorioCommittenti({
                       </div>
                     </div>
 
-                    {/* Luce di ribalta: occhio di bue che segue il cursore
-                      * (solo puntatori fini, coordinate via --mx/--my). */}
-                    <div
-                      aria-hidden="true"
-                      className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-0 transition-opacity duration-200 pointer-fine:group-hover:opacity-100 motion-reduce:transition-none"
-                      style={{
-                        background:
-                          "radial-gradient(240px circle at var(--mx,50%) var(--my,50%), rgba(212,162,76,0.10), transparent 70%)",
-                      }}
-                    />
-
                     {/* Glow pre-dipinto: si accende in sola opacity, mai
                       * animando box-shadow (compositor-friendly). */}
                     <span
                       aria-hidden="true"
-                      className="pointer-events-none absolute -inset-px rounded-[inherit] shadow-[0_0_30px_rgba(212,162,76,0.15)] opacity-0 transition-opacity duration-500 group-hover:opacity-100 motion-reduce:transition-none"
+                      className="pointer-events-none absolute -inset-px rounded-[inherit] shadow-[0_0_30px_rgba(232,72,63,0.15)] opacity-0 transition-opacity duration-500 group-hover:opacity-100 motion-reduce:transition-none"
                     />
                   </motion.article>
                 );
@@ -316,7 +292,7 @@ export default function RepertorioCommittenti({
             <motion.a
               href="/spettacoli"
               whileTap={TAP}
-              className="group/tutti inline-flex min-h-14 shrink-0 items-center gap-3 rounded-full bg-primary px-10 text-base font-bold text-primary-foreground shadow-[0_8px_30px_rgba(212,162,76,0.22)] transition-[background-color,box-shadow] duration-200 hover:bg-[#e8b44a] hover:shadow-[0_10px_40px_rgba(212,162,76,0.38)] md:min-h-16 md:px-12 md:text-lg"
+              className="group/tutti inline-flex min-h-14 shrink-0 items-center gap-3 rounded-full bg-primary-deep px-10 text-base font-bold text-primary-foreground shadow-[0_8px_30px_rgba(232,72,63,0.22)] transition-[background-color,box-shadow] duration-200 hover:bg-primary-deep-hover hover:shadow-[0_10px_40px_rgba(232,72,63,0.38)] md:min-h-16 md:px-12 md:text-lg"
             >
               Vedi tutti gli spettacoli
               <ArrowRight

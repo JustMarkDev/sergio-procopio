@@ -88,8 +88,9 @@ const STAGGER_RIGHE = stagger(PAUSA_BATTUTA, 0);
  *  voluto di DELAY_RIGA_TECNICA dal treno di colonna vive nel delayChildren. */
 const STAGGER_TECNICA = stagger(0.05, DELAY_RIGA_TECNICA);
 
-/** Corsa della parallasse del testo (verso l'alto) e opacità di fondo corsa. */
-const PARALLAX_TESTO = -40;
+/** Opacità del testo a fondo corsa. Il testo NON trasla: la parallasse
+ *  è solo dell'immagine. Una corsa in y sul titolo, filtrata dalla molla,
+ *  lo faceva rincorrere lo scroll e ondeggiare su e giù. */
 const OPACITA_TESTO_FINE = 0.35;
 
 /** Ripiego per width/height della foto: servono solo come rapporto intrinseco,
@@ -133,10 +134,11 @@ export default function HeroCommittenti({
   const variantiColonna = useMemo(() => stagger(STAGGER_COLONNA, DELAY_COLONNA), []);
 
   /* --------------------------------------------------------------------- *
-   * PARALLASSE
+   * PARALLASSE — solo l'immagine si muove.
    * Gli hook girano sempre (regole degli hook); con reduced motion NON viene
    * applicato lo `style`, quindi nessun valore di scroll tocca il layout.
-   * Corsa massima PARALLAX_MAX, sempre filtrata da SCROLL_SPRING.
+   * Corsa massima PARALLAX_MAX, sempre filtrata da SCROLL_SPRING. Il testo
+   * prende dallo scroll la sola opacità: vedi OPACITA_TESTO_FINE.
    * --------------------------------------------------------------------- */
 
   const { scrollYProgress } = useScroll({
@@ -147,12 +149,11 @@ export default function HeroCommittenti({
   const fotoYGrezzo = useTransform(scrollYProgress, [0, 1], [0, PARALLAX_MAX]);
   const fotoY = useSpring(fotoYGrezzo, SCROLL_SPRING);
 
-  const testoYGrezzo = useTransform(scrollYProgress, [0, 1], [0, PARALLAX_TESTO]);
-  const testoY = useSpring(testoYGrezzo, SCROLL_SPRING);
   const testoOpacita = useTransform(scrollYProgress, [0, 1], [1, OPACITA_TESTO_FINE]);
 
   const stileFoto = mv.reduced ? undefined : { y: fotoY };
-  const stileTesto = mv.reduced ? undefined : { y: testoY, opacity: testoOpacita };
+  // Solo opacità: nessuna y, quindi il titolo resta fermo mentre si scrolla.
+  const stileTesto = mv.reduced ? undefined : { opacity: testoOpacita };
 
   return (
     <MotionConfig reducedMotion="user">
@@ -249,16 +250,10 @@ export default function HeroCommittenti({
           className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-72 bg-linear-to-t from-background from-15% via-background/75 to-transparent"
         />
 
-        {/* 4 — BLOB: oro in alto a sinistra, rosso sipario in basso a destra.
-            Il rosso #c2273d qui è solo superficie sfocata, mai testo né bordo. */}
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-          <div className="absolute -top-[20%] -left-[10%] h-[60%] w-[60%] rounded-full bg-primary/10 blur-[140px]" />
-          <div className="absolute -right-[10%] -bottom-[20%] h-[50%] w-[50%] rounded-full bg-[#c2273d]/18 blur-[160px]" />
-        </div>
-
         <div className="relative z-10 container mx-auto px-4 md:px-8 lg:px-12">
-          {/* Wrapper della parallasse, separato dal contenitore delle varianti:
-              così `style` e `variants` non si contendono mai l'opacità. */}
+          {/* Wrapper della dissolvenza da scroll, separato dal contenitore
+              delle varianti: così `style` e `variants` non si contendono mai
+              l'opacità. Qui NON va messa una y: il titolo deve restare fermo. */}
           <motion.div className="max-w-2xl" style={stileTesto}>
             <motion.div
               variants={mv.v(variantiColonna)}
@@ -325,10 +320,10 @@ export default function HeroCommittenti({
                 {/* whileTap al posto di active:scale: Framer possiede tutto il
                     transform e il press funziona anche durante l'hover. */}
                 <motion.a
-                  href="#contatti"
+                  href="/contatti"
                   whileHover={HOVER_BUTTON}
                   whileTap={TAP}
-                  className="group/cta inline-flex min-h-14 items-center justify-center gap-3 rounded-full bg-primary px-14 text-base font-bold text-primary-foreground shadow-[0_8px_30px_rgba(212,162,76,0.22)] transition-[background-color,box-shadow] duration-200 hover:bg-[#e8b44a] hover:shadow-[0_10px_40px_rgba(212,162,76,0.38)] md:px-16"
+                  className="group/cta inline-flex min-h-14 items-center justify-center gap-3 rounded-full bg-primary-deep px-14 text-base font-bold text-primary-foreground shadow-[0_8px_30px_rgba(232,72,63,0.22)] transition-[background-color,box-shadow] duration-200 hover:bg-primary-deep-hover hover:shadow-[0_10px_40px_rgba(232,72,63,0.38)] md:px-16"
                 >
                   Richiedi una data
                   <ArrowRight
@@ -337,7 +332,7 @@ export default function HeroCommittenti({
                   />
                 </motion.a>
                 <motion.a
-                  href="#repertorio"
+                  href="/spettacoli"
                   whileHover={HOVER_BUTTON}
                   whileTap={TAP}
                   className="inline-flex min-h-14 items-center justify-center rounded-full px-9 text-base font-semibold text-muted-foreground shadow-[0_0_0_1px_rgba(255,255,255,0.1)] transition-[color,background-color,box-shadow] duration-200 hover:bg-white/5 hover:text-foreground hover:shadow-[0_0_0_1px_rgba(255,255,255,0.16)]"

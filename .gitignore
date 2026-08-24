@@ -26,3 +26,6 @@ pnpm-debug.log*
 .claude/
 
 .vercel
+
+# backup palette (locale, non versionato)
+PALETTE-ORO-BACKUP.md

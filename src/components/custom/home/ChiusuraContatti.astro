@@ -1,0 +1,93 @@
+---
+/**
+ * ChiusuraContatti — ultima sezione della home, id="contatti".
+ *
+ * Sostituisce il modulo di contatto che stava qui: in home il form chiedeva
+ * di compilare quattro campi a chi aveva appena finito di leggere, mentre la
+ * pagina /contatti esiste già e fa quel lavoro. Qui resta il solo invito, con
+ * un bottone che ci porta.
+ *
+ * L'id="contatti" NON è decorativo e va lasciato: lo cerca l'observer di
+ * BarraCtaMobile, che ritira la barra quando questo blocco entra in viewport
+ * (altrimenti la barra raddoppierebbe il bottone qui sotto). Nessun link punta
+ * più a `#contatti`: tutti i CTA del sito vanno alla pagina /contatti.
+ *
+ * Lo sfondo alternato (bg-background-alt) è lo stesso che usava il form con
+ * `sfondoAlt`: serve a staccare la chiusura da «Tre passi», che la precede.
+ *
+ * ZERO JAVASCRIPT PROPRIO: l'unica isola è <Reveal client:visible>.
+ *
+ * NOTA DI COPY: come in TrePassi, niente impegni sul tempo di risposta né
+ * fasce di prezzo — non esistono nel materiale verificato.
+ */
+import Reveal from "./Reveal";
+
+/** Nessuna prop: il contenuto è interamente statico. */
+export type Props = Record<string, never>;
+---
+
+<section
+  id="contatti"
+  aria-labelledby="chiusura-title"
+  class="scroll-mt-28 bg-background-alt py-20 md:py-28"
+>
+  <div class="container mx-auto px-4 md:px-8 lg:px-12">
+    <Reveal client:visible>
+      <div class="mx-auto max-w-3xl text-center">
+        <p
+          class="font-sans text-xs font-bold tracking-[0.22em] text-primary uppercase"
+        >
+          Il passo che manca
+        </p>
+
+        <h2
+          id="chiusura-title"
+          class="mt-5 font-serif text-[clamp(2rem,4.2vw,3.5rem)] leading-[1.03] font-bold tracking-tight text-foreground"
+        >
+          Ora che ci conosciamo, <span class="italic text-primary"
+            >fissiamo la data</span
+          >
+        </h2>
+
+        <p
+          class="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl"
+        >
+          Ditemi che spazio avete, che periodo avete in mente e chi vi aspettate
+          in sala: al resto penso io.
+        </p>
+
+        <a
+          href="/contatti"
+          class="mt-10 inline-flex min-h-14 items-center justify-center gap-3 rounded-full bg-primary-deep px-10 text-base font-bold text-primary-foreground shadow-[0_8px_30px_rgba(232,72,63,0.22)] transition-[background-color,box-shadow,scale] duration-200 hover:bg-primary-deep-hover hover:shadow-[0_10px_40px_rgba(232,72,63,0.38)] active:scale-[0.96] motion-reduce:transition-none"
+        >
+          Richiedi una data
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+          </svg>
+        </a>
+
+        {/* Il telefono resta a portata di mano per chi preferisce parlare:
+            stesso numero della pagina contatti e della barra mobile. */}
+        <p class="mt-6 text-sm text-muted-foreground">
+          Oppure chiamate il <a
+            href="tel:+393805252684"
+            class="font-semibold text-primary underline-offset-4 transition-colors duration-200 hover:text-primary-hover hover:underline"
+            >380 5252684</a
+          >
+        </p>
+      </div>
+    </Reveal>
+  </div>
+</section>
