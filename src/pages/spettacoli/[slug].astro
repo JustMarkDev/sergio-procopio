@@ -1,22 +1,19 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { getCollection, render } from "astro:content";
+import { getEntry, render } from "astro:content";
 import { getImage } from "astro:assets";
 import { getShowSpecs } from "../../lib/show-specs";
 import { getImageTitleFromPath } from "../../lib/show-assets";
 import ShowGallery from "../../components/custom/ShowGallery";
 
-export async function getStaticPaths() {
-    const spettacoli = await getCollection("spettacoli");
-    return spettacoli
-        .filter((show) => !show.data.draft)
-        .map((show) => ({
-            params: { slug: show.id },
-            props: { show },
-        }));
+const show = Astro.params.slug
+    ? await getEntry("spettacoli", Astro.params.slug)
+    : undefined;
+
+if (!show || show.data.draft) {
+    return Astro.rewrite("/404");
 }
 
-const { show } = Astro.props;
 const { Content } = await render(show);
 const specGroups = getShowSpecs(show);
 

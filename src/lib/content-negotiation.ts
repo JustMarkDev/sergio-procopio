@@ -1,0 +1,130 @@
+export const PRODUCED_MEDIA_TYPES = ["text/html", "text/markdown"] as const;
+
+export type ProducedMediaType = (typeof PRODUCED_MEDIA_TYPES)[number];
+
+type AcceptEntry = {
+  type: string;
+  q: number;
+  specificity: number;
+  position: number;
+};
+
+const parseAccept = (header: string): AcceptEntry[] =>
+  header
+    .split(",")
+    .map((raw, position) => {
+      const parts = raw.trim().split(";").map((part) => part.trim());
+      const type = parts[0].toLowerCase();
+      let q = 1;
+
+      for (const parameter of parts.slice(1)) {
+        const [name, value] = parameter.split("=").map((part) => part.trim());
+        if (name === "q") {
+          const parsed = Number(value);
+          if (!Number.isNaN(parsed)) {
+            q = Math.max(0, Math.min(1, parsed));
+          }
+        }
+      }
+
+      return {
+        type,
+        q,
+        specificity:
+          type === "*/*" ? 0 : type.endsWith("/*") ? 1 : 2,
+        position,
+      };
+    });
+
+const matches = (entry: AcceptEntry, candidate: string) => {
+  if (entry.type === "*/*") return true;
+  if (entry.type.endsWith("/*")) {
+    return candidate.startsWith(entry.type.slice(0, -1));
+  }
+  return entry.type === candidate;
+};
+
+/** Select a representation according to RFC 9110 quality and specificity rules. */
+export const preferredMediaType = (
+  header: string | null,
+): ProducedMediaType | null => {
+  if (header === null) return "text/html";
+
+  const entries = parseAccept(header);
+  if (entries.length === 0) return "text/html";
+
+  let best: ProducedMediaType | null = null;
+  let bestQ = -1;
+  let bestPosition = Number.POSITIVE_INFINITY;
+
+  for (const candidate of PRODUCED_MEDIA_TYPES) {
+    let matched: AcceptEntry | null = null;
+
+    for (const entry of entries) {
+      if (!matches(entry, candidate)) continue;
+
+      if (
+        matched === null ||
+        entry.specificity > matched.specificity ||
+        (entry.specificity === matched.specificity &&
+          entry.position < matched.position)
+      ) {
+        matched = entry;
+      }
+    }
+
+    if (matched === null || matched.q <= 0) continue;
+
+    if (
+      matched.q > bestQ ||
+      (matched.q === bestQ && matched.position < bestPosition)
+    ) {
+      best = candidate;
+      bestQ = matched.q;
+      bestPosition = matched.position;
+    }
+  }
+
+  return best;
+};
+
+export const addVary = (headers: Headers, ...values: string[]) => {
+  const existing = headers.get("Vary");
+  const tokens = existing
+    ? existing.split(",").map((token) => token.trim()).filter(Boolean)
+    : [];
+
+  if (tokens.some((token) => token === "*")) return;
+
+  for (const value of values) {
+    if (!tokens.some((token) => token.toLowerCase() === value.toLowerCase())) {
+      tokens.push(value);
+    }
+  }
+
+  headers.set("Vary", tokens.join(", "));
+};
+
+export const markdownResponse = (
+  body: string,
+  init: ResponseInit = {},
+): Response => {
+  const headers = new Headers(init.headers);
+  headers.set("Content-Type", "text/markdown; charset=utf-8");
+  addVary(headers, "Accept", "Accept-Encoding");
+
+  return new Response(`${body.trimEnd()}\n`, {
+    ...init,
+    headers,
+  });
+};
+
+export const notAcceptableResponse = () => {
+  const headers = new Headers({ "Content-Type": "text/plain; charset=utf-8" });
+  addVary(headers, "Accept", "Accept-Encoding");
+
+  return new Response(
+    "Not Acceptable\nThis site serves text/html and text/markdown.\n",
+    { status: 406, headers },
+  );
+};

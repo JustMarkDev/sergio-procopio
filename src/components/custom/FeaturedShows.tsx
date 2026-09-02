@@ -45,6 +45,15 @@ export default function FeaturedShows({ shows }: Props) {
               Spettacoli in{" "}
               <span className="italic text-primary">Evidenza</span>
             </motion.h2>
+            <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground/75">
+              Un repertorio di pantomime e spettacoli-incontro che usa comicità,
+              poesia e silenzio per coinvolgere il pubblico e aprire una
+              riflessione su temi importanti. Le proposte sono pensate per età e
+              contesti diversi, dalla scuola alla festa di piazza, con schede
+              che spiegano temi, durata e requisiti di ogni spettacolo. In questo
+              modo insegnanti e organizzatori possono confrontare rapidamente le
+              proposte e scegliere quella più adatta.
+            </p>
           </div>
           <motion.div
             initial={false}

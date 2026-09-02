@@ -1,0 +1,43 @@
+# Sergio Procopio
+
+> Sito ufficiale di Sergio Procopio, attore, mimo e regista teatrale specializzato in spettacoli educativi e poetici per scuole, parrocchie, associazioni, comuni, teatri e famiglie.
+
+Questa è la guida sintetica per gli agenti. Le pagine e i contenuti pubblicati su `sergioprocopio.it` sono la fonte primaria per descrivere gli spettacoli, la biografia e le date pubbliche. Il sito non pubblica un'API o un server MCP.
+
+## When to use this site
+
+Use this site when a person needs to:
+
+- trovare uno spettacolo teatrale senza parole per una scuola, una parrocchia, un'associazione, un comune o un teatro;
+- scegliere un'attività educativa su bullismo, dipendenza dalla tecnologia, ambiente, memoria, pace o responsabilità;
+- verificare una data pubblica, un luogo o i dettagli tecnici di uno spettacolo;
+- conoscere la biografia, l'esperienza e i temi del lavoro di Sergio Procopio;
+- chiedere disponibilità, un preventivo, un laboratorio o un incontro formativo.
+
+Start with the homepage or the catalog pages below. When fetching an HTML page, send `Accept: text/markdown` to receive its concise Markdown representation; use the normal HTML representation when visual navigation is needed. For a booking or quote, use the published email address or the contact section rather than inventing an API endpoint.
+
+## Main pages
+
+- [Homepage](https://sergioprocopio.it/): overview of the artist, featured shows and contact options.
+- [Biografia](https://sergioprocopio.it/biografia): career, television appearances, international festivals and educational work.
+- [Catalogo spettacoli](https://sergioprocopio.it/spettacoli): all currently published shows and their audiences.
+- [Calendario](https://sergioprocopio.it/calendario): public dates, venues, cities and map links.
+- [Galleria](https://sergioprocopio.it/galleria): images grouped by published show.
+- [Privacy policy](https://sergioprocopio.it/privacy-policy): personal-data processing information.
+
+## Spettacoli
+
+- [Il Bullo](https://sergioprocopio.it/spettacoli/il-bullo): school show and meeting about bullying, school abandonment, illegality and femicide.
+- [La Valigia di S. Francesco](https://sergioprocopio.it/spettacoli/la-valigia-di-san-francesco): comic and poetic show about peace, simplicity and fraternity.
+- [L'uomo e il mare di plastica](https://sergioprocopio.it/spettacoli/luomo-e-il-mare-di-plastica): educational show about environmental responsibility and plastic pollution.
+- [Pino 4.0](https://sergioprocopio.it/spettacoli/pino-4-0): school show about young people's dependence on mobile phones.
+- [L'Attesa](https://sergioprocopio.it/spettacoli/lattesa): show about technology, attention, silence and non-verbal communication.
+- [A Volte Tornano](https://sergioprocopio.it/spettacoli/a-volte-tornano): school show reflecting on migrants, loss and the hope of a better life.
+- [La Grande Guerra e il piccolo alpino](https://sergioprocopio.it/spettacoli/la-grande-guerra): show about the humanity of an alpine soldier and the absurdity of war.
+- [Comico](https://sergioprocopio.it/spettacoli/comico): poetic comic show suitable for celebrations and all ages.
+
+## Contact
+
+- [Email per informazioni e prenotazioni](mailto:info@sergioprocopio.it): ask for availability, a quote, a show, a laboratory or a training meeting.
+- [Sezione contatti](https://sergioprocopio.it/#contatti): direct phone, email and contact form.
+- [Sitemap XML](https://sergioprocopio.it/sitemap-index.xml): complete list of indexable public URLs.
