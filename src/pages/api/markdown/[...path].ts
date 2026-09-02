@@ -54,7 +54,7 @@ export const GET: APIRoute = async ({ params, url }) => {
     return markdownResponse(homepageMarkdown(await publicShows()));
   }
 
-  if (path === "biografia") {
+  if (path === "biografia" || path === "about") {
     const biography = await getEntry("pages", "biografia");
     if (biography) {
       return markdownResponse(
@@ -63,7 +63,7 @@ export const GET: APIRoute = async ({ params, url }) => {
           description: biography.data.description,
           quote: biography.data.quote,
           body: biography.body,
-        }),
+        }, path === "about" ? "About Sergio Procopio" : undefined),
       );
     }
   }

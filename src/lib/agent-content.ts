@@ -69,14 +69,18 @@ Telefono: [+39 3805252684](tel:+393805252684).`,
     `- [Tutti gli spettacoli](${link("/spettacoli")})`,
     `- [Calendario degli eventi](${link("/calendario")})`,
     `- [Biografia](${link("/biografia")})`,
+    `- [About Sergio Procopio](${link("/about")})`,
     `- [Galleria](${link("/galleria")})`,
     `- [Guida per agenti (llms.txt)](${link("/llms.txt")})`,
     `- [Sitemap XML](${link("/sitemap-index.xml")})`,
   ].join("\n");
 
-export const biographyMarkdown = (biography: AgentBiography) =>
+export const biographyMarkdown = (
+  biography: AgentBiography,
+  heading = biography.title,
+) =>
   [
-    `# ${biography.title}`,
+    `# ${heading}`,
     `> ${biography.description}`,
     biography.quote ? `\n> “${biography.quote}”` : "",
     "",

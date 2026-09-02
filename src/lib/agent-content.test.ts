@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  biographyMarkdown,
   homepageMarkdown,
   notFoundMarkdown,
   showMarkdown,
@@ -22,8 +23,23 @@ describe("agent content", () => {
     expect(markdown).toContain(
       "https://sergioprocopio.it/spettacoli/comico",
     );
+    expect(markdown).toContain("https://sergioprocopio.it/about");
     expect(markdown).toContain("https://sergioprocopio.it/llms.txt");
     expect(markdown.length).toBeGreaterThan(500);
+  });
+
+  it("can present the verified biography under the About heading", () => {
+    const markdown = biographyMarkdown(
+      {
+        title: "Biografia",
+        description: "La storia di Sergio Procopio.",
+        body: "## Una vita dedicata all'arte\n\nUna lunga esperienza teatrale.",
+      },
+      "About Sergio Procopio",
+    );
+
+    expect(markdown).toMatch(/^# About Sergio Procopio\n/);
+    expect(markdown).toContain("## Una vita dedicata all'arte");
   });
 
   it("keeps show metadata and editorial body together", () => {
