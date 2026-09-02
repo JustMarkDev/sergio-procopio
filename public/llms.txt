@@ -28,7 +28,7 @@ Start with the homepage or the catalog pages below. When fetching an HTML page, 
 ## Spettacoli
 
 - [Il Bullo](https://sergioprocopio.it/spettacoli/il-bullo): school show and meeting about bullying, school abandonment, illegality and femicide.
-- [La Valigia di S. Francesco](https://sergioprocopio.it/spettacoli/la-valigia-di-san-francesco): comic and poetic show about peace, simplicity and fraternity.
+- [La Valigia di S. Francesco](https://sergioprocopio.it/spettacoli/la-valigia-di-s-francesco): comic and poetic show about peace, simplicity and fraternity.
 - [L'uomo e il mare di plastica](https://sergioprocopio.it/spettacoli/luomo-e-il-mare-di-plastica): educational show about environmental responsibility and plastic pollution.
 - [Pino 4.0](https://sergioprocopio.it/spettacoli/pino-4-0): school show about young people's dependence on mobile phones.
 - [L'Attesa](https://sergioprocopio.it/spettacoli/lattesa): show about technology, attention, silence and non-verbal communication.
