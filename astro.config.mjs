@@ -12,19 +12,15 @@ const siteUrl = "https://sergioprocopio.it";
 const showsDirectory = new URL("./src/content/spettacoli/", import.meta.url);
 const publicShowPages = readdirSync(showsDirectory)
   .filter((file) => file.endsWith(".md"))
-  .filter(
-    (file) =>
-      !/^draft:\s*true\s*$/m.test(
-        readFileSync(join(showsDirectory.pathname, file), "utf8"),
-      ),
-  )
-  .map(
-    (file) =>
-      new URL(
-        `/spettacoli/${basename(file, ".md")}`,
-        siteUrl,
-      ).toString(),
-  );
+  .flatMap((file) => {
+    const source = readFileSync(join(showsDirectory.pathname, file), "utf8");
+    if (/^draft:\s*true\s*$/m.test(source)) return [];
+
+    const slug =
+      source.match(/^slug:\s*(\S+)\s*$/m)?.[1] ?? basename(file, ".md");
+
+    return [new URL(`/spettacoli/${slug}`, siteUrl).toString()];
+  });
 
 // https://astro.build/config
 export default defineConfig({

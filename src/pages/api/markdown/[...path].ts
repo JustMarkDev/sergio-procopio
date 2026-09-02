@@ -14,9 +14,7 @@ import {
 import { markdownResponse } from "../../../lib/content-negotiation";
 
 const normalizePath = (path: string | undefined) =>
-  (path ?? "")
-    .replace(/^\/+|\/+$/g, "")
-    .replace(/^index\/?$/, "");
+  (path ?? "").replace(/^\/+|\/+$/g, "");
 
 const publicShows = async () =>
   (await getCollection("spettacoli"))
@@ -52,7 +50,7 @@ const publicEvents = async (): Promise<AgentEvent[]> =>
 export const GET: APIRoute = async ({ params, url }) => {
   const path = normalizePath(params.path);
 
-  if (path === "") {
+  if (path === "" || path === "home") {
     return markdownResponse(homepageMarkdown(await publicShows()));
   }
 

@@ -11,11 +11,11 @@ const hasFileExtension = (pathname: string) =>
 const isDocumentPath = (pathname: string) =>
   !pathname.startsWith("/api/") &&
   !pathname.startsWith("/_") &&
-  !hasFileExtension(pathname);
+  (!hasFileExtension(pathname) || pathname.toLowerCase().endsWith(".html"));
 
 const markdownEndpointPath = (pathname: string) => {
   const normalized = pathname.replace(/^\/+|\/+$/g, "");
-  return `/api/markdown/${normalized || "index"}`;
+  return `/api/markdown/${normalized || "home"}`;
 };
 
 export const onRequest = defineMiddleware(async (context, next) => {

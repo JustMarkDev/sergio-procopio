@@ -37,6 +37,11 @@ describe("preferredMediaType", () => {
     expect(preferredMediaType("application/json")).toBeNull();
     expect(preferredMediaType("text/html;q=0, text/markdown;q=0")).toBeNull();
   });
+
+  it("treats q parameter names case-insensitively and rejects invalid values", () => {
+    expect(preferredMediaType("text/markdown;Q=0, text/html;q=0")).toBeNull();
+    expect(preferredMediaType("text/markdown;q=invalid")).toBeNull();
+  });
 });
 
 describe("response headers", () => {

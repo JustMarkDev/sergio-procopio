@@ -9,6 +9,8 @@ type AcceptEntry = {
   position: number;
 };
 
+const qualityValuePattern = /^(?:0(?:\.\d{0,3})?|1(?:\.0{0,3})?)$/;
+
 const parseAccept = (header: string): AcceptEntry[] =>
   header
     .split(",")
@@ -18,13 +20,18 @@ const parseAccept = (header: string): AcceptEntry[] =>
       let q = 1;
 
       for (const parameter of parts.slice(1)) {
-        const [name, value] = parameter.split("=").map((part) => part.trim());
-        if (name === "q") {
-          const parsed = Number(value);
-          if (!Number.isNaN(parsed)) {
-            q = Math.max(0, Math.min(1, parsed));
-          }
-        }
+        const separator = parameter.indexOf("=");
+        const name = (separator === -1
+          ? parameter
+          : parameter.slice(0, separator)
+        ).trim();
+
+        if (name.toLowerCase() !== "q") continue;
+
+        const value =
+          separator === -1 ? "" : parameter.slice(separator + 1).trim();
+        q = qualityValuePattern.test(value) ? Number(value) : 0;
+        break;
       }
 
       return {
