@@ -49,4 +49,5 @@ Do **not** invent an API, MCP server or booking endpoint. Call the site like thi
 - [Email per informazioni e prenotazioni](mailto:info@sergioprocopio.it): ask for availability, a quote, a show, a laboratory or a training meeting.
 - [Contatti](https://sergioprocopio.it/contatti): phone, email and contact form (preferred).
 - [Contact](https://sergioprocopio.it/contact): English alias of Contatti.
-- [Sitemap XML](https://sergioprocopio.it/sitemap-index.xml): complete list of indexable public URLs.
+- [Sitemap Markdown](https://sergioprocopio.it/sitemap.md): concise Markdown index of public pages.
+- [Sitemap XML](https://sergioprocopio.it/sitemap.xml): complete list of indexable public URLs.

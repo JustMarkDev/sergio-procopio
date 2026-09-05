@@ -8,6 +8,7 @@ import {
   privacyMarkdown,
   showMarkdown,
 } from "./agent-content";
+import { contactTrustPlainText } from "./contact-trust";
 import { GET } from "../pages/api/markdown/[...path]";
 
 vi.mock("astro:content", () => ({
@@ -34,6 +35,7 @@ describe("agent content", () => {
     );
     expect(markdown).toContain("https://sergioprocopio.it/about");
     expect(markdown).toContain("https://sergioprocopio.it/llms.txt");
+    expect(markdown).toContain("https://sergioprocopio.it/sitemap.xml");
     expect(markdown.length).toBeGreaterThan(500);
   });
 
@@ -66,18 +68,24 @@ describe("agent content", () => {
     expect(markdown).toContain("https://sergioprocopio.it/contatti");
   });
 
-  it("provides contact details, the availability form and three booking steps", () => {
-    const markdown = contactMarkdown();
+  it("provides Italian and English contact trust pages over 500 characters", () => {
+    const italian = contactMarkdown("it");
+    const english = contactMarkdown("en");
 
-    expect(markdown).toMatch(/^# Contatti\n/);
-    expect(markdown.length).toBeGreaterThan(500);
-    expect(markdown).toContain("[info@sergioprocopio.it](mailto:info@sergioprocopio.it)");
-    expect(markdown).toContain("[+39 3805252684](tel:+393805252684)");
-    expect(markdown).toContain("https://sergioprocopio.it/contatti");
-    expect(markdown).toContain("https://sergioprocopio.it/contact");
-    expect(markdown).toContain("1. Scrivimi: raccontami il periodo, il luogo e il pubblico");
-    expect(markdown).toContain("2. Ti rispondo io: verifichiamo la disponibilità e definiamo una proposta con un preventivo.");
-    expect(markdown).toContain("3. Confermiamo la data: accordiamo i dettagli tecnici");
+    expect(italian).toMatch(/^# Contatti\n/);
+    expect(english).toMatch(/^# Contact\n/);
+    expect(italian.length).toBeGreaterThan(500);
+    expect(english.length).toBeGreaterThan(500);
+    expect(contactTrustPlainText("it").length).toBeGreaterThan(500);
+    expect(contactTrustPlainText("en").length).toBeGreaterThan(500);
+    expect(italian).toContain("[info@sergioprocopio.it](mailto:info@sergioprocopio.it)");
+    expect(italian).toContain("[+39 3805252684](tel:+393805252684)");
+    expect(italian).toContain("Via Genico, 2");
+    expect(english).toContain("official Contact page");
+    expect(italian).toContain("https://sergioprocopio.it/contatti");
+    expect(italian).toContain("https://sergioprocopio.it/contact");
+    expect(italian).toContain("1. Scrivimi: raccontami il periodo, il luogo e il pubblico");
+    expect(english).toContain("1. Write to me: tell me the period, the venue and the audience");
   });
 
   it("summarizes privacy trust information", () => {
@@ -90,9 +98,14 @@ describe("agent content", () => {
     expect(markdown).not.toContain("privacy-policy");
   });
 
-  it.each(["contatti", "contatti/", "contact", "contact/"])(
+  it.each([
+    ["contatti", "it"],
+    ["contatti/", "it"],
+    ["contact", "en"],
+    ["contact/", "en"],
+  ] as const)(
     "serves %s as Markdown with the negotiated cache headers",
-    async (path) => {
+    async (path, locale) => {
       const response = await GET({
         params: { path },
         url: new URL(`/api/markdown/${path}`, "https://sergioprocopio.it"),
@@ -101,7 +114,7 @@ describe("agent content", () => {
       expect(response.status).toBe(200);
       expect(response.headers.get("Content-Type")).toBe("text/markdown; charset=utf-8");
       expect(response.headers.get("Vary")).toBe("Accept, Accept-Encoding");
-      await expect(response.text()).resolves.toBe(`${contactMarkdown()}\n`);
+      await expect(response.text()).resolves.toBe(`${contactMarkdown(locale)}\n`);
     },
   );
 
@@ -124,6 +137,7 @@ describe("agent content", () => {
     } as unknown as APIContext);
 
     expect(response.status).toBe(404);
+    expect(response.headers.get("X-Robots-Tag")).toContain("noindex");
   });
 
   it("returns a Markdown 404 with sitemap and trust-page recovery links", async () => {
@@ -138,12 +152,14 @@ describe("agent content", () => {
     expect(response.status).toBe(404);
     expect(response.headers.get("Content-Type")).toBe("text/markdown; charset=utf-8");
     expect(response.headers.get("Vary")).toBe("Accept, Accept-Encoding");
+    expect(response.headers.get("X-Robots-Tag")).toContain("noindex");
 
     const markdown = await response.text();
-    expect(markdown).toContain("# Pagina non trovata");
+    expect(markdown).toContain("# Page Not Found");
     expect(markdown).toContain("`/some-path-that-does-not-exist`");
     expect(markdown).toContain("https://sergioprocopio.it/llms.txt");
-    expect(markdown).toContain("https://sergioprocopio.it/sitemap-index.xml");
+    expect(markdown).toContain("https://sergioprocopio.it/sitemap.md");
+    expect(markdown).toContain("https://sergioprocopio.it/sitemap.xml");
     expect(markdown).toContain("https://sergioprocopio.it/about");
     expect(markdown).toContain("https://sergioprocopio.it/contatti");
     expect(markdown).toContain("https://sergioprocopio.it/contact");
@@ -153,10 +169,11 @@ describe("agent content", () => {
   it("points a missing path to the sitemap and agent guide", () => {
     const markdown = notFoundMarkdown("/missing");
 
-    expect(markdown).toContain("# Pagina non trovata");
+    expect(markdown).toContain("# Page Not Found");
     expect(markdown).toContain("`/missing`");
     expect(markdown).toContain("https://sergioprocopio.it/llms.txt");
-    expect(markdown).toContain("https://sergioprocopio.it/sitemap-index.xml");
+    expect(markdown).toContain("https://sergioprocopio.it/sitemap.md");
+    expect(markdown).toContain("https://sergioprocopio.it/sitemap.xml");
     expect(markdown).toContain("https://sergioprocopio.it/about");
     expect(markdown).toContain("https://sergioprocopio.it/contact");
   });

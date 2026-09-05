@@ -5,6 +5,7 @@ import {
   markdownEndpointPath,
   notAcceptableResponse,
   preferredMediaType,
+  shouldServeDocumentMarkdown,
 } from "./lib/content-negotiation";
 
 export const onRequest = defineMiddleware(async (context, next) => {
@@ -21,7 +22,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   }
 
   const response =
-    shouldNegotiate && preferred === "text/markdown"
+    shouldNegotiate && shouldServeDocumentMarkdown(request)
       ? await context.rewrite(
           new URL(markdownEndpointPath(pathname), request.url),
         )

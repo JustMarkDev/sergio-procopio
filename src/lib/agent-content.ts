@@ -1,4 +1,10 @@
+import { generateNotFoundMarkdown } from "@vercel/agent-readability";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import {
+  CONTACT_NAP,
+  CONTACT_TRUST_EN,
+  CONTACT_TRUST_IT,
+} from "./contact-trust";
 
 export const SITE_URL = "https://sergioprocopio.it";
 
@@ -75,7 +81,8 @@ Telefono: [+39 3805252684](tel:+393805252684).`,
     `- [Privacy](${link("/privacy")})`,
     `- [Galleria](${link("/galleria")})`,
     `- [Guida per agenti (llms.txt)](${link("/llms.txt")})`,
-    `- [Sitemap XML](${link("/sitemap-index.xml")})`,
+    `- [Sitemap XML](${link("/sitemap.xml")})`,
+    `- [Sitemap Markdown](${link("/sitemap.md")})`,
   ].join("\n");
 
 export const biographyMarkdown = (
@@ -167,25 +174,36 @@ export const calendarMarkdown = (events: readonly AgentEvent[]) => {
   ].join("\n");
 };
 
-export const contactMarkdown = () =>
-  [
-    "# Contatti",
-    "> Parliamo della prossima data.",
+export const contactMarkdown = (locale: "it" | "en" = "it") => {
+  const isEnglish = locale === "en";
+  const trust = isEnglish ? CONTACT_TRUST_EN : CONTACT_TRUST_IT;
+
+  return [
+    isEnglish ? "# Contact" : "# Contatti",
+    isEnglish
+      ? "> Official Contact page for Sergio Procopio."
+      : "> Parliamo della prossima data.",
     "",
-    "Questa è la pagina ufficiale per contattare Sergio Procopio, attore, mimo e regista teatrale. Usala quando una scuola, una parrocchia, un'associazione, un comune, un teatro o una famiglia vuole chiedere disponibilità, un preventivo, uno spettacolo, un laboratorio o un incontro formativo.",
+    trust,
     "",
-    "Spettacoli, laboratori e incontri: raccontami cosa hai in mente per il tuo pubblico, il periodo preferito e il luogo dell'evento. Rispondo personalmente alle richieste serie di programmazione.",
+    `Email: [${CONTACT_NAP.email}](mailto:${CONTACT_NAP.email}).`,
+    `Telefono: [${CONTACT_NAP.telephoneDisplay}](tel:${CONTACT_NAP.telephone}).`,
+    `Indirizzo: ${CONTACT_NAP.streetAddress}. P.IVA ${CONTACT_NAP.vat}.`,
     "",
-    "Email: [info@sergioprocopio.it](mailto:info@sergioprocopio.it).",
-    "Telefono: [+39 3805252684](tel:+393805252684).",
+    `Compila il [modulo Contatti](${link("/contatti")}) oppure la pagina inglese [Contact](${link("/contact")}).`,
     "",
-    `Compila il [modulo nella pagina contatti](${link("/contatti")}) oppure usa l'alias inglese [Contact](${link("/contact")}).`,
-    "",
-    "## Come ci organizziamo",
-    "1. Scrivimi: raccontami il periodo, il luogo e il pubblico che vorresti coinvolgere.",
-    "2. Ti rispondo io: verifichiamo la disponibilità e definiamo una proposta con un preventivo.",
-    "3. Confermiamo la data: accordiamo i dettagli tecnici per portare lo spettacolo da te.",
+    isEnglish ? "## How we organise" : "## Come ci organizziamo",
+    isEnglish
+      ? "1. Write to me: tell me the period, the venue and the audience you want to involve."
+      : "1. Scrivimi: raccontami il periodo, il luogo e il pubblico che vorresti coinvolgere.",
+    isEnglish
+      ? "2. I reply: we check availability and define a proposal with a quote."
+      : "2. Ti rispondo io: verifichiamo la disponibilità e definiamo una proposta con un preventivo.",
+    isEnglish
+      ? "3. We confirm the date: we agree the technical details so the show can come to you."
+      : "3. Confermiamo la data: accordiamo i dettagli tecnici per portare lo spettacolo da te.",
   ].join("\n");
+};
 
 export const privacyMarkdown = () =>
   [
@@ -201,20 +219,26 @@ export const privacyMarkdown = () =>
     `Leggi la [pagina privacy](${link("/privacy")}).`,
   ].join("\n");
 
-export const notFoundMarkdown = (pathname: string) =>
-  [
-    "# Pagina non trovata",
+export const notFoundMarkdown = (pathname: string) => {
+  const path = pathname.startsWith("/") ? pathname : `/${pathname || ""}`;
+  const standard = generateNotFoundMarkdown(path || "/", {
+    baseUrl: SITE_URL,
+    sitemapUrl: "/sitemap.md",
+    indexUrl: "/llms.txt",
+    exampleUrl: "/spettacoli",
+  });
+
+  return [
+    standard.trimEnd(),
     "",
-    `Il percorso \`${pathname || "/"}\` non esiste su sergioprocopio.it.`,
-    "",
-    "## Dove cercare",
-    `- [Guida per agenti](${link("/llms.txt")})`,
-    `- [Sitemap XML](${link("/sitemap-index.xml")})`,
+    "## Where to look next on this site",
+    `- [Sitemap XML](${link("/sitemap.xml")})`,
     `- [Home](${link("/")})`,
+    `- [About Sergio Procopio](${link("/about")})`,
+    `- [Contact](${link("/contact")})`,
+    `- [Contatti](${link("/contatti")})`,
+    `- [Privacy](${link("/privacy")})`,
     `- [Catalogo spettacoli](${link("/spettacoli")})`,
     `- [Calendario](${link("/calendario")})`,
-    `- [About / Biografia](${link("/about")})`,
-    `- [Contatti](${link("/contatti")})`,
-    `- [Contact](${link("/contact")})`,
-    `- [Privacy](${link("/privacy")})`,
   ].join("\n");
+};

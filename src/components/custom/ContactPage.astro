@@ -1,0 +1,226 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import ContactForm from "./ContactForm";
+import ContactHeading from "./ContactHeading";
+import {
+    CONTACT_NAP,
+    CONTACT_TRUST_EN,
+    CONTACT_TRUST_IT,
+} from "../../lib/contact-trust";
+
+interface Props {
+    locale: "it" | "en";
+}
+
+const { locale } = Astro.props;
+const isEnglish = locale === "en";
+const trustParagraphs = (isEnglish ? CONTACT_TRUST_EN : CONTACT_TRUST_IT).split(
+    "\n\n",
+);
+const canonicalPath = isEnglish
+    ? CONTACT_NAP.contactAliasPath
+    : CONTACT_NAP.contactPath;
+const title = isEnglish
+    ? "Contact | Sergio Procopio"
+    : "Contatti | Sergio Procopio";
+const description = isEnglish
+    ? "Contact Sergio Procopio for theatre shows, workshops and educational meetings. Phone, email, booking steps and official NAP details."
+    : "Contatta Sergio Procopio per spettacoli, laboratori e incontri formativi. Racconta il tuo evento o chiama per parlare della prossima data.";
+const stepsTitle = isEnglish ? "How we organise" : "Come ci organizziamo";
+const trustTitle = isEnglish
+    ? "Official contact details"
+    : "Riferimenti ufficiali";
+const steps = isEnglish
+    ? [
+          {
+              title: "Write to me",
+              description:
+                  "Tell me the period, the venue and the audience you want to involve.",
+          },
+          {
+              title: "I reply",
+              description:
+                  "We check availability and define a proposal with a quote.",
+          },
+          {
+              title: "We confirm the date",
+              description:
+                  "We agree the technical details so the show can come to you.",
+          },
+      ]
+    : [
+          {
+              title: "Scrivimi",
+              description:
+                  "Raccontami il periodo, il luogo e il pubblico che vorresti coinvolgere.",
+          },
+          {
+              title: "Ti rispondo io",
+              description:
+                  "Verifichiamo la disponibilità e definiamo una proposta con un preventivo.",
+          },
+          {
+              title: "Confermiamo la data",
+              description:
+                  "Accordiamo i dettagli tecnici per portare lo spettacolo da te.",
+          },
+      ];
+---
+
+<Layout title={title} description={description} canonicalPath={canonicalPath}>
+    <div
+        class="mx-auto grid max-w-6xl grid-cols-1 gap-7 px-4 pt-28 pb-16 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:grid-rows-[auto_auto_1fr] lg:gap-x-14 lg:gap-y-9 lg:px-8 lg:pt-32"
+    >
+        <section
+            class="lg:col-start-1 lg:row-start-1"
+            aria-labelledby="contact-page-heading"
+        >
+            {
+                isEnglish ? (
+                    <h1
+                        id="contact-page-heading"
+                        class="font-serif text-[clamp(1.65rem,8vw,2rem)] font-bold leading-[1.18] tracking-tight text-zinc-50 lg:text-[34px] xl:text-[40px]"
+                    >
+                        Contact Sergio Procopio
+                    </h1>
+                ) : (
+                    <div id="contact-page-heading">
+                        <ContactHeading client:load />
+                    </div>
+                )
+            }
+            <p class="mt-4 max-w-md text-base leading-6 text-zinc-300">
+                {
+                    isEnglish
+                        ? "Shows, workshops and meetings: tell me what you have in mind for your audience. This is the official Contact page for availability, quotes and dates."
+                        : "Spettacoli, laboratori e incontri: raccontami cosa hai in mente per il tuo pubblico. Questa è la pagina ufficiale per chiedere disponibilità, un preventivo o una data per scuole, parrocchie, associazioni, comuni, teatri e famiglie."
+                }
+            </p>
+            <div class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
+                <a
+                    href={`tel:${CONTACT_NAP.telephone}`}
+                    class="inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-full border border-zinc-500 px-6 text-sm font-semibold text-zinc-50 hover:border-zinc-300 hover:bg-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-400"
+                >
+                    {isEnglish ? "Call now" : "Chiama ora"}
+                </a>
+                <a
+                    href={`mailto:${CONTACT_NAP.email}`}
+                    class="rounded text-sm text-zinc-300 underline underline-offset-4 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-400"
+                >
+                    {CONTACT_NAP.email}
+                </a>
+            </div>
+        </section>
+
+        <div
+            class="min-w-0 lg:col-start-2 lg:row-span-3 lg:row-start-1 lg:[&>astro-island]:h-full"
+        >
+            <ContactForm client:load />
+        </div>
+
+        <section
+            aria-labelledby="contact-trust-title"
+            class="lg:col-start-1 lg:row-start-2 space-y-4"
+        >
+            <h2
+                id="contact-trust-title"
+                class="text-base font-medium text-zinc-200"
+            >
+                {trustTitle}
+            </h2>
+            {
+                trustParagraphs.map((paragraph) => (
+                    <p class="max-w-md text-sm leading-6 text-zinc-400">
+                        {paragraph}
+                    </p>
+                ))
+            }
+            <dl class="max-w-md space-y-2 text-sm text-zinc-400">
+                <div class="flex flex-wrap gap-x-2">
+                    <dt class="text-zinc-500">
+                        {isEnglish ? "Name" : "Nome"}:
+                    </dt>
+                    <dd>{CONTACT_NAP.name}</dd>
+                </div>
+                <div class="flex flex-wrap gap-x-2">
+                    <dt class="text-zinc-500">
+                        {isEnglish ? "Address" : "Indirizzo"}:
+                    </dt>
+                    <dd>{CONTACT_NAP.streetAddress}</dd>
+                </div>
+                <div class="flex flex-wrap gap-x-2">
+                    <dt class="text-zinc-500">
+                        {isEnglish ? "Phone" : "Telefono"}:
+                    </dt>
+                    <dd>
+                        <a
+                            href={`tel:${CONTACT_NAP.telephone}`}
+                            class="underline underline-offset-4 hover:text-white"
+                            >{CONTACT_NAP.telephoneDisplay}</a
+                        >
+                    </dd>
+                </div>
+                <div class="flex flex-wrap gap-x-2">
+                    <dt class="text-zinc-500">Email:</dt>
+                    <dd>
+                        <a
+                            href={`mailto:${CONTACT_NAP.email}`}
+                            class="underline underline-offset-4 hover:text-white"
+                            >{CONTACT_NAP.email}</a
+                        >
+                    </dd>
+                </div>
+                <div class="flex flex-wrap gap-x-2">
+                    <dt class="text-zinc-500">
+                        {isEnglish ? "VAT" : "P.IVA"}:
+                    </dt>
+                    <dd>{CONTACT_NAP.vat}</dd>
+                </div>
+                <div class="flex flex-wrap gap-x-2">
+                    <dt class="text-zinc-500">Web:</dt>
+                    <dd>
+                        <a
+                            href={CONTACT_NAP.url}
+                            class="underline underline-offset-4 hover:text-white"
+                            >{CONTACT_NAP.url.replace("https://", "")}</a
+                        >
+                    </dd>
+                </div>
+            </dl>
+        </section>
+
+        <section
+            aria-labelledby="contact-steps-title"
+            class="lg:col-start-1 lg:row-start-3"
+        >
+            <h2
+                id="contact-steps-title"
+                class="mb-2 text-base font-medium text-zinc-200"
+            >
+                {stepsTitle}
+            </h2>
+            <ol class="divide-y divide-zinc-800" role="list">
+                {
+                    steps.map((step, index) => (
+                        <li class="grid grid-cols-[2rem_1fr] gap-3 py-4">
+                            <span
+                                aria-hidden="true"
+                                class="pt-0.5 text-sm tabular-nums text-zinc-400"
+                            >
+                                {String(index + 1).padStart(2, "0")}
+                            </span>
+                            <div>
+                                <h3 class="text-base font-medium text-zinc-100">
+                                    {step.title}
+                                </h3>
+                                <p class="mt-1 text-sm leading-6 text-zinc-400">
+                                    {step.description}
+                                </p>
+                            </div>
+                        </li>
+                    ))
+                }
+            </ol>
+        </section>
+    </div>
+</Layout>

@@ -16,5 +16,7 @@ describe("public/llms.txt", () => {
     expect(llmsTxt).toContain("https://sergioprocopio.it/contact");
     expect(llmsTxt).toContain("https://sergioprocopio.it/about");
     expect(llmsTxt).toContain("https://sergioprocopio.it/privacy");
+    expect(llmsTxt).toContain("https://sergioprocopio.it/sitemap.xml");
+    expect(llmsTxt).toContain("https://sergioprocopio.it/sitemap.md");
   });
 });

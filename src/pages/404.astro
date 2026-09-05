@@ -4,7 +4,7 @@ import Layout from "../layouts/Layout.astro";
 Astro.response.status = 404;
 ---
 
-<Layout title="Pagina Non Trovata | Sergio Procopio">
+<Layout title="Pagina Non Trovata | Sergio Procopio" noindex>
     <div class="min-h-[70vh] flex items-center justify-center pt-20">
         <div class="text-center px-4">
             <h1
@@ -29,8 +29,9 @@ Astro.response.status = 404;
             <nav class="mt-10 text-left max-w-md mx-auto" aria-label="Dove trovare i contenuti">
                 <h2 class="text-lg font-serif font-semibold mb-3">Dove cercare</h2>
                 <ul class="list-disc list-inside space-y-2 text-sm text-muted-foreground">
-                    <li><a class="hover:text-primary" href="/llms.txt">Guida per agenti</a></li>
-                    <li><a class="hover:text-primary" href="/sitemap-index.xml">Sitemap XML</a></li>
+                    <li><a class="hover:text-primary" href="/llms.txt">Guida per agenti (llms.txt)</a></li>
+                    <li><a class="hover:text-primary" href="/sitemap.md">Sitemap Markdown</a></li>
+                    <li><a class="hover:text-primary" href="/sitemap.xml">Sitemap XML</a></li>
                     <li><a class="hover:text-primary" href="/spettacoli">Catalogo degli spettacoli</a></li>
                     <li><a class="hover:text-primary" href="/calendario">Calendario degli eventi</a></li>
                     <li><a class="hover:text-primary" href="/biografia">Biografia</a></li>

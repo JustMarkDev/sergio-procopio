@@ -6,7 +6,14 @@ import {
   markdownResponse,
   notAcceptableResponse,
   preferredMediaType,
+  shouldServeDocumentMarkdown,
 } from "./content-negotiation";
+
+const requestWith = (headers: Record<string, string | null>) => ({
+  headers: {
+    get: (name: string) => headers[name.toLowerCase()] ?? headers[name] ?? null,
+  },
+});
 
 describe("preferredMediaType", () => {
   it("defaults to HTML when Accept is absent", () => {
@@ -43,6 +50,43 @@ describe("preferredMediaType", () => {
   it("treats q parameter names case-insensitively and rejects invalid values", () => {
     expect(preferredMediaType("text/markdown;Q=0, text/html;q=0")).toBeNull();
     expect(preferredMediaType("text/markdown;q=invalid")).toBeNull();
+  });
+});
+
+describe("shouldServeDocumentMarkdown", () => {
+  it("serves Markdown for known AI agents when Accept does not prefer HTML", () => {
+    expect(
+      shouldServeDocumentMarkdown(
+        requestWith({ "user-agent": "ClaudeBot/1.0", accept: "*/*" }),
+      ),
+    ).toBe(true);
+    expect(
+      shouldServeDocumentMarkdown(
+        requestWith({ "user-agent": "GPTBot", accept: null }),
+      ),
+    ).toBe(true);
+  });
+
+  it("still honors an explicit HTML preference from an agent", () => {
+    expect(
+      shouldServeDocumentMarkdown(
+        requestWith({
+          "user-agent": "ClaudeBot/1.0",
+          accept: "text/html,application/xhtml+xml",
+        }),
+      ),
+    ).toBe(false);
+  });
+
+  it("serves Markdown when Accept explicitly prefers it", () => {
+    expect(
+      shouldServeDocumentMarkdown(
+        requestWith({
+          "user-agent": "Mozilla/5.0",
+          accept: "text/markdown",
+        }),
+      ),
+    ).toBe(true);
   });
 });
 
@@ -86,6 +130,7 @@ describe("response headers", () => {
       "text/markdown; charset=utf-8",
     );
     expect(response.headers.get("Vary")).toBe("Accept, Accept-Encoding");
+    expect(response.headers.get("X-Robots-Tag")).toContain("noindex");
     await expect(response.text()).resolves.toBe("# Home\n");
   });
 

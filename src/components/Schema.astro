@@ -1,15 +1,59 @@
 ---
 import { SITE_TITLE, SITE_DESCRIPTION, SOCIAL_LINKS } from '../consts';
+import { CONTACT_NAP } from '../lib/contact-trust';
+
+const postalAddress = {
+  "@type": "PostalAddress",
+  "streetAddress": CONTACT_NAP.streetAddress,
+  "addressCountry": "IT"
+};
+
+const contactPoint = {
+  "@type": "ContactPoint",
+  "contactType": "bookings and information",
+  "email": CONTACT_NAP.email,
+  "telephone": CONTACT_NAP.telephone,
+  "url": `${CONTACT_NAP.url}${CONTACT_NAP.contactAliasPath}`,
+  "availableLanguage": ["Italian", "English"]
+};
 
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
   "@id": "https://sergioprocopio.it/#person",
-  "name": "Sergio Procopio",
-  "url": "https://sergioprocopio.it",
-  "image": "https://sergioprocopio.it/favicon.svg",
+  "name": CONTACT_NAP.name,
+  "alternateName": ["Sergio Procopio mimo", "Sergio Procopio teatro"],
+  "url": CONTACT_NAP.url,
+  "image": "https://sergioprocopio.it/og-image.jpg",
   "description": SITE_DESCRIPTION,
   "jobTitle": "Attore, mimo e regista teatrale",
+  "email": CONTACT_NAP.email,
+  "telephone": CONTACT_NAP.telephone,
+  "address": postalAddress,
+  "vatID": CONTACT_NAP.vat,
+  "sameAs": [
+    SOCIAL_LINKS.instagram,
+    SOCIAL_LINKS.facebook,
+    SOCIAL_LINKS.youtube
+  ]
+};
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://sergioprocopio.it/#organization",
+  "name": CONTACT_NAP.name,
+  "legalName": CONTACT_NAP.name,
+  "url": CONTACT_NAP.url,
+  "logo": "https://sergioprocopio.it/favicon.svg",
+  "image": "https://sergioprocopio.it/og-image.jpg",
+  "description": SITE_DESCRIPTION,
+  "email": CONTACT_NAP.email,
+  "telephone": CONTACT_NAP.telephone,
+  "vatID": CONTACT_NAP.vat,
+  "address": postalAddress,
+  "contactPoint": contactPoint,
+  "founder": { "@id": "https://sergioprocopio.it/#person" },
   "sameAs": [
     SOCIAL_LINKS.instagram,
     SOCIAL_LINKS.facebook,
@@ -21,10 +65,14 @@ const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   "@id": "https://sergioprocopio.it/#website",
-  "url": "https://sergioprocopio.it",
+  "url": CONTACT_NAP.url,
   "name": SITE_TITLE,
+  "alternateName": CONTACT_NAP.name,
   "description": SITE_DESCRIPTION,
   "publisher": {
+    "@id": "https://sergioprocopio.it/#organization"
+  },
+  "about": {
     "@id": "https://sergioprocopio.it/#person"
   },
   "inLanguage": "it-IT"
@@ -32,4 +80,5 @@ const websiteSchema = {
 ---
 
 <script type="application/ld+json" is:inline set:html={JSON.stringify(personSchema)} />
+<script type="application/ld+json" is:inline set:html={JSON.stringify(organizationSchema)} />
 <script type="application/ld+json" is:inline set:html={JSON.stringify(websiteSchema)} />

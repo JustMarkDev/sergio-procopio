@@ -6,6 +6,7 @@ interface Props {
   description?: string;
   image?: string;
   canonicalPath?: string;
+  noindex?: boolean;
 }
 
 const {
@@ -13,6 +14,7 @@ const {
   description = SITE_DESCRIPTION,
   image = '/og-image.jpg',
   canonicalPath = Astro.routePattern,
+  noindex = false,
 } = Astro.props;
 
 const site = Astro.site ?? new URL("https://sergioprocopio.it");
@@ -26,11 +28,12 @@ const imageURL = new URL(image, site);
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <meta name="generator" content={Astro.generator} />
-<link rel="sitemap" href="/sitemap-index.xml" />
+<link rel="sitemap" href="/sitemap.xml" />
 <link rel="describedby" href="/llms.txt" />
+{noindex && <meta name="robots" content="noindex" />}
 
 <!-- Canonical URL -->
-<link rel="canonical" href={canonicalURL} />
+{!noindex && <link rel="canonical" href={canonicalURL} />}
 
 <!-- Primary Meta Tags -->
 <title>{title}</title>

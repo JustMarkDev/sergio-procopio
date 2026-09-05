@@ -16,9 +16,10 @@ interface Props {
 	title?: string;
 	description?: string;
 	canonicalPath?: string;
+	noindex?: boolean;
 }
 
-const { title, description, canonicalPath } = Astro.props;
+const { title, description, canonicalPath, noindex = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -26,7 +27,7 @@ const { title, description, canonicalPath } = Astro.props;
 	<head>
 		<link rel="preload" href={interFont} as="font" type="font/woff2" crossorigin />
 		<link rel="preload" href={playfairFont} as="font" type="font/woff2" crossorigin />
-		<SEO title={title} description={description} canonicalPath={canonicalPath} />
+		<SEO title={title} description={description} canonicalPath={canonicalPath} noindex={noindex} />
 		<Schema />
 		<ClientRouter />
 	</head>

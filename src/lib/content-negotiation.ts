@@ -1,3 +1,8 @@
+import {
+  shouldServeMarkdown as detectShouldServeMarkdown,
+  type MinimalRequest,
+} from "@vercel/agent-readability";
+
 export const PRODUCED_MEDIA_TYPES = ["text/html", "text/markdown"] as const;
 
 export type ProducedMediaType = (typeof PRODUCED_MEDIA_TYPES)[number];
@@ -16,6 +21,13 @@ export const markdownEndpointPath = (pathname: string) => {
   const normalized = pathname.replace(/^\/+|\/+$/g, "");
   return `/api/markdown/${normalized || "home"}`;
 };
+
+/**
+ * Prefer Markdown when Accept asks for it, or when an AI agent sends an
+ * Accept header that does not distinguish HTML from Markdown.
+ */
+export const shouldServeDocumentMarkdown = (request: MinimalRequest) =>
+  detectShouldServeMarkdown(request).serve;
 
 type AcceptEntry = {
   type: string;
@@ -134,6 +146,14 @@ export const markdownResponse = (
   const headers = new Headers(init.headers);
   headers.set("Content-Type", "text/markdown; charset=utf-8");
   addVary(headers, "Accept", "Accept-Encoding");
+
+  const status = init.status ?? 200;
+  if (
+    (status === 404 || status === 410) &&
+    !/\bnoindex\b/i.test(headers.get("X-Robots-Tag") ?? "")
+  ) {
+    headers.append("X-Robots-Tag", "noindex");
+  }
 
   return new Response(`${body.trimEnd()}\n`, {
     ...init,
