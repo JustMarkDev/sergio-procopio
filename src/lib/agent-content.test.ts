@@ -5,6 +5,7 @@ import {
   contactMarkdown,
   homepageMarkdown,
   notFoundMarkdown,
+  privacyMarkdown,
   showMarkdown,
 } from "./agent-content";
 import { GET } from "../pages/api/markdown/[...path]";
@@ -69,17 +70,27 @@ describe("agent content", () => {
     const markdown = contactMarkdown();
 
     expect(markdown).toMatch(/^# Contatti\n/);
+    expect(markdown.length).toBeGreaterThan(500);
     expect(markdown).toContain("[info@sergioprocopio.it](mailto:info@sergioprocopio.it)");
     expect(markdown).toContain("[+39 3805252684](tel:+393805252684)");
-    expect(markdown).toContain(
-      "Per chiedere disponibilità, compila il [modulo nella pagina contatti](https://sergioprocopio.it/contatti)",
-    );
+    expect(markdown).toContain("https://sergioprocopio.it/contatti");
+    expect(markdown).toContain("https://sergioprocopio.it/contact");
     expect(markdown).toContain("1. Scrivimi: raccontami il periodo, il luogo e il pubblico");
     expect(markdown).toContain("2. Ti rispondo io: verifichiamo la disponibilità e definiamo una proposta con un preventivo.");
     expect(markdown).toContain("3. Confermiamo la data: accordiamo i dettagli tecnici");
   });
 
-  it.each(["contatti", "contatti/"])(
+  it("summarizes privacy trust information", () => {
+    const markdown = privacyMarkdown();
+
+    expect(markdown).toMatch(/^# Informativa sulla Privacy\n/);
+    expect(markdown.length).toBeGreaterThan(500);
+    expect(markdown).toContain("P.IVA 02470860137");
+    expect(markdown).toContain("https://sergioprocopio.it/privacy");
+    expect(markdown).not.toContain("privacy-policy");
+  });
+
+  it.each(["contatti", "contatti/", "contact", "contact/"])(
     "serves %s as Markdown with the negotiated cache headers",
     async (path) => {
       const response = await GET({
@@ -94,6 +105,51 @@ describe("agent content", () => {
     },
   );
 
+  it("serves privacy as Markdown trust content", async () => {
+    const response = await GET({
+      params: { path: "privacy" },
+      url: new URL("/api/markdown/privacy", "https://sergioprocopio.it"),
+    } as unknown as APIContext);
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get("Content-Type")).toBe("text/markdown; charset=utf-8");
+    expect(response.headers.get("Vary")).toBe("Accept, Accept-Encoding");
+    await expect(response.text()).resolves.toBe(`${privacyMarkdown()}\n`);
+  });
+
+  it("returns 404 Markdown for the removed privacy-policy path", async () => {
+    const response = await GET({
+      params: { path: "privacy-policy" },
+      url: new URL("/api/markdown/privacy-policy", "https://sergioprocopio.it"),
+    } as unknown as APIContext);
+
+    expect(response.status).toBe(404);
+  });
+
+  it("returns a Markdown 404 with sitemap and trust-page recovery links", async () => {
+    const response = await GET({
+      params: { path: "some-path-that-does-not-exist" },
+      url: new URL(
+        "/api/markdown/some-path-that-does-not-exist",
+        "https://sergioprocopio.it",
+      ),
+    } as unknown as APIContext);
+
+    expect(response.status).toBe(404);
+    expect(response.headers.get("Content-Type")).toBe("text/markdown; charset=utf-8");
+    expect(response.headers.get("Vary")).toBe("Accept, Accept-Encoding");
+
+    const markdown = await response.text();
+    expect(markdown).toContain("# Pagina non trovata");
+    expect(markdown).toContain("`/some-path-that-does-not-exist`");
+    expect(markdown).toContain("https://sergioprocopio.it/llms.txt");
+    expect(markdown).toContain("https://sergioprocopio.it/sitemap-index.xml");
+    expect(markdown).toContain("https://sergioprocopio.it/about");
+    expect(markdown).toContain("https://sergioprocopio.it/contatti");
+    expect(markdown).toContain("https://sergioprocopio.it/contact");
+    expect(markdown).toContain("https://sergioprocopio.it/privacy");
+  });
+
   it("points a missing path to the sitemap and agent guide", () => {
     const markdown = notFoundMarkdown("/missing");
 
@@ -101,5 +157,7 @@ describe("agent content", () => {
     expect(markdown).toContain("`/missing`");
     expect(markdown).toContain("https://sergioprocopio.it/llms.txt");
     expect(markdown).toContain("https://sergioprocopio.it/sitemap-index.xml");
+    expect(markdown).toContain("https://sergioprocopio.it/about");
+    expect(markdown).toContain("https://sergioprocopio.it/contact");
   });
 });

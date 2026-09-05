@@ -21,7 +21,7 @@ This repository is an Astro 6 site with React islands. Core application code liv
 For the contribution workflow, content locations, and Pull Request expectations, see [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ## Coding Style & Naming Conventions
-Use TypeScript, Astro components, and functional React components. Follow the existing file naming pattern: PascalCase for components (`HeroSection.tsx`, `Layout.astro`), lowercase or slug-style names for routes and content files (`privacy-policy.astro`, `la-grande-guerra.md`).
+Use TypeScript, Astro components, and functional React components. Follow the existing file naming pattern: PascalCase for components (`HeroSection.tsx`, `Layout.astro`), lowercase or slug-style names for routes and content files (`privacy.astro`, `la-grande-guerra.md`).
 
 Use 2-space indentation in React/TypeScript files and 4-space indentation inside `.astro` frontmatter blocks, keeping markup indentation consistent within each component. Avoid reformatting unrelated lines. Keep utility logic in `src/lib/` and content schema changes in `src/content.config.ts`.
 The contact form at `src/components/custom/ContactForm.tsx` is wired with a real submission flow using Astro Actions (`actions.sendContactEmail`) and Resend. Keep this wiring in place and ensure any future enhancements preserve server-side validation and secure Resend integration.

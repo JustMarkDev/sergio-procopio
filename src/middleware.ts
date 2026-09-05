@@ -1,22 +1,11 @@
 import { defineMiddleware } from "astro:middleware";
 import {
   addVary,
+  isDocumentPath,
+  markdownEndpointPath,
   notAcceptableResponse,
   preferredMediaType,
 } from "./lib/content-negotiation";
-
-const hasFileExtension = (pathname: string) =>
-  /\/[^/]*\.[^/]+$/.test(pathname);
-
-const isDocumentPath = (pathname: string) =>
-  !pathname.startsWith("/api/") &&
-  !pathname.startsWith("/_") &&
-  (!hasFileExtension(pathname) || pathname.toLowerCase().endsWith(".html"));
-
-const markdownEndpointPath = (pathname: string) => {
-  const normalized = pathname.replace(/^\/+|\/+$/g, "");
-  return `/api/markdown/${normalized || "home"}`;
-};
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const { request } = context;

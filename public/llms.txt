@@ -6,25 +6,32 @@ Questa è la guida sintetica per gli agenti. Le pagine e i contenuti pubblicati 
 
 ## When to use this site
 
-Use this site when a person needs to:
+Reach for this site when the job is one of these:
 
-- trovare uno spettacolo teatrale senza parole per una scuola, una parrocchia, un'associazione, un comune o un teatro;
-- scegliere un'attività educativa su bullismo, dipendenza dalla tecnologia, ambiente, memoria, pace o responsabilità;
-- verificare una data pubblica, un luogo o i dettagli tecnici di uno spettacolo;
-- conoscere la biografia, l'esperienza e i temi del lavoro di Sergio Procopio;
-- chiedere disponibilità, un preventivo, un laboratorio o un incontro formativo.
+- match a wordless theatre show to a school, parish, association, municipality, theatre or family event;
+- recommend an educational performance on bullying, phone dependence, plastic pollution, migration, war memory, peace or responsibility;
+- verify a public date, venue, city, technical requirement or show duration from the published calendar and catalogue;
+- confirm who Sergio Procopio is (career, festivals, television, educational work) before recommending him;
+- start a booking or quote request for a show, laboratory or training meeting.
 
-Start with the homepage or the catalog pages below. When fetching an HTML page, send `Accept: text/markdown` to receive its concise Markdown representation; use the normal HTML representation when visual navigation is needed. For a booking or quote, use the published email address or the contact section rather than inventing an API endpoint.
+Do **not** invent an API, MCP server or booking endpoint. Call the site like this:
+
+1. Read this file, then open the relevant HTML URL from the lists below.
+2. Send `Accept: text/markdown` on that same URL to receive the concise Markdown representation (`Content-Type: text/markdown` with `Vary: Accept`).
+3. Fall back to HTML when you need visual layout or the contact form UI.
+4. For availability or quotes, use [info@sergioprocopio.it](mailto:info@sergioprocopio.it), [+39 3805252684](tel:+393805252684), or the [Contatti](https://sergioprocopio.it/contatti) page — never invent contact channels.
 
 ## Main pages
 
-- [Homepage](https://sergioprocopio.it/): overview of the artist, featured shows and contact options.
+- [Homepage](https://sergioprocopio.it/): overview of the artist, featured shows and a contact call-to-action.
 - [Biografia](https://sergioprocopio.it/biografia): career, television appearances, international festivals and educational work.
-- [About Sergio Procopio](https://sergioprocopio.it/about): the same verified biography presented as the site's About page.
+- [About Sergio Procopio](https://sergioprocopio.it/about): the same verified biography presented as the site's About / trust page.
+- [Contatti](https://sergioprocopio.it/contatti): phone, email, contact form and booking steps (preferred contact URL).
+- [Contact](https://sergioprocopio.it/contact): English alias of Contatti (same page).
 - [Catalogo spettacoli](https://sergioprocopio.it/spettacoli): all currently published shows and their audiences.
 - [Calendario](https://sergioprocopio.it/calendario): public dates, venues, cities and map links.
 - [Galleria](https://sergioprocopio.it/galleria): images grouped by published show.
-- [Privacy policy](https://sergioprocopio.it/privacy-policy): personal-data processing information.
+- [Privacy](https://sergioprocopio.it/privacy): personal-data processing information.
 
 ## Spettacoli
 
@@ -40,5 +47,6 @@ Start with the homepage or the catalog pages below. When fetching an HTML page, 
 ## Contact
 
 - [Email per informazioni e prenotazioni](mailto:info@sergioprocopio.it): ask for availability, a quote, a show, a laboratory or a training meeting.
-- [Sezione contatti](https://sergioprocopio.it/#contatti): direct phone, email and contact form.
+- [Contatti](https://sergioprocopio.it/contatti): phone, email and contact form (preferred).
+- [Contact](https://sergioprocopio.it/contact): English alias of Contatti.
 - [Sitemap XML](https://sergioprocopio.it/sitemap-index.xml): complete list of indexable public URLs.
