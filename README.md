@@ -81,7 +81,7 @@ RESEND_API_KEY=...
 | `/spettacoli/[slug]` | Pagina dettaglio generata dal nome file Markdown |
 | `/galleria` | Immagini collegate agli spettacoli pubblicati |
 | `/calendario` | Eventi da `src/content/eventi/**/*.md` |
-| `/privacy-policy` | Pagina privacy |
+| `/privacy` | Pagina privacy |
 
 ## Gestione Contenuti
 

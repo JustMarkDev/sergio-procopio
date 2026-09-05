@@ -2,6 +2,21 @@ export const PRODUCED_MEDIA_TYPES = ["text/html", "text/markdown"] as const;
 
 export type ProducedMediaType = (typeof PRODUCED_MEDIA_TYPES)[number];
 
+const hasFileExtension = (pathname: string) =>
+  /\/[^/]*\.[^/]+$/.test(pathname);
+
+/** Paths that participate in HTML/Markdown Accept negotiation. */
+export const isDocumentPath = (pathname: string) =>
+  !pathname.startsWith("/api/") &&
+  !pathname.startsWith("/_") &&
+  (!hasFileExtension(pathname) || pathname.toLowerCase().endsWith(".html"));
+
+/** Map a document URL to the internal Markdown representation endpoint. */
+export const markdownEndpointPath = (pathname: string) => {
+  const normalized = pathname.replace(/^\/+|\/+$/g, "");
+  return `/api/markdown/${normalized || "home"}`;
+};
+
 type AcceptEntry = {
   type: string;
   q: number;

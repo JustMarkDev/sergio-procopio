@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
   addVary,
+  isDocumentPath,
+  markdownEndpointPath,
   markdownResponse,
   notAcceptableResponse,
   preferredMediaType,
@@ -41,6 +43,29 @@ describe("preferredMediaType", () => {
   it("treats q parameter names case-insensitively and rejects invalid values", () => {
     expect(preferredMediaType("text/markdown;Q=0, text/html;q=0")).toBeNull();
     expect(preferredMediaType("text/markdown;q=invalid")).toBeNull();
+  });
+});
+
+describe("document path negotiation", () => {
+  it("negotiates HTML document paths and skips APIs, assets and llms.txt", () => {
+    expect(isDocumentPath("/")).toBe(true);
+    expect(isDocumentPath("/about")).toBe(true);
+    expect(isDocumentPath("/contact")).toBe(true);
+    expect(isDocumentPath("/privacy")).toBe(true);
+    expect(isDocumentPath("/index.html")).toBe(true);
+    expect(isDocumentPath("/api/markdown/home")).toBe(false);
+    expect(isDocumentPath("/llms.txt")).toBe(false);
+    expect(isDocumentPath("/robots.txt")).toBe(false);
+    expect(isDocumentPath("/_image")).toBe(false);
+  });
+
+  it("maps document URLs onto the Markdown endpoint", () => {
+    expect(markdownEndpointPath("/")).toBe("/api/markdown/home");
+    expect(markdownEndpointPath("/contact")).toBe("/api/markdown/contact");
+    expect(markdownEndpointPath("/privacy/")).toBe("/api/markdown/privacy");
+    expect(markdownEndpointPath("/spettacoli/comico")).toBe(
+      "/api/markdown/spettacoli/comico",
+    );
   });
 });
 

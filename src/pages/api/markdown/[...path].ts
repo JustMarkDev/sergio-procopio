@@ -112,11 +112,11 @@ export const GET: APIRoute = async ({ params, url }) => {
     return markdownResponse(calendarMarkdown(await publicEvents()));
   }
 
-  if (path === "contatti") {
+  if (path === "contatti" || path === "contact") {
     return markdownResponse(contactMarkdown());
   }
 
-  if (path === "privacy-policy") {
+  if (path === "privacy") {
     return markdownResponse(privacyMarkdown());
   }
 
