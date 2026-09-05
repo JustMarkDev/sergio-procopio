@@ -1,0 +1,28 @@
+---
+    import { ArrowUpRight, Phone } from "lucide-react";
+---
+
+<section id="contatti" aria-labelledby="contact-cta-title" class="scroll-mt-28 bg-background">
+    <div class="container mx-auto px-4 md:px-8 lg:px-12">
+        <div class="grid items-center gap-9 border-y border-white/10 py-14 md:py-20 lg:grid-cols-[1fr_auto] lg:gap-16">
+            <div>
+                <h2 id="contact-cta-title" class="max-w-2xl text-4xl leading-[1.12] tracking-tight sm:text-5xl lg:text-6xl">
+                    Il prossimo spettacolo,<br />nel vostro spazio.
+                </h2>
+                <p class="mt-5 max-w-xl text-base leading-relaxed text-zinc-400 sm:text-lg">
+                    Una scuola, un teatro, una parrocchia. Raccontatemi chi ci sarà e quando: troviamo insieme lo spettacolo giusto.
+                </p>
+            </div>
+            <div class="flex flex-col items-start gap-4 lg:items-center">
+                <a href="/contatti" class="group inline-flex min-h-14 items-center justify-center gap-5 whitespace-nowrap rounded-full bg-primary px-7 text-base font-semibold text-primary-foreground transition-[background-color,transform] hover:bg-blue-700 active:scale-[0.98]">
+                    Richiedi una data
+                    <ArrowUpRight size={21} aria-hidden="true" className="transition-transform motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5" />
+                </a>
+                <a href="tel:+393805252684" class="inline-flex min-h-11 items-center gap-2.5 text-sm text-zinc-300 transition-colors hover:text-white">
+                    <Phone size={16} aria-hidden="true" />
+                    Oppure chiama il 380 5252684
+                </a>
+            </div>
+        </div>
+    </div>
+</section>

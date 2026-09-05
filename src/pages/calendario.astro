@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
+import { getImage } from "astro:assets";
 import { splitEventsByDate } from "../lib/calendar-dates";
 
 const eventi = (await getCollection("eventi"))
@@ -10,6 +11,7 @@ const eventi = (await getCollection("eventi"))
 const { upcomingEvents, pastEvents } = splitEventsByDate(eventi);
 
 const dateFormatter = new Intl.DateTimeFormat("it-IT", {
+    timeZone: "Europe/Rome",
     weekday: "long",
     day: "2-digit",
     month: "long",
@@ -17,6 +19,46 @@ const dateFormatter = new Intl.DateTimeFormat("it-IT", {
 });
 
 const formatDate = (date: Date) => dateFormatter.format(date);
+const dayFormatter = new Intl.DateTimeFormat("it-IT", {
+    day: "2-digit",
+    timeZone: "Europe/Rome",
+});
+const monthYearFormatter = new Intl.DateTimeFormat("it-IT", {
+    month: "short",
+    year: "numeric",
+    timeZone: "Europe/Rome",
+});
+const normalizeTitle = (title: string) => title.trim().toLowerCase();
+const displayedShowTitles = new Set(
+    [...upcomingEvents, ...pastEvents.slice(0, 8)].map((event) =>
+        normalizeTitle(event.data.spettacolo),
+    ),
+);
+const shows = (await getCollection("spettacoli")).filter(
+    (show) => !show.data.draft && displayedShowTitles.has(normalizeTitle(show.data.title)),
+);
+const showsByTitle = new Map(
+    await Promise.all(shows.map(async (show) => {
+        const image = show.data.image;
+        const optimized = image ? await getImage({
+            src: image,
+            widths: [160, 400, 640],
+            format: "webp",
+            quality: 75,
+        }) : undefined;
+
+        // A published show's link does not depend on it having a photo.
+        return [normalizeTitle(show.data.title), {
+            id: show.id,
+            image: image && optimized ? {
+                src: optimized.src,
+                srcset: optimized.srcSet.attribute,
+                width: image.width,
+                height: image.height,
+            } : undefined,
+        }] as const;
+    })),
+);
 ---
 
 <Layout
@@ -42,55 +84,83 @@ const formatDate = (date: Date) => dateFormatter.format(date);
             <section class="mb-20">
                 <div class="flex items-center gap-4 mb-8">
                     <span class="h-px w-10 bg-primary/40"></span>
-                    <h2 class="text-sm font-bold uppercase tracking-[0.25em] text-primary">
+                    <h2 class="text-sm font-bold uppercase tracking-[0.25em] text-blue-400">
                         Prossimi eventi
                     </h2>
                 </div>
 
                 {
                     upcomingEvents.length > 0 ? (
-                        <div class="space-y-5">
-                            {upcomingEvents.map((event) => (
-                                <article class="grid grid-cols-1 lg:grid-cols-12 gap-6 rounded-3xl border border-white/10 bg-white/4 p-6 md:p-8 hover:border-primary/40 transition-colors">
-                                    <div class="lg:col-span-3">
-                                        <div class="text-sm font-bold uppercase tracking-widest text-primary mb-2">
-                                            {formatDate(event.data.date)}
-                                        </div>
-                                        {event.data.time && (
-                                            <div class="text-3xl font-serif font-bold">
-                                                {event.data.time}
+                        <div class="space-y-6 md:space-y-8">
+                            {upcomingEvents.map((event, index) => {
+                                const show = showsByTitle.get(normalizeTitle(event.data.spettacolo));
+                                return (
+                                <article class="flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/4 hover:border-primary/40 transition-colors md:flex-row">
+                                    <div class="relative aspect-video w-full shrink-0 overflow-hidden bg-white/5 md:aspect-auto md:w-80">
+                                        {show?.image ? (
+                                            <img
+                                                src={show.image.src}
+                                                srcset={show.image.srcset}
+                                                sizes="(min-width: 768px) 320px, calc(100vw - 32px)"
+                                                alt={event.data.spettacolo}
+                                                width={show.image.width}
+                                                height={show.image.height}
+                                                loading={index === 0 ? "eager" : "lazy"}
+                                                decoding="async"
+                                                class="absolute inset-0 h-full w-full object-cover"
+                                            />
+                                        ) : (
+                                            <div aria-hidden="true" class="absolute inset-0 flex items-center justify-center px-6 pt-16 text-center font-serif text-3xl font-bold text-white/20">
+                                                {event.data.spettacolo}
                                             </div>
                                         )}
-                                    </div>
-
-                                    <div class="lg:col-span-6">
-                                        <h3 class="text-2xl md:text-3xl font-serif font-bold">
-                                            {event.data.title}
-                                        </h3>
-                                    </div>
-
-                                    <div class="lg:col-span-3 flex flex-col items-start lg:items-end gap-3 lg:text-right">
-                                        <div class="text-xl font-serif font-bold leading-tight text-foreground">
-                                            {event.data.city}
+                                        <div aria-hidden="true" class="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
+                                        <div aria-hidden="true" class="absolute left-4 top-4 flex flex-col items-center rounded-2xl border border-white/10 bg-black/75 px-4 py-3">
+                                            <span class="font-serif text-3xl font-bold leading-none text-primary">
+                                                {dayFormatter.format(event.data.date)}
+                                            </span>
+                                            <span class="mt-1 text-[10px] font-bold uppercase tracking-widest text-white/85">
+                                                {monthYearFormatter.format(event.data.date)}
+                                            </span>
                                         </div>
-                                        {event.data.address && (
-                                            <div class="max-w-xs text-sm text-muted-foreground leading-relaxed">
-                                                {event.data.address}
-                                            </div>
+                                    </div>
+
+                                    <div class="flex min-w-0 grow flex-col justify-center gap-3 p-6 md:p-8">
+                                        <p class="text-xs font-bold uppercase tracking-widest text-blue-400">
+                                            {formatDate(event.data.date)}
+                                            {event.data.time && ` - ore ${event.data.time}`}
+                                        </p>
+                                        <h3 class="text-2xl md:text-3xl font-serif font-bold leading-tight wrap-break-word">
+                                            {event.data.spettacolo}
+                                        </h3>
+                                        <p class="text-muted-foreground leading-relaxed wrap-break-word">
+                                            {event.data.venue}, {event.data.city}
+                                            {event.data.address && ` - ${event.data.address}`}
+                                        </p>
+                                        <div class="mt-3 flex flex-wrap items-center gap-3">
+                                        {show && (
+                                            <a
+                                                href={`/spettacoli/${show.id}`}
+                                                class="inline-flex min-h-11 items-center rounded-full bg-primary px-5 py-3 text-sm font-bold text-primary-foreground hover:bg-primary/90 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+                                            >
+                                                Scopri lo spettacolo
+                                            </a>
                                         )}
                                         {event.data.googleMapsUrl && (
                                             <a
                                                 href={event.data.googleMapsUrl}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                class="mt-1 inline-flex rounded-2xl border border-white/15 px-5 py-3 text-xs font-bold uppercase tracking-widest text-white/85 hover:border-primary/50 hover:text-primary transition-colors"
+                                                class="inline-flex min-h-11 items-center rounded-full border border-white/15 px-5 py-3 text-sm font-semibold text-foreground hover:border-primary/50 hover:text-blue-400 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
                                             >
                                                 Mappa
                                             </a>
                                         )}
+                                        </div>
                                     </div>
                                 </article>
-                            ))}
+                                );
+                            })}
                         </div>
                     ) : (
                         <div class="rounded-3xl border border-white/10 bg-white/4 p-8 text-muted-foreground">
@@ -111,17 +181,35 @@ const formatDate = (date: Date) => dateFormatter.format(date);
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            {pastEvents.slice(0, 8).map((event) => (
-                                <article class="rounded-2xl border border-white/10 bg-white/3 p-5">
-                                    <div class="text-xs font-bold uppercase tracking-widest text-primary mb-2">
+                            {pastEvents.slice(0, 8).map((event) => {
+                                const show = showsByTitle.get(normalizeTitle(event.data.spettacolo));
+                                return (
+                                <article class="flex items-center gap-5 rounded-2xl border border-white/10 bg-white/3 p-5">
+                                    {show?.image && (
+                                        <img
+                                            src={show.image.src}
+                                            srcset={show.image.srcset}
+                                            sizes="80px"
+                                            alt=""
+                                            width={show.image.width}
+                                            height={show.image.height}
+                                            loading="lazy"
+                                            decoding="async"
+                                            class="h-20 w-20 shrink-0 rounded-2xl object-cover opacity-70"
+                                        />
+                                    )}
+                                    <div class="min-w-0">
+                                    <div class="text-xs font-bold uppercase tracking-widest text-blue-400 mb-2">
                                         {formatDate(event.data.date)}
                                     </div>
-                                    <h3 class="text-xl font-serif font-bold">{event.data.title}</h3>
+                                    <h3 class="text-xl font-serif font-bold wrap-break-word">{event.data.spettacolo}</h3>
                                     <p class="text-sm text-muted-foreground mt-2">
-                                        {event.data.city}
+                                        {event.data.venue}, {event.data.city}
                                     </p>
+                                    </div>
                                 </article>
-                            ))}
+                                );
+                            })}
                         </div>
                     </section>
                 )

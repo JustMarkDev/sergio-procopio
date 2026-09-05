@@ -14,12 +14,14 @@ export interface GalleryImage {
 
 interface ShowGalleryProps {
   mainImageSrc: string;
+  mainImageWidth: number;
+  mainImageHeight: number;
   mainImageOriginalSrc: string;
   images: GalleryImage[];
   alt: string;
 }
 
-export default function ShowGallery({ mainImageSrc, mainImageOriginalSrc, images, alt }: ShowGalleryProps) {
+export default function ShowGallery({ mainImageSrc, mainImageWidth, mainImageHeight, mainImageOriginalSrc, images, alt }: ShowGalleryProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [isImageLoading, setIsImageLoading] = useState(true);
   const thumbnailsRef = useRef<HTMLDivElement>(null);
@@ -149,6 +151,8 @@ export default function ShowGallery({ mainImageSrc, mainImageOriginalSrc, images
       >
         <img
           src={mainImageSrc}
+          width={mainImageWidth}
+          height={mainImageHeight}
           alt={alt}
           className="w-full h-auto block transition-all duration-700 group-hover:scale-102 group-hover:opacity-85"
           loading="lazy"

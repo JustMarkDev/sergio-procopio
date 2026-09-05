@@ -3,6 +3,7 @@ import { getCollection, getEntry } from "astro:content";
 import {
   biographyMarkdown,
   calendarMarkdown,
+  contactMarkdown,
   galleryMarkdown,
   homepageMarkdown,
   notFoundMarkdown,
@@ -109,6 +110,10 @@ export const GET: APIRoute = async ({ params, url }) => {
 
   if (path === "calendario") {
     return markdownResponse(calendarMarkdown(await publicEvents()));
+  }
+
+  if (path === "contatti") {
+    return markdownResponse(contactMarkdown());
   }
 
   if (path === "privacy-policy") {

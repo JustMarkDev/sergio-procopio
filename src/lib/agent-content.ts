@@ -61,7 +61,7 @@ export const homepageMarkdown = (shows: readonly AgentShow[]) =>
     "",
     `## Contatti e prenotazioni
 
-Per chiedere disponibilità, un preventivo o uno spettacolo per la propria realtà, scrivi a [info@sergioprocopio.it](mailto:info@sergioprocopio.it) oppure apri la [sezione contatti](${link("/#contatti")}).
+Per chiedere disponibilità, un preventivo o uno spettacolo per la propria realtà, scrivi a [info@sergioprocopio.it](mailto:info@sergioprocopio.it) oppure apri la [pagina contatti](${link("/contatti")}).
 
 Telefono: [+39 3805252684](tel:+393805252684).`,
     "",
@@ -86,7 +86,7 @@ export const biographyMarkdown = (
     "",
     contentBody(biography.body),
     "",
-    `Per spettacoli e incontri, visita la [sezione contatti](${link("/#contatti")}).`,
+    `Per spettacoli e incontri, visita la [pagina contatti](${link("/contatti")}).`,
   ].join("\n");
 
 export const showsMarkdown = (shows: readonly AgentShow[]) =>
@@ -104,7 +104,7 @@ export const showsMarkdown = (shows: readonly AgentShow[]) =>
         .join("\n\n"),
     ),
     "",
-    `Per una prenotazione, vai ai [contatti](${link("/#contatti")}).`,
+    `Per una prenotazione, vai ai [contatti](${link("/contatti")}).`,
   ].join("\n\n");
 
 export const showMarkdown = (show: AgentShow) =>
@@ -123,7 +123,7 @@ export const showMarkdown = (show: AgentShow) =>
     "",
     contentBody(show.body),
     "",
-    `Per disponibilità e preventivi, apri i [contatti](${link("/#contatti")}).`,
+    `Per disponibilità e preventivi, apri i [contatti](${link("/contatti")}).`,
   ]
     .filter((line) => line !== "")
     .join("\n");
@@ -160,9 +160,27 @@ export const calendarMarkdown = (events: readonly AgentEvent[]) => {
         })
       : ["Non ci sono eventi pubblici in calendario."]),
     "",
-    `Per organizzare uno spettacolo, usa i [contatti](${link("/#contatti")}).`,
+    `Per organizzare uno spettacolo, usa i [contatti](${link("/contatti")}).`,
   ].join("\n");
 };
+
+export const contactMarkdown = () =>
+  [
+    "# Contatti",
+    "> Parliamo della prossima data.",
+    "",
+    "Spettacoli, laboratori e incontri: raccontami cosa hai in mente per il tuo pubblico.",
+    "",
+    "Email: [info@sergioprocopio.it](mailto:info@sergioprocopio.it).",
+    "Telefono: [+39 3805252684](tel:+393805252684).",
+    "",
+    `Per chiedere disponibilità, compila il [modulo nella pagina contatti](${link("/contatti")}).`,
+    "",
+    "## Come ci organizziamo",
+    "1. Scrivimi: raccontami il periodo, il luogo e il pubblico che vorresti coinvolgere.",
+    "2. Ti rispondo io: verifichiamo la disponibilità e definiamo una proposta con un preventivo.",
+    "3. Confermiamo la data: accordiamo i dettagli tecnici per portare lo spettacolo da te.",
+  ].join("\n");
 
 export const privacyMarkdown = () =>
   [

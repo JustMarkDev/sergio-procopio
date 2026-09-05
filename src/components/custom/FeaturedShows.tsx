@@ -6,24 +6,16 @@ interface Show {
   category: string;
   description: string;
   durata?: string;
-  image?: string;
+  image?: {
+    src: string;
+    srcSet: string;
+    width: number;
+    height: number;
+  };
 }
 
 interface Props {
   shows: Show[];
-}
-
-function ShowImage({ src, alt }: { src: string; alt: string }) {
-  return (
-    <img
-      src={src}
-      alt={alt}
-      loading="eager"
-      fetchPriority="high"
-      decoding="async"
-      className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-    />
-  );
 }
 
 export default function FeaturedShows({ shows }: Props) {
@@ -76,7 +68,14 @@ export default function FeaturedShows({ shows }: Props) {
             >
               <div className="aspect-4/3 w-full bg-secondary/20 relative overflow-hidden flex items-center justify-center shrink-0">
                 {show.image ? (
-                  <ShowImage src={show.image} alt={show.title} />
+                  <img
+                    {...show.image}
+                    sizes="(min-width: 1536px) 454px, (min-width: 1280px) 368px, (min-width: 1024px) 283px, (min-width: 768px) 208px, (min-width: 640px) 608px, calc(100vw - 32px)"
+                    alt={show.title}
+                    loading="lazy"
+                    decoding="async"
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
                 ) : (
                   <>
                     <div className="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.1)_0%,transparent_100%)]" />

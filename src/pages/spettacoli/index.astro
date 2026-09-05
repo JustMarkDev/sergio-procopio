@@ -45,21 +45,23 @@ const spettacoli = (await getCollection("spettacoli")).filter(
                                 {show.data.image ? (
                                     <>
                                         <div
-                                            class="show-card-placeholder absolute inset-0 overflow-hidden bg-zinc-900 transition-opacity duration-500"
+                                            class="absolute inset-0 bg-linear-to-br from-zinc-800 via-zinc-700 to-zinc-900"
                                             aria-hidden="true"
-                                        >
-                                            <div class="absolute inset-0 bg-linear-to-br from-zinc-800 via-zinc-700 to-zinc-900" />
-                                            <div class="absolute inset-0 -translate-x-full animate-[shimmer_1.8s_ease-in-out_infinite] bg-linear-to-r from-transparent via-white/10 to-transparent" />
-                                            <div class="absolute inset-0 shadow-[0_0_36px_rgba(37,99,235,0.18)]" />
-                                        </div>
+                                        />
                                         <Image
                                             src={show.data.image}
+                                            width={800}
+                                            height={600}
+                                            widths={[320, 480, 640, 800, 1200]}
+                                            sizes="(min-width: 1536px) 459px, (min-width: 1280px) 374px, (min-width: 1024px) 288px, (min-width: 768px) 336px, (min-width: 640px) 608px, calc(100vw - 32px)"
+                                            fit="cover"
+                                            format="webp"
+                                            quality={75}
                                             alt={show.data.title}
                                             loading={index < 2 ? "eager" : "lazy"}
                                             fetchpriority={index === 0 ? "high" : undefined}
                                             decoding="async"
-                                            data-show-card-image
-                                            class="show-card-image absolute inset-0 w-full h-full object-cover opacity-0 blur-sm transition-all duration-700 group-hover:scale-105"
+                                            class="show-card-image absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                         />
                                     </>
                                 ) : (
@@ -124,44 +126,3 @@ const spettacoli = (await getCollection("spettacoli")).filter(
         </div>
     </div>
 </Layout>
-
-<script>
-    const markShowImageAsLoaded = (image: HTMLImageElement) => {
-        image.closest(".show-card-image-shell")?.classList.add("is-loaded");
-    };
-
-    const initializeShowImages = () => {
-        document
-            .querySelectorAll<HTMLImageElement>("[data-show-card-image]")
-            .forEach((image) => {
-                if (image.complete) {
-                    markShowImageAsLoaded(image);
-                    return;
-                }
-
-                image.addEventListener(
-                    "load",
-                    () => markShowImageAsLoaded(image),
-                    { once: true },
-                );
-                image.addEventListener(
-                    "error",
-                    () => markShowImageAsLoaded(image),
-                    { once: true },
-                );
-            });
-    };
-
-    document.addEventListener("astro:page-load", initializeShowImages);
-</script>
-
-<style>
-    .show-card-image-shell.is-loaded .show-card-placeholder {
-        opacity: 0;
-    }
-
-    .show-card-image-shell.is-loaded .show-card-image {
-        opacity: 1;
-        filter: blur(0);
-    }
-</style>

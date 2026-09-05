@@ -1,0 +1,53 @@
+---
+    import Layout from "../layouts/Layout.astro";
+    import ContactForm from "../components/custom/ContactForm";
+    import ContactHeading from "../components/custom/ContactHeading";
+
+    const steps = [
+        { title: "Scrivimi", description: "Raccontami il periodo, il luogo e il pubblico che vorresti coinvolgere." },
+        { title: "Ti rispondo io", description: "Verifichiamo la disponibilità e definiamo una proposta con un preventivo." },
+        { title: "Confermiamo la data", description: "Accordiamo i dettagli tecnici per portare lo spettacolo da te." },
+    ];
+---
+
+<Layout
+    title="Contatti | Sergio Procopio"
+    description="Contatta Sergio Procopio per spettacoli, laboratori e incontri formativi. Racconta il tuo evento o chiama per parlare della prossima data."
+    canonicalPath="/contatti"
+>
+    <div class="mx-auto grid max-w-6xl grid-cols-1 gap-7 px-4 pt-28 pb-16 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:grid-rows-[auto_1fr] lg:gap-x-14 lg:gap-y-9 lg:px-8 lg:pt-32">
+        <header class="lg:col-start-1 lg:row-start-1">
+            <ContactHeading client:load />
+            <p class="mt-4 max-w-md text-base leading-6 text-zinc-300">
+                Spettacoli, laboratori e incontri: raccontami cosa hai in mente per il tuo pubblico.
+            </p>
+            <div class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
+                <a href="tel:+393805252684" class="inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-full border border-zinc-500 px-6 text-sm font-semibold text-zinc-50 hover:border-zinc-300 hover:bg-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-400">
+                    Chiama ora
+                </a>
+                <a href="mailto:info@sergioprocopio.it" class="rounded text-sm text-zinc-300 underline underline-offset-4 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-400">
+                    info@sergioprocopio.it
+                </a>
+            </div>
+        </header>
+
+        <div class="min-w-0 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:[&>astro-island]:h-full">
+            <ContactForm client:load />
+        </div>
+
+        <section aria-labelledby="contact-steps-title" class="lg:col-start-1 lg:row-start-2">
+            <h2 id="contact-steps-title" class="mb-2 text-base font-medium text-zinc-200">Come ci organizziamo</h2>
+            <ol class="divide-y divide-zinc-800" role="list">
+                {steps.map((step, index) => (
+                    <li class="grid grid-cols-[2rem_1fr] gap-3 py-4">
+                        <span aria-hidden="true" class="pt-0.5 text-sm tabular-nums text-zinc-400">{String(index + 1).padStart(2, "0")}</span>
+                        <div>
+                            <h3 class="text-base font-medium text-zinc-100">{step.title}</h3>
+                            <p class="mt-1 text-sm leading-6 text-zinc-400">{step.description}</p>
+                        </div>
+                    </li>
+                ))}
+            </ol>
+        </section>
+    </div>
+</Layout>
