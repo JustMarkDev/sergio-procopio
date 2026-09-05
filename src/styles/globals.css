@@ -1,8 +1,84 @@
 @import "tailwindcss";
 
+/* Metric-adjusted fallbacks from @capsizecss/metrics: Inter/Arial and Playfair/Times New Roman. */
+@font-face {
+    font-family: "Inter Fallback";
+    src: local("Arial");
+    size-adjust: 107.12%;
+    ascent-override: 90.44%;
+    descent-override: 22.52%;
+    line-gap-override: 0%;
+}
+
+@font-face {
+    font-family: "Playfair Fallback";
+    src: local("Times New Roman");
+    size-adjust: 111.26%;
+    ascent-override: 97.25%;
+    descent-override: 22.56%;
+    line-gap-override: 0%;
+}
+
+/* Full-width blur at the page top fades into the existing floating glass panel. */
+.header-progressive-blur {
+    position: absolute;
+    inset: 0 0 -24px;
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgb(9 9 11 / 72%), rgb(9 9 11 / 30%) 55%, transparent);
+    transition: opacity 300ms ease;
+}
+.header-progressive-blur > span {
+    position: absolute;
+    inset: 0;
+    -webkit-backdrop-filter: blur(var(--header-blur));
+    backdrop-filter: blur(var(--header-blur));
+    -webkit-mask-image: linear-gradient(to bottom, black var(--blur-start), transparent var(--blur-end));
+    mask-image: linear-gradient(to bottom, black var(--blur-start), transparent var(--blur-end));
+}
+.header-progressive-blur > span:nth-child(1) {
+    --header-blur: 4px;
+    --blur-start: 45%;
+    --blur-end: 100%;
+}
+.header-progressive-blur > span:nth-child(2) {
+    --header-blur: 12px;
+    --blur-start: 20%;
+    --blur-end: 80%;
+}
+.header-progressive-blur > span:nth-child(3) {
+    --header-blur: 24px;
+    --blur-start: 0%;
+    --blur-end: 60%;
+}
+.header-glass {
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 300ms ease;
+}
+.site-header[data-glass="true"] .header-progressive-blur {
+    opacity: 0;
+}
+.site-header[data-glass="true"] .header-glass {
+    opacity: 1;
+}
+@media (prefers-reduced-transparency: reduce) {
+    .header-progressive-blur {
+        background: linear-gradient(to bottom, var(--background) 70%, transparent);
+    }
+    .header-progressive-blur > span {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+    .header-glass {
+        background: var(--background);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+}
+
 @theme {
-    --font-sans: "Inter", "sans-serif";
-    --font-serif: "Playfair Display", "serif";
+    --font-sans: "Inter", "Inter Fallback", sans-serif;
+    --font-serif: "Playfair Display", "Playfair Fallback", serif;
 
     --color-background: var(--background);
     --color-foreground: var(--foreground);

@@ -26,17 +26,6 @@ interface GalleryCardProps {
 }
 
 function GalleryCard({ image, index, onOpen }: GalleryCardProps) {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const imageRef = useRef<HTMLImageElement>(null);
-  const imageKey = `${image.showId}-${image.originalSrc}`;
-
-  useEffect(() => {
-    const element = imageRef.current;
-    if (element?.complete && element.naturalWidth > 0) {
-      setIsLoaded(true);
-    }
-  }, [imageKey]);
-
   return (
     <div
       onClick={onOpen}
@@ -44,27 +33,19 @@ function GalleryCard({ image, index, onOpen }: GalleryCardProps) {
       style={{ aspectRatio: `${image.width} / ${image.height}` }}
     >
       <div
-        className={`absolute inset-0 overflow-hidden bg-zinc-900 transition-opacity duration-300 ${
-          isLoaded ? "opacity-0" : "opacity-100"
-        }`}
+        className="absolute inset-0 bg-linear-to-br from-white/3 via-white/8 to-white/3"
         aria-hidden="true"
-      >
-        <div className="absolute inset-0 bg-linear-to-br from-white/3 via-white/8 to-white/3 animate-pulse" />
-      </div>
+      />
 
       <img
-        ref={imageRef}
         src={image.gridSrc}
         alt={image.alt}
-        loading={index < 6 ? "eager" : "lazy"}
+        loading={index === 0 ? "eager" : "lazy"}
+        fetchPriority={index === 0 ? "high" : undefined}
         decoding="async"
         width={image.width}
         height={image.height}
-        className={`absolute inset-0 h-full w-full object-cover transition-all duration-500 group-hover:scale-105 ${
-          isLoaded ? "opacity-100 group-hover:opacity-60" : "opacity-0"
-        }`}
-        onLoad={() => setIsLoaded(true)}
-        onError={() => setIsLoaded(true)}
+        className="absolute inset-0 h-full w-full object-cover transition-all duration-500 group-hover:scale-105 group-hover:opacity-60"
       />
 
       <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col justify-end p-6">

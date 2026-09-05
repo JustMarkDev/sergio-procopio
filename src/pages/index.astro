@@ -2,28 +2,55 @@
 import Layout from "../layouts/Layout.astro";
 import HeroSection from "../components/custom/HeroSection";
 import FeaturedShows from "../components/custom/FeaturedShows";
-import ContactForm from "../components/custom/ContactForm";
+import ContactCTA from "../components/custom/ContactCTA.astro";
 import { getCollection } from "astro:content";
+import { getImage } from "astro:assets";
+import socialImage from "../../public/social.jpg";
+
+const heroImage = await getImage({
+    src: socialImage,
+    width: 1600,
+    height: 1070,
+    widths: [640, 960, 1280, 1600],
+    format: "webp",
+    quality: 85,
+});
 
 const allShows = (await getCollection("spettacoli")).filter(
     (show) => !show.data.draft,
 );
 // Prefer highlighted shows or first 3
-const featuredShows = allShows
+const featuredShows = await Promise.all(allShows
     .sort((a, b) => (b.data.highlight ? 1 : 0) - (a.data.highlight ? 1 : 0))
     .slice(0, 3)
-    .map((show) => ({
-        id: show.id,
-        title: show.data.title,
-        category: show.data.category,
-        description: show.data.description,
-        durata: show.data.durata,
-        image: show.data.image?.src, // Pass the resolved src URL to the React component
+    .map(async (show) => {
+        const image = show.data.image ? await getImage({
+            src: show.data.image,
+            width: 800,
+            height: 600,
+            widths: [320, 480, 640, 800, 1200],
+            fit: "cover",
+            format: "webp",
+            quality: 75,
+        }) : undefined;
+        return {
+            id: show.id,
+            title: show.data.title,
+            category: show.data.category,
+            description: show.data.description,
+            durata: show.data.durata,
+            image: image ? {
+                src: image.src,
+                srcSet: image.srcSet.attribute,
+                width: 800,
+                height: 600,
+            } : undefined,
+        };
     }));
 ---
 
 <Layout>
-    <HeroSection />
+    <HeroSection image={{ src: heroImage.src, srcSet: heroImage.srcSet.attribute, width: 1600, height: 1070 }} />
     <FeaturedShows shows={featuredShows} />
-    <ContactForm client:load />
+    <ContactCTA />
 </Layout>
