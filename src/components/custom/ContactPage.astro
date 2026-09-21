@@ -2,11 +2,7 @@
 import Layout from "../../layouts/Layout.astro";
 import ContactForm from "./ContactForm";
 import ContactHeading from "./ContactHeading";
-import {
-    CONTACT_NAP,
-    CONTACT_TRUST_EN,
-    CONTACT_TRUST_IT,
-} from "../../lib/contact-trust";
+import { CONTACT_NAP } from "../../lib/contact-trust";
 
 interface Props {
     locale: "it" | "en";
@@ -14,9 +10,6 @@ interface Props {
 
 const { locale } = Astro.props;
 const isEnglish = locale === "en";
-const trustParagraphs = (isEnglish ? CONTACT_TRUST_EN : CONTACT_TRUST_IT).split(
-    "\n\n",
-);
 const canonicalPath = isEnglish
     ? CONTACT_NAP.contactAliasPath
     : CONTACT_NAP.contactPath;
@@ -24,12 +17,9 @@ const title = isEnglish
     ? "Contact | Sergio Procopio"
     : "Contatti | Sergio Procopio";
 const description = isEnglish
-    ? "Contact Sergio Procopio for theatre shows, workshops and educational meetings. Phone, email, booking steps and official NAP details."
+    ? "Contact Sergio Procopio for theatre shows, workshops and educational meetings. Phone, email and booking steps."
     : "Contatta Sergio Procopio per spettacoli, laboratori e incontri formativi. Racconta il tuo evento o chiama per parlare della prossima data.";
 const stepsTitle = isEnglish ? "How we organise" : "Come ci organizziamo";
-const trustTitle = isEnglish
-    ? "Official contact details"
-    : "Riferimenti ufficiali";
 const steps = isEnglish
     ? [
           {
@@ -69,7 +59,7 @@ const steps = isEnglish
 
 <Layout title={title} description={description} canonicalPath={canonicalPath}>
     <div
-        class="mx-auto grid max-w-6xl grid-cols-1 gap-7 px-4 pt-28 pb-16 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:grid-rows-[auto_auto_1fr] lg:gap-x-14 lg:gap-y-9 lg:px-8 lg:pt-32"
+        class="mx-auto grid max-w-6xl grid-cols-1 gap-7 px-4 pt-28 pb-16 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:grid-rows-[auto_1fr] lg:gap-x-14 lg:gap-y-9 lg:px-8 lg:pt-32"
     >
         <section
             class="lg:col-start-1 lg:row-start-1"
@@ -113,85 +103,14 @@ const steps = isEnglish
         </section>
 
         <div
-            class="min-w-0 lg:col-start-2 lg:row-span-3 lg:row-start-1 lg:[&>astro-island]:h-full"
+            class="min-w-0 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:[&>astro-island]:h-full"
         >
             <ContactForm client:load />
         </div>
 
         <section
-            aria-labelledby="contact-trust-title"
-            class="lg:col-start-1 lg:row-start-2 space-y-4"
-        >
-            <h2
-                id="contact-trust-title"
-                class="text-base font-medium text-zinc-200"
-            >
-                {trustTitle}
-            </h2>
-            {
-                trustParagraphs.map((paragraph) => (
-                    <p class="max-w-md text-sm leading-6 text-zinc-400">
-                        {paragraph}
-                    </p>
-                ))
-            }
-            <dl class="max-w-md space-y-2 text-sm text-zinc-400">
-                <div class="flex flex-wrap gap-x-2">
-                    <dt class="text-zinc-500">
-                        {isEnglish ? "Name" : "Nome"}:
-                    </dt>
-                    <dd>{CONTACT_NAP.name}</dd>
-                </div>
-                <div class="flex flex-wrap gap-x-2">
-                    <dt class="text-zinc-500">
-                        {isEnglish ? "Address" : "Indirizzo"}:
-                    </dt>
-                    <dd>{CONTACT_NAP.streetAddress}</dd>
-                </div>
-                <div class="flex flex-wrap gap-x-2">
-                    <dt class="text-zinc-500">
-                        {isEnglish ? "Phone" : "Telefono"}:
-                    </dt>
-                    <dd>
-                        <a
-                            href={`tel:${CONTACT_NAP.telephone}`}
-                            class="underline underline-offset-4 hover:text-white"
-                            >{CONTACT_NAP.telephoneDisplay}</a
-                        >
-                    </dd>
-                </div>
-                <div class="flex flex-wrap gap-x-2">
-                    <dt class="text-zinc-500">Email:</dt>
-                    <dd>
-                        <a
-                            href={`mailto:${CONTACT_NAP.email}`}
-                            class="underline underline-offset-4 hover:text-white"
-                            >{CONTACT_NAP.email}</a
-                        >
-                    </dd>
-                </div>
-                <div class="flex flex-wrap gap-x-2">
-                    <dt class="text-zinc-500">
-                        {isEnglish ? "VAT" : "P.IVA"}:
-                    </dt>
-                    <dd>{CONTACT_NAP.vat}</dd>
-                </div>
-                <div class="flex flex-wrap gap-x-2">
-                    <dt class="text-zinc-500">Web:</dt>
-                    <dd>
-                        <a
-                            href={CONTACT_NAP.url}
-                            class="underline underline-offset-4 hover:text-white"
-                            >{CONTACT_NAP.url.replace("https://", "")}</a
-                        >
-                    </dd>
-                </div>
-            </dl>
-        </section>
-
-        <section
             aria-labelledby="contact-steps-title"
-            class="lg:col-start-1 lg:row-start-3"
+            class="lg:col-start-1 lg:row-start-2"
         >
             <h2
                 id="contact-steps-title"

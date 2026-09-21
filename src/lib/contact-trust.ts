@@ -1,4 +1,7 @@
-/** Shared trust-anchor copy for /contact and /contatti (500+ characters each). */
+/**
+ * Trust-anchor copy for agent-readable markdown and structured data (JSON-LD).
+ * It powers agent markdown/SEO only and must not be rendered as visible HTML.
+ */
 
 export const CONTACT_NAP = {
   name: "Sergio Procopio",
