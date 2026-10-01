@@ -7,7 +7,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "build": "astro build",
-    "check": "vp check && astro check",
+    "check": "astro sync && vp check && astro check",
     "lint": "vp lint",
     "format": "vp fmt",
     "test": "vp test run"
