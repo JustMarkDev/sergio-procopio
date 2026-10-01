@@ -14,8 +14,7 @@ import {
 } from "../../../lib/agent-content";
 import { markdownResponse } from "../../../lib/content-negotiation";
 
-const normalizePath = (path: string | undefined) =>
-  (path ?? "").replace(/^\/+|\/+$/g, "");
+const normalizePath = (path: string | undefined) => (path ?? "").replace(/^\/+|\/+$/g, "");
 
 const publicShows = async () =>
   (await getCollection("spettacoli"))
@@ -59,12 +58,15 @@ export const GET: APIRoute = async ({ params, url }) => {
     const biography = await getEntry("pages", "biografia");
     if (biography) {
       return markdownResponse(
-        biographyMarkdown({
-          title: biography.data.title,
-          description: biography.data.description,
-          quote: biography.data.quote,
-          body: biography.body,
-        }, path === "about" ? "About Sergio Procopio" : undefined),
+        biographyMarkdown(
+          {
+            title: biography.data.title,
+            description: biography.data.description,
+            quote: biography.data.quote,
+            body: biography.body,
+          },
+          path === "about" ? "About Sergio Procopio" : undefined,
+        ),
       );
     }
   }
@@ -124,8 +126,7 @@ export const GET: APIRoute = async ({ params, url }) => {
     return markdownResponse(privacyMarkdown());
   }
 
-  return markdownResponse(
-    notFoundMarkdown(url.pathname.replace(/^\/api\/markdown/, "")),
-    { status: 404 },
-  );
+  return markdownResponse(notFoundMarkdown(url.pathname.replace(/^\/api\/markdown/, "")), {
+    status: 404,
+  });
 };

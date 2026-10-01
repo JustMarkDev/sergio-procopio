@@ -35,8 +35,7 @@ export const server = {
       // L'integrazione di Vercel espone la chiave come RESEND_API_KEY.
       // Cerchiamo in import.meta.env (Astro) e process.env (Node/Vercel runtime)
       const apiKey =
-        import.meta.env.RESEND_API_KEY ||
-        (globalThis as any).process?.env?.RESEND_API_KEY;
+        import.meta.env.RESEND_API_KEY || (globalThis as any).process?.env?.RESEND_API_KEY;
 
       if (!apiKey) {
         console.error("Errore: RESEND_API_KEY non trovata nell'ambiente.");

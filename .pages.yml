@@ -158,7 +158,6 @@ content:
         sort: date
         order: desc
     fields:
-
       - name: spettacolo
         label: Spettacolo
         type: reference

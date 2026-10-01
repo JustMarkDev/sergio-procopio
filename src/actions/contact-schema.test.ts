@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vite-plus/test";
 import {
   CONTACT_EMAIL_MAX_LENGTH,
   CONTACT_MESSAGE_MAX_LENGTH,

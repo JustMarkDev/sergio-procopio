@@ -30,7 +30,7 @@ export function getShowSpecs(show: CollectionEntry<"spettacoli">): SpecGroup[] {
   // Requirements Group
   const reqItems: SpecItem[] = [];
   if (data.requisiti) reqItems.push({ label: "Requisiti", value: data.requisiti });
-  
+
   if (reqItems.length > 0) {
     groups.push({ id: "requirements", items: reqItems });
   }

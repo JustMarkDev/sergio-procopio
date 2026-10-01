@@ -3,9 +3,9 @@ import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export interface GalleryImage {
-  src: string;         // 1200px optimized WebP
-  gridSrc: string;     // 600px optimized WebP
-  thumbSrc: string;    // 120px optimized WebP
+  src: string; // 1200px optimized WebP
+  gridSrc: string; // 600px optimized WebP
+  thumbSrc: string; // 120px optimized WebP
   originalSrc: string; // Original unresolved asset path string
   alt: string;
   title: string;
@@ -21,7 +21,14 @@ interface ShowGalleryProps {
   alt: string;
 }
 
-export default function ShowGallery({ mainImageSrc, mainImageWidth, mainImageHeight, mainImageOriginalSrc, images, alt }: ShowGalleryProps) {
+export default function ShowGallery({
+  mainImageSrc,
+  mainImageWidth,
+  mainImageHeight,
+  mainImageOriginalSrc,
+  images,
+  alt,
+}: ShowGalleryProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [isImageLoading, setIsImageLoading] = useState(true);
   const thumbnailsRef = useRef<HTMLDivElement>(null);
@@ -114,7 +121,7 @@ export default function ShowGallery({ mainImageSrc, mainImageWidth, mainImageHei
       const containerWidth = container.offsetWidth;
       const elementLeft = activeElement.offsetLeft;
       const elementWidth = activeElement.offsetWidth;
-      
+
       if (containerWidth > 0) {
         // Calculate centered scroll position, explicitly clamping to >= 0
         const targetScrollLeft = Math.max(0, elementLeft - containerWidth / 2 + elementWidth / 2);

@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vite-plus/test";
 import {
   addVary,
   isDocumentPath,
@@ -26,19 +26,13 @@ describe("preferredMediaType", () => {
   });
 
   it("honors quality values and client order", () => {
-    expect(preferredMediaType("text/html;q=0.5, text/markdown;q=0.9")).toBe(
-      "text/markdown",
-    );
-    expect(preferredMediaType("text/markdown, text/html")).toBe(
-      "text/markdown",
-    );
+    expect(preferredMediaType("text/html;q=0.5, text/markdown;q=0.9")).toBe("text/markdown");
+    expect(preferredMediaType("text/markdown, text/html")).toBe("text/markdown");
     expect(preferredMediaType("text/html, text/markdown")).toBe("text/html");
   });
 
   it("lets a specific rejection override a wildcard", () => {
-    expect(preferredMediaType("text/html;q=0, */*;q=1")).toBe(
-      "text/markdown",
-    );
+    expect(preferredMediaType("text/html;q=0, */*;q=1")).toBe("text/markdown");
     expect(preferredMediaType("text/*;q=0, */*;q=1")).toBeNull();
   });
 
@@ -56,15 +50,11 @@ describe("preferredMediaType", () => {
 describe("shouldServeDocumentMarkdown", () => {
   it("serves Markdown for known AI agents when Accept does not prefer HTML", () => {
     expect(
-      shouldServeDocumentMarkdown(
-        requestWith({ "user-agent": "ClaudeBot/1.0", accept: "*/*" }),
-      ),
+      shouldServeDocumentMarkdown(requestWith({ "user-agent": "ClaudeBot/1.0", accept: "*/*" })),
     ).toBe(true);
-    expect(
-      shouldServeDocumentMarkdown(
-        requestWith({ "user-agent": "GPTBot", accept: null }),
-      ),
-    ).toBe(true);
+    expect(shouldServeDocumentMarkdown(requestWith({ "user-agent": "GPTBot", accept: null }))).toBe(
+      true,
+    );
   });
 
   it("still honors an explicit HTML preference from an agent", () => {
@@ -107,9 +97,7 @@ describe("document path negotiation", () => {
     expect(markdownEndpointPath("/")).toBe("/api/markdown/home");
     expect(markdownEndpointPath("/contact")).toBe("/api/markdown/contact");
     expect(markdownEndpointPath("/privacy/")).toBe("/api/markdown/privacy");
-    expect(markdownEndpointPath("/spettacoli/comico")).toBe(
-      "/api/markdown/spettacoli/comico",
-    );
+    expect(markdownEndpointPath("/spettacoli/comico")).toBe("/api/markdown/spettacoli/comico");
   });
 });
 
@@ -126,9 +114,7 @@ describe("response headers", () => {
     const response = markdownResponse("# Home", { status: 404 });
 
     expect(response.status).toBe(404);
-    expect(response.headers.get("Content-Type")).toBe(
-      "text/markdown; charset=utf-8",
-    );
+    expect(response.headers.get("Content-Type")).toBe("text/markdown; charset=utf-8");
     expect(response.headers.get("Vary")).toBe("Accept, Accept-Encoding");
     expect(response.headers.get("X-Robots-Tag")).toContain("noindex");
     await expect(response.text()).resolves.toBe("# Home\n");

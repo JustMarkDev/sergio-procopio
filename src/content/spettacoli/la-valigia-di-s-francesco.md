@@ -32,6 +32,7 @@ highlight: true
 slug: la-valigia-di-san-francesco
 draft: false
 ---
+
 ## Proposta
 
 Nel 2026, con il ritorno ufficiale di San Francesco come Patrono d’Italia e la giornata nazionale a lui dedicata, cresce il desiderio di riscoprire il suo messaggio di pace, semplicità e fraternità.

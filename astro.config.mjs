@@ -16,8 +16,7 @@ const publicShowPages = readdirSync(showsDirectory)
     const source = readFileSync(join(showsDirectory.pathname, file), "utf8");
     if (/^draft:\s*true\s*$/m.test(source)) return [];
 
-    const slug =
-      source.match(/^slug:\s*(\S+)\s*$/m)?.[1] ?? basename(file, ".md");
+    const slug = source.match(/^slug:\s*(\S+)\s*$/m)?.[1] ?? basename(file, ".md");
 
     return [new URL(`/spettacoli/${slug}`, siteUrl).toString()];
   });

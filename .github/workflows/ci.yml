@@ -22,7 +22,9 @@ jobs:
     steps:
       - uses: actions/checkout@main
       - uses: oven-sh/setup-bun@main
+        with:
+          bun-version: latest
       - run: bun install --frozen-lockfile
-      - run: bun run test
       - run: bun run check
+      - run: bun run test
       - run: bun run build

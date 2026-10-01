@@ -23,9 +23,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   const response =
     shouldNegotiate && shouldServeDocumentMarkdown(request)
-      ? await context.rewrite(
-          new URL(markdownEndpointPath(pathname), request.url),
-        )
+      ? await context.rewrite(new URL(markdownEndpointPath(pathname), request.url))
       : await next();
 
   const headers = new Headers(response.headers);

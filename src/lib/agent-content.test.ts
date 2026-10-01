@@ -1,5 +1,5 @@
 import type { APIContext } from "astro";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vite-plus/test";
 import {
   biographyMarkdown,
   contactMarkdown,
@@ -30,9 +30,7 @@ describe("agent content", () => {
 
     expect(markdown).toContain("# Sergio Procopio");
     expect(markdown).toContain("## Quando scegliere Sergio Procopio");
-    expect(markdown).toContain(
-      "https://sergioprocopio.it/spettacoli/comico",
-    );
+    expect(markdown).toContain("https://sergioprocopio.it/spettacoli/comico");
     expect(markdown).toContain("https://sergioprocopio.it/about");
     expect(markdown).toContain("https://sergioprocopio.it/llms.txt");
     expect(markdown).toContain("https://sergioprocopio.it/sitemap.xml");
@@ -103,20 +101,17 @@ describe("agent content", () => {
     ["contatti/", "it"],
     ["contact", "en"],
     ["contact/", "en"],
-  ] as const)(
-    "serves %s as Markdown with the negotiated cache headers",
-    async (path, locale) => {
-      const response = await GET({
-        params: { path },
-        url: new URL(`/api/markdown/${path}`, "https://sergioprocopio.it"),
-      } as unknown as APIContext);
+  ] as const)("serves %s as Markdown with the negotiated cache headers", async (path, locale) => {
+    const response = await GET({
+      params: { path },
+      url: new URL(`/api/markdown/${path}`, "https://sergioprocopio.it"),
+    } as unknown as APIContext);
 
-      expect(response.status).toBe(200);
-      expect(response.headers.get("Content-Type")).toBe("text/markdown; charset=utf-8");
-      expect(response.headers.get("Vary")).toBe("Accept, Accept-Encoding");
-      await expect(response.text()).resolves.toBe(`${contactMarkdown(locale)}\n`);
-    },
-  );
+    expect(response.status).toBe(200);
+    expect(response.headers.get("Content-Type")).toBe("text/markdown; charset=utf-8");
+    expect(response.headers.get("Vary")).toBe("Accept, Accept-Encoding");
+    await expect(response.text()).resolves.toBe(`${contactMarkdown(locale)}\n`);
+  });
 
   it("serves privacy as Markdown trust content", async () => {
     const response = await GET({
@@ -143,10 +138,7 @@ describe("agent content", () => {
   it("returns a Markdown 404 with sitemap and trust-page recovery links", async () => {
     const response = await GET({
       params: { path: "some-path-that-does-not-exist" },
-      url: new URL(
-        "/api/markdown/some-path-that-does-not-exist",
-        "https://sergioprocopio.it",
-      ),
+      url: new URL("/api/markdown/some-path-that-does-not-exist", "https://sergioprocopio.it"),
     } as unknown as APIContext);
 
     expect(response.status).toBe(404);

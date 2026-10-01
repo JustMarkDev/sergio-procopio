@@ -1,12 +1,9 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vite-plus/test";
 
 describe("public/llms.txt", () => {
-  const llmsTxt = readFileSync(
-    join(process.cwd(), "public/llms.txt"),
-    "utf8",
-  );
+  const llmsTxt = readFileSync(join(process.cwd(), "public/llms.txt"), "utf8");
 
   it("includes when-to-use guidance and how agents should call the site", () => {
     expect(llmsTxt).toContain("## When to use this site");

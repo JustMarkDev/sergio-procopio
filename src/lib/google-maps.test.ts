@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vite-plus/test";
 import { createGoogleMapsSearchUrl } from "./google-maps";
 
 describe("createGoogleMapsSearchUrl", () => {
@@ -13,15 +13,10 @@ describe("createGoogleMapsSearchUrl", () => {
   });
 
   it("removes whitespace around address and city", () => {
-    const result = createGoogleMapsSearchUrl(
-      "  Via S. Francesco 1 ",
-      " Castrocaro Terme ",
-    );
+    const result = createGoogleMapsSearchUrl("  Via S. Francesco 1 ", " Castrocaro Terme ");
     const url = new URL(result);
 
-    expect(url.searchParams.get("query")).toBe(
-      "Via S. Francesco 1, Castrocaro Terme",
-    );
+    expect(url.searchParams.get("query")).toBe("Via S. Francesco 1, Castrocaro Terme");
   });
 
   it("encodes accented characters safely", () => {

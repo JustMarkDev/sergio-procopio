@@ -3,9 +3,9 @@ import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export interface GalleryImage {
-  src: string;         // 1200px optimized WebP
-  gridSrc: string;     // 600px optimized WebP
-  thumbSrc: string;    // 120px optimized WebP
+  src: string; // 1200px optimized WebP
+  gridSrc: string; // 600px optimized WebP
+  thumbSrc: string; // 120px optimized WebP
   originalSrc: string; // Original unresolved asset path string
   alt: string;
   showId: string;
@@ -148,7 +148,7 @@ export default function GalleryView({ images }: GalleryViewProps) {
       const containerWidth = container.offsetWidth;
       const elementLeft = activeElement.offsetLeft;
       const elementWidth = activeElement.offsetWidth;
-      
+
       if (containerWidth > 0) {
         // Calculate centered scroll position, explicitly clamping to >= 0
         const targetScrollLeft = Math.max(0, elementLeft - containerWidth / 2 + elementWidth / 2);

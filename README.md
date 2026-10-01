@@ -6,15 +6,15 @@ Il progetto è costruito con Astro 6, React islands, Tailwind CSS 4 e content co
 
 ## Stack
 
-| Area | Tecnologia |
-| :--- | :--- |
-| Framework | Astro 6 |
-| UI interattiva | React 19 |
-| Styling | Tailwind CSS 4 tramite `@tailwindcss/vite` |
-| Animazioni | Framer Motion |
-| Contenuti | Astro Content Collections |
-| Email contatti | Astro Actions + Resend |
-| Deploy | Vercel con sitemap, Analytics e Speed Insights |
+| Area           | Tecnologia                                     |
+| :------------- | :--------------------------------------------- |
+| Framework      | Astro 6                                        |
+| UI interattiva | React 19                                       |
+| Styling        | Tailwind CSS 4 tramite `@tailwindcss/vite`     |
+| Animazioni     | Framer Motion                                  |
+| Contenuti      | Astro Content Collections                      |
+| Email contatti | Astro Actions + Resend                         |
+| Deploy         | Vercel con sitemap, Analytics e Speed Insights |
 
 ## Requisiti
 
@@ -41,12 +41,12 @@ RESEND_API_KEY=...
 
 ## Comandi
 
-| Comando | Descrizione |
-| :--- | :--- |
-| `bun run dev` | Avvia il server Astro locale. |
-| `bun run build` | Genera la build di produzione in `dist/`. |
-| `bun run preview` | Serve localmente la build generata. |
-| `bun run check` | Controlla tipi Astro, contenuti e route. |
+| Comando           | Descrizione                               |
+| :---------------- | :---------------------------------------- |
+| `bun run dev`     | Avvia il server Astro locale.             |
+| `bun run build`   | Genera la build di produzione in `dist/`. |
+| `bun run preview` | Serve localmente la build generata.       |
+| `bun run check`   | Controlla tipi Astro, contenuti e route.  |
 
 ## Struttura
 
@@ -73,15 +73,15 @@ RESEND_API_KEY=...
 
 ## Route Principali
 
-| Route | Fonte contenuto |
-| :--- | :--- |
-| `/` | Homepage con hero, spettacoli in evidenza e contatti |
-| `/biografia` | `src/content/pages/biografia.md` |
-| `/spettacoli` | Lista da `src/content/spettacoli/*.md` |
-| `/spettacoli/[slug]` | Pagina dettaglio generata dal nome file Markdown |
-| `/galleria` | Immagini collegate agli spettacoli pubblicati |
-| `/calendario` | Eventi da `src/content/eventi/**/*.md` |
-| `/privacy` | Pagina privacy |
+| Route                | Fonte contenuto                                      |
+| :------------------- | :--------------------------------------------------- |
+| `/`                  | Homepage con hero, spettacoli in evidenza e contatti |
+| `/biografia`         | `src/content/pages/biografia.md`                     |
+| `/spettacoli`        | Lista da `src/content/spettacoli/*.md`               |
+| `/spettacoli/[slug]` | Pagina dettaglio generata dal nome file Markdown     |
+| `/galleria`          | Immagini collegate agli spettacoli pubblicati        |
+| `/calendario`        | Eventi da `src/content/eventi/**/*.md`               |
+| `/privacy`           | Pagina privacy                                       |
 
 ## Gestione Contenuti
 

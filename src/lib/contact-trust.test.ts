@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vite-plus/test";
 import { contactTrustPlainText } from "./contact-trust";
 
 describe("contact trust anchors", () => {
@@ -14,10 +14,7 @@ describe("contact trust anchors", () => {
   });
 
   it("publishes a Markdown sitemap for agent recovery", () => {
-    const sitemapMd = readFileSync(
-      join(process.cwd(), "public/sitemap.md"),
-      "utf8",
-    );
+    const sitemapMd = readFileSync(join(process.cwd(), "public/sitemap.md"), "utf8");
 
     expect(sitemapMd).toContain("# Sergio Procopio — sitemap");
     expect(sitemapMd).toContain("https://sergioprocopio.it/contact");

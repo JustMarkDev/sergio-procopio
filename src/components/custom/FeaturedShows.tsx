@@ -20,10 +20,7 @@ interface Props {
 
 export default function FeaturedShows({ shows }: Props) {
   return (
-    <section
-      id="spettacoli"
-      className="relative py-32 overflow-hidden bg-[#09090b]"
-    >
+    <section id="spettacoli" className="relative py-32 overflow-hidden bg-[#09090b]">
       {/* Decorative Background */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(37,99,235,0.05)_0%,transparent_70%)] pointer-events-none"></div>
 
@@ -34,22 +31,18 @@ export default function FeaturedShows({ shows }: Props) {
               initial={false}
               className="text-4xl md:text-6xl font-serif font-bold text-foreground"
             >
-              Spettacoli in{" "}
-              <span className="italic text-primary">Evidenza</span>
+              Spettacoli in <span className="italic text-primary">Evidenza</span>
             </motion.h2>
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground/75">
-              Un repertorio di pantomime e spettacoli-incontro che usa comicità,
-              poesia e silenzio per coinvolgere il pubblico e aprire una
-              riflessione su temi importanti. Le proposte sono pensate per età e
-              contesti diversi, dalla scuola alla festa di piazza, con schede
-              che spiegano temi, durata e requisiti di ogni spettacolo. In questo
-              modo insegnanti e organizzatori possono confrontare rapidamente le
-              proposte e scegliere quella più adatta.
+              Un repertorio di pantomime e spettacoli-incontro che usa comicità, poesia e silenzio
+              per coinvolgere il pubblico e aprire una riflessione su temi importanti. Le proposte
+              sono pensate per età e contesti diversi, dalla scuola alla festa di piazza, con schede
+              che spiegano temi, durata e requisiti di ogni spettacolo. In questo modo insegnanti e
+              organizzatori possono confrontare rapidamente le proposte e scegliere quella più
+              adatta.
             </p>
           </div>
-          <motion.div
-            initial={false}
-          >
+          <motion.div initial={false}>
             <a
               href="/spettacoli"
               className="inline-flex min-h-11 items-center text-sm font-bold uppercase tracking-wider shadow-[inset_0_-2px_0_rgba(37,99,235,0.3)] transition-[color,box-shadow,scale] duration-150 hover:text-primary hover:shadow-[inset_0_-2px_0_#2563eb] active:scale-[0.96]"

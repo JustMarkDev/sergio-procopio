@@ -1,10 +1,6 @@
 import { generateNotFoundMarkdown } from "@vercel/agent-readability";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
-import {
-  CONTACT_NAP,
-  CONTACT_TRUST_EN,
-  CONTACT_TRUST_IT,
-} from "./contact-trust";
+import { CONTACT_NAP, CONTACT_TRUST_EN, CONTACT_TRUST_IT } from "./contact-trust";
 
 export const SITE_URL = "https://sergioprocopio.it";
 
@@ -61,8 +57,7 @@ export const homepageMarkdown = (shows: readonly AgentShow[]) =>
     "",
     "## Spettacoli in evidenza",
     ...shows.map(
-      (show) =>
-        `- [${show.title}](${link(`/spettacoli/${show.id}`)}): ${show.description}`,
+      (show) => `- [${show.title}](${link(`/spettacoli/${show.id}`)}): ${show.description}`,
     ),
     "",
     `## Contatti e prenotazioni
@@ -85,10 +80,7 @@ Telefono: [+39 3805252684](tel:+393805252684).`,
     `- [Sitemap Markdown](${link("/sitemap.md")})`,
   ].join("\n");
 
-export const biographyMarkdown = (
-  biography: AgentBiography,
-  heading = biography.title,
-) =>
+export const biographyMarkdown = (biography: AgentBiography, heading = biography.title) =>
   [
     `# ${heading}`,
     `> ${biography.description}`,
@@ -180,9 +172,7 @@ export const contactMarkdown = (locale: "it" | "en" = "it") => {
 
   return [
     isEnglish ? "# Contact" : "# Contatti",
-    isEnglish
-      ? "> Official Contact page for Sergio Procopio."
-      : "> Parliamo della prossima data.",
+    isEnglish ? "> Official Contact page for Sergio Procopio." : "> Parliamo della prossima data.",
     "",
     trust,
     "",

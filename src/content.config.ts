@@ -2,10 +2,7 @@ import { defineCollection } from "astro:content";
 import { z } from "astro/zod";
 import { glob } from "astro/loaders";
 import { createGoogleMapsSearchUrl } from "./lib/google-maps";
-import {
-  normalizeEventAddress,
-  normalizeEventLabel,
-} from "./lib/text-normalization";
+import { normalizeEventAddress, normalizeEventLabel } from "./lib/text-normalization";
 
 const parseEventDateTime = (dateValue: unknown, timeValue?: string) => {
   if (timeValue && !/^([01]\d|2[0-3]):[0-5]\d$/.test(timeValue)) {
@@ -52,11 +49,7 @@ const parseEventDateTime = (dateValue: unknown, timeValue?: string) => {
   if (dateValue instanceof Date && !Number.isNaN(dateValue.getTime())) {
     return {
       date: new Date(
-        Date.UTC(
-          dateValue.getUTCFullYear(),
-          dateValue.getUTCMonth(),
-          dateValue.getUTCDate(),
-        ),
+        Date.UTC(dateValue.getUTCFullYear(), dateValue.getUTCMonth(), dateValue.getUTCDate()),
       ),
       time:
         timeValue ??
