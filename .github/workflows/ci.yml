@@ -20,8 +20,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v7
-      - uses: oven-sh/setup-bun@v2
+      - uses: actions/checkout@main
+      - uses: oven-sh/setup-bun@main
       - run: bun install --frozen-lockfile
       - run: bun run test
       - run: bun run check
