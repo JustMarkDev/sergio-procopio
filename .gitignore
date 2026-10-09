@@ -25,3 +25,4 @@ astro-dev.err.log
 .DS_Store
 
 .vercel
+.vitest/
