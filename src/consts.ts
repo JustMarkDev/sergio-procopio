@@ -6,4 +6,5 @@ export const SOCIAL_LINKS = {
   instagram: "https://instagram.com/sergioprocopio",
   facebook: "https://facebook.com/sergioprocopio",
   youtube: "https://www.youtube.com/@tuttosorriso",
+  github: "https://github.com/JustMarkDev/sergio-procopio",
 };
