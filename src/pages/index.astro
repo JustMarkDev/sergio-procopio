@@ -9,9 +9,9 @@ import socialImage from "../../public/social.jpg";
 
 const heroImage = await getImage({
     src: socialImage,
-    width: 1600,
-    height: 1070,
-    widths: [640, 960, 1280, 1600],
+    width: 1476,
+    height: 984,
+    widths: [640, 960, 1280, 1476],
     format: "webp",
     quality: 85,
 });
@@ -50,7 +50,7 @@ const featuredShows = await Promise.all(allShows
 ---
 
 <Layout>
-    <HeroSection image={{ src: heroImage.src, srcSet: heroImage.srcSet.attribute, width: 1600, height: 1070 }} />
+    <HeroSection image={{ src: heroImage.src, srcSet: heroImage.srcSet.attribute, width: 1476, height: 984 }} />
     <FeaturedShows shows={featuredShows} />
     <ContactCTA />
 </Layout>

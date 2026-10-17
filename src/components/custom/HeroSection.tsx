@@ -6,20 +6,20 @@ export default function HeroSection({ image }: Props) {
   return (
     <section className="relative flex min-h-[min(900px,100svh)] items-center overflow-hidden bg-background pb-16 lg:pt-28">
       <div
-        className="pointer-events-none absolute left-[18%] top-0 h-[480px] w-[122%] mask-[linear-gradient(to_right,transparent,black_24%)] sm:h-[560px] lg:left-[36%] lg:h-full lg:w-[82%]"
+        className="pointer-events-none absolute left-0 top-0 h-[480px] w-full sm:h-[560px] lg:left-[36%] lg:h-full lg:w-[82%] lg:mask-[linear-gradient(to_right,transparent,black_24%)]"
         aria-hidden="true"
       >
         <img
           src={image.src}
           srcSet={image.srcSet}
-          sizes="(min-width: 1024px) 82vw, 122vw"
+          sizes="(min-width: 1024px) 82vw, 100vw"
           width={image.width}
           height={image.height}
           alt=""
           loading="eager"
           fetchPriority="high"
           decoding="async"
-          className="h-full w-full mask-[linear-gradient(to_top,transparent,black_25%)] object-cover object-[28%_center] outline-none"
+          className="h-full w-full mask-[linear-gradient(to_top,transparent,black_25%)] object-cover object-[62%_center] outline-none lg:object-[28%_center]"
         />
       </div>
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(9,9,11,0.1)_0%,rgba(9,9,11,0.15)_25%,#09090b_60%)] lg:bg-[linear-gradient(to_right,#09090b_0%,rgba(9,9,11,0.98)_25%,rgba(9,9,11,0.7)_43%,rgba(9,9,11,0.12)_70%,transparent_100%)]" />
