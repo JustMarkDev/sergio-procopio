@@ -15,6 +15,7 @@
 ## Shows and calendar
 
 - [Catalogo spettacoli](https://sergioprocopio.it/spettacoli)
+- [Corso di teatro](https://sergioprocopio.it/corso-di-teatro)
 - [Calendario](https://sergioprocopio.it/calendario)
 - [Galleria](https://sergioprocopio.it/galleria)
 - [Il Bullo](https://sergioprocopio.it/spettacoli/il-bullo)

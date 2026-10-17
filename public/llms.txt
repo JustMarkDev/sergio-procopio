@@ -29,7 +29,8 @@ Do **not** invent an API, MCP server or booking endpoint. Call the site like thi
 - [Contatti](https://sergioprocopio.it/contatti): phone, email, contact form and booking steps (preferred contact URL).
 - [Contact](https://sergioprocopio.it/contact): English alias of Contatti (same page).
 - [Catalogo spettacoli](https://sergioprocopio.it/spettacoli): all currently published shows and their audiences.
-- [Calendario](https://sergioprocopio.it/calendario): public dates, venues, cities and map links.
+- [Corso di teatro](https://sergioprocopio.it/corso-di-teatro): a theatre, mime and clowning course tailored to each group (schools, parishes, associations, adults).
+- [Calendario](https://sergioprocopio.it/calendario): public dates of shows and of the theatre course, venues, cities and map links.
 - [Galleria](https://sergioprocopio.it/galleria): images grouped by published show.
 - [Privacy](https://sergioprocopio.it/privacy): personal-data processing information.
 

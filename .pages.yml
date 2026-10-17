@@ -220,6 +220,175 @@ content:
         default: false
         description: "Attiva per salvare senza pubblicare sul calendario"
 
+  - name: corso
+    label: Corso di teatro
+    type: file
+    path: src/content/corso/corso-di-teatro.md
+    format: yaml-frontmatter
+    fields:
+      - name: title
+        label: Titolo
+        type: string
+        required: true
+        options:
+          maxlength: 120
+
+      - name: description
+        label: Descrizione breve
+        type: text
+        required: true
+        description: "Testo mostrato in apertura pagina e nei motori di ricerca"
+        options:
+          maxlength: 300
+
+      - name: image
+        label: Immagine principale
+        type: image
+        description: "Scegli un'immagine dalla cartella corso"
+        options:
+          media: assets
+          path: corso
+
+      - name: galleryImages
+        label: Galleria immagini
+        type: image
+        list: true
+        description: "Immagini mostrate nella galleria del corso"
+        options:
+          media: assets
+          path: corso
+          unique: true
+
+      - name: docente
+        label: Docente
+        type: string
+        default: "Sergio Procopio"
+        options:
+          maxlength: 120
+
+      - name: destinatari
+        label: Per chi
+        type: string
+        description: "Esempio: Scuole, oratori, associazioni, gruppi di adulti"
+        options:
+          maxlength: 160
+
+      - name: eta
+        label: Età
+        type: string
+        description: "Esempio: Dai 6 anni in su"
+        options:
+          maxlength: 60
+
+      - name: durata
+        label: Durata
+        type: string
+        description: "Esempio: Da un incontro a un percorso annuale"
+        options:
+          maxlength: 120
+
+      - name: sede
+        label: Dove
+        type: string
+        description: "Esempio: Presso la vostra struttura"
+        options:
+          maxlength: 120
+
+      - name: costo
+        label: Costo
+        type: string
+        description: "Esempio: Su preventivo"
+        options:
+          maxlength: 80
+
+      - name: body
+        label: Contenuto pagina
+        type: rich-text
+        required: true
+        description: "Testo principale della pagina del corso"
+
+  - name: date-corso
+    label: Date del corso
+    type: collection
+    path: src/content/date-corso
+    format: yaml-frontmatter
+    subfolders: false
+    filename:
+      template: "{date}-corso-di-teatro-al-{venue}.md"
+      field: false
+    operations:
+      create: true
+      rename: false
+      delete: true
+    view:
+      fields: [date, titolo, venue, city, isPublic, draft]
+      primary: venue
+      sort: [date, city]
+      search: [titolo, venue, city]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: titolo
+        label: Titolo in calendario
+        type: string
+        description: 'Facoltativo. Lascia vuoto per mostrare "Corso di Teatro". Esempio: Corso di Teatro per la scuola primaria'
+        options:
+          maxlength: 120
+
+      - name: date
+        label: Data e ora
+        type: date
+        required: true
+        options:
+          time: true
+          format: dd-MM-yyyy HH:mm
+
+      - name: venue
+        label: Teatro o luogo
+        type: string
+        required: true
+        description: "Inizia con la lettera maiuscola. Esempio: Teatro Sociale"
+        pattern:
+          regex: "^[A-ZÀ-ÖØ-Þ]"
+          message: "Inizia il teatro o luogo con una lettera maiuscola"
+        options:
+          maxlength: 160
+
+      - name: city
+        label: Città
+        type: string
+        required: true
+        description: "Inizia con la lettera maiuscola. Esempio: Milano"
+        pattern:
+          regex: "^[A-ZÀ-ÖØ-Þ]"
+          message: "Inizia la città con una lettera maiuscola"
+        options:
+          maxlength: 100
+
+      - name: address
+        label: Indirizzo
+        type: string
+        required: true
+        description: "Usa la maiuscola e separa il civico con una virgola. Esempio: Via Roma, 1"
+        pattern:
+          regex: "^[A-ZÀ-ÖØ-Þ]"
+          message: "Inizia l'indirizzo con una lettera maiuscola"
+        options:
+          maxlength: 180
+
+      - name: isPublic
+        label: Pubblico sul sito
+        type: boolean
+        default: true
+        description: "Disattiva se la data non deve comparire nel calendario"
+
+      - name: draft
+        label: Bozza
+        type: boolean
+        default: false
+        description: "Attiva per salvare senza pubblicare sul calendario"
+
   - name: biografia
     label: Biografia
     type: file

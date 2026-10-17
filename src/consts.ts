@@ -8,3 +8,6 @@ export const SOCIAL_LINKS = {
   youtube: "https://www.youtube.com/@tuttosorriso",
   github: "https://github.com/JustMarkDev/sergio-procopio",
 };
+
+export const COURSE_DEFAULT_TITLE = "Corso di Teatro";
+export const COURSE_PATH = "/corso-di-teatro";
