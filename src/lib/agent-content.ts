@@ -1,5 +1,5 @@
 import { generateNotFoundMarkdown } from "@vercel/agent-readability";
-import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import { COURSE_PATH, SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 import { CONTACT_NAP, CONTACT_TRUST_EN, CONTACT_TRUST_IT } from "./contact-trust";
 
 export const SITE_URL = "https://sergioprocopio.it";
@@ -15,6 +15,18 @@ type AgentShow = {
   produzione?: string;
   tecnico?: string;
   requisiti?: string;
+  body?: string;
+};
+
+type AgentCourse = {
+  title: string;
+  description: string;
+  docente?: string;
+  destinatari?: string;
+  eta?: string;
+  durata?: string;
+  sede?: string;
+  costo?: string;
   body?: string;
 };
 
@@ -68,6 +80,7 @@ Telefono: [+39 3805252684](tel:+393805252684).`,
     "",
     "## Dove cercare",
     `- [Tutti gli spettacoli](${link("/spettacoli")})`,
+    `- [Corso di teatro](${link(COURSE_PATH)})`,
     `- [Calendario degli eventi](${link("/calendario")})`,
     `- [Biografia](${link("/biografia")})`,
     `- [About Sergio Procopio](${link("/about")})`,
@@ -130,6 +143,26 @@ export const showMarkdown = (show: AgentShow) =>
     .filter((line) => line !== "")
     .join("\n");
 
+export const courseMarkdown = (course: AgentCourse) =>
+  [
+    `# ${course.title}`,
+    `> ${course.description}`,
+    "",
+    "## Informazioni sul corso",
+    course.docente ? `- Docente: ${course.docente}` : "",
+    course.destinatari ? `- Per chi: ${course.destinatari}` : "",
+    course.eta ? `- Età: ${course.eta}` : "",
+    course.durata ? `- Durata: ${course.durata}` : "",
+    course.sede ? `- Dove: ${course.sede}` : "",
+    course.costo ? `- Costo: ${course.costo}` : "",
+    "",
+    contentBody(course.body),
+    "",
+    `Per organizzare il corso, apri i [contatti](${link("/contatti")}).`,
+  ]
+    .filter((line) => line !== "")
+    .join("\n");
+
 export const galleryMarkdown = (shows: readonly AgentGalleryShow[]) =>
   [
     "# Galleria",
@@ -153,7 +186,7 @@ export const calendarMarkdown = (events: readonly AgentEvent[]) => {
 
   return [
     "# Calendario ufficiale",
-    "> Date pubbliche, spettacoli e appuntamenti in programma.",
+    "> Date pubbliche degli spettacoli e del corso di teatro in programma.",
     "",
     ...(events.length > 0
       ? events.map((event) => {
@@ -229,6 +262,7 @@ export const notFoundMarkdown = (pathname: string) => {
     `- [Contatti](${link("/contatti")})`,
     `- [Privacy](${link("/privacy")})`,
     `- [Catalogo spettacoli](${link("/spettacoli")})`,
+    `- [Corso di teatro](${link(COURSE_PATH)})`,
     `- [Calendario](${link("/calendario")})`,
   ].join("\n");
 };

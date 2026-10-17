@@ -1,6 +1,7 @@
 import { defineCollection } from "astro:content";
 import { z } from "astro/zod";
 import { glob } from "astro/loaders";
+import { COURSE_DEFAULT_TITLE } from "./consts";
 import { createGoogleMapsSearchUrl } from "./lib/google-maps";
 import { normalizeEventAddress, normalizeEventLabel } from "./lib/text-normalization";
 
@@ -96,41 +97,90 @@ const spettacoliCollection = defineCollection({
     }),
 });
 
+const eventFields = {
+  date: z.union([z.string(), z.date()]),
+  time: eventTimeSchema,
+  venue: eventLabelSchema,
+  city: eventLabelSchema,
+  address: eventAddressSchema,
+  isPublic: z.boolean().optional().default(true),
+  draft: z.boolean().optional().default(false),
+};
+
+type EventInput = {
+  date: string | Date;
+  time?: string;
+  venue: string;
+  city: string;
+  address: string;
+};
+
+const withEventDateTime = <TEvent extends EventInput>(
+  event: TEvent,
+  ctx: z.RefinementCtx,
+  name: string,
+) => {
+  const dateTime = parseEventDateTime(event.date, event.time);
+
+  if (!dateTime) {
+    ctx.addIssue({
+      code: "custom",
+      message: "Usa data e ora in formato 28-06-2026 20:30",
+      path: ["date"],
+    });
+
+    return z.NEVER;
+  }
+
+  return {
+    ...event,
+    date: dateTime.date,
+    time: dateTime.time,
+    name,
+    title: `${name} al ${event.venue}`,
+    googleMapsUrl: createGoogleMapsSearchUrl(event.address, event.city),
+  };
+};
+
 const eventiCollection = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/eventi" }),
   schema: z
     .object({
       title: z.string().optional(),
       spettacolo: z.string(),
-      date: z.union([z.string(), z.date()]),
-      time: eventTimeSchema,
-      venue: eventLabelSchema,
-      city: eventLabelSchema,
-      address: eventAddressSchema,
-      isPublic: z.boolean().optional().default(true),
-      draft: z.boolean().optional().default(false),
+      ...eventFields,
     })
-    .transform((event, ctx) => {
-      const dateTime = parseEventDateTime(event.date, event.time);
+    .transform((event, ctx) => withEventDateTime(event, ctx, event.spettacolo)),
+});
 
-      if (!dateTime) {
-        ctx.addIssue({
-          code: "custom",
-          message: "Usa data e ora in formato 28-06-2026 20:30",
-          path: ["date"],
-        });
-
-        return z.NEVER;
-      }
-
-      return {
-        ...event,
-        date: dateTime.date,
-        time: dateTime.time,
-        title: `${event.spettacolo} al ${event.venue}`,
-        googleMapsUrl: createGoogleMapsSearchUrl(event.address, event.city),
-      };
+const corsoCollection = defineCollection({
+  loader: glob({ pattern: "*.md", base: "./src/content/corso" }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      description: z.string(),
+      image: image().optional(),
+      galleryImages: z.array(image()).optional().default([]),
+      docente: z.string().optional().default("Sergio Procopio"),
+      destinatari: z.string().optional(),
+      eta: z.string().optional(),
+      durata: z.string().optional(),
+      sede: z.string().optional(),
+      costo: z.string().optional(),
     }),
+});
+
+// Each course date can carry its own title, e.g. the group it was tailored for.
+const dateCorsoCollection = defineCollection({
+  loader: glob({ pattern: "*.md", base: "./src/content/date-corso" }),
+  schema: z
+    .object({
+      titolo: z.string().optional(),
+      ...eventFields,
+    })
+    .transform((event, ctx) =>
+      withEventDateTime(event, ctx, event.titolo?.trim() || COURSE_DEFAULT_TITLE),
+    ),
 });
 
 const pagesCollection = defineCollection({
@@ -147,5 +197,7 @@ const pagesCollection = defineCollection({
 export const collections = {
   spettacoli: spettacoliCollection,
   eventi: eventiCollection,
+  corso: corsoCollection,
+  dateCorso: dateCorsoCollection,
   pages: pagesCollection,
 };

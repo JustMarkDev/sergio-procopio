@@ -12,6 +12,7 @@ const navLinks = [
   { name: "Home", href: "/" },
   { name: "Biografia", href: "/biografia" },
   { name: "Spettacoli", href: "/spettacoli" },
+  { name: "Corso di teatro", href: "/corso-di-teatro" },
   { name: "Calendario", href: "/calendario" },
   { name: "Galleria", href: "/galleria" },
   { name: "Contatti", href: "/contatti" },

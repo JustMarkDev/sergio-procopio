@@ -4,6 +4,7 @@ import {
   biographyMarkdown,
   calendarMarkdown,
   contactMarkdown,
+  courseMarkdown,
   galleryMarkdown,
   homepageMarkdown,
   notFoundMarkdown,
@@ -13,6 +14,7 @@ import {
   type AgentEvent,
 } from "../../../lib/agent-content";
 import { markdownResponse } from "../../../lib/content-negotiation";
+import { COURSE_PATH } from "../../../consts";
 
 const normalizePath = (path: string | undefined) => (path ?? "").replace(/^\/+|\/+$/g, "");
 
@@ -34,7 +36,7 @@ const publicShows = async () =>
     }));
 
 const publicEvents = async (): Promise<AgentEvent[]> =>
-  (await getCollection("eventi"))
+  [...(await getCollection("eventi")), ...(await getCollection("dateCorso"))]
     .filter((event) => !event.data.draft && event.data.isPublic)
     .sort((a, b) => a.data.date.getTime() - b.data.date.getTime())
     .map((event) => ({
@@ -93,6 +95,26 @@ export const GET: APIRoute = async ({ params, url }) => {
           tecnico: show.data.tecnico,
           requisiti: show.data.requisiti,
           body: show.body,
+        }),
+      );
+    }
+  }
+
+  if (path === COURSE_PATH.slice(1)) {
+    const corso = (await getCollection("corso"))[0];
+
+    if (corso) {
+      return markdownResponse(
+        courseMarkdown({
+          title: corso.data.title,
+          description: corso.data.description,
+          docente: corso.data.docente,
+          destinatari: corso.data.destinatari,
+          eta: corso.data.eta,
+          durata: corso.data.durata,
+          sede: corso.data.sede,
+          costo: corso.data.costo,
+          body: corso.body,
         }),
       );
     }
