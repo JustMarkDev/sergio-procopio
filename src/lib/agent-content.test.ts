@@ -2,6 +2,7 @@ import type { APIContext } from "astro";
 import { describe, expect, it, vi } from "vite-plus/test";
 import {
   biographyMarkdown,
+  calendarMarkdown,
   contactMarkdown,
   homepageMarkdown,
   notFoundMarkdown,
@@ -168,5 +169,23 @@ describe("agent content", () => {
     expect(markdown).toContain("https://sergioprocopio.it/sitemap.xml");
     expect(markdown).toContain("https://sergioprocopio.it/about");
     expect(markdown).toContain("https://sergioprocopio.it/contact");
+  });
+
+  it("labels calendar dates as shows or course dates", () => {
+    const event = {
+      date: new Date(Date.UTC(2026, 10, 3)),
+      time: "20:30",
+      venue: "Sala Civica",
+      city: "Varese",
+      address: "Piazza Monte Grappa, 5",
+      googleMapsUrl: "https://www.google.com/maps",
+    };
+    const markdown = calendarMarkdown([
+      { ...event, kind: "spettacolo", title: "Comico al Sala Civica" },
+      { ...event, kind: "corso", title: "Corso di Teatro al Sala Civica" },
+    ]);
+
+    expect(markdown).toContain("Spettacolo: Comico al Sala Civica");
+    expect(markdown).toContain("Corso: Corso di Teatro al Sala Civica");
   });
 });

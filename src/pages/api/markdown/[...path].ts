@@ -36,10 +36,20 @@ const publicShows = async () =>
     }));
 
 const publicEvents = async (): Promise<AgentEvent[]> =>
-  [...(await getCollection("eventi")), ...(await getCollection("dateCorso"))]
+  [
+    ...(await getCollection("eventi")).map((event) => ({
+      kind: "spettacolo" as const,
+      data: event.data,
+    })),
+    ...(await getCollection("dateCorso")).map((event) => ({
+      kind: "corso" as const,
+      data: event.data,
+    })),
+  ]
     .filter((event) => !event.data.draft && event.data.isPublic)
     .sort((a, b) => a.data.date.getTime() - b.data.date.getTime())
     .map((event) => ({
+      kind: event.kind,
       title: event.data.title,
       date: event.data.date,
       time: event.data.time,
