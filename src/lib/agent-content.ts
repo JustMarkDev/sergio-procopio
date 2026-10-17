@@ -44,6 +44,7 @@ type AgentGalleryShow = {
 };
 
 export type AgentEvent = {
+  kind: "spettacolo" | "corso";
   title: string;
   date: Date;
   time?: string;
@@ -191,7 +192,8 @@ export const calendarMarkdown = (events: readonly AgentEvent[]) => {
     ...(events.length > 0
       ? events.map((event) => {
           const when = `${dateFormatter.format(event.date)}${event.time ? ` alle ${event.time}` : ""}`;
-          return `- **${when}** — ${event.title}, ${event.venue}, ${event.city}. ${event.address}. [Mappa](${event.googleMapsUrl})`;
+          const label = event.kind === "corso" ? "Corso" : "Spettacolo";
+          return `- **${when}** — ${label}: ${event.title}, ${event.venue}, ${event.city}. ${event.address}. [Mappa](${event.googleMapsUrl})`;
         })
       : ["Non ci sono eventi pubblici in calendario."]),
     "",
