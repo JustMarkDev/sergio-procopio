@@ -75,9 +75,9 @@ const entriesByKey = new Map(
         }] as const;
     })),
 );
-const kindLabels: Record<CalendarKind, { badge: string; cta: string }> = {
-    spettacolo: { badge: "Spettacolo", cta: "Scopri lo spettacolo" },
-    corso: { badge: "Corso", cta: "Scopri il corso" },
+const kindLabels: Record<CalendarKind, { cta: string }> = {
+    spettacolo: { cta: "Scopri lo spettacolo" },
+    corso: { cta: "Scopri il corso" },
 };
 ---
 
@@ -146,9 +146,6 @@ const kindLabels: Record<CalendarKind, { badge: string; cta: string }> = {
                                     </div>
 
                                     <div class="flex min-w-0 grow flex-col justify-center gap-3 p-6 md:p-8">
-                                        <span class={`w-fit rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] ${event.data.kind === "corso" ? "border-amber-300/30 bg-amber-300/10 text-amber-200" : "border-primary/30 bg-primary/10 text-blue-300"}`}>
-                                            {kindLabels[event.data.kind].badge}
-                                        </span>
                                         <p class="text-xs font-bold uppercase tracking-widest text-blue-400">
                                             {formatDate(event.data.date)}
                                             {event.data.time && ` - ore ${event.data.time}`}
@@ -224,7 +221,6 @@ const kindLabels: Record<CalendarKind, { badge: string; cta: string }> = {
                                     <div class="min-w-0">
                                     <div class="text-xs font-bold uppercase tracking-widest text-blue-400 mb-2">
                                         {formatDate(event.data.date)}
-                                        {event.data.kind === "corso" && <span class="text-amber-200"> · Corso</span>}
                                     </div>
                                     <h3 class="text-xl font-serif font-bold wrap-break-word">{event.data.name}</h3>
                                     <p class="text-sm text-muted-foreground mt-2">
