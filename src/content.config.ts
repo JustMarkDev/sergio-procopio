@@ -160,7 +160,6 @@ const corsoCollection = defineCollection({
       title: z.string(),
       description: z.string(),
       image: image().optional(),
-      galleryImages: z.array(image()).optional().default([]),
       docente: z.string().optional().default("Sergio Procopio"),
       destinatari: z.string().optional(),
       eta: z.string().optional(),

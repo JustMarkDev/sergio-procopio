@@ -1,0 +1,57 @@
+---
+import { splitEventsByDate } from "../../lib/calendar-dates";
+
+interface Props {
+    events: {
+        data: {
+            date: Date;
+            time?: string;
+            venue: string;
+            city: string;
+            isPublic: boolean;
+            draft: boolean;
+            label?: string;
+        };
+    }[];
+    limit?: number;
+}
+
+const { events, limit = 4 } = Astro.props;
+
+const publicEvents = events
+    .filter((event) => !event.data.draft && event.data.isPublic)
+    .sort((a, b) => a.data.date.getTime() - b.data.date.getTime());
+const { upcomingEvents } = splitEventsByDate(publicEvents);
+
+const eventDateFormatter = new Intl.DateTimeFormat("it-IT", {
+    timeZone: "Europe/Rome",
+    weekday: "long",
+    day: "2-digit",
+    month: "long",
+});
+---
+
+{upcomingEvents.length > 0 && (
+    <div class="mt-10 pt-8 border-t border-white/5">
+        <div class="text-[10px] uppercase tracking-widest text-muted-foreground mb-4">
+            Prossime date
+        </div>
+        <ul class="space-y-4">
+            {upcomingEvents.slice(0, limit).map((event) => (
+                <li>
+                    <div class="text-sm font-bold text-blue-400">
+                        {eventDateFormatter.format(event.data.date)}
+                        {event.data.time && ` - ore ${event.data.time}`}
+                    </div>
+                    <div class="text-sm text-muted-foreground">
+                        {event.data.label && `${event.data.label} - `}
+                        {event.data.venue}, {event.data.city}
+                    </div>
+                </li>
+            ))}
+        </ul>
+        <a href="/calendario" class="mt-5 inline-block text-sm font-semibold text-primary hover:underline">
+            Vedi il calendario
+        </a>
+    </div>
+)}

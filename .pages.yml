@@ -249,16 +249,6 @@ content:
           media: assets
           path: corso
 
-      - name: galleryImages
-        label: Galleria immagini
-        type: image
-        list: true
-        description: "Immagini mostrate nella galleria del corso"
-        options:
-          media: assets
-          path: corso
-          unique: true
-
       - name: docente
         label: Docente
         type: string
