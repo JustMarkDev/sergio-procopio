@@ -49,14 +49,13 @@ const { Content } = await render(biografia);
                 {
                     biografia.data.image && (
                         <div class="lg:w-1/2 w-full relative">
-                            <div class="aspect-4/5 rounded-3xl overflow-hidden relative border border-white/10 bg-white/5">
+                            <div class="aspect-4/5 relative [mask-image:radial-gradient(closest-side_at_50%_50%,black_50%,transparent_100%)]">
                                 <Image
                                     src={biografia.data.image}
                                     alt="Ritratto di Sergio Procopio"
                                     loading="eager"
                                     class="absolute inset-0 w-full h-full object-cover"
                                 />
-                                <div class="absolute inset-0 bg-linear-to-t from-black/60 to-transparent"></div>
                             </div>
                         </div>
                     )
