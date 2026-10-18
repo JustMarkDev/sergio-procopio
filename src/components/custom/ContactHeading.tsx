@@ -11,16 +11,20 @@ export default function ContactHeading() {
 
   useEffect(() => {
     if (reducedMotion || !inView) return;
-    const interval = window.setInterval(() => {
-      if (document.hidden) return;
-      setIndex((current) => (current + 1) % words.length);
-    }, 3000);
-    return () => window.clearInterval(interval);
+    let timeout: number;
+    const schedule = (delay: number) => {
+      timeout = window.setTimeout(() => {
+        if (!document.hidden) setIndex((current) => (current + 1) % words.length);
+        schedule(3000);
+      }, delay);
+    };
+    schedule(1200);
+    return () => window.clearTimeout(timeout);
   }, [reducedMotion, inView]);
 
   return (
     <div>
-      <h1 ref={heading} className="text-[clamp(1.75rem,6vw,2.75rem)] uppercase leading-[1.08]">
+      <h1 ref={heading} className="text-[clamp(1.5rem,3vw,2.9rem)] uppercase leading-[0.98]">
         <span className="sr-only">
           Porta l'emozione nella tua scuola, parrocchia o associazione.
         </span>

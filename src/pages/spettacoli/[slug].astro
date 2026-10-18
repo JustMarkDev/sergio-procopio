@@ -2,10 +2,10 @@
 import Layout from "../../layouts/Layout.astro";
 import { getCollection, getEntry, render } from "astro:content";
 import { getImage } from "astro:assets";
-import { getShowSpecs } from "../../lib/show-specs";
 import { getImageTitleFromPath } from "../../lib/show-assets";
 import ShowGallery from "../../components/custom/ShowGallery";
-import UpcomingDates from "../../components/custom/UpcomingDates.astro";
+import FactStrip from "../../components/custom/FactStrip.astro";
+import InfoSection from "../../components/custom/InfoSection.astro";
 
 const show = Astro.params.slug
     ? await getEntry("spettacoli", Astro.params.slug)
@@ -16,7 +16,6 @@ if (!show || show.data.draft) {
 }
 
 const { Content } = await render(show);
-const specGroups = getShowSpecs(show);
 
 const normalizeTitle = (title: string) => title.trim().toLowerCase();
 const showEvents = (await getCollection("eventi")).filter(
@@ -92,20 +91,27 @@ if (show.data.image) {
 const site = Astro.site ?? new URL("https://sergioprocopio.it");
 const showSchema = {
   "@context": "https://schema.org",
-  "@type": "Product",
+  "@type": "CreativeWork",
   "name": show.data.title,
   "description": show.data.description,
   "image": show.data.image ? new URL(show.data.image.src, site).toString() : undefined,
-  "brand": {
+  "creator": {
     "@type": "Person",
     "name": "Sergio Procopio"
   },
-  "offers": {
-    "@type": "Offer",
-    "availability": "https://schema.org/InStock",
-    "url": new URL(`/spettacoli/${show.id}`, site).toString()
-  }
+  "url": new URL(`/spettacoli/${show.id}`, site).toString()
 };
+
+const facts = [
+    { label: "Durata", value: show.data.durata },
+    { label: "Età consigliata", value: show.data.eta },
+    { label: "Regia", value: show.data.regia },
+];
+
+const notes = [
+    { label: "Tecnico audio/luci", value: show.data.tecnico },
+    { label: "Requisiti", value: show.data.requisiti },
+];
 ---
 
 <Layout
@@ -115,7 +121,10 @@ const showSchema = {
 >
     <script type="application/ld+json" is:inline set:html={JSON.stringify(showSchema)} />
     <article class="container mx-auto min-h-screen px-4 pb-24 pt-36 md:px-8 lg:px-12">
-        <header class="mb-16 lg:mb-20">
+        <header class="mb-12 lg:mb-16">
+            <p class="mb-5 text-xs font-medium uppercase tracking-[0.24em] text-primary-soft">
+                {show.data.category}
+            </p>
             <h1 class="max-w-5xl text-[clamp(2.25rem,6.5vw,6rem)] uppercase leading-[0.95]">
                 {show.data.title}
             </h1>
@@ -124,62 +133,30 @@ const showSchema = {
             </p>
         </header>
 
-        <div class="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
-            <div class="flex flex-col gap-16 lg:col-span-8">
-                {
-                    show.data.image ? (
-                        <ShowGallery
-                            client:load
-                            mainImageSrc={optimizedMainImage}
-                            mainImageWidth={show.data.image.width}
-                            mainImageHeight={show.data.image.height}
-                            mainImageOriginalSrc={show.data.image.src}
-                            images={showImages}
-                            alt={show.data.title}
-                        />
-                    ) : (
-                        <div class="flex aspect-video w-full items-center justify-center bg-secondary text-3xl uppercase text-foreground/15">
-                            {show.data.title}
-                        </div>
-                    )
-                }
+        <FactStrip facts={facts} />
 
-                <div class="richtext">
-                    <Content />
+        {
+            show.data.image ? (
+                <ShowGallery
+                    client:load
+                    mainImageSrc={optimizedMainImage}
+                    mainImageWidth={show.data.image.width}
+                    mainImageHeight={show.data.image.height}
+                    mainImageOriginalSrc={show.data.image.src}
+                    images={showImages}
+                    alt={show.data.title}
+                />
+            ) : (
+                <div class="flex aspect-video w-full items-center justify-center bg-secondary text-3xl uppercase text-foreground/15">
+                    {show.data.title}
                 </div>
-            </div>
+            )
+        }
 
-            <aside class="lg:col-span-4">
-                <div class="border-t border-border pt-8 lg:sticky lg:top-28">
-                    <h2 class="mb-8 text-xs font-medium uppercase tracking-[0.24em] text-primary-soft">
-                        Dati tecnici
-                    </h2>
-
-                    <dl class="space-y-6">
-                        {
-                            specGroups.flatMap((group) =>
-                                group.items.map((item) => (
-                                    <div>
-                                        <dt class="mb-1 text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-                                            {item.label}
-                                        </dt>
-                                        <dd class="text-lg">{item.value}</dd>
-                                    </div>
-                                )),
-                            )
-                        }
-                    </dl>
-
-                    <UpcomingDates events={showEvents} />
-
-                    <a
-                        href="/contatti"
-                        class="mt-10 flex min-h-14 w-full items-center justify-center bg-primary text-xs font-medium uppercase tracking-[0.18em] text-primary-foreground transition-[background-color,scale] hover:bg-primary-hover active:scale-[0.98]"
-                    >
-                        Prenota ora
-                    </a>
-                </div>
-            </aside>
+        <div class="richtext split mt-16 lg:mt-24">
+            <Content />
         </div>
+
+        <InfoSection events={showEvents} notes={notes} />
     </article>
 </Layout>

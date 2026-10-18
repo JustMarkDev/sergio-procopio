@@ -1,0 +1,20 @@
+---
+interface Props {
+    facts: { label: string; value?: string }[];
+}
+
+const facts = Astro.props.facts.filter((fact): fact is { label: string; value: string } => Boolean(fact.value));
+---
+
+{
+    facts.length > 0 && (
+        <dl class="mb-12 grid grid-cols-2 border-y border-border md:grid-cols-3 lg:mb-16 max-md:[&>:last-child:nth-child(odd)]:col-span-2">
+            {facts.map((fact) => (
+                <div class="flex flex-col-reverse justify-end gap-2 px-1 py-6 lg:px-6 lg:first:pl-0">
+                    <dt class="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">{fact.label}</dt>
+                    <dd class="text-2xl uppercase leading-none text-foreground lg:text-3xl">{fact.value}</dd>
+                </div>
+            ))}
+        </dl>
+    )
+}
