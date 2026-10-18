@@ -59,20 +59,36 @@ export default function FeaturedShows({ shows }: Props) {
                 onMouseEnter={() => setActive(index)}
                 onFocus={() => setActive(index)}
                 aria-current={index === active ? "true" : undefined}
-                className={`relative block py-1.5 text-[clamp(1.35rem,3.8vw,3.5rem)] uppercase leading-[1.05] tracking-[0.01em] transition-[color,padding] duration-300 before:absolute before:inset-y-2.5 before:left-0 before:w-[3px] before:origin-center before:bg-primary-hover before:transition-transform before:duration-300 hover:pl-5 focus-visible:pl-5 ${
+                className={`relative block py-1.5 text-[clamp(1.35rem,3.8vw,3.5rem)] uppercase leading-[1.05] tracking-[0.01em] transition-colors duration-300 before:absolute before:inset-y-2.5 before:left-0 before:w-[3px] before:bg-primary-hover before:transition-transform before:duration-300 ${
                   index === active
-                    ? "pl-5 text-foreground before:scale-y-100"
+                    ? "text-foreground before:scale-y-100"
                     : "text-foreground/40 before:scale-y-0"
                 }`}
               >
-                {show.title}
+                {/* Only transforms move on hover, so nothing reflows. */}
+                <span
+                  className={`block transition-transform duration-300 ${index === active ? "translate-x-5" : ""}`}
+                >
+                  {show.title}
+                </span>
               </a>
             </li>
           ))}
         </ul>
-        <p className="mt-8 min-h-[4.8em] max-w-[36ch] text-base font-light leading-relaxed text-foreground/85 lg:text-lg">
-          {shows[active]?.description}
-        </p>
+        {/* Every description shares one grid cell, so the block is always as tall as the longest. */}
+        <div className="mt-8 grid max-w-[36ch] text-base font-light leading-relaxed text-foreground/85 lg:text-lg">
+          {shows.map((show, index) => (
+            <p
+              key={show.id}
+              aria-hidden={index !== active}
+              className={`col-start-1 row-start-1 transition-opacity duration-300 ${
+                index === active ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              {show.description}
+            </p>
+          ))}
+        </div>
         <a
           href="/spettacoli"
           className="mt-4 inline-block border-b border-primary-soft pb-1.5 text-xs font-medium uppercase tracking-[0.18em] text-primary-soft transition-colors hover:border-foreground hover:text-foreground"
