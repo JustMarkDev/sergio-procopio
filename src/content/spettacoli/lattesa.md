@@ -26,17 +26,16 @@ requisiti: "Minimo di 120 alunni"
 highlight: false
 ---
 
-## Proposta
+## La storia
 
-I giovani stanno vivendo in un mondo virtuale, stanno perdendo valori importantissimi; l’amicizia, il tempo, il silenzio, la creatività, la fantasia e la comunicazione non verbale, e quest’ultima è certamente la cosa più importante, …perdere il corpo, il linguaggio non verbale, che è quella cosa ha permesso all’uomo di crescere e di comunicare le sfumature emotive fondamentali all’interno di una relazione.
+Uno di noi, in una sala d'attesa. Una sala come tante, come quelle in cui ci tocca aspettare qualcosa: in questo caso la chiamata del nostro volo.
 
-Per questo vi proponiamo uno spettacolo comico dal titolo L’attesa, uno spettacolo altamente didattico per la loro vita che ha in sé questi valori indispensabili
-e vista l’urgenza oseremmo dire irrimandabili.
+Uno di noi che aspetta di volare. Volare: non è forse il sogno di tutti? Sì, certo, ma quanto c'è da aspettare? E poi, non avremo dimenticato qualcosa? Il passaporto, lo spazzolino da denti, la carta d'imbarco… E soprattutto: dove siamo diretti?
 
-## Trama
+A raccontare è soprattutto il corpo: gesti, sguardi e silenzi al posto delle parole.
 
-Uno di noi. Uno di noi in una sala d’attesa. Una sala d’attesa come le nostre, come quelle nelle quali ci tocca attendere qualcosa. In questo caso la chiamata di un volo, del nostro volo.
-Uno di noi che aspetta di volare. Volare. Non è forse il sogno di tutti?
-Sì, certo, ma quanto c’è da aspettare? E poi, non avremo dimenticato qualcosa?
-Il passaporto, lo spazzolino da denti, la carta d’imbarco…
-E, soprattutto, dove siamo diretti?
+## Il tema
+
+Che cosa succede al nostro tempo quando abbiamo sempre uno schermo in mano? I giovani vivono sempre più in un mondo virtuale e rischiano di perdere ciò che nessun dispositivo può dare: l'amicizia, il tempo, il silenzio, la creatività, la fantasia.
+
+Rischiano soprattutto di perdere il corpo e il linguaggio non verbale, che ha permesso all'uomo di crescere e di comunicare le sfumature emotive fondamentali di ogni relazione. «L'attesa» è uno spettacolo comico che mette al centro proprio questi valori.

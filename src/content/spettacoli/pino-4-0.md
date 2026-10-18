@@ -24,16 +24,14 @@ requisiti: "Minimo di 120 alunni"
 highlight: true
 ---
 
-## Proposta
+## La storia
 
-Vi proponiamo uno spettacolo dal titolo Pino 4.0 per far conoscere il pericolo della dipendenza dal cellulare in cui incorrono molti giovani e giovanissimi. L'utilizzo eccessivo del cellulare può distrarre dallo studio e limitare la creatività e l'espressione personale, fondamentali per una vita soddisfacente.
+Una sala d'aspetto come tante, dove le persone si incontrano e cercano di comunicare, anche se questa è molto particolare. Qui c'è Pino, curvo sulla sedia, chiuso in sé stesso.
 
-Il nostro obiettivo è di riuscire a sensibilizzare i giovani sui rischi legati all'uso incontrollato del cellulare attraverso una storia coinvolgente e divertente. Il nostro spettacolo educativo rappresenta un investimento prezioso per il futuro dei ragazzi, aiutandoli a riflettere su temi importanti e a diventare persone migliori.
+A ogni fine stagione un giovane amico passa a trovarlo e gli racconta di sé, delle sue avventure e dei suoi desideri. Ma Pino fatica a farsi coinvolgere, tanto che a volte non si accorge nemmeno che l'amico è lì. Riuscirà a sollevare la testa e a guardare la vita?
 
-## Trama
+## Il tema
 
-Ci troviamo in una sala d'aspetto, una sala come tante altre, anche se questa è molto particolare, dove le persone si incontrano e cercano di comunicare.
+Uno spettacolo e incontro per far conoscere il pericolo della dipendenza dal cellulare, in cui incorrono molti giovani e giovanissimi. L'uso eccessivo del telefono può distrarre dallo studio e limitare la creatività e l'espressione personale, fondamentali per una vita soddisfacente.
 
-La nostra storia inizia qui, con un giovane curvo sulla sedia e il suo amico che viene a trovarlo. Accade praticamente a ogni fine stagione, e ogni volta il giovane racconta al suo amico Pino, sempre curvo sulla sedia, di sé, delle sue avventure e dei suoi desideri. Pino, però, è piuttosto chiuso e fatica ad essere coinvolto, tanto che non si accorge che il suo amico è passato a trovarlo.
-
-Attraverso il personaggio di Pino rappresentiamo l'importanza del contatto umano reale rispetto a quello virtuale. Riuscirà Pino a sollevare la testa e a guardare la vita?
+Attraverso il personaggio di Pino, lo spettacolo mostra l'importanza del contatto umano reale rispetto a quello virtuale. Lo fa con una storia coinvolgente e divertente, che invita i ragazzi a riflettere sui rischi dell'uso incontrollato del cellulare.

@@ -31,10 +31,14 @@ requisiti: "Minimo di 120 alunni"
 highlight: false
 ---
 
-## Proposta
+## La storia
 
-Uno spettacolo bello, proprio come quelli di una volta, pieno di poesia e di vita. Ottimo per tutte le feste, un'esperienza coinvolgente e indimenticabile per tutte le età. Un piccolo investimento per il loro futuro.
+Luci soffuse. Un personaggio buffo entra in scena in cerca di un microfono e si accorge di avere davanti un pubblico «più grande delle sue aspettative». Da questo imbarazzo iniziale nasce una serie di gag esilaranti, tra trucchi di magia, oggetti che non collaborano e incontri inattesi con la platea.
 
-## Trama
+Il pubblico non sta a guardare: viene coinvolto e diventa parte dello spettacolo.
 
-Lo spettacolo inizia a luci soffuse con un personaggio buffo che cerca il microfono, accorgendosi di trovarsi davanti ad un pubblico "più grande delle sue aspettative". Involontariamente distrugge il microfono trovato e da qui ne scaturisce una serie di nuove gags esilaranti che coinvolgono il pubblico rendendolo partecipe.
+## Il tema
+
+Una comicità bella, come quella di una volta, fatta di gesto, sguardo e tempi giusti, piena di poesia e di vita.
+
+Parla a tutte le età: dai 3 anni in su, bambini e adulti ridono insieme, anche se non sempre per le stesse ragioni. È pensato come uno spettacolo di festa, da vivere in compagnia.

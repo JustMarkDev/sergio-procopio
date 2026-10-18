@@ -25,14 +25,14 @@ requisiti: "Minimo di 120 alunni"
 highlight: true
 ---
 
-## Proposta
+## La storia
 
-"L'uomo e il mare di plastica" rappresenta un'opportunità unica per coinvolgere gli studenti in un'esperienza educativa indimenticabile, che va ben oltre la tradizionale didattica in aula. Questo spettacolo suscita consapevolezza e azione. Attraverso il coinvolgimento emotivo, i giovani impareranno a essere più responsabili verso il nostro pianeta. Il dibattito con l'artista dopo lo spettacolo consentirà di esplorare ulteriormente queste importanti questioni.
+Lo spettacolo è ispirato a «Il vecchio e il mare» di Ernest Hemingway e ne riprende il tema universale: la lotta dell'uomo contro la natura. Il pubblico viene trasportato in un mondo marino fatto interamente di plastica.
 
-L'arte e la cultura sono un veicolo essenziale per l'educazione e lo sviluppo dei giovani verso la sostenibilità.
+Non ci sono parole: a raccontare sono il corpo, i gesti e il silenzio, che diventa spazio per la riflessione e il dialogo.
 
-## Trama
+## Il tema
 
-L'opera è ispirata al capolavoro letterario "Il vecchio e il mare" di Ernest Hemingway, affrontando temi universali come la lotta dell'uomo contro la natura ed esplorando il ruolo dell'essere umano come custode dell'ambiente. Gli studenti verranno trasportati in un mondo marino completamente fatto di plastica, scoprendo come la creatività e il riciclo possano trasformare il nostro ambiente.
+Un'esperienza di educazione ambientale che va oltre la didattica tradizionale in aula. Lo spettacolo esplora il ruolo dell'essere umano come custode dell'ambiente e mostra come la creatività e il riciclo possano trasformare ciò che ci circonda. Attraverso il coinvolgimento emotivo, i giovani sono portati a sentirsi più responsabili verso il nostro pianeta.
 
-Nonostante l'assenza di parole, la potenza del silenzio si trasforma in un veicolo per la riflessione e il dialogo, catturando l'attenzione e le emozioni degli spettatori per trasmettere un messaggio cruciale di sostenibilità in modo coinvolgente e divertente.
+Dopo lo spettacolo è previsto un dibattito con l'artista, per approfondire i temi emersi. L'arte e la cultura sono un veicolo essenziale per educare le nuove generazioni alla sostenibilità.
