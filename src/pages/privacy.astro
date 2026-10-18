@@ -1,181 +1,207 @@
 ---
 import Layout from "../layouts/Layout.astro";
+
+// Update this whenever the text below changes.
+const lastUpdated = "18 ottobre 2026";
+
+const sections = [
+    { id: "titolare", title: "Titolare del trattamento" },
+    { id: "dati", title: "Quali dati raccolgo" },
+    { id: "finalita", title: "Perché li uso" },
+    { id: "cookie", title: "Cookie e strumenti di terzi" },
+    { id: "destinatari", title: "A chi arrivano i dati" },
+    { id: "conservazione", title: "Per quanto tempo li conservo" },
+    { id: "diritti", title: "I tuoi diritti" },
+    { id: "esterni", title: "Collegamenti ad altri siti" },
+    { id: "modifiche", title: "Modifiche all'informativa" },
+];
+
+const link = "text-primary-soft underline underline-offset-4 transition-colors hover:text-foreground";
 ---
 
 <Layout title="Privacy | Sergio Procopio" canonicalPath="/privacy">
-    <div class="container mx-auto max-w-3xl px-4 pb-24 pt-36 md:px-8 lg:px-12">
-        <h1 class="mb-8 text-4xl uppercase leading-tight">
-            Informativa sulla Privacy (Privacy Policy)
-        </h1>
-
-        <div class="max-w-none space-y-6 font-light leading-relaxed text-foreground/85 [&_strong]:font-medium [&_strong]:text-foreground">
-            <p class="text-muted-foreground">
-                Ultimo aggiornamento: {new Date().toLocaleDateString("it-IT")}
+    <div class="container mx-auto px-4 pb-24 pt-36 md:px-8 lg:px-12">
+        <header class="mb-16 max-w-3xl">
+            <h1 class="text-[clamp(2.5rem,7vw,6rem)] uppercase leading-[0.95]">Informativa sulla privacy</h1>
+            <p class="mt-6 text-lg font-light leading-relaxed text-foreground/85 lg:text-xl">
+                Questa pagina spiega quali dati personali tratta il sito sergioprocopio.it, perché e per quanto
+                tempo, ai sensi del Regolamento (UE) 2016/679 (GDPR).
             </p>
+        </header>
 
-            <p>
-                Benvenuto sul sito web <strong>sergioprocopio.it</strong> (e domini
-                collegati). La protezione dei tuoi dati personali è per noi una priorità.
-                Questa Privacy Policy, redatta in conformità al Regolamento (UE) 2016/679
-                (GDPR), ha lo scopo di descrivere in modo chiaro e trasparente come
-                raccogliamo, utilizziamo, conserviamo e proteggiamo le tue informazioni
-                personali quando visiti o interagisci con il nostro sito.
-            </p>
+        <div class="grid grid-cols-1 gap-12 lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-20">
+            <nav aria-label="Indice dell'informativa" class="lg:sticky lg:top-28 lg:self-start">
+                <ol class="border-t border-border">
+                    {
+                        sections.map((section, index) => (
+                            <li class="border-b border-border">
+                                <a
+                                    href={`#${section.id}`}
+                                    class="flex min-h-11 items-center gap-4 py-2 text-sm font-light text-muted-foreground transition-colors hover:text-foreground"
+                                >
+                                    <span class="w-5 text-xs tabular-nums text-primary-soft">{index + 1}</span>
+                                    {section.title}
+                                </a>
+                            </li>
+                        ))
+                    }
+                </ol>
+            </nav>
 
-            <h2
-                class="mb-4 mt-10 text-2xl uppercase tracking-[0.02em] text-primary-soft"
-            >
-                1. Titolare del Trattamento
-            </h2>
-            <p>
-                Il Titolare del trattamento dei dati personali raccolti
-                attraverso questo sito web è <strong>Sergio Procopio</strong>. Per qualsiasi
-                domanda relativa a questa policy o per esercitare i tuoi
-                diritti, puoi contattarci al seguente indirizzo email:
-                <a
-                    href="mailto:info@sergioprocopio.it"
-                    class="text-primary-soft hover:underline"
-                    >info@sergioprocopio.it</a
-                >.
-            </p>
+            <div class="richtext max-w-3xl">
+                <aside class="mb-16 border border-border bg-secondary/40 p-6 sm:p-8" aria-labelledby="in-breve">
+                    <h2 id="in-breve" class="!mt-0 !mb-5 !border-0 !p-0 !text-sm !tracking-[0.24em] text-primary-soft">In breve</h2>
+                    <ul class="!mb-0">
+                        <li>Uso i dati che mi invii con il modulo di contatto solo per risponderti.</li>
+                        <li>Non vendo i dati, non faccio pubblicità e non faccio profilazione.</li>
+                        <li>Il sito non imposta cookie di profilazione: per questo non c'è un banner dei cookie.</li>
+                        <li>Puoi chiedere in ogni momento di vedere, correggere o cancellare i tuoi dati.</li>
+                    </ul>
+                </aside>
 
-            <h2
-                class="mb-4 mt-10 text-2xl uppercase tracking-[0.02em] text-primary-soft"
-            >
-                2. Tipologia di Dati Raccolti
-            </h2>
+                <section id="titolare" class="scroll-mt-28">
+                    <h2>1. Titolare del trattamento</h2>
+                    <p>
+                        Il titolare del trattamento è <strong>Sergio Procopio</strong>. Per qualsiasi domanda su questa
+                        informativa o per esercitare i tuoi diritti puoi scrivere a
+                        <a href="mailto:info@sergioprocopio.it" class={link}>info@sergioprocopio.it</a>
+                        o chiamare il <a href="tel:+393805252684" class={link}>+39 3805252684</a>.
+                    </p>
+                </section>
 
-            <h3 class="text-xl font-medium mt-6 mb-2">
-                2.1 Dati di Navigazione e Analitici
-            </h3>
-            <p>
-                Utilizziamo strumenti di analisi statistica del traffico (come
-                Vercel Web Analytics) per comprendere in modo aggregato come gli
-                utenti interagiscono con la piattaforma. Questi strumenti sono
-                configurati per essere rispettosi della privacy:
-                <strong>non utilizzano cookie traccianti invasivi</strong> e i dati
-                raccolti (es. pagine visitate, tempo di permanenza) vengono automaticamente
-                anonimizzati e aggregati. Non è possibile risalire all'identità specifica
-                del visitatore.
-            </p>
+                <section id="dati" class="scroll-mt-28">
+                    <h2>2. Quali dati raccolgo</h2>
+                    <h3>Modulo di contatto</h3>
+                    <p>
+                        Se mi scrivi dalla pagina <a href="/contatti" class={link}>Contatti</a> tratto i dati che inserisci:
+                        nome, indirizzo email, oggetto (facoltativo) e testo del messaggio. Il messaggio mi arriva
+                        per email. Nel modulo c'è anche un campo nascosto contro lo spam: se viene compilato, la
+                        richiesta viene scartata.
+                    </p>
+                    <h3>Telefono ed email</h3>
+                    <p>
+                        Se mi chiami o mi scrivi direttamente, tratto il tuo numero di telefono, il tuo indirizzo email e
+                        quanto decidi di comunicarmi.
+                    </p>
+                    <h3>Dati di navigazione</h3>
+                    <p>
+                        Quando visiti il sito, il fornitore di hosting registra dati tecnici come l'indirizzo IP, la
+                        pagina richiesta e il tipo di browser, necessari a far funzionare e proteggere il sito. In più
+                        uso strumenti di statistica che misurano in forma aggregata le pagine visitate e la velocità di
+                        caricamento.
+                    </p>
+                </section>
 
-            <h3 class="text-xl font-medium mt-6 mb-2">
-                2.2 Dati forniti volontariamente dall'Utente
-            </h3>
-            <p>
-                Qualora tu decida di contattarci tramite i moduli di contatto
-                presenti sul sito o inviandoci un'email, raccoglieremo i dati
-                personali che deciderai di condividere (ad esempio: <strong
-                    >nome, indirizzo email, numero di telefono</strong
-                >, oltre al contenuto del messaggio). Questi dati sono necessari
-                esclusivamente per poter gestire e riscontrare in modo adeguato
-                la tua richiesta di informazioni o di preventivo.
-            </p>
+                <section id="finalita" class="scroll-mt-28">
+                    <h2>3. Perché li uso</h2>
+                    <ul>
+                        <li>
+                            <strong>Rispondere alle richieste.</strong> Uso i dati del modulo e dei contatti diretti per
+                            risponderti, verificare la disponibilità e preparare un preventivo. Base giuridica: misure
+                            precontrattuali richieste da te (art. 6.1.b GDPR).
+                        </li>
+                        <li>
+                            <strong>Far funzionare e proteggere il sito.</strong> I dati tecnici di navigazione e il
+                            controllo antispam servono alla sicurezza e al corretto funzionamento. Base giuridica:
+                            legittimo interesse (art. 6.1.f GDPR).
+                        </li>
+                        <li>
+                            <strong>Statistiche aggregate.</strong> Mi aiutano a capire quali pagine sono utili e se il sito
+                            è veloce. Base giuridica: legittimo interesse (art. 6.1.f GDPR).
+                        </li>
+                    </ul>
+                    <p>
+                        Non prendo decisioni basate solo su trattamenti automatizzati e non uso i tuoi dati per
+                        marketing o pubblicità.
+                    </p>
+                </section>
 
-            <h2
-                class="mb-4 mt-10 text-2xl uppercase tracking-[0.02em] text-primary-soft"
-            >
-                3. Finalità e Base Giuridica del Trattamento
-            </h2>
-            <ul class="list-disc pl-5 space-y-2">
-                <li>
-                    <strong>Riscontro alle richieste:</strong> i dati forniti volontariamente
-                    vengono trattati per rispondere alle tue domande (Base giuridica:
-                    esecuzione di misure precontrattuali o contrattuali).
-                </li>
-                <li>
-                    <strong>Funzionamento del sito:</strong> i dati di navigazione
-                    anonimizzati servono a garantire il corretto funzionamento tecnico
-                    e la sicurezza dell'infrastruttura (Base giuridica: legittimo
-                    interesse del titolare).
-                </li>
-                <li>
-                    <strong>Miglioramento dei servizi:</strong> i dati analitici ci
-                    aiutano a ottimizzare l'esperienza utente sulla base di statistiche
-                    generali (Base giuridica: legittimo interesse del titolare).
-                </li>
-            </ul>
+                <section id="cookie" class="scroll-mt-28">
+                    <h2>4. Cookie e strumenti di terzi</h2>
+                    <p>
+                        Il sito non imposta cookie di profilazione né cookie pubblicitari, e non carica strumenti di
+                        tracciamento di terzi per scopi di marketing. I caratteri tipografici sono serviti dal sito
+                        stesso, senza richieste a servizi esterni.
+                    </p>
+                    <p>
+                        Le statistiche sono raccolte con <strong>Vercel Web Analytics</strong> e
+                        <strong>Vercel Speed Insights</strong>, che misurano pagine visitate, tipo di dispositivo e
+                        prestazioni senza usare cookie e senza identificare il singolo visitatore.
+                    </p>
+                </section>
 
-            <h2
-                class="mb-4 mt-10 text-2xl uppercase tracking-[0.02em] text-primary-soft"
-            >
-                4. Modalità di Trattamento e Sicurezza
-            </h2>
-            <p>
-                Il trattamento dei dati avviene mediante strumenti informatici e
-                telematici, con logiche strettamente correlate alle finalità
-                indicate e, in ogni caso, in modo da garantire la sicurezza e la
-                riservatezza dei dati stessi secondo le normative vigenti. Non
-                cediamo, vendiamo o trasferiamo i tuoi dati personali a terzi
-                per scopi di marketing.
-            </p>
+                <section id="destinatari" class="scroll-mt-28">
+                    <h2>5. A chi arrivano i dati</h2>
+                    <p>
+                        I dati non sono venduti né ceduti per marketing. Li ricevono solo i fornitori che fanno funzionare
+                        il sito, in qualità di responsabili del trattamento:
+                    </p>
+                    <ul>
+                        <li><strong>Vercel Inc.</strong> per l'hosting del sito e le statistiche.</li>
+                        <li><strong>Resend</strong> per l'invio via email dei messaggi del modulo di contatto.</li>
+                        <li>Il fornitore del servizio di posta su cui ricevo la casella info@sergioprocopio.it.</li>
+                    </ul>
+                    <p>
+                        Alcuni di questi fornitori possono trattare i dati anche fuori dallo Spazio Economico Europeo, in
+                        particolare negli Stati Uniti. In questo caso il trasferimento avviene con le garanzie previste dal
+                        GDPR, come le decisioni di adeguatezza o le clausole contrattuali standard.
+                    </p>
+                </section>
 
-            <h2
-                class="mb-4 mt-10 text-2xl uppercase tracking-[0.02em] text-primary-soft"
-            >
-                5. Conservazione dei Dati
-            </h2>
-            <p>
-                I dati personali forniti volontariamente (tramite form o email)
-                saranno conservati esclusivamente per il tempo strettamente
-                necessario a gestire e completare la tua richiesta, oppure per
-                il tempo richiesto da eventuali obblighi di legge. I dati di
-                navigazione aggregati e anonimi vengono conservati limitatamente
-                alle tempistiche necessarie per l'analisi statistica.
-            </p>
+                <section id="conservazione" class="scroll-mt-28">
+                    <h2>6. Per quanto tempo li conservo</h2>
+                    <ul>
+                        <li>
+                            <strong>Messaggi e contatti:</strong> per il tempo necessario a rispondere e a gestire la
+                            richiesta. Se si arriva a un accordo, i dati necessari restano per i termini previsti dalla
+                            legge, per esempio quelli fiscali e contabili.
+                        </li>
+                        <li>
+                            <strong>Dati tecnici di navigazione:</strong> per il tempo indicato dal fornitore di hosting, per
+                            ragioni di sicurezza.
+                        </li>
+                        <li><strong>Statistiche:</strong> in forma aggregata, secondo i tempi del fornitore.</li>
+                    </ul>
+                </section>
 
-            <h2
-                class="mb-4 mt-10 text-2xl uppercase tracking-[0.02em] text-primary-soft"
-            >
-                6. Diritti dell'Utente (GDPR)
-            </h2>
-            <p>
-                Ai sensi degli articoli 15 e seguenti del Regolamento UE
-                2016/679, in qualità di interessato, hai il diritto in qualunque
-                momento di:
-            </p>
-            <ul class="list-disc pl-5 space-y-2">
-                <li>Richiedere l'accesso ai tuoi dati personali;</li>
-                <li>
-                    Richiedere la rettifica o la cancellazione degli stessi
-                    ("diritto all'oblio");
-                </li>
-                <li>
-                    Richiedere la limitazione del trattamento o opporti ad esso;
-                </li>
-                <li>Richiedere la portabilità dei dati (ove applicabile);</li>
-                <li>
-                    Revocare l'eventuale consenso prestato, senza pregiudicare
-                    la liceità del trattamento basata sul consenso prestato
-                    prima della revoca.
-                </li>
-            </ul>
-            <p class="mt-4">
-                Per esercitare i tuoi diritti, puoi inviare una comunicazione
-                all'indirizzo email:
-                <strong
-                    ><a
-                        href="mailto:info@sergioprocopio.it"
-                        class="text-primary-soft hover:underline"
-                        >info@sergioprocopio.it</a
-                    ></strong
-                >. Hai inoltre il diritto di proporre reclamo all'Autorità
-                Garante per la Protezione dei Dati Personali qualora ritenessi
-                che il trattamento violi le normative vigenti.
-            </p>
+                <section id="diritti" class="scroll-mt-28">
+                    <h2>7. I tuoi diritti</h2>
+                    <p>In ogni momento puoi chiedermi di:</p>
+                    <ul>
+                        <li>accedere ai tuoi dati e averne una copia;</li>
+                        <li>correggere i dati inesatti o completarli;</li>
+                        <li>cancellare i dati o limitarne il trattamento;</li>
+                        <li>opporti al trattamento basato sul legittimo interesse;</li>
+                        <li>ricevere i dati in un formato di uso comune (portabilità).</li>
+                    </ul>
+                    <p>
+                        Per farlo scrivi a <a href="mailto:info@sergioprocopio.it" class={link}>info@sergioprocopio.it</a>.
+                        Se ritieni che il trattamento violi la normativa, puoi presentare reclamo al
+                        <a href="https://www.garanteprivacy.it" target="_blank" rel="noopener noreferrer" class={link}>Garante per la protezione dei dati personali</a>.
+                    </p>
+                </section>
 
-            <h2
-                class="mb-4 mt-10 text-2xl uppercase tracking-[0.02em] text-primary-soft"
-            >
-                7. Modifiche a questa Policy
-            </h2>
-            <p>
-                Ci riserviamo il diritto di aggiornare o modificare la presente
-                Privacy Policy in qualsiasi momento, anche per recepire
-                eventuali variazioni normative o tecnologiche. Ti invitiamo a
-                consultare periodicamente questa pagina. La data di "Ultimo
-                aggiornamento" indica l'ultima revisione effettuata.
-            </p>
+                <section id="esterni" class="scroll-mt-28">
+                    <h2>8. Collegamenti ad altri siti</h2>
+                    <p>
+                        Il sito rimanda a servizi esterni come Google Maps, Instagram, Facebook, YouTube e GitHub. Quando
+                        clicchi su questi collegamenti lasci il sito e valgono le informative dei rispettivi gestori, di
+                        cui non sono responsabile.
+                    </p>
+                </section>
+
+                <section id="modifiche" class="scroll-mt-28">
+                    <h2>9. Modifiche all'informativa</h2>
+                    <p>
+                        Posso aggiornare questa informativa, per esempio se cambiano la legge o gli strumenti che uso. La
+                        versione in vigore è sempre quella pubblicata su questa pagina.
+                    </p>
+                </section>
+
+                <p class="mt-16 border-t border-border pt-6 !text-sm !text-muted-foreground">
+                    Ultimo aggiornamento: {lastUpdated}
+                </p>
+            </div>
         </div>
     </div>
 </Layout>

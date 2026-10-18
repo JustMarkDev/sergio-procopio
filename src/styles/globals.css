@@ -155,6 +155,11 @@
   .richtext li {
     margin-bottom: 0.5rem;
   }
+  .richtext a {
+    color: var(--primary-soft);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
   .richtext strong {
     font-weight: 500;
     color: var(--foreground);
