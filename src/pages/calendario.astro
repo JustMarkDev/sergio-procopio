@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { Image } from "astro:assets";
 import EventList from "../components/custom/EventList.astro";
 import { getCalendarEvents } from "../lib/events";
 import { splitEventsByDate } from "../lib/calendar-dates";
@@ -47,7 +48,23 @@ const sectionTitle = "mb-10 text-[clamp(1.25rem,3vw,2.5rem)] uppercase leading-n
                     <h2 id="archive-title" class={`${sectionTitle} text-muted-foreground`}>Archivio</h2>
                     <ul class="grid grid-cols-1 gap-x-12 md:grid-cols-2">
                         {pastEvents.slice(0, 8).map((event) => (
-                            <li class="border-t border-border py-6">
+                            <li class="flex items-center gap-5 border-t border-border py-6">
+                                {event.image && (
+                                    <Image
+                                        src={event.image}
+                                        alt=""
+                                        width={160}
+                                        height={160}
+                                        widths={[160, 320]}
+                                        sizes="80px"
+                                        fit="cover"
+                                        format="webp"
+                                        quality={70}
+                                        loading="lazy"
+                                        class="size-20 shrink-0 object-cover opacity-70"
+                                    />
+                                )}
+                                <div class="min-w-0">
                                 <p class="text-xs font-medium uppercase tracking-[0.16em] text-primary-soft">
                                     {dateFormatter.format(event.data.date)}
                                 </p>
@@ -55,6 +72,7 @@ const sectionTitle = "mb-10 text-[clamp(1.25rem,3vw,2.5rem)] uppercase leading-n
                                 <p class="mt-1 text-sm font-light text-muted-foreground">
                                     {event.data.venue}, {event.data.city}
                                 </p>
+                                </div>
                             </li>
                         ))}
                     </ul>

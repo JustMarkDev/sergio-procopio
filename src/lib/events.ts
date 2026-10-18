@@ -11,21 +11,26 @@ export async function getCalendarEvents() {
     getCollection("spettacoli"),
     getCollection("corso"),
   ]);
-  const showHrefs = new Map(
+  const showPages = new Map(
     shows
       .filter((show) => !show.data.draft)
-      .map((show) => [normalizeTitle(show.data.title), `/spettacoli/${show.id}`]),
+      .map((show) => [
+        normalizeTitle(show.data.title),
+        { href: `/spettacoli/${show.id}`, image: show.data.image },
+      ]),
   );
 
   return [
     ...eventi.map((event) => ({
       kind: "spettacolo" as const,
-      href: showHrefs.get(normalizeTitle(event.data.name)),
+      href: showPages.get(normalizeTitle(event.data.name))?.href,
+      image: showPages.get(normalizeTitle(event.data.name))?.image,
       data: event.data,
     })),
     ...dateCorso.map((event) => ({
       kind: "corso" as const,
       href: corso.length > 0 ? COURSE_PATH : undefined,
+      image: corso[0]?.data.image,
       data: event.data,
     })),
   ]
