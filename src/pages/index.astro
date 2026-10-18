@@ -56,11 +56,6 @@ const nextEvents = upcomingEvents.slice(0, 4);
 
 <Layout>
     <HeroSection image={{ src: heroImage.src, srcSet: heroImage.srcSet.attribute, width: 1476, height: 984 }} />
-    <section class="container mx-auto px-4 py-24 md:px-8 lg:px-12 lg:py-36 lg:pl-[8vw]">
-        <p class="max-w-[21em] text-[clamp(1.5rem,3.9vw,3.625rem)] font-light leading-[1.22] tracking-[-0.01em]">
-            Ogni spettacolo parte da un tema che riguarda tutti, e lo affida al <em class="font-normal not-italic text-primary-soft">silenzio</em> prima che alle parole.
-        </p>
-    </section>
     <FeaturedShows client:visible shows={featuredShows} />
     {nextEvents.length > 0 && (
         <section aria-labelledby="next-dates-title" class="container mx-auto px-4 py-24 md:px-8 lg:px-12 lg:py-36">
