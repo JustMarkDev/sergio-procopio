@@ -10,7 +10,6 @@ interface Props {
             city: string;
             isPublic: boolean;
             draft: boolean;
-            label?: string;
         };
     }[];
     limit?: number;
@@ -44,7 +43,6 @@ const eventDateFormatter = new Intl.DateTimeFormat("it-IT", {
                         {event.data.time && ` - ore ${event.data.time}`}
                     </div>
                     <div class="text-sm font-light text-muted-foreground">
-                        {event.data.label && `${event.data.label} - `}
                         {event.data.venue}, {event.data.city}
                     </div>
                 </li>

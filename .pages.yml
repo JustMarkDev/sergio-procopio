@@ -311,21 +311,14 @@ content:
       rename: false
       delete: true
     view:
-      fields: [date, titolo, venue, city, isPublic, draft]
+      fields: [date, venue, city, isPublic, draft]
       primary: venue
       sort: [date, city]
-      search: [titolo, venue, city]
+      search: [venue, city]
       default:
         sort: date
         order: desc
     fields:
-      - name: titolo
-        label: Titolo in calendario
-        type: string
-        description: 'Facoltativo. Lascia vuoto per mostrare "Corso di Teatro". Esempio: Corso di Teatro per la scuola primaria'
-        options:
-          maxlength: 120
-
       - name: date
         label: Data e ora
         type: date

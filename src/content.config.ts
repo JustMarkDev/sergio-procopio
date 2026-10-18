@@ -169,17 +169,12 @@ const corsoCollection = defineCollection({
     }),
 });
 
-// Each course date can carry its own title, e.g. the group it was tailored for.
+// Every course date is shown under the default course title.
 const dateCorsoCollection = defineCollection({
   loader: glob({ pattern: "*.md", base: "./src/content/date-corso" }),
   schema: z
-    .object({
-      titolo: z.string().optional(),
-      ...eventFields,
-    })
-    .transform((event, ctx) =>
-      withEventDateTime(event, ctx, event.titolo?.trim() || COURSE_DEFAULT_TITLE),
-    ),
+    .object(eventFields)
+    .transform((event, ctx) => withEventDateTime(event, ctx, COURSE_DEFAULT_TITLE)),
 });
 
 const pagesCollection = defineCollection({

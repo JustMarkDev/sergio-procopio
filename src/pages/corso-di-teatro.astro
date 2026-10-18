@@ -15,10 +15,7 @@ if (!show) {
 const { Content } = await render(show);
 const specs = getCourseSpecs(show.data);
 
-// Course dates show their title, which falls back to the default course name.
-const courseEvents = (await getCollection("dateCorso")).map((event) => ({
-    data: { ...event.data, label: event.data.name },
-}));
+const courseEvents = await getCollection("dateCorso");
 
 const site = Astro.site ?? new URL("https://sergioprocopio.it");
 const courseSchema = {
