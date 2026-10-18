@@ -2,10 +2,6 @@
 import Layout from "../../layouts/Layout.astro";
 import { Image } from "astro:assets";
 import { getEntry, render } from "astro:content";
-import profile from "../../../photoshoot/MyPhoto_070.webp";
-import suit from "../../../photoshoot/MyPhoto_147.webp";
-import eyes from "../../../photoshoot/MyPhoto_161.webp";
-import doorway from "../../../photoshoot/MyPhoto_113.webp";
 
 interface Props {
     canonicalPath?: string;
@@ -21,7 +17,6 @@ if (!biografia) {
 
 const pageHeading = heading ?? biografia.data.title;
 const { Content } = await render(biografia);
-const photoshoot = [profile, suit, eyes, doorway];
 ---
 
 <Layout
@@ -60,21 +55,6 @@ const photoshoot = [profile, suit, eyes, doorway];
     </section>
 
     <div class="container mx-auto px-4 pb-24 pt-16 md:px-8 lg:px-12 lg:pt-24">
-        <div class="mb-24 grid grid-cols-2 gap-0.5 md:grid-cols-4">
-            {photoshoot.map((photo) => (
-                <Image
-                    src={photo}
-                    alt=""
-                    widths={[400, 640]}
-                    sizes="(min-width: 768px) 25vw, 50vw"
-                    format="webp"
-                    quality={75}
-                    loading="lazy"
-                    class="aspect-2/3 w-full object-cover"
-                />
-            ))}
-        </div>
-
         <div class="richtext">
             <Content />
         </div>
