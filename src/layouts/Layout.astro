@@ -1,8 +1,8 @@
 ---
-import '@fontsource/inter';
-import '@fontsource/playfair-display';
-import interFont from '@fontsource/inter/files/inter-latin-400-normal.woff2?url';
-import playfairFont from '@fontsource/playfair-display/files/playfair-display-latin-400-normal.woff2?url';
+import '@fontsource/jost/300.css';
+import '@fontsource/jost/400.css';
+import '@fontsource/jost/500.css';
+import jostFont from '@fontsource/jost/files/jost-latin-400-normal.woff2?url';
 import '../styles/globals.css';
 import SEO from '../components/SEO.astro';
 import Schema from '../components/Schema.astro';
@@ -25,8 +25,7 @@ const { title, description, canonicalPath, noindex = false } = Astro.props;
 <!doctype html>
 <html lang="it" class="dark scroll-smooth">
 	<head>
-		<link rel="preload" href={interFont} as="font" type="font/woff2" crossorigin />
-		<link rel="preload" href={playfairFont} as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href={jostFont} as="font" type="font/woff2" crossorigin />
 		<SEO title={title} description={description} canonicalPath={canonicalPath} noindex={noindex} />
 		<Schema />
 		<ClientRouter />

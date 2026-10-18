@@ -59,7 +59,7 @@ const steps = isEnglish
 
 <Layout title={title} description={description} canonicalPath={canonicalPath}>
     <div
-        class="mx-auto grid max-w-6xl grid-cols-1 gap-7 px-4 pt-28 pb-16 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:grid-rows-[auto_1fr] lg:gap-x-14 lg:gap-y-9 lg:px-8 lg:pt-32"
+        class="container mx-auto grid grid-cols-1 gap-10 px-4 pb-24 pt-36 md:px-8 lg:grid-cols-[0.85fr_1.15fr] lg:grid-rows-[auto_1fr] lg:gap-x-16 lg:gap-y-12 lg:px-12"
     >
         <section
             class="lg:col-start-1 lg:row-start-1"
@@ -69,7 +69,7 @@ const steps = isEnglish
                 isEnglish ? (
                     <h1
                         id="contact-page-heading"
-                        class="font-serif text-[clamp(1.65rem,8vw,2rem)] font-bold leading-[1.18] tracking-tight text-zinc-50 lg:text-[34px] xl:text-[40px]"
+                        class="text-[clamp(1.75rem,6vw,2.75rem)] uppercase leading-[1.08]"
                     >
                         Contact Sergio Procopio
                     </h1>
@@ -79,7 +79,7 @@ const steps = isEnglish
                     </div>
                 )
             }
-            <p class="mt-4 max-w-md text-base leading-6 text-zinc-300">
+            <p class="mt-5 max-w-md text-base font-light leading-relaxed text-foreground/85">
                 {
                     isEnglish
                         ? "Shows, workshops and meetings: tell me what you have in mind for your audience. This is the official Contact page for availability, quotes and dates."
@@ -89,13 +89,13 @@ const steps = isEnglish
             <div class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
                 <a
                     href={`tel:${CONTACT_NAP.telephone}`}
-                    class="inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-full border border-zinc-500 px-6 text-sm font-semibold text-zinc-50 hover:border-zinc-300 hover:bg-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-400"
+                    class="inline-flex min-h-12 items-center justify-center whitespace-nowrap border border-foreground/40 px-6 text-xs font-medium uppercase tracking-[0.18em] transition-colors hover:border-foreground"
                 >
                     {isEnglish ? "Call now" : "Chiama ora"}
                 </a>
                 <a
                     href={`mailto:${CONTACT_NAP.email}`}
-                    class="rounded text-sm text-zinc-300 underline underline-offset-4 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-400"
+                    class="text-sm font-light text-foreground/85 underline underline-offset-4 transition-colors hover:text-primary-soft"
                 >
                     {CONTACT_NAP.email}
                 </a>
@@ -114,25 +114,25 @@ const steps = isEnglish
         >
             <h2
                 id="contact-steps-title"
-                class="mb-2 text-base font-medium text-zinc-200"
+                class="mb-2 text-xs font-medium uppercase tracking-[0.24em] text-primary-soft"
             >
                 {stepsTitle}
             </h2>
-            <ol class="divide-y divide-zinc-800" role="list">
+            <ol class="divide-y divide-border" role="list">
                 {
                     steps.map((step, index) => (
                         <li class="grid grid-cols-[2rem_1fr] gap-3 py-4">
                             <span
                                 aria-hidden="true"
-                                class="pt-0.5 text-sm tabular-nums text-zinc-400"
+                                class="pt-0.5 text-sm tabular-nums text-muted-foreground"
                             >
                                 {String(index + 1).padStart(2, "0")}
                             </span>
                             <div>
-                                <h3 class="text-base font-medium text-zinc-100">
+                                <h3 class="text-base font-medium">
                                     {step.title}
                                 </h3>
-                                <p class="mt-1 text-sm leading-6 text-zinc-400">
+                                <p class="mt-1 text-sm font-light leading-6 text-muted-foreground">
                                     {step.description}
                                 </p>
                             </div>

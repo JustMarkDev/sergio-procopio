@@ -3,7 +3,10 @@ import Layout from "../layouts/Layout.astro";
 import HeroSection from "../components/custom/HeroSection";
 import FeaturedShows from "../components/custom/FeaturedShows";
 import ContactCTA from "../components/custom/ContactCTA.astro";
+import EventList from "../components/custom/EventList.astro";
 import { getCollection } from "astro:content";
+import { getCalendarEvents } from "../lib/events";
+import { splitEventsByDate } from "../lib/calendar-dates";
 import { getImage } from "astro:assets";
 import socialImage from "../../public/social.jpg";
 
@@ -19,19 +22,18 @@ const heroImage = await getImage({
 const allShows = (await getCollection("spettacoli")).filter(
     (show) => !show.data.draft,
 );
-// Prefer highlighted shows or first 3
+// Highlighted shows come first.
 const featuredShows = await Promise.all(allShows
     .sort((a, b) => (b.data.highlight ? 1 : 0) - (a.data.highlight ? 1 : 0))
-    .slice(0, 3)
     .map(async (show) => {
         const image = show.data.image ? await getImage({
             src: show.data.image,
-            width: 800,
-            height: 600,
-            widths: [320, 480, 640, 800, 1200],
+            width: 1500,
+            height: 1000,
+            widths: [640, 1000, 1500],
             fit: "cover",
             format: "webp",
-            quality: 75,
+            quality: 70,
         }) : undefined;
         return {
             id: show.id,
@@ -42,15 +44,34 @@ const featuredShows = await Promise.all(allShows
             image: image ? {
                 src: image.src,
                 srcSet: image.srcSet.attribute,
-                width: 800,
-                height: 600,
+                width: 1500,
+                height: 1000,
             } : undefined,
         };
     }));
+
+const { upcomingEvents } = splitEventsByDate(await getCalendarEvents());
+const nextEvents = upcomingEvents.slice(0, 4);
 ---
 
 <Layout>
     <HeroSection image={{ src: heroImage.src, srcSet: heroImage.srcSet.attribute, width: 1476, height: 984 }} />
+    <section class="container mx-auto px-4 py-24 md:px-8 lg:px-12 lg:py-36 lg:pl-[8vw]">
+        <p class="max-w-[21em] text-[clamp(1.5rem,3.9vw,3.625rem)] font-light leading-[1.22] tracking-[-0.01em]">
+            Ogni spettacolo parte da un tema che riguarda tutti, e lo affida al <em class="font-normal not-italic text-primary-soft">silenzio</em> prima che alle parole.
+        </p>
+    </section>
     <FeaturedShows shows={featuredShows} />
+    {nextEvents.length > 0 && (
+        <section aria-labelledby="next-dates-title" class="container mx-auto px-4 py-24 md:px-8 lg:px-12 lg:py-36">
+            <h2 id="next-dates-title" class="mb-10 text-[clamp(1.25rem,3vw,2.5rem)] uppercase leading-none tracking-[0.02em]">
+                Prossime date
+            </h2>
+            <EventList events={nextEvents} compact />
+            <a href="/calendario" class="mt-10 inline-block border-b border-primary-soft pb-1.5 text-xs font-medium uppercase tracking-[0.18em] text-primary-soft transition-colors hover:border-foreground hover:text-foreground">
+                Calendario completo
+            </a>
+        </section>
+    )}
     <ContactCTA />
 </Layout>

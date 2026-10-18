@@ -20,10 +20,7 @@ export default function ContactHeading() {
 
   return (
     <div>
-      <h1
-        ref={heading}
-        className="font-serif text-[clamp(1.65rem,8vw,2rem)] font-bold leading-[1.18] tracking-tight text-zinc-50 lg:text-[34px] xl:text-[40px]"
-      >
+      <h1 ref={heading} className="text-[clamp(1.75rem,6vw,2.75rem)] uppercase leading-[1.08]">
         <span className="sr-only">
           Porta l'emozione nella tua scuola, parrocchia o associazione.
         </span>
@@ -31,7 +28,7 @@ export default function ContactHeading() {
           <span className="block">Porta l'emozione</span>
           <span className="flex items-baseline gap-[0.2em] whitespace-nowrap">
             nella tua
-            <span className="relative inline-grid overflow-hidden pb-[0.15em] -mb-[0.15em] pr-[0.15em] italic text-blue-400">
+            <span className="relative inline-grid overflow-hidden pb-[0.15em] -mb-[0.15em] pr-[0.15em] text-primary-soft">
               <span className="invisible col-start-1 row-start-1">associazione</span>
               <AnimatePresence initial={false} mode="wait">
                 <motion.span

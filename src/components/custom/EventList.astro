@@ -1,0 +1,71 @@
+---
+interface Props {
+    events: {
+        kind: "spettacolo" | "corso";
+        href?: string;
+        data: {
+            date: Date;
+            time?: string;
+            name: string;
+            venue: string;
+            city: string;
+            address?: string;
+            googleMapsUrl?: string;
+        };
+    }[];
+    compact?: boolean;
+}
+
+const { events, compact = false } = Astro.props;
+
+const timeZone = "Europe/Rome";
+const dayFormatter = new Intl.DateTimeFormat("it-IT", { day: "numeric", timeZone });
+const monthFormatter = new Intl.DateTimeFormat("it-IT", { month: "short", timeZone });
+const yearFormatter = new Intl.DateTimeFormat("it-IT", { year: "numeric", timeZone });
+const action =
+    "inline-flex min-h-11 items-center text-xs font-medium uppercase tracking-[0.16em] text-primary-soft transition-colors hover:text-foreground";
+---
+
+<ul class="border-b border-border">
+    {events.map((event) => (
+        <li class="group relative grid grid-cols-[minmax(4.5rem,7rem)_1fr] items-center gap-x-5 border-t border-border py-5 pl-4 before:absolute before:inset-y-0 before:left-0 before:w-[3px] before:origin-center before:scale-y-0 before:bg-primary-hover before:transition-transform before:duration-300 hover:before:scale-y-100 sm:grid-cols-[minmax(6rem,10rem)_1fr] md:gap-x-8 md:pl-6">
+            <div class="flex items-baseline gap-2">
+                <span class="text-[clamp(2.75rem,8vw,6.5rem)] font-light leading-[0.88] tracking-[-0.03em]">
+                    {dayFormatter.format(event.data.date)}
+                </span>
+                <span class="text-[11px] font-medium uppercase tracking-[0.2em] text-primary-soft">
+                    {monthFormatter.format(event.data.date).replace(".", "")}
+                    {!compact && <span class="block text-muted-foreground">{yearFormatter.format(event.data.date)}</span>}
+                </span>
+            </div>
+            <div class="min-w-0">
+                <h3 class="text-base leading-snug wrap-break-word sm:text-xl">
+                    {event.href ? (
+                        <a href={event.href} class="transition-colors hover:text-primary-soft">{event.data.name}</a>
+                    ) : (
+                        event.data.name
+                    )}
+                </h3>
+                <p class="mt-1 text-sm font-light text-muted-foreground wrap-break-word sm:text-base">
+                    {event.data.time && `Ore ${event.data.time}, `}
+                    {event.data.venue}, {event.data.city}
+                    {!compact && event.data.address && ` - ${event.data.address}`}
+                </p>
+                {!compact && (event.href || event.data.googleMapsUrl) && (
+                    <div class="mt-1 flex flex-wrap gap-x-6">
+                        {event.href && (
+                            <a href={event.href} class={action}>
+                                {event.kind === "corso" ? "Scopri il corso" : "Scopri lo spettacolo"}
+                            </a>
+                        )}
+                        {event.data.googleMapsUrl && (
+                            <a href={event.data.googleMapsUrl} target="_blank" rel="noopener noreferrer" class={action}>
+                                Mappa
+                            </a>
+                        )}
+                    </div>
+                )}
+            </div>
+        </li>
+    ))}
+</ul>

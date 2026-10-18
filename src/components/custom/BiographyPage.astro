@@ -2,6 +2,10 @@
 import Layout from "../../layouts/Layout.astro";
 import { Image } from "astro:assets";
 import { getEntry, render } from "astro:content";
+import profile from "../../../photoshoot/MyPhoto_070.webp";
+import suit from "../../../photoshoot/MyPhoto_147.webp";
+import eyes from "../../../photoshoot/MyPhoto_161.webp";
+import doorway from "../../../photoshoot/MyPhoto_113.webp";
 
 interface Props {
     canonicalPath?: string;
@@ -17,6 +21,7 @@ if (!biografia) {
 
 const pageHeading = heading ?? biografia.data.title;
 const { Content } = await render(biografia);
+const photoshoot = [profile, suit, eyes, doorway];
 ---
 
 <Layout
@@ -24,49 +29,50 @@ const { Content } = await render(biografia);
     description={biografia.data.description}
     canonicalPath={canonicalPath}
 >
-    <div class="relative overflow-hidden bg-[#09090b] min-h-screen text-white">
-        {/* Background Gradients */}
-        <div class="absolute top-0 right-0 w-[60%] h-[60%] bg-primary/5 rounded-full blur-[150px] pointer-events-none"></div>
-        <div class="absolute bottom-0 left-0 w-[50%] h-[50%] bg-blue-900/10 rounded-full blur-[150px] pointer-events-none"></div>
-
-        <div class="container relative z-10 mx-auto px-4 md:px-8 lg:px-12 py-32">
-            {/* Hero Section */}
-            <div class="flex flex-col lg:flex-row gap-16 items-center mb-24">
-                <div class="lg:w-1/2 space-y-8">
-                    <h1 class="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-serif font-bold tracking-tighter leading-[0.9] pb-2">
-                        <span class="block">{pageHeading}</span>
-                    </h1>
-                    <div class="w-20 h-1 bg-primary/50 rounded-full"></div>
-                    {
-                        biografia.data.quote && (
-                            <p class="text-2xl md:text-3xl font-serif text-muted-foreground italic opacity-90 leading-relaxed border-l-2 border-primary/30 pl-6 py-2">
-                                "{biografia.data.quote}"
-                            </p>
-                        )
-                    }
-                </div>
-
+    <div class="container mx-auto px-4 pb-24 pt-36 md:px-8 lg:px-12">
+        <header class="mb-24 flex flex-col items-center gap-12 lg:flex-row lg:gap-16">
+            <div class="space-y-8 lg:w-1/2">
+                <h1 class="text-[clamp(2.75rem,8vw,7rem)] uppercase leading-[0.92]">{pageHeading}</h1>
                 {
-                    biografia.data.image && (
-                        <div class="lg:w-1/2 w-full relative">
-                            <div class="aspect-4/5 relative [mask-image:radial-gradient(closest-side_at_50%_50%,black_50%,transparent_100%)]">
-                                <Image
-                                    src={biografia.data.image}
-                                    alt="Ritratto di Sergio Procopio"
-                                    loading="eager"
-                                    class="absolute inset-0 w-full h-full object-cover"
-                                />
-                            </div>
-                        </div>
+                    biografia.data.quote && (
+                        <p class="max-w-xl border-l-2 border-primary-soft/50 pl-6 text-xl font-light leading-relaxed text-foreground/85 md:text-2xl">
+                            "{biografia.data.quote}"
+                        </p>
                     )
                 }
             </div>
 
-            <div
-                class="space-y-16 [&_h2]:text-3xl [&_h2]:md:text-4xl [&_h2]:font-serif [&_h2]:font-semibold [&_h2]:text-transparent [&_h2]:bg-clip-text [&_h2]:bg-[linear-gradient(to_bottom,#2563eb,#1d4ed8)] [&_h2]:pb-2 [&_h2]:mt-24 [&_h2:first-child]:mt-0 [&_h2]:mb-6 [&_p]:text-lg [&_p]:text-white/80 [&_p]:leading-relaxed [&_p]:max-w-4xl [&_p]:mb-4"
-            >
-                <Content />
-            </div>
+            {
+                biografia.data.image && (
+                    <div class="relative aspect-4/5 w-full lg:w-1/2 mask-[radial-gradient(closest-side_at_50%_50%,black_50%,transparent_100%)]">
+                        <Image
+                            src={biografia.data.image}
+                            alt="Ritratto di Sergio Procopio"
+                            loading="eager"
+                            class="absolute inset-0 h-full w-full object-cover"
+                        />
+                    </div>
+                )
+            }
+        </header>
+
+        <div class="mb-24 grid grid-cols-2 gap-0.5 md:grid-cols-4">
+            {photoshoot.map((photo) => (
+                <Image
+                    src={photo}
+                    alt=""
+                    widths={[400, 640]}
+                    sizes="(min-width: 768px) 25vw, 50vw"
+                    format="webp"
+                    quality={75}
+                    loading="lazy"
+                    class="aspect-2/3 w-full object-cover"
+                />
+            ))}
+        </div>
+
+        <div class="richtext">
+            <Content />
         </div>
     </div>
 </Layout>
