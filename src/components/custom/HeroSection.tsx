@@ -6,7 +6,7 @@ export default function HeroSection({ image }: Props) {
   return (
     <section className="relative flex min-h-[min(900px,100svh)] items-end overflow-hidden pb-14 sm:pb-16 lg:pb-20">
       <div
-        className="pointer-events-none absolute right-0 top-14 h-[calc(100%-3.5rem)] w-full lg:w-[88%] mask-[linear-gradient(to_right,transparent,black_30%)]"
+        className="pointer-events-none absolute right-0 top-0 h-full w-full lg:w-[88%] mask-[linear-gradient(to_right,transparent,black_30%)]"
         aria-hidden="true"
       >
         <img

@@ -78,15 +78,24 @@ export default function Header({ pathname: initialPathname }: { pathname: string
       initial={false}
       animate={{ y: isGalleryOpen ? "-120%" : "0%", opacity: isGalleryOpen ? 0 : 1 }}
       transition={{ type: "spring", duration: reducedMotion ? 0 : 0.4, bounce: 0 }}
-      className={`site-header fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color] duration-300 ${
-        showGlass
-          ? "border-border bg-background/85 backdrop-blur-xl"
-          : "border-transparent bg-linear-to-b from-background/70 to-transparent"
-      }`}
+      className="site-header fixed inset-x-0 top-0 z-50"
       aria-hidden={isGalleryOpen}
       inert={isGalleryOpen}
     >
-      <div className="container mx-auto px-4 md:px-8 lg:px-12">
+      {/* Over the hero: a tall fade, so no edge shows. After scrolling: a solid bar with one hairline. */}
+      <div
+        aria-hidden="true"
+        className={`pointer-events-none absolute inset-x-0 top-0 h-28 bg-linear-to-b from-background/80 via-background/30 to-transparent transition-opacity duration-300 ${
+          showGlass ? "opacity-0" : "opacity-100"
+        }`}
+      />
+      <div
+        aria-hidden="true"
+        className={`pointer-events-none absolute inset-0 border-b border-border bg-background/85 backdrop-blur-xl transition-opacity duration-300 ${
+          showGlass ? "opacity-100" : "opacity-0"
+        }`}
+      />
+      <div className="container relative mx-auto px-4 md:px-8 lg:px-12">
         <div className="flex h-[68px] items-center gap-6">
           <a
             href="/"
