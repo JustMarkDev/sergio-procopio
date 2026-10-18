@@ -29,33 +29,37 @@ const photoshoot = [profile, suit, eyes, doorway];
     description={biografia.data.description}
     canonicalPath={canonicalPath}
 >
-    <div class="container mx-auto px-4 pb-24 pt-36 md:px-8 lg:px-12">
-        <header class="mb-24 flex flex-col items-center gap-12 lg:flex-row lg:gap-16">
-            <div class="space-y-8 lg:w-1/2">
-                <h1 class="text-[clamp(2.75rem,8vw,7rem)] uppercase leading-[0.92]">{pageHeading}</h1>
-                {
-                    biografia.data.quote && (
-                        <p class="max-w-xl border-l-2 border-primary-soft/50 pl-6 text-xl font-light leading-relaxed text-foreground/85 md:text-2xl">
-                            "{biografia.data.quote}"
-                        </p>
-                    )
-                }
-            </div>
+    <section class="relative flex min-h-[min(800px,100svh)] items-end overflow-hidden pb-14 lg:pb-20">
+        {
+            biografia.data.image && (
+                <div class="pointer-events-none absolute right-0 top-14 h-[calc(100%-3.5rem)] w-full mask-[linear-gradient(to_right,transparent,black_35%)] lg:w-[70%]" aria-hidden="true">
+                    <Image
+                        src={biografia.data.image}
+                        alt=""
+                        widths={[640, 1000, 1400]}
+                        sizes="(min-width: 1024px) 70vw, 100vw"
+                        loading="eager"
+                        fetchpriority="high"
+                        class="h-full w-full object-cover object-[50%_20%] outline-none"
+                    />
+                </div>
+            )
+        }
+        <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,var(--background)_0%,transparent_46%),linear-gradient(to_bottom,var(--background)_0%,transparent_22%)]"></div>
 
+        <div class="container relative mx-auto px-4 md:px-8 lg:px-12">
+            <h1 class="text-[clamp(2.75rem,9vw,8.75rem)] uppercase leading-[0.9]">{pageHeading}</h1>
             {
-                biografia.data.image && (
-                    <div class="relative aspect-4/5 w-full lg:w-1/2 mask-[radial-gradient(closest-side_at_50%_50%,black_50%,transparent_100%)]">
-                        <Image
-                            src={biografia.data.image}
-                            alt="Ritratto di Sergio Procopio"
-                            loading="eager"
-                            class="absolute inset-0 h-full w-full object-cover"
-                        />
-                    </div>
+                biografia.data.quote && (
+                    <p class="mt-8 max-w-xl border-l-2 border-primary-soft/50 pl-6 text-xl font-light leading-relaxed text-foreground/85 md:text-2xl">
+                        "{biografia.data.quote}"
+                    </p>
                 )
             }
-        </header>
+        </div>
+    </section>
 
+    <div class="container mx-auto px-4 pb-24 pt-16 md:px-8 lg:px-12 lg:pt-24">
         <div class="mb-24 grid grid-cols-2 gap-0.5 md:grid-cols-4">
             {photoshoot.map((photo) => (
                 <Image

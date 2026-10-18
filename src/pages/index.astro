@@ -61,7 +61,7 @@ const nextEvents = upcomingEvents.slice(0, 4);
             Ogni spettacolo parte da un tema che riguarda tutti, e lo affida al <em class="font-normal not-italic text-primary-soft">silenzio</em> prima che alle parole.
         </p>
     </section>
-    <FeaturedShows shows={featuredShows} />
+    <FeaturedShows client:visible shows={featuredShows} />
     {nextEvents.length > 0 && (
         <section aria-labelledby="next-dates-title" class="container mx-auto px-4 py-24 md:px-8 lg:px-12 lg:py-36">
             <h2 id="next-dates-title" class="mb-10 text-[clamp(1.25rem,3vw,2.5rem)] uppercase leading-none tracking-[0.02em]">
