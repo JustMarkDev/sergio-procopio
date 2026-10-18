@@ -408,8 +408,28 @@ content:
           media: assets
           path: biografia
 
+      - name: since
+        label: Anno di inizio carriera
+        type: number
+        description: "Gli anni sul palco si aggiornano da soli a partire da questo anno"
+
+      - name: stats
+        label: Numeri in evidenza
+        type: object
+        list: true
+        fields:
+          - name: value
+            label: Numero
+            type: string
+            required: true
+            description: "Esempio: 2000+"
+          - name: label
+            label: Descrizione
+            type: string
+            required: true
+
       - name: body
         label: Contenuto pagina
         type: rich-text
         required: true
-        description: "Testo principale della biografia"
+        description: "Testo principale della biografia. L'elenco puntato sotto «Le tappe» diventa la cronologia: inizia ogni voce con l'anno in grassetto."

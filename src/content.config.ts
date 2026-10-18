@@ -185,6 +185,8 @@ const pagesCollection = defineCollection({
       description: z.string(),
       quote: z.string().optional(),
       image: image().optional(),
+      since: z.number().int().optional(),
+      stats: z.array(z.object({ value: z.string(), label: z.string() })).default([]),
     }),
 });
 
