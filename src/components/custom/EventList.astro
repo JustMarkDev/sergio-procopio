@@ -22,7 +22,7 @@ interface Props {
 const { events, compact = false } = Astro.props;
 
 const timeZone = "Europe/Rome";
-const dayFormatter = new Intl.DateTimeFormat("it-IT", { day: "numeric", timeZone });
+const dayFormatter = new Intl.DateTimeFormat("it-IT", { day: "2-digit", timeZone });
 const monthFormatter = new Intl.DateTimeFormat("it-IT", { month: "short", timeZone });
 const yearFormatter = new Intl.DateTimeFormat("it-IT", { year: "numeric", timeZone });
 const action =
