@@ -25,7 +25,12 @@ export async function getCalendarEvents() {
       .filter((show) => !show.data.draft)
       .map((show) => [
         normalizeTitle(show.data.title),
-        { href: `/spettacoli/${show.id}`, image: show.data.image },
+        {
+          href: `/spettacoli/${show.id}`,
+          images: [show.data.image, ...show.data.galleryImages].filter(
+            (image) => image !== undefined,
+          ),
+        },
       ]),
   );
 
@@ -33,7 +38,7 @@ export async function getCalendarEvents() {
     ...eventi.map((event) => ({
       kind: "spettacolo" as const,
       href: showPages.get(normalizeTitle(event.data.name))?.href,
-      image: showPages.get(normalizeTitle(event.data.name))?.image,
+      image: undefined as ImageMetadata | undefined,
       data: event.data,
     })),
     ...dateCorso.map((event) => ({
@@ -46,9 +51,14 @@ export async function getCalendarEvents() {
     .filter((event) => !event.data.draft && event.data.isPublic)
     .sort((a, b) => a.data.date.getTime() - b.data.date.getTime());
 
-  let courseDates = 0;
+  // Repeated dates of the same show walk through its photos in order.
+  const seen = new Map<string, number>();
   for (const event of events) {
-    if (event.kind === "corso") event.image = courseImages[courseDates++ % courseImages.length];
+    const key = event.kind === "corso" ? "" : normalizeTitle(event.data.name);
+    const pool = event.kind === "corso" ? courseImages : showPages.get(key)?.images;
+    const n = seen.get(key) ?? 0;
+    seen.set(key, n + 1);
+    if (pool?.length) event.image = pool[n % pool.length];
   }
   return events;
 }

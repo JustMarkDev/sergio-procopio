@@ -92,6 +92,7 @@ const spettacoliCollection = defineCollection({
       produzione: z.string().optional().default("Teatro Procopio"),
       tecnico: z.string().optional(),
       requisiti: z.string().optional(),
+      costo: z.string().optional().default("Su preventivo"),
       highlight: z.boolean().optional().default(false),
       draft: z.boolean().optional().default(false),
     }),

@@ -15,6 +15,7 @@ type AgentShow = {
   produzione?: string;
   tecnico?: string;
   requisiti?: string;
+  costo?: string;
   body?: string;
 };
 
@@ -136,6 +137,7 @@ export const showMarkdown = (show: AgentShow) =>
     show.produzione ? `- Produzione: ${show.produzione}` : "",
     show.tecnico ? `- Tecnico: ${show.tecnico}` : "",
     show.requisiti ? `- Requisiti: ${show.requisiti}` : "",
+    show.costo ? `- Costo: ${show.costo}` : "",
     "",
     contentBody(show.body),
     "",
