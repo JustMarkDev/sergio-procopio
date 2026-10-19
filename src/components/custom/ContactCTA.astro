@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import Reveal from "./Reveal";
+import Reveal from "./Reveal.astro";
 import ctaImage from "../../assets/spettacoli/la-valigia-di-s-francesco/la ricerca.webp";
 ---
 
@@ -19,7 +19,7 @@ import ctaImage from "../../assets/spettacoli/la-valigia-di-s-francesco/la ricer
     </div>
     <div class="pointer-events-none absolute inset-0 bg-background/55 lg:bg-transparent bg-[linear-gradient(to_top,var(--background),transparent_30%),linear-gradient(to_bottom,var(--background),transparent_30%)]"></div>
 
-    <Reveal client:visible className="container relative mx-auto px-4 md:px-8 lg:px-12">
+    <Reveal class="container relative mx-auto px-4 md:px-8 lg:px-12">
         <h2 id="contact-cta-title" class="max-w-[13em] text-[clamp(1.75rem,5.2vw,4.75rem)] uppercase leading-[1.04]">
             Porta lo spettacolo nella tua scuola, parrocchia o teatro.
         </h2>

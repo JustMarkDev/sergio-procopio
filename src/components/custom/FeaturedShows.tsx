@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 interface Show {
   id: string;
@@ -21,6 +21,23 @@ interface Props {
 // The list drives the background: hovering or focusing a title brings its photo forward.
 export default function FeaturedShows({ shows }: Props) {
   const [active, setActive] = useState(0);
+  // Photos load on first hover, and stay hidden behind the current one until they have, so
+  // the section fetches one photo instead of all of them.
+  const [shown, setShown] = useState(0);
+  const [wanted, setWanted] = useState(() => new Set([0]));
+  const loaded = useRef(new Set([0]));
+  const activeRef = useRef(0);
+
+  const select = (index: number) => {
+    activeRef.current = index;
+    setActive(index);
+    setWanted((current) => (current.has(index) ? current : new Set(current).add(index)));
+    if (loaded.current.has(index)) setShown(index);
+  };
+  const markLoaded = (index: number) => {
+    loaded.current.add(index);
+    if (activeRef.current === index) setShown(index);
+  };
 
   return (
     <section
@@ -30,16 +47,18 @@ export default function FeaturedShows({ shows }: Props) {
       <div className="absolute inset-0" aria-hidden="true">
         {shows.map(
           (show, index) =>
-            show.image && (
+            show.image &&
+            wanted.has(index) && (
               <img
                 key={show.id}
+                onLoad={() => markLoaded(index)}
                 {...show.image}
                 sizes="100vw"
                 alt=""
                 loading="lazy"
                 decoding="async"
                 className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
-                  index === active ? "opacity-100" : "opacity-0"
+                  index === shown ? "opacity-100" : "opacity-0"
                 }`}
               />
             ),
@@ -56,8 +75,8 @@ export default function FeaturedShows({ shows }: Props) {
             <li key={show.id}>
               <a
                 href={`/spettacoli/${show.id}`}
-                onMouseEnter={() => setActive(index)}
-                onFocus={() => setActive(index)}
+                onMouseEnter={() => select(index)}
+                onFocus={() => select(index)}
                 aria-current={index === active ? "true" : undefined}
                 className={`relative block py-1.5 text-[clamp(1.35rem,3.8vw,3.5rem)] uppercase leading-[1.05] tracking-[0.01em] transition-colors duration-300 before:absolute before:inset-y-2.5 before:left-0 before:w-[3px] before:bg-primary-hover before:transition-transform before:duration-300 ${
                   index === active

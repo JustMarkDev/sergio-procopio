@@ -3,6 +3,7 @@ import '@fontsource/jost/300.css';
 import '@fontsource/jost/400.css';
 import '@fontsource/jost/500.css';
 import jostFont from '@fontsource/jost/files/jost-latin-400-normal.woff2?url';
+import jostLightFont from '@fontsource/jost/files/jost-latin-300-normal.woff2?url';
 import '../styles/globals.css';
 import SEO from '../components/SEO.astro';
 import Schema from '../components/Schema.astro';
@@ -26,16 +27,31 @@ const { title, description, canonicalPath, noindex = false } = Astro.props;
 <html lang="it" class="dark scroll-smooth">
 	<head>
 		<link rel="preload" href={jostFont} as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href={jostLightFont} as="font" type="font/woff2" crossorigin />
 		<SEO title={title} description={description} canonicalPath={canonicalPath} noindex={noindex} />
 		<Schema />
 		<ClientRouter />
 	</head>
 	<body>
-		<Header pathname={Astro.url.pathname} client:load transition:persist />
+		<Header pathname={Astro.url.pathname} client:idle transition:persist />
 		<main>
 			<slot />
 		</main>
 		<Footer />
+		<script>
+			const reveal = new IntersectionObserver(
+				(entries) =>
+					entries.forEach((entry) => {
+						if (!entry.isIntersecting) return;
+						entry.target.classList.add('in');
+						reveal.unobserve(entry.target);
+					}),
+				{ rootMargin: '0px 0px -12% 0px' },
+			);
+			document.addEventListener('astro:page-load', () =>
+				document.querySelectorAll('.reveal:not(.in)').forEach((el) => reveal.observe(el)),
+			);
+		</script>
 		<SpeedInsights />
 		<Analytics />
 	</body>

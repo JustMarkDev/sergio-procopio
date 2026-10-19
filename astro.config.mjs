@@ -27,7 +27,19 @@ export default defineConfig({
   output: "server",
   adapter: vercel({
     webAnalytics: { enabled: true },
+    // Resize and re-encode (AVIF/WebP) on Vercel's image CDN instead of sharp inside the render function.
+    imageService: true,
+    imagesConfig: {
+      sizes: [
+        120, 160, 200, 240, 320, 400, 600, 640, 750, 960, 1000, 1080, 1200, 1280, 1400, 1476, 1500,
+        1920, 2048,
+      ],
+      formats: ["image/avif", "image/webp"],
+      // Source URLs are content-hashed, so optimized variants never go stale.
+      minimumCacheTTL: 31536000,
+    },
   }),
+  prefetch: { prefetchAll: true },
   integrations: [react(), sitemap({ customPages: publicShowPages })],
   vite: {
     plugins: [tailwindcss()],

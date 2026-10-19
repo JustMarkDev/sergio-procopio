@@ -1,7 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import HeroSection from "../components/custom/HeroSection";
-import Reveal from "../components/custom/Reveal";
+import HeroSection from "../components/custom/HeroSection.astro";
+import Reveal from "../components/custom/Reveal.astro";
 import FeaturedShows from "../components/custom/FeaturedShows";
 import ContactCTA from "../components/custom/ContactCTA.astro";
 import EventList from "../components/custom/EventList.astro";
@@ -17,7 +17,7 @@ const heroImage = await getImage({
     height: 984,
     widths: [640, 960, 1280, 1476],
     format: "webp",
-    quality: 85,
+    quality: 80,
 });
 
 const allShows = (await getCollection("spettacoli")).filter(
@@ -56,14 +56,14 @@ const nextEvents = upcomingEvents.slice(0, 4);
 ---
 
 <Layout>
-    <HeroSection client:load image={{ src: heroImage.src, srcSet: heroImage.srcSet.attribute, width: 1476, height: 984 }} />
+    <HeroSection image={{ src: heroImage.src, srcSet: heroImage.srcSet.attribute, width: 1476, height: 984 }} />
     <FeaturedShows client:visible shows={featuredShows} />
     {nextEvents.length > 0 && (
         <section aria-labelledby="next-dates-title" class="container mx-auto px-4 py-24 md:px-8 lg:px-12 lg:py-36">
             <h2 id="next-dates-title" class="mb-10 text-[clamp(1.25rem,3vw,2.5rem)] uppercase leading-none tracking-[0.02em]">
                 Prossime date
             </h2>
-            <Reveal client:visible>
+            <Reveal>
                 <EventList events={nextEvents} compact />
             </Reveal>
             <a href="/calendario" class="mt-10 inline-block border-b border-primary-soft pb-1.5 text-xs font-medium uppercase tracking-[0.18em] text-primary-soft transition-colors hover:border-foreground hover:text-foreground">

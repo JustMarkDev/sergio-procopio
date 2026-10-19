@@ -29,6 +29,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const headers = new Headers(response.headers);
   if (shouldNegotiate) {
     addVary(headers, "Accept", "Accept-Encoding");
+    // Serve pages from Vercel's CDN; Vary keeps HTML and Markdown cached separately.
+    // Short TTL so the upcoming/past split of events rolls over without a redeploy.
+    if (request.method === "GET" && response.status === 200 && !headers.has("Cache-Control")) {
+      headers.set("Cache-Control", "public, max-age=0, s-maxage=300, stale-while-revalidate=86400");
+    }
   }
 
   return new Response(response.body, {

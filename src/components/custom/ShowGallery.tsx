@@ -14,6 +14,7 @@ export interface GalleryImage {
 
 interface ShowGalleryProps {
   mainImageSrc: string;
+  mainImageSrcSet?: string;
   mainImageWidth: number;
   mainImageHeight: number;
   mainImageOriginalSrc: string;
@@ -23,6 +24,7 @@ interface ShowGalleryProps {
 
 export default function ShowGallery({
   mainImageSrc,
+  mainImageSrcSet,
   mainImageWidth,
   mainImageHeight,
   mainImageOriginalSrc,
@@ -158,11 +160,14 @@ export default function ShowGallery({
       >
         <img
           src={mainImageSrc}
+          srcSet={mainImageSrcSet}
+          sizes="(min-width: 1024px) 1200px, calc(100vw - 32px)"
           width={mainImageWidth}
           height={mainImageHeight}
           alt={alt}
           className="w-full h-auto block transition-all duration-700 group-hover:scale-102 group-hover:opacity-85"
-          loading="lazy"
+          loading="eager"
+          fetchPriority="high"
           decoding="async"
         />
 

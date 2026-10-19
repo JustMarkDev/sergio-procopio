@@ -78,14 +78,17 @@ const showImages = await Promise.all(
 
 // E per l'immagine principale: la ottimizziamo anche per un caricamento istantaneo
 let optimizedMainImage = "";
+let optimizedMainImageSrcSet: string | undefined;
 if (show.data.image) {
     const optimized = await getImage({
         src: show.data.image,
         width: 1000,
+        widths: [640, 1000, 1500],
         format: "webp",
         quality: 80,
     });
     optimizedMainImage = optimized.src;
+    optimizedMainImageSrcSet = optimized.srcSet.attribute;
 }
 
 const site = Astro.site ?? new URL("https://sergioprocopio.it");
@@ -139,8 +142,9 @@ const notes = [
         {
             show.data.image ? (
                 <ShowGallery
-                    client:load
+                    client:idle
                     mainImageSrc={optimizedMainImage}
+                    mainImageSrcSet={optimizedMainImageSrcSet}
                     mainImageWidth={show.data.image.width}
                     mainImageHeight={show.data.image.height}
                     mainImageOriginalSrc={show.data.image.src}
