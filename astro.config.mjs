@@ -39,7 +39,7 @@ export default defineConfig({
       minimumCacheTTL: 31536000,
     },
   }),
-  prefetch: { prefetchAll: true },
+  prefetch: { prefetchAll: true, defaultStrategy: "viewport" },
   integrations: [react(), sitemap({ customPages: publicShowPages })],
   vite: {
     plugins: [tailwindcss()],

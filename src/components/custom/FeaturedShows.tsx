@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Show {
   id: string;
@@ -28,6 +28,15 @@ export default function FeaturedShows({ shows }: Props) {
   const loaded = useRef(new Set([0]));
   const activeRef = useRef(0);
 
+  // Hover devices fetch the other photos once the page is idle, so a hover is instant.
+  useEffect(() => {
+    if (!window.matchMedia("(hover: hover)").matches) return;
+    const warm = () => setWanted(new Set(shows.keys()));
+    if (!("requestIdleCallback" in window)) return void setTimeout(warm, 1500);
+    const id = window.requestIdleCallback(warm, { timeout: 3000 });
+    return () => window.cancelIdleCallback(id);
+  }, [shows]);
+
   const select = (index: number) => {
     activeRef.current = index;
     setActive(index);
@@ -55,7 +64,8 @@ export default function FeaturedShows({ shows }: Props) {
                 {...show.image}
                 sizes="100vw"
                 alt=""
-                loading="lazy"
+                loading={index === 0 ? "lazy" : "eager"}
+                fetchPriority={index === 0 ? undefined : "low"}
                 decoding="async"
                 className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
                   index === shown ? "opacity-100" : "opacity-0"

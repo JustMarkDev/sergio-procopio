@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import LightboxImage from "./LightboxImage";
 
 export interface GalleryImage {
   src: string; // 1200px optimized WebP
@@ -32,10 +33,7 @@ function GalleryCard({ image, index, onOpen }: GalleryCardProps) {
       className="relative group mb-6 md:mb-8 overflow-hidden bg-secondary break-inside-avoid cursor-pointer transition-all duration-300 ring-1 ring-border hover:ring-primary-soft/50"
       style={{ aspectRatio: `${image.width} / ${image.height}` }}
     >
-      <div
-        className="absolute inset-0 bg-linear-to-br from-white/3 via-white/8 to-white/3"
-        aria-hidden="true"
-      />
+      <div className="skeleton absolute inset-0" aria-hidden="true" />
 
       <img
         src={image.gridSrc}
@@ -206,12 +204,21 @@ export default function GalleryView({ images }: GalleryViewProps) {
               className="w-full pt-3 md:pt-4 pb-2 px-16 md:px-20 text-center select-none relative z-50 shrink-0"
               onClick={(e) => e.stopPropagation()}
             >
-              <h2 className="text-lg sm:text-2xl md:text-4xl uppercase tracking-[0.04em] text-foreground truncate">
-                {currentImage.title}
-              </h2>
-              <p className="text-[10px] md:text-sm text-primary-soft uppercase tracking-[0.18em] font-medium mt-1 md:mt-2 truncate">
-                {currentImage.subtitle}
-              </p>
+              {isImageLoading ? (
+                <div aria-hidden="true" className="flex flex-col items-center">
+                  <div className="skeleton h-6 w-2/3 max-w-md md:h-9" />
+                  <div className="skeleton mt-2 h-3 w-1/3 max-w-48 md:mt-3 md:h-4" />
+                </div>
+              ) : (
+                <>
+                  <h2 className="text-lg sm:text-2xl md:text-4xl uppercase tracking-[0.04em] text-foreground truncate">
+                    {currentImage.title}
+                  </h2>
+                  <p className="text-[10px] md:text-sm text-primary-soft uppercase tracking-[0.18em] font-medium mt-1 md:mt-2 truncate">
+                    {currentImage.subtitle}
+                  </p>
+                </>
+              )}
 
               {/* Close Button */}
               <button
@@ -239,26 +246,14 @@ export default function GalleryView({ images }: GalleryViewProps) {
 
               {/* Central Image Container (fixed-height wrapper prevents screen height shift) */}
               <div className="relative h-full w-full flex items-center justify-center z-10">
-                {/* Premium Centered Loader */}
-                {isImageLoading && (
-                  <div
-                    className="absolute w-28 h-28 md:w-44 md:h-44 bg-secondary/80 border border-border flex items-center justify-center shadow-xl backdrop-blur-md animate-pulse"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <div className="w-10 h-10 border-4 border-white/10 border-t-primary-soft rounded-full animate-spin"></div>
-                  </div>
-                )}
-
-                <motion.img
+                <LightboxImage
                   key={activeIndex}
                   src={currentImage.src}
                   alt={currentImage.alt}
+                  width={currentImage.width}
+                  height={currentImage.height}
+                  loading={isImageLoading}
                   onLoad={() => setIsImageLoading(false)}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: isImageLoading ? 0 : 1 }}
-                  transition={{ duration: 0.25 }}
-                  className="max-h-full max-w-full w-auto h-auto object-contain border border-border select-none"
-                  onClick={(e) => e.stopPropagation()}
                 />
               </div>
 
