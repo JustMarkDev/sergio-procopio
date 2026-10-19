@@ -33,13 +33,16 @@ slug: la-valigia-di-san-francesco
 draft: false
 ---
 
-## Proposta
+## La storia
 
-Nel 2026, con il ritorno ufficiale di San Francesco come Patrono d’Italia e la giornata nazionale a lui dedicata, cresce il desiderio di riscoprire il suo messaggio di pace, semplicità e fraternità.
+Sergio è un uomo come tanti, schiacciato dai ritmi e dai pesi della vita moderna: la fretta, le scadenze, le cose da fare che non finiscono mai. Un giorno trova una vecchia valigia e, quasi per caso, indossa un saio francescano. Da quel momento comincia per lui un viaggio che è insieme interiore ed esilarante.
 
-In questo spirito nasce “La Valigia di S. Francesco”, uno spettacolo unico nel suo genere: comico, poetico e profondamente spirituale, capace di parlare a tutti — bambini, giovani, adulti e anziani — con un linguaggio universale che supera le parole e arriva dritto al cuore.
+Liberamente ispirato alle Fonti Francescane, lo spettacolo accompagna Sergio tra gli episodi più noti della vita di Francesco: gli uccelli, il lupo, le scelte di povertà, castità e obbedienza. Il tono è comico e poetico, e la storia si lascia seguire con il sorriso, prima ancora che con la riflessione.
 
-## Trama
+## Il tema
 
-Liberamente ispirato alle Fonti Francescane, lo spettacolo racconta la storia di Sergio, un uomo comune, schiacciato dai ritmi e dai pesi della vita moderna.
-Un giorno trova una vecchia valigia e, indossando per caso un saio francescano, si ritrova catapultato in un viaggio interiore ed esilarante che lo condurrà a riscoprire la fede, la semplicità e la gioia di sentirsi amato da Dio.
+Nel 2026 San Francesco torna al centro dell'attenzione: Patrono d'Italia, con una giornata nazionale a lui dedicata. Da qui nasce il desiderio di riscoprire il suo messaggio di pace, semplicità e fraternità.
+
+La valigia del titolo è anche una domanda: di cosa abbiamo davvero bisogno per metterci in cammino? Lo spettacolo la pone con leggerezza, senza lezioni, attraverso un linguaggio che supera le parole e arriva dritto al cuore.
+
+Comico, poetico e profondamente spirituale, parla a tutti: bambini, giovani, adulti e anziani. Per questo è adatto anche alle comunità parrocchiali, dove nella stessa sala siedono generazioni diverse.

@@ -2,12 +2,6 @@
 import { SITE_TITLE, SITE_DESCRIPTION, SOCIAL_LINKS } from '../consts';
 import { CONTACT_NAP } from '../lib/contact-trust';
 
-const postalAddress = {
-  "@type": "PostalAddress",
-  "streetAddress": CONTACT_NAP.streetAddress,
-  "addressCountry": "IT"
-};
-
 const contactPoint = {
   "@type": "ContactPoint",
   "contactType": "bookings and information",
@@ -29,8 +23,6 @@ const personSchema = {
   "jobTitle": "Attore, mimo e regista teatrale",
   "email": CONTACT_NAP.email,
   "telephone": CONTACT_NAP.telephone,
-  "address": postalAddress,
-  "vatID": CONTACT_NAP.vat,
   "sameAs": [
     SOCIAL_LINKS.instagram,
     SOCIAL_LINKS.facebook,
@@ -50,8 +42,6 @@ const organizationSchema = {
   "description": SITE_DESCRIPTION,
   "email": CONTACT_NAP.email,
   "telephone": CONTACT_NAP.telephone,
-  "vatID": CONTACT_NAP.vat,
-  "address": postalAddress,
   "contactPoint": contactPoint,
   "founder": { "@id": "https://sergioprocopio.it/#person" },
   "sameAs": [

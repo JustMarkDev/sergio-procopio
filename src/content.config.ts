@@ -92,6 +92,7 @@ const spettacoliCollection = defineCollection({
       produzione: z.string().optional().default("Teatro Procopio"),
       tecnico: z.string().optional(),
       requisiti: z.string().optional(),
+      costo: z.string().optional().default("Su preventivo"),
       highlight: z.boolean().optional().default(false),
       draft: z.boolean().optional().default(false),
     }),
@@ -169,17 +170,12 @@ const corsoCollection = defineCollection({
     }),
 });
 
-// Each course date can carry its own title, e.g. the group it was tailored for.
+// Every course date is shown under the default course title.
 const dateCorsoCollection = defineCollection({
   loader: glob({ pattern: "*.md", base: "./src/content/date-corso" }),
   schema: z
-    .object({
-      titolo: z.string().optional(),
-      ...eventFields,
-    })
-    .transform((event, ctx) =>
-      withEventDateTime(event, ctx, event.titolo?.trim() || COURSE_DEFAULT_TITLE),
-    ),
+    .object(eventFields)
+    .transform((event, ctx) => withEventDateTime(event, ctx, COURSE_DEFAULT_TITLE)),
 });
 
 const pagesCollection = defineCollection({
@@ -190,6 +186,8 @@ const pagesCollection = defineCollection({
       description: z.string(),
       quote: z.string().optional(),
       image: image().optional(),
+      since: z.number().int().optional(),
+      stats: z.array(z.object({ value: z.string(), label: z.string() })).default([]),
     }),
 });
 

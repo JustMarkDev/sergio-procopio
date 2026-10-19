@@ -154,7 +154,7 @@ export default function ShowGallery({
       {/* Clickable Main Image Trigger */}
       <div
         onClick={() => setActiveIndex(activeIndexToUse)}
-        className="relative group overflow-hidden rounded-[2.5rem] border border-white/5 shadow-2xl bg-[#09090b] cursor-pointer w-full h-auto block"
+        className="relative group overflow-hidden bg-secondary cursor-pointer w-full h-auto block"
       >
         <img
           src={mainImageSrc}
@@ -169,7 +169,7 @@ export default function ShowGallery({
         {/* Premium Overlay indicator */}
         {images.length > 0 && (
           <div className="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
-            <span className="py-2.5 px-6 bg-black/60 backdrop-blur-md border border-white/10 rounded-full text-xs font-bold text-white uppercase tracking-wider scale-95 group-hover:scale-100 transition-all duration-300 flex items-center gap-2">
+            <span className="py-3 px-6 bg-background/85 border border-border text-xs font-medium text-foreground uppercase tracking-[0.18em] scale-95 group-hover:scale-100 transition-all duration-300 flex items-center gap-2">
               Visualizza Galleria ({images.length})
             </span>
           </div>
@@ -184,7 +184,7 @@ export default function ShowGallery({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 h-[100dvh] bg-black/90 backdrop-blur-xl z-40 flex flex-col overflow-hidden"
+            className="fixed inset-0 h-[100dvh] bg-background/95 backdrop-blur-xl z-40 flex flex-col overflow-hidden"
             onClick={() => setActiveIndex(null)}
           >
             {/* Top Section - Show Title / Description & Close Button */}
@@ -192,17 +192,17 @@ export default function ShowGallery({
               className="w-full pt-3 md:pt-4 pb-2 px-16 md:px-20 text-center select-none relative z-50 shrink-0"
               onClick={(e) => e.stopPropagation()}
             >
-              <h2 className="text-lg sm:text-2xl md:text-4xl font-serif font-bold text-white tracking-wide drop-shadow-md truncate">
+              <h2 className="text-lg sm:text-2xl md:text-4xl uppercase tracking-[0.04em] text-foreground truncate">
                 {currentImage.title}
               </h2>
-              <p className="text-[10px] md:text-sm text-primary uppercase tracking-[0.18em] font-bold mt-1 md:mt-2 italic font-serif capitalize truncate">
+              <p className="text-[10px] md:text-sm text-primary-soft uppercase tracking-[0.18em] font-medium mt-1 md:mt-2 truncate">
                 {currentImage.subtitle}
               </p>
 
               {/* Close Button */}
               <button
                 onClick={() => setActiveIndex(null)}
-                className="absolute top-3 md:top-4 right-4 md:right-8 bg-white/5 hover:bg-primary/20 border border-white/10 hover:border-primary/50 text-white p-2.5 rounded-full backdrop-blur-md transition-[background-color,border-color,scale] duration-300 shadow-lg cursor-pointer flex items-center justify-center focus:outline-none active:scale-[0.96]"
+                className="absolute top-3 md:top-4 right-4 md:right-8 bg-background/60 hover:bg-primary/30 border border-border hover:border-primary-soft/60 text-foreground p-2.5 backdrop-blur-md transition-[background-color,border-color,scale] duration-300 shadow-lg cursor-pointer flex items-center justify-center focus:outline-none active:scale-[0.96]"
                 aria-label="Chiudi galleria"
               >
                 <X size={20} />
@@ -217,7 +217,7 @@ export default function ShowGallery({
                   e.stopPropagation();
                   showPrev();
                 }}
-                className="absolute left-2 md:left-8 bg-black/55 hover:bg-primary/20 text-white p-2.5 md:p-3.5 rounded-full border border-white/10 hover:border-primary/50 transition-all duration-300 backdrop-blur-md shadow-lg cursor-pointer flex items-center justify-center z-50 focus:outline-none"
+                className="absolute left-2 md:left-8 bg-background/60 hover:bg-primary/30 text-foreground p-2.5 md:p-3.5 border border-border hover:border-primary-soft/60 transition-all duration-300 backdrop-blur-md shadow-lg cursor-pointer flex items-center justify-center z-50 focus:outline-none"
                 aria-label="Immagine precedente"
               >
                 <ChevronLeft size={22} />
@@ -228,10 +228,10 @@ export default function ShowGallery({
                 {/* Premium Centered Loader */}
                 {isImageLoading && (
                   <div
-                    className="absolute w-28 h-28 md:w-44 md:h-44 bg-zinc-900/60 border border-white/5 rounded-2xl flex items-center justify-center shadow-xl backdrop-blur-md animate-pulse"
+                    className="absolute w-28 h-28 md:w-44 md:h-44 bg-secondary/80 border border-border flex items-center justify-center shadow-xl backdrop-blur-md animate-pulse"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <div className="w-10 h-10 border-4 border-white/10 border-t-primary rounded-full animate-spin"></div>
+                    <div className="w-10 h-10 border-4 border-white/10 border-t-primary-soft rounded-full animate-spin"></div>
                   </div>
                 )}
 
@@ -243,7 +243,7 @@ export default function ShowGallery({
                   initial={{ opacity: 0 }}
                   animate={{ opacity: isImageLoading ? 0 : 1 }}
                   transition={{ duration: 0.25 }}
-                  className="max-h-full max-w-full w-auto h-auto object-contain rounded-xl md:rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] border border-white/10 select-none"
+                  className="max-h-full max-w-full w-auto h-auto object-contain border border-border select-none"
                   onClick={(e) => e.stopPropagation()}
                 />
               </div>
@@ -254,7 +254,7 @@ export default function ShowGallery({
                   e.stopPropagation();
                   showNext();
                 }}
-                className="absolute right-2 md:right-8 bg-black/55 hover:bg-primary/20 text-white p-2.5 md:p-3.5 rounded-full border border-white/10 hover:border-primary/50 transition-all duration-300 backdrop-blur-md shadow-lg cursor-pointer flex items-center justify-center z-50 focus:outline-none"
+                className="absolute right-2 md:right-8 bg-background/60 hover:bg-primary/30 text-foreground p-2.5 md:p-3.5 border border-border hover:border-primary-soft/60 transition-all duration-300 backdrop-blur-md shadow-lg cursor-pointer flex items-center justify-center z-50 focus:outline-none"
                 aria-label="Immagine successiva"
               >
                 <ChevronRight size={22} />
@@ -277,10 +277,10 @@ export default function ShowGallery({
                     <button
                       key={idx}
                       onClick={() => setActiveIndex(idx)}
-                      className={`relative shrink-0 transition-all duration-300 w-10 h-10 md:w-14 md:h-14 rounded-lg md:rounded-xl overflow-hidden cursor-pointer flex items-center justify-center ${
+                      className={`relative shrink-0 transition-all duration-300 w-10 h-10 md:w-14 md:h-14 overflow-hidden cursor-pointer flex items-center justify-center ${
                         isActive
-                          ? "border-2 border-primary scale-110 opacity-100 z-10"
-                          : "border border-white/10 opacity-40 hover:opacity-85 hover:scale-105"
+                          ? "border-2 border-primary-soft scale-110 opacity-100 z-10"
+                          : "border border-border opacity-40 hover:opacity-85 hover:scale-105"
                       }`}
                     >
                       <img

@@ -76,49 +76,22 @@ const galleryImages = await Promise.all(
     title="Galleria | Sergio Procopio"
     description="Scopri le immagini dei momenti più emozionanti degli spettacoli teatrali di Sergio Procopio."
 >
-    <div class="relative overflow-hidden bg-[#09090b] min-h-screen">
-        {/* Background Aurora */}
-        <div
-            class="absolute top-0 left-0 w-full h-[50vh] bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.05)_0%,transparent_70%)] pointer-events-none"
-        >
-        </div>
+    <div class="container mx-auto min-h-screen px-4 pb-24 pt-36 md:px-8 lg:px-12">
+        <header class="mb-16 max-w-4xl">
+            <h1 class="text-[clamp(2.75rem,8vw,7rem)] uppercase leading-[0.92]">Galleria</h1>
+            <p class="mt-6 max-w-2xl text-lg font-light leading-relaxed text-muted-foreground lg:text-xl">
+                Un'immagine vale più di mille parole, specialmente quando il silenzio è il protagonista sul palcoscenico.
+            </p>
+        </header>
 
-        <div class="container relative z-10 mx-auto px-4 md:px-8 lg:px-12 py-32">
-            <div class="max-w-4xl mx-auto text-center mb-20">
-                <div class="animate-fade-in">
-                    <h1
-                        class="text-5xl md:text-7xl font-serif font-bold mb-6 tracking-tight"
-                    >
-                        Galleria <span class="italic text-primary"
-                            >Emozionale</span
-                        >
-                    </h1>
-                    <p
-                        class="text-xl text-muted-foreground font-serif italic max-w-2xl mx-auto opacity-80"
-                    >
-                        "Un'immagine vale più di mille parole, specialmente
-                        quando il silenzio è il protagonista sul palcoscenico."
-                    </p>
-                </div>
-            </div>
-
-            {/* Masonry Columns Gallery - Expanded width */}
-            {
-                galleryImages.length > 0 ? (
-                    <GalleryView client:visible images={galleryImages} />
-                ) : (
-                    <div class="text-center py-20 bg-white/5 border border-white/10 rounded-3xl max-w-4xl mx-auto">
-                        <p class="text-xl font-serif text-muted-foreground">
-                            La galleria è momentaneamente vuota.
-                        </p>
-                        <p class="text-sm text-muted-foreground/60 mt-2">
-                            Aggiungi delle immagini nelle cartelle
-                            dal campo Immagini galleria di uno spettacolo per
-                            vederle apparire qui.
-                        </p>
-                    </div>
-                )
-            }
-        </div>
+        {
+            galleryImages.length > 0 ? (
+                <GalleryView client:visible images={galleryImages} />
+            ) : (
+                <p class="border-y border-border py-12 font-light text-muted-foreground">
+                    La galleria è momentaneamente vuota.
+                </p>
+            )
+        }
     </div>
 </Layout>

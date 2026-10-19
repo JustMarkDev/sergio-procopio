@@ -15,6 +15,7 @@ type AgentShow = {
   produzione?: string;
   tecnico?: string;
   requisiti?: string;
+  costo?: string;
   body?: string;
 };
 
@@ -136,6 +137,7 @@ export const showMarkdown = (show: AgentShow) =>
     show.produzione ? `- Produzione: ${show.produzione}` : "",
     show.tecnico ? `- Tecnico: ${show.tecnico}` : "",
     show.requisiti ? `- Requisiti: ${show.requisiti}` : "",
+    show.costo ? `- Costo: ${show.costo}` : "",
     "",
     contentBody(show.body),
     "",
@@ -213,7 +215,6 @@ export const contactMarkdown = (locale: "it" | "en" = "it") => {
     "",
     `Email: [${CONTACT_NAP.email}](mailto:${CONTACT_NAP.email}).`,
     `Telefono: [${CONTACT_NAP.telephoneDisplay}](tel:${CONTACT_NAP.telephone}).`,
-    `Indirizzo: ${CONTACT_NAP.streetAddress}. P.IVA ${CONTACT_NAP.vat}.`,
     "",
     `Compila il [modulo Contatti](${link("/contatti")}) oppure la pagina inglese [Contact](${link("/contact")}).`,
     "",
@@ -235,11 +236,20 @@ export const privacyMarkdown = () =>
     "# Informativa sulla Privacy",
     "> Informativa sul trattamento dei dati personali del sito sergioprocopio.it.",
     "",
-    "Il titolare del trattamento è Sergio Procopio (P.IVA 02470860137), con sede fiscale in Via Genico, 2. Per domande sulla privacy o per esercitare i propri diritti (accesso, rettifica, cancellazione, limitazione, opposizione, portabilità), scrivere a [info@sergioprocopio.it](mailto:info@sergioprocopio.it).",
+    "Il titolare del trattamento è Sergio Procopio. Per domande sulla privacy o per esercitare i propri diritti (accesso, rettifica, cancellazione, limitazione, opposizione, portabilità), scrivere a [info@sergioprocopio.it](mailto:info@sergioprocopio.it).",
     "",
-    "Il sito utilizza dati di navigazione aggregati per il funzionamento e l'analisi statistica. I dati inviati tramite il modulo di contatto — nome, email, oggetto e messaggio — vengono usati esclusivamente per rispondere alla richiesta e conservati per il tempo necessario o previsto dalla legge. Non sono ceduti a terzi per finalità di marketing.",
+    "## Dati trattati",
+    "- Modulo di contatto: nome, email, oggetto (facoltativo) e messaggio, usati solo per rispondere alla richiesta.",
+    "- Telefono ed email, se si contatta direttamente il titolare.",
+    "- Dati tecnici di navigazione, registrati dall'hosting per sicurezza, e statistiche aggregate (Vercel Web Analytics e Speed Insights).",
     "",
-    "Base giuridica principale: legittimo interesse per la navigazione tecnica e consenso o misure precontrattuali per le richieste di contatto. I dettagli completi su cookie, analitica e diritti dell'interessato sono nella pagina privacy estesa.",
+    "## Basi giuridiche",
+    "Misure precontrattuali richieste dall'interessato per le richieste di contatto (art. 6.1.b GDPR). Legittimo interesse per sicurezza del sito e statistiche aggregate (art. 6.1.f GDPR).",
+    "",
+    "## Cookie, destinatari e conservazione",
+    "Il sito non imposta cookie di profilazione né pubblicitari. I dati non sono venduti né usati per marketing e sono trattati dai fornitori Vercel (hosting e statistiche), Resend (invio email del modulo) e dal servizio di posta del titolare, anche fuori dallo Spazio Economico Europeo con le garanzie previste dal GDPR. I messaggi sono conservati per il tempo necessario a gestire la richiesta e, se nasce un rapporto, per i termini di legge.",
+    "",
+    "Si può presentare reclamo al Garante per la protezione dei dati personali. Il testo completo è nella pagina privacy.",
     "",
     `Leggi la [pagina privacy](${link("/privacy")}).`,
   ].join("\n");

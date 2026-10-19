@@ -12,12 +12,12 @@ highlight: true
 draft: true
 ---
 
-## Proposta
+## La storia
 
-"Le vacanze di Henry" è uno spettacolo straordinario che mira a preservare la memoria dell'Olocausto e a coinvolgere direttamente gli studenti. Rappresenta un omaggio a coloro che hanno sofferto e un impegno a non dimenticare. Gli studenti si immergeranno in questo capitolo doloroso per preservarne la memoria, e l'apprendimento interattivo attraverso il teatro contribuisce all'educazione dei giovani sulla storia e sulle sue implicazioni.
+Henry è un uomo-bambino. Si trova coinvolto nell'orrore dell'Olocausto senza comprendere fino in fondo che cosa stia accadendo, e lo spettacolo guarda quel mondo attraverso i suoi occhi.
 
-Questo spettacolo non mira solo a informare, ma a trasformare. Offre l'opportunità di riflettere sul passato, sviluppando una consapevolezza critica e un senso di responsabilità nei confronti della storia e delle ingiustizie. L'educazione sull'Olocausto è essenziale per promuovere la comprensione, l'umanità e la consapevolezza.
+## Il tema
 
-## Trama
+Uno spettacolo che vuole mantenere viva la memoria di uno dei capitoli più bui della storia dell'umanità: un omaggio a chi ha sofferto e un impegno a non dimenticare. Fa vivere al pubblico le emozioni e le difficoltà di quegli anni, promuovendo empatia e comprensione.
 
-Racconta la storia di Henry, un uomo-bambino che si trova coinvolto nell'orrore senza comprendere appieno cosa stia accadendo. Questa produzione profonda è stata creata per mantenere viva la consapevolezza di uno dei capitoli più bui della storia dell'umanità. Lo spettacolo fa vivere personalmente al pubblico le emozioni e le difficoltà affrontate durante l'Olocausto, promuovendo empatia e comprensione.
+Offre l'occasione di riflettere sul passato, sviluppando una consapevolezza critica e un senso di responsabilità verso la storia e le ingiustizie. L'educazione sull'Olocausto è essenziale per promuovere comprensione e umanità.

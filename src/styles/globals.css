@@ -1,93 +1,24 @@
 @import "tailwindcss";
 
-/* Metric-adjusted fallbacks from @capsizecss/metrics: Inter/Arial and Playfair/Times New Roman. */
+/* Approximate metric-adjusted fallback (Arial) to limit layout shift while Jost loads. */
 @font-face {
-  font-family: "Inter Fallback";
+  font-family: "Jost Fallback";
   src: local("Arial");
-  size-adjust: 107.12%;
-  ascent-override: 90.44%;
-  descent-override: 22.52%;
+  size-adjust: 100%;
+  ascent-override: 107%;
+  descent-override: 37.5%;
   line-gap-override: 0%;
-}
-
-@font-face {
-  font-family: "Playfair Fallback";
-  src: local("Times New Roman");
-  size-adjust: 111.26%;
-  ascent-override: 97.25%;
-  descent-override: 22.56%;
-  line-gap-override: 0%;
-}
-
-/* Full-width blur at the page top fades into the existing floating glass panel. */
-.header-progressive-blur {
-  position: absolute;
-  inset: 0 0 -24px;
-  pointer-events: none;
-  background: linear-gradient(to bottom, rgb(9 9 11 / 72%), rgb(9 9 11 / 30%) 55%, transparent);
-  transition: opacity 300ms ease;
-}
-.header-progressive-blur > span {
-  position: absolute;
-  inset: 0;
-  -webkit-backdrop-filter: blur(var(--header-blur));
-  backdrop-filter: blur(var(--header-blur));
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    black var(--blur-start),
-    transparent var(--blur-end)
-  );
-  mask-image: linear-gradient(to bottom, black var(--blur-start), transparent var(--blur-end));
-}
-.header-progressive-blur > span:nth-child(1) {
-  --header-blur: 4px;
-  --blur-start: 45%;
-  --blur-end: 100%;
-}
-.header-progressive-blur > span:nth-child(2) {
-  --header-blur: 12px;
-  --blur-start: 20%;
-  --blur-end: 80%;
-}
-.header-progressive-blur > span:nth-child(3) {
-  --header-blur: 24px;
-  --blur-start: 0%;
-  --blur-end: 60%;
-}
-.header-glass {
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 300ms ease;
-}
-.site-header[data-glass="true"] .header-progressive-blur {
-  opacity: 0;
-}
-.site-header[data-glass="true"] .header-glass {
-  opacity: 1;
-}
-@media (prefers-reduced-transparency: reduce) {
-  .header-progressive-blur {
-    background: linear-gradient(to bottom, var(--background) 70%, transparent);
-  }
-  .header-progressive-blur > span {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-  .header-glass {
-    background: var(--background);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
 }
 
 @theme {
-  --font-sans: "Inter", "Inter Fallback", sans-serif;
-  --font-serif: "Playfair Display", "Playfair Fallback", serif;
+  --font-sans: "Jost", "Jost Fallback", sans-serif;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
   --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-soft: var(--primary-soft);
   --color-primary-foreground: var(--primary-foreground);
 
   --color-secondary: var(--secondary);
@@ -105,60 +36,40 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  @keyframes shimmer {
-    100% {
-      transform: translateX(100%);
-    }
-  }
-  --animate-fade-in: fade-in 0.8s ease-out;
 }
 
 @layer base {
   :root {
-    --background: #09090b; /* Zinc 950 */
-    --foreground: #fafafa; /* Zinc 50 */
+    --background: #070a11; /* near-black with a navy cast */
+    --foreground: #e9e7e2;
 
-    --card: #09090b;
-    --card-foreground: #fafafa;
+    --card: #070a11;
+    --card-foreground: #e9e7e2;
 
-    --popover: #09090b;
-    --popover-foreground: #fafafa;
+    --popover: #070a11;
+    --popover-foreground: #e9e7e2;
 
-    --primary: #2563eb; /* Blue 600 */
-    --primary-foreground: #f8fafc;
+    /* One accent: deep cobalt for fills, its pale tint for text and lines on dark. */
+    --primary: #2b4c9b;
+    --primary-hover: #3a5fb8;
+    --primary-soft: #8ea6e0;
+    --primary-foreground: #e9e7e2;
 
-    --secondary: #27272a; /* Zinc 800 */
-    --secondary-foreground: #fafafa;
+    --secondary: #11151f;
+    --secondary-foreground: #e9e7e2;
 
-    --muted: #27272a;
-    --muted-foreground: #a1a1aa; /* Zinc 400 */
+    --muted: #11151f;
+    --muted-foreground: #8e929b;
 
-    --accent: #27272a;
-    --accent-foreground: #fafafa;
+    --accent: #11151f;
+    --accent-foreground: #e9e7e2;
 
-    --destructive: #7f1d1d; /* Red 900 */
-    --destructive-foreground: #fafafa;
+    --destructive: #7f1d1d;
+    --destructive-foreground: #e9e7e2;
 
-    --border: #27272a;
-    --input: #27272a;
-    --ring: #2563eb;
-
-    --radius: 0.5rem;
+    --border: rgb(233 231 226 / 15%);
+    --input: rgb(233 231 226 / 15%);
+    --ring: #8ea6e0;
   }
 }
 
@@ -180,12 +91,8 @@
   h4,
   h5,
   h6 {
-    @apply font-serif;
+    font-weight: 400;
     text-wrap: balance;
-  }
-  img {
-    outline: 1px solid rgba(255, 255, 255, 0.1);
-    outline-offset: -1px;
   }
   :focus-visible {
     outline: 2px solid var(--ring);
@@ -206,6 +113,116 @@
       animation-iteration-count: 1 !important;
       scroll-behavior: auto !important;
       transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Rendered markdown (biography, shows, course). */
+@layer components {
+  .richtext h2 {
+    margin: 4rem 0 1.5rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border);
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .richtext h3 {
+    margin: 2.5rem 0 1rem;
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
+  .richtext > :first-child {
+    margin-top: 0;
+  }
+  .richtext p,
+  .richtext li {
+    font-size: 1.125rem;
+    font-weight: 300;
+    line-height: 1.85;
+    color: rgb(233 231 226 / 85%);
+  }
+  .richtext p {
+    max-width: 65ch;
+    margin-bottom: 1.5rem;
+  }
+  .richtext ul {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+    list-style: disc;
+  }
+  .richtext li {
+    margin-bottom: 0.5rem;
+  }
+  .richtext a {
+    color: var(--primary-soft);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .richtext strong {
+    font-weight: 500;
+    color: var(--foreground);
+  }
+
+  /* Biography: section titles sit in a side column, the list becomes a timeline. */
+  .richtext.bio ul {
+    max-width: 44rem;
+    padding: 0;
+    list-style: none;
+  }
+  .richtext.bio li {
+    display: grid;
+    grid-template-columns: 5rem minmax(0, 1fr);
+    gap: 1.5rem;
+    margin: 0;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .richtext.bio li:first-child {
+    padding-top: 0;
+  }
+  .richtext.bio li:last-child {
+    border-bottom: 0;
+  }
+  .richtext.bio li > strong:first-child {
+    font-size: 0.8125rem;
+    letter-spacing: 0.16em;
+    line-height: 2.5;
+    text-transform: uppercase;
+    color: var(--primary-soft);
+  }
+  @media (min-width: 1024px) {
+    .richtext.bio,
+    .richtext.split {
+      display: grid;
+      grid-template-columns: minmax(0, 17rem) minmax(0, 1fr);
+    }
+    .richtext.bio > h2,
+    .richtext.bio > h2 + *,
+    .richtext.split > h2,
+    .richtext.split > h2 + * {
+      margin-top: 4rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+    .richtext.bio > h2,
+    .richtext.split > h2 {
+      margin-bottom: 0;
+      border-bottom: 0;
+    }
+    .richtext.bio > :not(h2),
+    .richtext.split > :not(h2) {
+      grid-column: 2;
+      padding-left: 4rem;
+    }
+    .richtext.bio > :first-child,
+    .richtext.bio > :first-child + *,
+    .richtext.split > :first-child,
+    .richtext.split > :first-child + * {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: 0;
     }
   }
 }

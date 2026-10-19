@@ -32,6 +32,7 @@ const publicShows = async () =>
       produzione: show.data.produzione,
       tecnico: show.data.tecnico,
       requisiti: show.data.requisiti,
+      costo: show.data.costo,
       body: show.body,
     }));
 
@@ -104,6 +105,7 @@ export const GET: APIRoute = async ({ params, url }) => {
           produzione: show.data.produzione,
           tecnico: show.data.tecnico,
           requisiti: show.data.requisiti,
+          costo: show.data.costo,
           body: show.body,
         }),
       );

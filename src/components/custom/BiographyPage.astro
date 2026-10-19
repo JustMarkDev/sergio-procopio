@@ -17,6 +17,12 @@ if (!biografia) {
 
 const pageHeading = heading ?? biografia.data.title;
 const { Content } = await render(biografia);
+
+const { since, stats } = biografia.data;
+const figures = [
+    ...(since ? [{ value: String(new Date().getFullYear() - since), label: "Anni sul palco" }] : []),
+    ...stats,
+];
 ---
 
 <Layout
@@ -24,49 +30,52 @@ const { Content } = await render(biografia);
     description={biografia.data.description}
     canonicalPath={canonicalPath}
 >
-    <div class="relative overflow-hidden bg-[#09090b] min-h-screen text-white">
-        {/* Background Gradients */}
-        <div class="absolute top-0 right-0 w-[60%] h-[60%] bg-primary/5 rounded-full blur-[150px] pointer-events-none"></div>
-        <div class="absolute bottom-0 left-0 w-[50%] h-[50%] bg-blue-900/10 rounded-full blur-[150px] pointer-events-none"></div>
-
-        <div class="container relative z-10 mx-auto px-4 md:px-8 lg:px-12 py-32">
-            {/* Hero Section */}
-            <div class="flex flex-col lg:flex-row gap-16 items-center mb-24">
-                <div class="lg:w-1/2 space-y-8">
-                    <h1 class="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-serif font-bold tracking-tighter leading-[0.9] pb-2">
-                        <span class="block">{pageHeading}</span>
-                    </h1>
-                    <div class="w-20 h-1 bg-primary/50 rounded-full"></div>
-                    {
-                        biografia.data.quote && (
-                            <p class="text-2xl md:text-3xl font-serif text-muted-foreground italic opacity-90 leading-relaxed border-l-2 border-primary/30 pl-6 py-2">
-                                "{biografia.data.quote}"
-                            </p>
-                        )
-                    }
+    <section class="relative flex min-h-[min(800px,100svh)] items-end overflow-hidden pb-14 lg:pb-20">
+        {
+            biografia.data.image && (
+                <div class="pointer-events-none absolute right-0 top-0 h-full w-full mask-[linear-gradient(to_right,transparent,black_35%)] lg:w-[70%]" aria-hidden="true">
+                    <Image
+                        src={biografia.data.image}
+                        alt=""
+                        widths={[640, 1000, 1400]}
+                        sizes="(min-width: 1024px) 70vw, 100vw"
+                        loading="eager"
+                        fetchpriority="high"
+                        class="h-full w-full object-cover object-[50%_20%] outline-none"
+                    />
                 </div>
+            )
+        }
+        <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,var(--background)_0%,transparent_46%),linear-gradient(to_bottom,var(--background)_0%,transparent_22%)]"></div>
 
-                {
-                    biografia.data.image && (
-                        <div class="lg:w-1/2 w-full relative">
-                            <div class="aspect-4/5 relative [mask-image:radial-gradient(closest-side_at_50%_50%,black_50%,transparent_100%)]">
-                                <Image
-                                    src={biografia.data.image}
-                                    alt="Ritratto di Sergio Procopio"
-                                    loading="eager"
-                                    class="absolute inset-0 w-full h-full object-cover"
-                                />
-                            </div>
+        <div class="container relative mx-auto px-4 md:px-8 lg:px-12">
+            <h1 class="text-[clamp(2.75rem,9vw,8.75rem)] uppercase leading-[0.9]">{pageHeading}</h1>
+            {
+                biografia.data.quote && (
+                    <p class="mt-8 max-w-xl border-l-2 border-primary-soft/50 pl-6 text-xl font-light leading-relaxed text-foreground/85 md:text-2xl">
+                        "{biografia.data.quote}"
+                    </p>
+                )
+            }
+        </div>
+    </section>
+
+    <div class="container mx-auto px-4 pb-24 md:px-8 lg:px-12">
+        {
+            figures.length > 0 && (
+                <dl class="grid grid-cols-2 border-y border-border max-md:[&>:last-child:nth-child(odd)]:col-span-2 md:grid-cols-3 lg:grid-cols-5">
+                    {figures.map((item) => (
+                        <div class="flex flex-col-reverse justify-end gap-2 px-1 py-8 lg:px-6 lg:first:pl-0">
+                            <dt class="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">{item.label}</dt>
+                            <dd class="text-[clamp(2.5rem,5vw,4.25rem)] uppercase leading-none text-foreground">{item.value}</dd>
                         </div>
-                    )
-                }
-            </div>
+                    ))}
+                </dl>
+            )
+        }
 
-            <div
-                class="space-y-16 [&_h2]:text-3xl [&_h2]:md:text-4xl [&_h2]:font-serif [&_h2]:font-semibold [&_h2]:text-transparent [&_h2]:bg-clip-text [&_h2]:bg-[linear-gradient(to_bottom,#2563eb,#1d4ed8)] [&_h2]:pb-2 [&_h2]:mt-24 [&_h2:first-child]:mt-0 [&_h2]:mb-6 [&_p]:text-lg [&_p]:text-white/80 [&_p]:leading-relaxed [&_p]:max-w-4xl [&_p]:mb-4"
-            >
-                <Content />
-            </div>
+        <div class="richtext bio mt-16 lg:mt-24">
+            <Content />
         </div>
     </div>
 </Layout>

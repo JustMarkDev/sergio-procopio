@@ -22,16 +22,16 @@ requisiti: "Minimo di 120 alunni"
 highlight: false
 ---
 
-## Proposta
+## La storia
 
-Siamo lieti di presentarvi il nostro nuovo spettacolo didattico, intitolato "A volte tornano". Questo spettacolo offre una potente riflessione sui tragici destini dei migranti e sui sogni che li accompagnano.
+Siamo sott'acqua, sul fondo del mare. Qui l'anima di un migrante aspetta dei soccorsi. Sul fondo ci sono dei vestiti: ognuno apparteneva a un altro migrante che ha affrontato lo stesso viaggio.
 
-Ogni anno migliaia di migranti e rifugiati cercano di raggiungere l’Europa. Alcuni sono spinti dalla necessità di fuggire dalla povertà̀ cronica, altri cercano una via di uscita da violenze, persecuzioni e conflitti.
+Il protagonista li indossa uno dopo l'altro e, a ogni abito, dà voce ai sogni e alle speranze di chi lo portava: una vita migliore, un futuro, un amore, un progetto da realizzare. Ogni vestito apre una storia diversa, e il pubblico attraversa insieme a lui le vite che avrebbero potuto essere. Per tutto lo spettacolo il protagonista continua a chiedere aiuto.
 
-La risposta dell’Europa e dell’Italia si è concretizzata in politiche e prassi di controllo della migrazione e dell’asilo che mettono a rischio la vita di migliaia di persone, costringendole a intraprendere percorsi pericolosi per arrivare in Europa. E quando queste persone giungono sul territorio europeo, subiscono violazioni dei diritti umani, trattamenti disumani e degradanti, sfruttamento lavorativo. Tutto ciò è reso possibile da sentimenti xenofobi e razzisti nei confronti di migranti e rifugiati che vengono alimentati da un clima culturale e un linguaggio intrisi di stereotipi e pregiudizi che non facilitano la lettura della realtà̀ e influenzano negativamente l’opinione pubblica italiana ed europea.
+## Il tema
 
-## Trama
+Ogni anno migliaia di migranti e rifugiati cercano di raggiungere l'Europa. Alcuni fuggono dalla povertà cronica, altri da violenze, persecuzioni e conflitti. Le politiche e le prassi di controllo della migrazione e dell'asilo li costringono spesso a percorsi pericolosi e, una volta arrivati, molti subiscono violazioni dei diritti umani, trattamenti degradanti e sfruttamento lavorativo.
 
-La narrazione prende vita sott'acqua, dove l'anima di un migrante è ancora in attesa di soccorsi che purtroppo non arriveranno mai. Mentre aspetta, il protagonista trova diversi vestiti sul fondo del mare, ognuno appartenente a un altro migrante che, come lui, non ce l'ha fatta. Indossando questi vestiti, il protagonista dà vita ai sogni e alle speranze di queste anime perse, portando il pubblico in un viaggio emozionante attraverso le vite che avrebbero potuto essere.
+A rendere tutto questo possibile contribuisce un clima culturale fatto di stereotipi e pregiudizi, che alimenta sentimenti xenofobi e razzisti e rende più difficile leggere la realtà.
 
-Ogni vestito racconta una storia diversa, il sogno di una vita migliore, un futuro di speranza, amore e realizzazione. Tuttavia, nonostante la sua continua richiesta di aiuto, il migrante protagonista non viene mai salvato, simboleggiando la cruda realtà di molti che intraprendono viaggi pericolosi in cerca di salvezza.
+Lo spettacolo sceglie di partire dalle persone, non dai numeri: restituisce un volto e dei sogni a chi, nei racconti pubblici, resta spesso soltanto una cifra. È pensato per ragazzi dai 12 anni in su e può diventare un punto di partenza per il dialogo in classe.

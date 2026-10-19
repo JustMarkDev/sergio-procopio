@@ -1,5 +1,4 @@
 ---
-titolo: Mimo Comico Espressivo
 date: 29-11-2026 17:00
 venue: Salone Oratorio
 city: Colli del Tronto - Ascoli Piceno

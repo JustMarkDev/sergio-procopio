@@ -9,7 +9,7 @@ describe("contact trust anchors", () => {
     expect(contactTrustPlainText("en").length).toBeGreaterThan(500);
     expect(contactTrustPlainText("en")).toContain("Contact page");
     expect(contactTrustPlainText("it")).toContain("sergioprocopio.it");
-    expect(contactTrustPlainText("it")).toContain("Via Genico, 2");
+    expect(contactTrustPlainText("it")).not.toContain("P.IVA");
     expect(contactTrustPlainText("en")).toContain("info@sergioprocopio.it");
   });
 

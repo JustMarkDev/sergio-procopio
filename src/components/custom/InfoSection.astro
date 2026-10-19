@@ -1,0 +1,49 @@
+---
+import { splitEventsByDate } from "../../lib/calendar-dates";
+import UpcomingDates from "./UpcomingDates.astro";
+
+interface Props {
+    events: Parameters<typeof UpcomingDates>[0]["events"];
+    notes: { label: string; value?: string }[];
+    contactLabel?: string;
+}
+
+const { events, contactLabel = "Scrivici per informazioni" } = Astro.props;
+const notes = Astro.props.notes.filter((note): note is { label: string; value: string } => Boolean(note.value));
+const hasDates =
+    splitEventsByDate(events.filter((event) => !event.data.draft && event.data.isPublic)).upcomingEvents.length > 0;
+---
+
+<div class="mt-16 grid gap-12 border-t border-border pt-10 lg:mt-24 lg:grid-cols-[minmax(0,17rem)_minmax(0,1fr)] lg:gap-0">
+    <h2 class="text-xs font-medium uppercase tracking-[0.24em] text-primary-soft">Informazioni</h2>
+    <div class="grid gap-12 md:grid-cols-2 lg:pl-16">
+        <div class="[&>div]:mt-0 [&>div]:border-0 [&>div]:pt-0">
+            <UpcomingDates events={events} />
+            {
+                !hasDates && (
+                    <p class="text-sm font-light text-muted-foreground">Nessuna data in programma al momento.</p>
+                )
+            }
+        </div>
+        <div>
+            {
+                notes.length > 0 && (
+                    <dl class="space-y-5">
+                        {notes.map((note) => (
+                            <div>
+                                <dt class="mb-1 text-[11px] uppercase tracking-[0.2em] text-muted-foreground">{note.label}</dt>
+                                <dd class="text-lg font-light">{note.value}</dd>
+                            </div>
+                        ))}
+                    </dl>
+                )
+            }
+            <a
+                href="/contatti"
+                class="mt-8 inline-block border-b border-primary-soft pb-1 text-xs font-medium uppercase tracking-[0.16em] text-primary-soft transition-colors hover:border-foreground hover:text-foreground"
+            >
+                {contactLabel}
+            </a>
+        </div>
+    </div>
+</div>

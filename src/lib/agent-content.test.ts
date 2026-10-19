@@ -79,7 +79,7 @@ describe("agent content", () => {
     expect(contactTrustPlainText("en").length).toBeGreaterThan(500);
     expect(italian).toContain("[info@sergioprocopio.it](mailto:info@sergioprocopio.it)");
     expect(italian).toContain("[+39 3805252684](tel:+393805252684)");
-    expect(italian).toContain("Via Genico, 2");
+    expect(italian).not.toContain("Via Genico");
     expect(english).toContain("official Contact page");
     expect(italian).toContain("https://sergioprocopio.it/contatti");
     expect(italian).toContain("https://sergioprocopio.it/contact");
@@ -92,7 +92,7 @@ describe("agent content", () => {
 
     expect(markdown).toMatch(/^# Informativa sulla Privacy\n/);
     expect(markdown.length).toBeGreaterThan(500);
-    expect(markdown).toContain("P.IVA 02470860137");
+    expect(markdown).not.toContain("P.IVA");
     expect(markdown).toContain("https://sergioprocopio.it/privacy");
     expect(markdown).not.toContain("privacy-policy");
   });
