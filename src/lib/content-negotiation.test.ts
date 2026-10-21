@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vite-plus/test";
 import {
   addVary,
+  documentCacheControl,
+  documentMarkdownDecision,
   isDocumentPath,
   markdownEndpointPath,
   markdownResponse,
@@ -126,5 +128,19 @@ describe("response headers", () => {
     expect(response.status).toBe(406);
     expect(response.headers.get("Vary")).toBe("Accept, Accept-Encoding");
     await expect(response.text()).resolves.toContain("text/markdown");
+  });
+});
+
+describe("documentCacheControl", () => {
+  it("keeps agent-only Markdown out of the shared cache", () => {
+    const agent = documentMarkdownDecision(requestWith({ "user-agent": "GPTBot", accept: "*/*" }));
+    expect(documentCacheControl(agent)).toBe("private, no-store");
+  });
+
+  it("lets the CDN cache HTML and explicit Accept: text/markdown", () => {
+    const html = documentMarkdownDecision(requestWith({ accept: "text/html" }));
+    const markdown = documentMarkdownDecision(requestWith({ accept: "text/markdown" }));
+    expect(documentCacheControl(html)).toContain("s-maxage=300");
+    expect(documentCacheControl(markdown)).toContain("s-maxage=300");
   });
 });

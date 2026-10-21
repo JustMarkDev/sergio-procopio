@@ -1,35 +1,28 @@
-import { defineAction } from "astro:actions";
+import { ActionError, defineAction } from "astro:actions";
 import { Resend } from "resend";
 import { contactFormSchema } from "./contact-schema";
-import { isHoneypotSubmission, sanitizeEmailHeader } from "./contact-security";
-
-function escapeHtml(value: string) {
-  return value.replace(/[&<>"']/g, (char) => {
-    switch (char) {
-      case "&":
-        return "&amp;";
-      case "<":
-        return "&lt;";
-      case ">":
-        return "&gt;";
-      case '"':
-        return "&quot;";
-      case "'":
-        return "&#39;";
-      default:
-        return char;
-    }
-  });
-}
+import {
+  escapeHtml,
+  isHoneypotSubmission,
+  isRateLimited,
+  sanitizeEmailHeader,
+} from "./contact-security";
 
 export const server = {
   sendContactEmail: defineAction({
     accept: "form",
     input: contactFormSchema,
-    handler: async (input) => {
+    handler: async (input, context) => {
       // Return a normal success response so bots cannot learn that the trap fired.
       if (isHoneypotSubmission(input.website)) {
         return { success: true, data: null };
+      }
+
+      if (isRateLimited(context.clientAddress)) {
+        throw new ActionError({
+          code: "TOO_MANY_REQUESTS",
+          message: "Troppi invii ravvicinati. Riprova tra qualche minuto.",
+        });
       }
 
       // L'integrazione di Vercel espone la chiave come RESEND_API_KEY.

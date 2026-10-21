@@ -2,13 +2,13 @@
 
 Repository del sito ufficiale di Sergio Procopio, attore, clown e performer. Il sito presenta biografia, spettacoli, galleria, calendario eventi e modulo contatti.
 
-Il progetto è costruito con Astro 6, React islands, Tailwind CSS 4 e content collections Markdown.
+Il progetto è costruito con Astro 7, React islands, Tailwind CSS 4 e content collections Markdown.
 
 ## Stack
 
 | Area           | Tecnologia                                     |
 | :------------- | :--------------------------------------------- |
-| Framework      | Astro 6                                        |
+| Framework      | Astro 7                                        |
 | UI interattiva | React 19                                       |
 | Styling        | Tailwind CSS 4 tramite `@tailwindcss/vite`     |
 | Animazioni     | Framer Motion                                  |
@@ -59,7 +59,9 @@ RESEND_API_KEY=...
 |   |-- components/          # Componenti Astro e React condivisi
 |   |   `-- custom/          # Componenti specifici del sito
 |   |-- content/             # Contenuti Markdown validati da schema
-|   |   |-- eventi/          # Eventi del calendario
+|   |   |-- corso/           # Scheda del corso di teatro
+|   |   |-- date-corso/      # Date del corso nel calendario
+|   |   |-- eventi/          # Date degli spettacoli nel calendario
 |   |   |-- pages/           # Contenuti editoriali di pagine statiche
 |   |   `-- spettacoli/      # Schede spettacolo
 |   |-- layouts/             # Layout di pagina
@@ -151,10 +153,7 @@ Il modulo in `src/components/custom/ContactForm.tsx` invia i dati tramite `actio
 
 Gli stili globali sono in `src/styles/globals.css`. Questo progetto usa Tailwind CSS v4, quindi tema, font, utility custom e keyframes vanno configurati con `@theme` e CSS moderno, non con `tailwind.config.js`.
 
-Font principali:
-
-- `Inter` per il sans-serif
-- `Playfair Display` per titoli e serif
+Font: `Jost` (pacchetto `@fontsource/jost`), servito dal sito stesso.
 
 ## Verifica Prima del Deploy
 
@@ -169,8 +168,20 @@ Per modifiche visive, controlla manualmente homepage, pagine spettacolo, galleri
 
 Il sito è configurato per Vercel in `astro.config.mjs` con:
 
-- `site: "https://sergioprocopio.it"`
+- `site` da `SITE_URL` in `src/consts.ts`
 - adapter `@astrojs/vercel`
 - sitemap Astro
-- Vercel Web Analytics
-- domini consentiti per `sergioprocopio.it`, `sergioprocopio.com` e `localhost`
+- Vercel Web Analytics e Speed Insights
+
+### Limite di invii del modulo contatti
+
+L'action limita a 5 invii ogni 10 minuti per IP, ma solo in memoria di una singola istanza serverless. Per una protezione vera aggiungi una regola nel Vercel Firewall (richiede il CLI collegato al progetto):
+
+```sh
+vercel firewall rules add "Rate limit actions" \
+  --condition '{"type":"path","op":"pre","value":"/_actions/"}' \
+  --condition '{"type":"method","op":"eq","value":"POST"}' \
+  --action rate_limit --rate-limit-window 60 --rate-limit-requests 10 \
+  --rate-limit-keys ip --rate-limit-action deny --yes
+vercel firewall publish --yes
+```

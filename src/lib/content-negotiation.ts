@@ -25,8 +25,20 @@ export const markdownEndpointPath = (pathname: string) => {
  * Prefer Markdown when Accept asks for it, or when an AI agent sends an
  * Accept header that does not distinguish HTML from Markdown.
  */
+export const documentMarkdownDecision = (request: MinimalRequest) =>
+  detectShouldServeMarkdown(request);
+
 export const shouldServeDocumentMarkdown = (request: MinimalRequest) =>
-  detectShouldServeMarkdown(request).serve;
+  documentMarkdownDecision(request).serve;
+
+const DOCUMENT_CACHE_CONTROL = "public, max-age=0, s-maxage=300, stale-while-revalidate=86400";
+
+/**
+ * The CDN keys on Accept only. Markdown chosen from the User-Agent alone must not be cached,
+ * or a browser sending the same vague Accept would receive it.
+ */
+export const documentCacheControl = (decision: { serve: boolean; reason: string | null }) =>
+  decision.serve && decision.reason === "agent" ? "private, no-store" : DOCUMENT_CACHE_CONTROL;
 
 type AcceptEntry = {
   type: string;

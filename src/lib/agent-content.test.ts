@@ -9,7 +9,6 @@ import {
   privacyMarkdown,
   showMarkdown,
 } from "./agent-content";
-import { contactTrustPlainText } from "./contact-trust";
 import { GET } from "../pages/api/markdown/[...path]";
 
 vi.mock("astro:content", () => ({
@@ -75,16 +74,14 @@ describe("agent content", () => {
     expect(english).toMatch(/^# Contact\n/);
     expect(italian.length).toBeGreaterThan(500);
     expect(english.length).toBeGreaterThan(500);
-    expect(contactTrustPlainText("it").length).toBeGreaterThan(500);
-    expect(contactTrustPlainText("en").length).toBeGreaterThan(500);
     expect(italian).toContain("[info@sergioprocopio.it](mailto:info@sergioprocopio.it)");
     expect(italian).toContain("[+39 3805252684](tel:+393805252684)");
     expect(italian).not.toContain("Via Genico");
     expect(english).toContain("official Contact page");
     expect(italian).toContain("https://sergioprocopio.it/contatti");
     expect(italian).toContain("https://sergioprocopio.it/contact");
-    expect(italian).toContain("1. Scrivimi: raccontami il periodo, il luogo e il pubblico");
-    expect(english).toContain("1. Write to me: tell me the period, the venue and the audience");
+    expect(italian).toContain("1. Scrivimi: Raccontami il periodo, il luogo e il pubblico");
+    expect(english).toContain("1. Write to me: Tell me the period, the venue and the audience");
   });
 
   it("summarizes privacy trust information", () => {

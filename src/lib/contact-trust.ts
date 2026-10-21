@@ -3,12 +3,14 @@
  * It powers agent markdown/SEO only and must not be rendered as visible HTML.
  */
 
+import { SITE_URL } from "../consts";
+
 export const CONTACT_NAP = {
   name: "Sergio Procopio",
   email: "info@sergioprocopio.it",
   telephone: "+393805252684",
   telephoneDisplay: "+39 3805252684",
-  url: "https://sergioprocopio.it",
+  url: SITE_URL,
   contactPath: "/contatti",
   contactAliasPath: "/contact",
 } as const;
@@ -25,5 +27,31 @@ export const CONTACT_TRUST_EN = [
   `Contact details (name, phone, email): ${CONTACT_NAP.name}, phone ${CONTACT_NAP.telephoneDisplay}, email ${CONTACT_NAP.email}. The canonical website is ${CONTACT_NAP.url}.`,
 ].join("\n\n");
 
-export const contactTrustPlainText = (locale: "it" | "en") =>
-  locale === "en" ? CONTACT_TRUST_EN : CONTACT_TRUST_IT;
+// The booking steps shown on the contact page and repeated in its Markdown copy.
+export const CONTACT_STEPS = {
+  it: [
+    {
+      title: "Scrivimi",
+      description: "Raccontami il periodo, il luogo e il pubblico che vorresti coinvolgere.",
+    },
+    {
+      title: "Ti rispondo io",
+      description: "Verifichiamo la disponibilità e definiamo una proposta con un preventivo.",
+    },
+    {
+      title: "Confermiamo la data",
+      description: "Accordiamo i dettagli tecnici per portare lo spettacolo da te.",
+    },
+  ],
+  en: [
+    {
+      title: "Write to me",
+      description: "Tell me the period, the venue and the audience you want to involve.",
+    },
+    { title: "I reply", description: "We check availability and define a proposal with a quote." },
+    {
+      title: "We confirm the date",
+      description: "We agree the technical details so the show can come to you.",
+    },
+  ],
+} as const;

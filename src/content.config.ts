@@ -147,7 +147,6 @@ const eventiCollection = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/eventi" }),
   schema: z
     .object({
-      title: z.string().optional(),
       spettacolo: z.string(),
       ...eventFields,
     })

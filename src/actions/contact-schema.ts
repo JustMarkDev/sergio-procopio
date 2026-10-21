@@ -1,9 +1,17 @@
 import { z } from "zod";
+import {
+  CONTACT_EMAIL_MAX_LENGTH,
+  CONTACT_MESSAGE_MAX_LENGTH,
+  CONTACT_NAME_MAX_LENGTH,
+  CONTACT_SUBJECT_MAX_LENGTH,
+} from "./contact-limits";
 
-export const CONTACT_NAME_MAX_LENGTH = 120;
-export const CONTACT_EMAIL_MAX_LENGTH = 254;
-export const CONTACT_SUBJECT_MAX_LENGTH = 160;
-export const CONTACT_MESSAGE_MAX_LENGTH = 4000;
+export {
+  CONTACT_EMAIL_MAX_LENGTH,
+  CONTACT_MESSAGE_MAX_LENGTH,
+  CONTACT_NAME_MAX_LENGTH,
+  CONTACT_SUBJECT_MAX_LENGTH,
+};
 
 export const contactFormSchema = z.object({
   nome: z.string().trim().min(1, "Nome obbligatorio").max(CONTACT_NAME_MAX_LENGTH),

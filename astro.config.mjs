@@ -7,16 +7,16 @@ import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 import vercel from "@astrojs/vercel";
+import { SITE_URL as siteUrl } from "./src/consts";
 
-const siteUrl = "https://sergioprocopio.it";
 const showsDirectory = new URL("./src/content/spettacoli/", import.meta.url);
 const publicShowPages = readdirSync(showsDirectory)
   .filter((file) => file.endsWith(".md"))
   .flatMap((file) => {
     const source = readFileSync(new URL(file, showsDirectory), "utf8");
-    if (/^draft:\s*true\s*$/m.test(source)) return [];
+    if (/^draft:\s*["']?true["']?\s*$/m.test(source)) return [];
 
-    const slug = source.match(/^slug:\s*(\S+)\s*$/m)?.[1] ?? basename(file, ".md");
+    const slug = source.match(/^slug:\s*["']?([^"'\s]+)["']?\s*$/m)?.[1] ?? basename(file, ".md");
 
     return [new URL(`/spettacoli/${slug}`, siteUrl).toString()];
   });

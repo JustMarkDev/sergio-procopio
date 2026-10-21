@@ -75,4 +75,21 @@ describe("server-rendered image loading", () => {
     expect(images[1]).toContain('loading="lazy"');
     for (const img of images) expect(img).not.toContain("opacity-0");
   });
+
+  it("opens galleries from real buttons and never traps a show without a gallery", () => {
+    const withGallery = renderToStaticMarkup(createElement(GalleryView, { images: [image] }));
+    expect(withGallery).toContain('<button type="button" aria-label="Apri: Show photograph"');
+
+    const noGallery = renderToStaticMarkup(
+      createElement(ShowGallery, {
+        mainImageSrc: image.src,
+        mainImageOriginalSrc: image.originalSrc,
+        mainImageWidth: image.width,
+        mainImageHeight: image.height,
+        images: [],
+        alt: image.alt,
+      }),
+    );
+    expect(noGallery).not.toContain("<button");
+  });
 });

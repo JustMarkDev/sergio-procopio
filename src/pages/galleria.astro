@@ -1,9 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
-import { getImage } from "astro:assets";
 import GalleryView from "../components/custom/GalleryView";
 import { getImageTitleFromPath } from "../lib/show-assets";
+import { optimizeGalleryImages } from "../lib/gallery-images";
 
 const spettacoli = await getCollection("spettacoli");
 
@@ -21,55 +21,7 @@ const galleryImagesFromShows = spettacoli
         })),
     );
 
-const galleryImagesBySource = new Map<string, (typeof galleryImagesFromShows)[number]>();
-for (const image of galleryImagesFromShows) {
-    galleryImagesBySource.set(image.src.src, image);
-}
-const allGalleryImages = Array.from(galleryImagesBySource.values());
-
-// Ottimizziamo tutte le immagini lato server in parallelo prima di passarle a React
-const galleryImages = await Promise.all(
-    allGalleryImages.map(async (image) => {
-        // 1. Immagine grande per lightbox (1200px)
-        const optimizedLarge = await getImage({
-            src: image.src,
-            width: 1200,
-            format: "webp",
-            quality: 80,
-        });
-
-        // 2. Immagine media per la griglia masonry (600px)
-        const optimizedGrid = await getImage({
-            src: image.src,
-            width: 600,
-            format: "webp",
-            quality: 75,
-        });
-
-        // 3. Miniatura molto piccola per le anteprime (120px)
-        const optimizedThumb = await getImage({
-            src: image.src,
-            width: 120,
-            height: 120,
-            format: "webp",
-            quality: 60,
-        });
-
-        return {
-            src: optimizedLarge.src,
-            gridSrc: optimizedGrid.src,
-            thumbSrc: optimizedThumb.src,
-            originalSrc: image.src.src,
-            alt: image.alt,
-            showId: image.showId,
-            title: image.title,
-            subtitle: image.subtitle,
-            width: image.width,
-            height: image.height,
-        };
-    })
-);
-
+const galleryImages = await optimizeGalleryImages(galleryImagesFromShows);
 ---
 
 <Layout

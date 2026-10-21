@@ -1,19 +1,8 @@
-import { useState, useEffect, useRef } from "react";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import LightboxImage from "./LightboxImage";
+import { useState } from "react";
+import Lightbox, { type GalleryImage as LightboxPhoto } from "./Lightbox";
 
-export interface GalleryImage {
-  src: string; // 1200px optimized WebP
-  gridSrc: string; // 600px optimized WebP
-  thumbSrc: string; // 120px optimized WebP
-  originalSrc: string; // Original unresolved asset path string
-  alt: string;
+export interface GalleryImage extends LightboxPhoto {
   showId: string;
-  title: string;
-  subtitle: string;
-  width: number;
-  height: number;
 }
 
 interface GalleryViewProps {
@@ -29,150 +18,43 @@ interface GalleryCardProps {
 function GalleryCard({ image, index, onOpen }: GalleryCardProps) {
   return (
     <div
-      onClick={onOpen}
-      className="relative group mb-6 md:mb-8 overflow-hidden bg-secondary break-inside-avoid cursor-pointer transition-all duration-300 ring-1 ring-border hover:ring-primary-soft/50"
+      className="relative group mb-6 md:mb-8 overflow-hidden bg-secondary break-inside-avoid transition-all duration-300 ring-1 ring-border hover:ring-primary-soft/50"
       style={{ aspectRatio: `${image.width} / ${image.height}` }}
     >
       <div className="skeleton absolute inset-0" aria-hidden="true" />
 
       <img
         src={image.gridSrc}
-        alt={image.alt}
+        alt=""
         loading={index === 0 ? "eager" : "lazy"}
         fetchPriority={index === 0 ? "high" : undefined}
         decoding="async"
         width={image.width}
         height={image.height}
-        className="absolute inset-0 h-full w-full object-cover transition-all duration-500 group-hover:scale-105 group-hover:opacity-60"
+        className="absolute inset-0 h-full w-full object-cover transition-all duration-500 group-hover:scale-105 group-hover:opacity-60 group-focus-within:opacity-60"
       />
 
-      <div className="absolute inset-0 bg-linear-to-t from-background via-background/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col justify-end p-6">
-        <h3 className="text-foreground uppercase tracking-[0.02em] text-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+      <div className="absolute inset-0 bg-linear-to-t from-background via-background/30 to-transparent opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col justify-end p-6">
+        <h3 className="text-foreground uppercase tracking-[0.02em] text-xl transform translate-y-4 group-hover:translate-y-0 group-focus-within:translate-y-0 transition-transform duration-300">
           {image.title}
         </h3>
-        <p className="text-foreground/70 text-sm font-light capitalize transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
+        <p className="text-foreground/70 text-sm font-light capitalize transform translate-y-4 group-hover:translate-y-0 group-focus-within:translate-y-0 transition-transform duration-300 delay-75">
           {image.subtitle}
         </p>
       </div>
+
+      <button
+        type="button"
+        onClick={onOpen}
+        aria-label={`Apri: ${image.alt}`}
+        className="absolute inset-0 z-10 cursor-pointer focus-visible:outline-offset-[-3px]"
+      />
     </div>
   );
 }
 
 export default function GalleryView({ images }: GalleryViewProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const [isImageLoading, setIsImageLoading] = useState(true);
-  const thumbnailsRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    window.dispatchEvent(
-      new CustomEvent("gallery-lightbox-change", {
-        detail: { isOpen: activeIndex !== null },
-      }),
-    );
-
-    return () => {
-      if (activeIndex !== null) {
-        window.dispatchEvent(
-          new CustomEvent("gallery-lightbox-change", { detail: { isOpen: false } }),
-        );
-      }
-    };
-  }, [activeIndex]);
-
-  // Reset loading state whenever the active index changes
-  useEffect(() => {
-    if (activeIndex !== null) {
-      setIsImageLoading(true);
-    }
-  }, [activeIndex]);
-
-  // Proactive Background Preloading: caches adjacent images (next/prev) in background memory
-  useEffect(() => {
-    if (activeIndex === null || images.length <= 1) return;
-
-    // Preload next image
-    const nextIdx = (activeIndex + 1) % images.length;
-    const nextImg = new Image();
-    nextImg.src = images[nextIdx].src;
-
-    // Preload previous image
-    const prevIdx = (activeIndex - 1 + images.length) % images.length;
-    const prevImg = new Image();
-    prevImg.src = images[prevIdx].src;
-  }, [activeIndex, images]);
-
-  // Prevent parent page scrolling while image is maximized
-  useEffect(() => {
-    if (activeIndex !== null) {
-      const originalOverflow = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = originalOverflow || "";
-      };
-    }
-  }, [activeIndex]);
-
-  // Keyboard navigation event listeners
-  useEffect(() => {
-    if (activeIndex === null) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setActiveIndex(null);
-      } else if (e.key === "ArrowRight") {
-        setActiveIndex((prev) => (prev === null ? 0 : (prev + 1) % images.length));
-      } else if (e.key === "ArrowLeft") {
-        setActiveIndex((prev) => (prev === null ? 0 : (prev - 1 + images.length) % images.length));
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [activeIndex, images.length]);
-
-  // Auto-scroll the active thumbnail into view and keep it centered without impacting parent viewport.
-  // Optimizes switching: executes instantly if the modal is already open (offsetWidth > 0) to prevent jank on fast clicks,
-  // and only uses a layout delay on initial open to allow accurate bounding calculations.
-  useEffect(() => {
-    if (activeIndex === null || !thumbnailsRef.current) return;
-
-    const container = thumbnailsRef.current;
-    const activeElement = container.children[activeIndex] as HTMLElement;
-    if (!activeElement) return;
-
-    const runScroll = () => {
-      const containerWidth = container.offsetWidth;
-      const elementLeft = activeElement.offsetLeft;
-      const elementWidth = activeElement.offsetWidth;
-
-      if (containerWidth > 0) {
-        // Calculate centered scroll position, explicitly clamping to >= 0
-        const targetScrollLeft = Math.max(0, elementLeft - containerWidth / 2 + elementWidth / 2);
-        container.scrollLeft = targetScrollLeft;
-      }
-    };
-
-    // If modal container is already open and sized, perform scroll centering instantly!
-    if (container.offsetWidth > 0) {
-      runScroll();
-    } else {
-      // Fallback: wait for the initial modal layout entry transition to settle
-      const timer = setTimeout(runScroll, 200);
-      return () => clearTimeout(timer);
-    }
-  }, [activeIndex]);
-
-  const showNext = () => {
-    setActiveIndex((prev) => (prev === null ? 0 : (prev + 1) % images.length));
-  };
-
-  const showPrev = () => {
-    setActiveIndex((prev) => (prev === null ? 0 : (prev - 1 + images.length) % images.length));
-  };
-
-  const currentImage = activeIndex !== null ? images[activeIndex] : null;
 
   return (
     <>
@@ -188,124 +70,7 @@ export default function GalleryView({ images }: GalleryViewProps) {
         ))}
       </div>
 
-      {/* Premium Lightbox Modal overlay */}
-      <AnimatePresence>
-        {activeIndex !== null && currentImage && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 h-[100dvh] bg-background/95 backdrop-blur-xl z-40 flex flex-col overflow-hidden"
-            onClick={() => setActiveIndex(null)}
-          >
-            {/* Top Section - Show Title / Description & Close Button */}
-            <div
-              className="w-full pt-3 md:pt-4 pb-2 px-16 md:px-20 text-center select-none relative z-50 shrink-0"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {isImageLoading ? (
-                <div aria-hidden="true" className="flex flex-col items-center">
-                  <div className="skeleton h-6 w-2/3 max-w-md md:h-9" />
-                  <div className="skeleton mt-2 h-3 w-1/3 max-w-48 md:mt-3 md:h-4" />
-                </div>
-              ) : (
-                <>
-                  <h2 className="text-lg sm:text-2xl md:text-4xl uppercase tracking-[0.04em] text-foreground truncate">
-                    {currentImage.title}
-                  </h2>
-                  <p className="text-[10px] md:text-sm text-primary-soft uppercase tracking-[0.18em] font-medium mt-1 md:mt-2 truncate">
-                    {currentImage.subtitle}
-                  </p>
-                </>
-              )}
-
-              {/* Close Button */}
-              <button
-                onClick={() => setActiveIndex(null)}
-                className="absolute top-3 md:top-4 right-4 md:right-8 bg-background/60 hover:bg-primary/30 border border-border hover:border-primary-soft/60 text-foreground p-2.5 backdrop-blur-md transition-[background-color,border-color,scale] duration-300 shadow-lg cursor-pointer flex items-center justify-center focus:outline-none active:scale-[0.96]"
-                aria-label="Chiudi galleria"
-              >
-                <X size={20} />
-              </button>
-            </div>
-
-            {/* Center Section - Image & Arrow Navigations */}
-            <div className="flex-1 flex items-center justify-center relative min-h-0 px-14 md:px-24 py-2">
-              {/* Previous Arrow */}
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  showPrev();
-                }}
-                className="absolute left-2 md:left-8 bg-background/60 hover:bg-primary/30 text-foreground p-2.5 md:p-3.5 border border-border hover:border-primary-soft/60 transition-all duration-300 backdrop-blur-md shadow-lg cursor-pointer flex items-center justify-center z-50 focus:outline-none"
-                aria-label="Immagine precedente"
-              >
-                <ChevronLeft size={22} />
-              </button>
-
-              {/* Central Image Container (fixed-height wrapper prevents screen height shift) */}
-              <div className="relative h-full w-full flex items-center justify-center z-10">
-                <LightboxImage
-                  key={activeIndex}
-                  src={currentImage.src}
-                  alt={currentImage.alt}
-                  width={currentImage.width}
-                  height={currentImage.height}
-                  loading={isImageLoading}
-                  onLoad={() => setIsImageLoading(false)}
-                />
-              </div>
-
-              {/* Next Arrow */}
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  showNext();
-                }}
-                className="absolute right-2 md:right-8 bg-background/60 hover:bg-primary/30 text-foreground p-2.5 md:p-3.5 border border-border hover:border-primary-soft/60 transition-all duration-300 backdrop-blur-md shadow-lg cursor-pointer flex items-center justify-center z-50 focus:outline-none"
-                aria-label="Immagine successiva"
-              >
-                <ChevronRight size={22} />
-              </button>
-            </div>
-
-            {/* Bottom Section - Floating Island Thumbnails Row (no stark background, longer span, LTR-safe, constant dimensions) */}
-            <div
-              className="w-full pb-3 md:pb-6 pt-1 px-3 shrink-0 relative z-50 flex justify-center"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div
-                ref={thumbnailsRef}
-                className="flex gap-2 md:gap-3 overflow-x-auto justify-start items-center px-3 py-2 w-full max-w-[95vw] md:max-w-5xl scrollbar-none relative"
-                style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-              >
-                {images.map((img, idx) => {
-                  const isActive = idx === activeIndex;
-                  return (
-                    <button
-                      key={idx}
-                      onClick={() => setActiveIndex(idx)}
-                      className={`relative shrink-0 transition-all duration-300 w-10 h-10 md:w-14 md:h-14 overflow-hidden cursor-pointer flex items-center justify-center ${
-                        isActive
-                          ? "border-2 border-primary-soft scale-110 opacity-100 z-10"
-                          : "border border-border opacity-40 hover:opacity-85 hover:scale-105"
-                      }`}
-                    >
-                      <img
-                        src={img.thumbSrc}
-                        alt={img.alt}
-                        className="w-full h-full object-cover select-none"
-                        loading="lazy"
-                      />
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <Lightbox images={images} activeIndex={activeIndex} onChange={setActiveIndex} />
     </>
   );
 }

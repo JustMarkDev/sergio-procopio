@@ -1,3 +1,4 @@
+export const SITE_URL = "https://sergioprocopio.it";
 export const SITE_TITLE =
   "Sergio Procopio | Spettacoli teatrali per scuole, parrocchie e associazioni";
 export const SITE_DESCRIPTION =

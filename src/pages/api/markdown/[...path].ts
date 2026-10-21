@@ -15,6 +15,7 @@ import {
 } from "../../../lib/agent-content";
 import { markdownResponse } from "../../../lib/content-negotiation";
 import { COURSE_PATH } from "../../../consts";
+import { getCalendarEvents } from "../../../lib/events";
 
 const normalizePath = (path: string | undefined) => (path ?? "").replace(/^\/+|\/+$/g, "");
 
@@ -37,28 +38,16 @@ const publicShows = async () =>
     }));
 
 const publicEvents = async (): Promise<AgentEvent[]> =>
-  [
-    ...(await getCollection("eventi")).map((event) => ({
-      kind: "spettacolo" as const,
-      data: event.data,
-    })),
-    ...(await getCollection("dateCorso")).map((event) => ({
-      kind: "corso" as const,
-      data: event.data,
-    })),
-  ]
-    .filter((event) => !event.data.draft && event.data.isPublic)
-    .sort((a, b) => a.data.date.getTime() - b.data.date.getTime())
-    .map((event) => ({
-      kind: event.kind,
-      title: event.data.title,
-      date: event.data.date,
-      time: event.data.time,
-      venue: event.data.venue,
-      city: event.data.city,
-      address: event.data.address,
-      googleMapsUrl: event.data.googleMapsUrl,
-    }));
+  (await getCalendarEvents()).map(({ kind, data }) => ({
+    kind,
+    title: data.name,
+    date: data.date,
+    time: data.time,
+    venue: data.venue,
+    city: data.city,
+    address: data.address,
+    googleMapsUrl: data.googleMapsUrl,
+  }));
 
 export const GET: APIRoute = async ({ params, url }) => {
   const path = normalizePath(params.path);

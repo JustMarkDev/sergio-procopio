@@ -10,8 +10,7 @@ interface Props {
 
 const { events, contactLabel = "Scrivici per informazioni" } = Astro.props;
 const notes = Astro.props.notes.filter((note): note is { label: string; value: string } => Boolean(note.value));
-const hasDates =
-    splitEventsByDate(events.filter((event) => !event.data.draft && event.data.isPublic)).upcomingEvents.length > 0;
+const hasDates = splitEventsByDate(events).upcomingEvents.length > 0;
 ---
 
 <div class="mt-16 grid gap-12 border-t border-border pt-10 lg:mt-24 lg:grid-cols-[minmax(0,17rem)_minmax(0,1fr)] lg:gap-0">

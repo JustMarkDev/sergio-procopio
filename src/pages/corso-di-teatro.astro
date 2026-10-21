@@ -1,8 +1,10 @@
 ---
+import { jsonLd } from "../lib/json-ld";
 import Layout from "../layouts/Layout.astro";
 import { getCollection, render } from "astro:content";
+import { getCalendarEvents } from "../lib/events";
 import { Image } from "astro:assets";
-import { COURSE_PATH } from "../consts";
+import { COURSE_PATH, SITE_URL } from "../consts";
 import FactStrip from "../components/custom/FactStrip.astro";
 import InfoSection from "../components/custom/InfoSection.astro";
 
@@ -14,7 +16,7 @@ if (!show) {
 
 const { Content } = await render(show);
 
-const courseEvents = await getCollection("dateCorso");
+const courseEvents = (await getCalendarEvents()).filter((event) => event.kind === "corso");
 
 const facts = [
     { label: "Docente", value: show.data.docente },
@@ -28,7 +30,7 @@ const notes = [
     { label: "Costo", value: show.data.costo },
 ];
 
-const site = Astro.site ?? new URL("https://sergioprocopio.it");
+const site = new URL(SITE_URL);
 const courseSchema = {
   "@context": "https://schema.org",
   "@type": "Course",
@@ -48,7 +50,7 @@ const courseSchema = {
     description={show.data.description}
     canonicalPath={COURSE_PATH}
 >
-    <script type="application/ld+json" is:inline set:html={JSON.stringify(courseSchema)} />
+    <script type="application/ld+json" is:inline set:html={jsonLd(courseSchema)} />
     <article class="container mx-auto min-h-screen px-4 pb-24 pt-36 md:px-8 lg:px-12">
         <header class="mb-12 lg:mb-16">
             <h1 class="max-w-5xl text-[clamp(2.25rem,6.5vw,6rem)] uppercase leading-[0.95]">

@@ -1,5 +1,5 @@
 ---
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { SITE_TITLE, SITE_DESCRIPTION, SITE_URL } from '../consts';
 
 interface Props {
   title?: string;
@@ -17,7 +17,7 @@ const {
   noindex = false,
 } = Astro.props;
 
-const site = Astro.site ?? new URL("https://sergioprocopio.it");
+const site = new URL(SITE_URL);
 const normalizedPath = canonicalPath === "/" ? "/" : canonicalPath.replace(/\/$/, "");
 const canonicalURL = new URL(normalizedPath, site);
 const imageURL = new URL(image, site);

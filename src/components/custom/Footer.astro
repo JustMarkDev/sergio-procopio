@@ -1,14 +1,15 @@
 ---
-import { EnvelopeIcon, PhoneIcon } from "@heroicons/react/24/outline";
-import { FacebookLogo, GithubLogo, InstagramLogo, YoutubeLogo } from "@phosphor-icons/react/dist/ssr";
+import { Mail, Phone } from "lucide-react";
+import { FacebookLogoIcon, GithubLogoIcon, InstagramLogoIcon, YoutubeLogoIcon } from "@phosphor-icons/react/dist/ssr";
 import { SOCIAL_LINKS } from "../../consts";
+import { CONTACT_NAP } from "../../lib/contact-trust";
 const year = new Date().getFullYear();
 
 const socials = [
-    { name: "Instagram", href: SOCIAL_LINKS.instagram, Icon: InstagramLogo },
-    { name: "Facebook", href: SOCIAL_LINKS.facebook, Icon: FacebookLogo },
-    { name: "YouTube", href: SOCIAL_LINKS.youtube, Icon: YoutubeLogo },
-    { name: "GitHub", href: SOCIAL_LINKS.github, Icon: GithubLogo },
+    { name: "Instagram", href: SOCIAL_LINKS.instagram, Icon: InstagramLogoIcon },
+    { name: "Facebook", href: SOCIAL_LINKS.facebook, Icon: FacebookLogoIcon },
+    { name: "YouTube", href: SOCIAL_LINKS.youtube, Icon: YoutubeLogoIcon },
+    { name: "GitHub", href: SOCIAL_LINKS.github, Icon: GithubLogoIcon },
 ];
 const heading = "mb-3 text-[11px] font-medium uppercase tracking-[0.24em] text-foreground";
 const link = "inline-flex min-h-10 items-center transition-colors hover:text-primary-soft";
@@ -39,15 +40,15 @@ const link = "inline-flex min-h-10 items-center transition-colors hover:text-pri
                 <h3 class={heading}>Contatti</h3>
                 <ul>
                     <li>
-                        <a href="mailto:info@sergioprocopio.it" class={`${link} gap-2`}>
-                            <EnvelopeIcon className="size-5" aria-hidden="true" />
-                            info@sergioprocopio.it
+                        <a href={`mailto:${CONTACT_NAP.email}`} class={`${link} gap-2`}>
+                            <Mail className="size-5" aria-hidden="true" />
+                            {CONTACT_NAP.email}
                         </a>
                     </li>
                     <li>
-                        <a href="tel:+393805252684" class={`${link} gap-2`}>
-                            <PhoneIcon className="size-5" aria-hidden="true" />
-                            +39 3805252684
+                        <a href={`tel:${CONTACT_NAP.telephone}`} class={`${link} gap-2`}>
+                            <Phone className="size-5" aria-hidden="true" />
+                            {CONTACT_NAP.telephoneDisplay}
                         </a>
                     </li>
                 </ul>

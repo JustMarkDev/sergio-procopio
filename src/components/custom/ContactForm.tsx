@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState, useTransition } from "react";
-import { actions } from "astro:actions";
-
-// Keep in sync with src/actions/contact-schema.ts.
-const CONTACT_NAME_MAX_LENGTH = 120;
-const CONTACT_EMAIL_MAX_LENGTH = 254;
-const CONTACT_SUBJECT_MAX_LENGTH = 160;
-const CONTACT_MESSAGE_MAX_LENGTH = 4000;
+import { actions, isInputError } from "astro:actions";
+import {
+  CONTACT_EMAIL_MAX_LENGTH,
+  CONTACT_MESSAGE_MAX_LENGTH,
+  CONTACT_NAME_MAX_LENGTH,
+  CONTACT_SUBJECT_MAX_LENGTH,
+} from "../../actions/contact-limits";
 
 const inputClassName =
   "block h-12 w-full border border-foreground/30 bg-secondary px-4 text-base text-foreground placeholder:text-muted-foreground transition-colors outline-none focus:border-primary-soft focus-visible:ring-2 focus-visible:ring-primary-soft";
@@ -38,7 +38,11 @@ export default function ContactForm() {
       try {
         const { error } = await actions.sendContactEmail(formData);
         if (error) {
-          setErrorMessage(error.message || "Errore durante l'invio. Riprova.");
+          // An input error's own message is a JSON dump; show the schema's field message instead.
+          const message = isInputError(error)
+            ? Object.values(error.fields).flat()[0]
+            : error.message;
+          setErrorMessage(message || "Errore durante l'invio. Riprova.");
           setStatus("error");
           return;
         }

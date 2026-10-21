@@ -1,8 +1,12 @@
 ---
+import { jsonLd } from "../../lib/json-ld";
 import Layout from "../../layouts/Layout.astro";
-import { getCollection, getEntry, render } from "astro:content";
+import { getEntry, render } from "astro:content";
 import { getImage } from "astro:assets";
 import { getImageTitleFromPath } from "../../lib/show-assets";
+import { SITE_URL } from "../../consts";
+import { getCalendarEvents, normalizeTitle } from "../../lib/events";
+import { optimizeGalleryImages } from "../../lib/gallery-images";
 import ShowGallery from "../../components/custom/ShowGallery";
 import FactStrip from "../../components/custom/FactStrip.astro";
 import InfoSection from "../../components/custom/InfoSection.astro";
@@ -17,63 +21,19 @@ if (!show || show.data.draft) {
 
 const { Content } = await render(show);
 
-const normalizeTitle = (title: string) => title.trim().toLowerCase();
-const showEvents = (await getCollection("eventi")).filter(
-    (event) => normalizeTitle(event.data.spettacolo) === normalizeTitle(show.data.title),
+const showEvents = (await getCalendarEvents()).filter(
+    (event) => event.kind === "spettacolo" && normalizeTitle(event.data.name) === normalizeTitle(show.data.title),
 );
 
-const explicitShowImages = show.data.galleryImages.map((image, index) => ({
-    src: image,
-    alt: `${show.data.title} - immagine ${index + 1}`,
-    title: show.data.title,
-    subtitle: getImageTitleFromPath(image.src) || `immagine ${index + 1}`,
-    width: image.width,
-    height: image.height,
-}));
-
-const showImagesBySource = new Map<string, (typeof explicitShowImages)[number]>();
-for (const image of explicitShowImages) {
-    showImagesBySource.set(image.src.src, image);
-}
-const allShowImages = Array.from(showImagesBySource.values());
-
-// Ottimizziamo tutte le immagini dello spettacolo in parallelo lato server
-const showImages = await Promise.all(
-    allShowImages.map(async (image) => {
-        const optimizedLarge = await getImage({
-            src: image.src,
-            width: 1200,
-            format: "webp",
-            quality: 80,
-        });
-
-        const optimizedGrid = await getImage({
-            src: image.src,
-            width: 600,
-            format: "webp",
-            quality: 75,
-        });
-
-        const optimizedThumb = await getImage({
-            src: image.src,
-            width: 120,
-            height: 120,
-            format: "webp",
-            quality: 60,
-        });
-
-        return {
-            src: optimizedLarge.src,
-            gridSrc: optimizedGrid.src,
-            thumbSrc: optimizedThumb.src,
-            originalSrc: image.src.src,
-            alt: image.alt,
-            title: image.title,
-            subtitle: image.subtitle,
-            width: image.width,
-            height: image.height,
-        };
-    })
+const showImages = await optimizeGalleryImages(
+    show.data.galleryImages.map((image, index) => ({
+        src: image,
+        alt: `${show.data.title} - immagine ${index + 1}`,
+        title: show.data.title,
+        subtitle: getImageTitleFromPath(image.src) || `immagine ${index + 1}`,
+        width: image.width,
+        height: image.height,
+    })),
 );
 
 // E per l'immagine principale: la ottimizziamo anche per un caricamento istantaneo
@@ -91,7 +51,7 @@ if (show.data.image) {
     optimizedMainImageSrcSet = optimized.srcSet.attribute;
 }
 
-const site = Astro.site ?? new URL("https://sergioprocopio.it");
+const site = new URL(SITE_URL);
 const showSchema = {
   "@context": "https://schema.org",
   "@type": "CreativeWork",
@@ -123,7 +83,7 @@ const notes = [
     description={show.data.description}
     canonicalPath={`/spettacoli/${show.id}`}
 >
-    <script type="application/ld+json" is:inline set:html={JSON.stringify(showSchema)} />
+    <script type="application/ld+json" is:inline set:html={jsonLd(showSchema)} />
     <article class="container mx-auto min-h-screen px-4 pb-24 pt-36 md:px-8 lg:px-12">
         <header class="mb-12 lg:mb-16">
             <p class="mb-5 text-xs font-medium uppercase tracking-[0.24em] text-primary-soft">

@@ -10,7 +10,7 @@ import arms from "../../photoshoot/MyPhoto_195.webp";
 // Course dates take turns with these photoshoot frames so the list doesn't repeat one picture.
 const courseImages = [curtain, coat, curtainWide, reach, curtainPeek, arms];
 
-const normalizeTitle = (title: string) => title.trim().toLowerCase();
+export const normalizeTitle = (title: string) => title.trim().toLowerCase();
 
 // Shows and course dates share one public timeline, each linked to its own page.
 export async function getCalendarEvents() {
@@ -33,6 +33,14 @@ export async function getCalendarEvents() {
         },
       ]),
   );
+
+  // Events point at a show by title; a renamed show silently loses its dates, so say so in the logs.
+  const showTitles = new Set(shows.map((show) => normalizeTitle(show.data.title)));
+  for (const event of eventi) {
+    if (!showTitles.has(normalizeTitle(event.data.name))) {
+      console.warn(`Evento "${event.id}": nessuno spettacolo intitolato "${event.data.name}".`);
+    }
+  }
 
   const events = [
     ...eventi.map((event) => ({

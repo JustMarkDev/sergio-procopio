@@ -1,8 +1,6 @@
 import { generateNotFoundMarkdown } from "@vercel/agent-readability";
-import { COURSE_PATH, SITE_DESCRIPTION, SITE_TITLE } from "../consts";
-import { CONTACT_NAP, CONTACT_TRUST_EN, CONTACT_TRUST_IT } from "./contact-trust";
-
-export const SITE_URL = "https://sergioprocopio.it";
+import { COURSE_PATH, SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from "../consts";
+import { CONTACT_NAP, CONTACT_STEPS, CONTACT_TRUST_EN, CONTACT_TRUST_IT } from "./contact-trust";
 
 type AgentShow = {
   id: string;
@@ -219,15 +217,9 @@ export const contactMarkdown = (locale: "it" | "en" = "it") => {
     `Compila il [modulo Contatti](${link("/contatti")}) oppure la pagina inglese [Contact](${link("/contact")}).`,
     "",
     isEnglish ? "## How we organise" : "## Come ci organizziamo",
-    isEnglish
-      ? "1. Write to me: tell me the period, the venue and the audience you want to involve."
-      : "1. Scrivimi: raccontami il periodo, il luogo e il pubblico che vorresti coinvolgere.",
-    isEnglish
-      ? "2. I reply: we check availability and define a proposal with a quote."
-      : "2. Ti rispondo io: verifichiamo la disponibilità e definiamo una proposta con un preventivo.",
-    isEnglish
-      ? "3. We confirm the date: we agree the technical details so the show can come to you."
-      : "3. Confermiamo la data: accordiamo i dettagli tecnici per portare lo spettacolo da te.",
+    ...CONTACT_STEPS[locale].map(
+      (step, index) => `${index + 1}. ${step.title}: ${step.description}`,
+    ),
   ].join("\n");
 };
 
