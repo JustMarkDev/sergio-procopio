@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface Show {
   id: string;
@@ -18,7 +18,10 @@ interface Props {
   shows: Show[];
 }
 
+const AUTOPLAY_MS = 4500;
+
 // The list drives the background: hovering or focusing a title brings its photo forward.
+// Touch screens can't hover, so there the shows rotate on their own while the section is in view.
 export default function FeaturedShows({ shows }: Props) {
   const [active, setActive] = useState(0);
   // Photos load on first hover, and stay hidden behind the current one until they have, so
@@ -27,6 +30,9 @@ export default function FeaturedShows({ shows }: Props) {
   const [wanted, setWanted] = useState(() => new Set([0]));
   const loaded = useRef(new Set([0]));
   const activeRef = useRef(0);
+  const sectionRef = useRef<HTMLElement>(null);
+  const [autoplay, setAutoplay] = useState(false);
+  const [inView, setInView] = useState(false);
 
   // Hover devices fetch the other photos once the page is idle, so a hover is instant.
   useEffect(() => {
@@ -37,19 +43,47 @@ export default function FeaturedShows({ shows }: Props) {
     return () => window.cancelIdleCallback(id);
   }, [shows]);
 
-  const select = (index: number) => {
+  const select = useCallback((index: number) => {
     activeRef.current = index;
     setActive(index);
     setWanted((current) => (current.has(index) ? current : new Set(current).add(index)));
     if (loaded.current.has(index)) setShown(index);
-  };
+  }, []);
   const markLoaded = (index: number) => {
     loaded.current.add(index);
     if (activeRef.current === index) setShown(index);
   };
 
+  useEffect(() => {
+    const touchOnly = window.matchMedia("(hover: none)").matches;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setAutoplay(touchOnly && !reducedMotion && shows.length > 1);
+  }, [shows]);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!autoplay || !section) return;
+    const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
+      threshold: 0.4,
+    });
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, [autoplay]);
+
+  // Restarting on every change of `active` also gives a tapped title a full interval.
+  useEffect(() => {
+    if (!autoplay || !inView) return;
+    const next = (active + 1) % shows.length;
+    // Fetch the photo after the next one now, so the crossfade never waits on the network.
+    const afterNext = (next + 1) % shows.length;
+    setWanted((current) => (current.has(afterNext) ? current : new Set(current).add(afterNext)));
+    const id = setTimeout(() => select(next), AUTOPLAY_MS);
+    return () => clearTimeout(id);
+  }, [autoplay, inView, active, shows.length, select]);
+
   return (
     <section
+      ref={sectionRef}
       id="spettacoli"
       className="relative flex min-h-[max(34rem,58vw)] scroll-mt-16 flex-col justify-between gap-10 overflow-hidden py-14 lg:py-20"
     >
