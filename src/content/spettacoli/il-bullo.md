@@ -28,6 +28,7 @@ requisiti: Minimo di 120 alunni
 highlight: true
 draft: false
 ---
+
 ## La storia
 
 Dannato Giuseppe è latitante da vent'anni e vive in un bunker buio, lontano dalla vita «vera». Cerca di immaginare un'altra vita per sé, ma ogni pensiero lo riporta indietro, alle scelte che lo hanno condotto fin lì: i giorni di scuola, le prime prepotenze, l'abbandono degli studi e la strada dell'illegalità, imboccata per inseguire potere, soldi e successo.

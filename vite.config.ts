@@ -12,6 +12,7 @@ export default defineConfig({
     ignorePatterns: ["dist/**", ".astro/**", ".vercel/**"],
   },
   fmt: {
-    ignorePatterns: ["dist/**", ".astro/**", ".vercel/**"],
+    // src/content is written by Pages CMS, which does not follow the formatter.
+    ignorePatterns: ["dist/**", ".astro/**", ".vercel/**", "src/content/**"],
   },
 });
